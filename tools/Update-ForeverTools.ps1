@@ -33,6 +33,9 @@ function Assert-SafeAddonPath([string]$Name) {
 }
 
 function Assert-SafeFilePath([string]$Name) {
+    # These two bundled updater files are part of the trusted ForeverTools package.
+    # They are installed as files; the running updater never executes downloaded scripts.
+    if ($Name -ceq 'Update.cmd' -or $Name -ceq 'Updater/Update-ForeverTools.ps1') { return }
     if ($Name -notmatch '^[A-Za-z0-9_./-]+$' -or $Name.Contains('\') -or
         $Name.StartsWith('/') -or $Name.Split('/') -contains '..' -or
         $Name.Split('/') -contains '.' -or $Name.Contains('//') -or

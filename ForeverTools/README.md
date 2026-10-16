@@ -1,15 +1,15 @@
-# ForeverTools 1.2.0
+# ForeverTools 1.3.0
 
 ## GitHub-Updates
 
-Im `/ad`-Menü öffnet **Update** den Update-Ablauf. Dafür einmal den Windows-Helfer `ForeverTools-Updater.cmd` aus dem [Repository](https://github.com/BP1904/ForeverTools) starten und den Spielordner auswählen. Er aktualisiert das einzige Addon **ForeverTools mit sämtlichen Modulen**, einschließlich Anti Fett Finger und Auto Rank. Offen lassen, im Spiel Update anfordern, Erfolgsmeldung im Helfer abwarten und `/reload` eingeben. Das Spiel kann Downloads nicht selbst durchführen. Die vollständige Anleitung steht in der README im Repository-Hauptordner.
+Für ein Update im installierten **ForeverTools**-Ordner **`Update.cmd` doppelklicken**, auf **ERFOLG** warten und im Spiel **`/reload`** eingeben. Der Spielordner wird automatisch erkannt. Sämtliche Module einschließlich Anti Fett Finger und Auto Rank werden gemeinsam aktualisiert. Der Update-Button im `/ad`-Menü zeigt die Anleitung und bietet danach **Neu laden** an. Der Download muss außerhalb des Spiels gestartet werden.
 
 Ein erweiterbares Addon für **WoW Forever 1.60.1.70425** (Interface 16001).
 Keine zusätzlichen Addons oder Bibliotheken im Spiel erforderlich.
 
 ## Installation
 
-1. Den kompletten Ordner `ForeverTools` in den tatsächlich verwendeten Spielordner unter `Interface\AddOns` kopieren. Bei einer Launcher-Installation liegt dieser gegebenenfalls unter `_classic_beta_`.
+1. [Fertiges ForeverTools.zip herunterladen](https://github.com/BP1904/ForeverTools/releases/latest/download/ForeverTools.zip), öffnen und den enthaltenen Ordner `ForeverTools` nach `Interface\AddOns` ziehen. Bei einer Launcher-Installation liegt dieser gegebenenfalls unter `_classic_beta_`.
 2. Die Datei muss anschließend unter `Interface\AddOns\ForeverTools\ForeverTools.toc` liegen, ohne einen zusätzlichen verschachtelten Ordner.
 3. WoW starten beziehungsweise `/reload` eingeben und ForeverTools in der Addon-Auswahl aktivieren. Neu kopierte Addon-Ordner können einen vollständigen Neustart erfordern.
 

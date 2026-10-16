@@ -39,15 +39,15 @@
         },
         {
           "path": "ForeverTools.toc",
-          "sha256": "e33e48f14caa08a5de817f293314719c6144eac00bd16eca11b8d83eec6eac48"
+          "sha256": "2a58c1215e5e5b64e0369e2c1454d56501c4d1ab48bf45623d1609b895e851ac"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "e33e48f14caa08a5de817f293314719c6144eac00bd16eca11b8d83eec6eac48"
+          "sha256": "2a58c1215e5e5b64e0369e2c1454d56501c4d1ab48bf45623d1609b895e851ac"
         },
         {
           "path": "Menu.lua",
-          "sha256": "1c0d8fb447b4cb8579c94f3c89bd4ef98147f106a5d45408615eab098a2d8b84"
+          "sha256": "2e9ad0fd88ea78c08fa5ded252de595674ea822d51e0fff490a4df88d6429a41"
         },
         {
           "path": "Modules/AntiFettFinger.lua",
@@ -87,7 +87,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "714c35aeb3e1650abc16df9eeae02d3264aa9efadb1089790116793c587c1c84"
+          "sha256": "37683ba82fdc46d5eb4268624237d172bb1d7e4c471517fa65040ac8f76ac6ce"
         },
         {
           "path": "Sounds/GTFO/alarmbeep.ogg",
@@ -110,8 +110,16 @@
           "sha256": "4f9457912685634c870cddffb5e2fe03eb791e1f3f86bc8570d42ba488b9e649"
         },
         {
+          "path": "Update.cmd",
+          "sha256": "e27fab0a2c0485126cfd66b1ab9aa9c58d18986947c7c16c8c1bd57be8696700"
+        },
+        {
+          "path": "Updater/Update-ForeverTools.ps1",
+          "sha256": "057747c5fdb4b4ac9924512228447d3d9dc3519923b2002197fd0f70b3897468"
+        },
+        {
           "path": "Updates.lua",
-          "sha256": "42e65f713b1b7878e201fe8602730e350c36f37971c0883e800b696b4084db06"
+          "sha256": "093aa3373c5658b79facc81f31315eee641c838ce29eed92e8cea530d23190bb"
         },
         {
           "path": "UpdateStatus.lua",

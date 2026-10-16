@@ -19,10 +19,13 @@ end
 
 if StaticPopupDialogs then
     StaticPopupDialogs.FOREVERTOOLS_UPDATE = {
-        text = "ForeverTools mit allen Modulen aktualisieren\n\n1. ForeverTools-Updater.cmd in Windows starten und geöffnet lassen.\n2. Jetzt Update anfordern: Die Oberfläche wird neu geladen.\n3. Auf die Erfolgsmeldung im Updater warten, dann /reload eingeben.\n\nAlle Module einschließlich Anti Fett Finger und Auto Rank gehören zu diesem einen Addon. Ohne Windows-Updater erfolgt kein Download.",
-        button1 = "Update anfordern",
+        text = "Alle ForeverTools-Module aktualisieren\n\n1. In Windows Interface\\AddOns\\ForeverTools öffnen.\n2. Update.cmd doppelklicken und auf ERFOLG warten.\n3. Hier auf Neu laden klicken.\n\nDer Spielordner wird automatisch erkannt. Der Download erfolgt durch Update.cmd außerhalb des Spiels.",
+        button1 = "Neu laden",
         button2 = "Abbrechen",
-        OnAccept = function() FT:RequestUpdate() end,
+        OnAccept = function()
+            if InCombatLockdown() then FT:Print("Neu laden bitte außerhalb des Kampfes.")
+            else ReloadUI() end
+        end,
         timeout = 0,
         whileDead = true,
         hideOnEscape = true,

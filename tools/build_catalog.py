@@ -1,12 +1,16 @@
 """Build the install catalog for the single ForeverTools addon bundle."""
 import hashlib
 import json
+import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def build():
+    updater = ROOT / 'ForeverTools/Updater/Update-ForeverTools.ps1'
+    updater.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(ROOT / 'tools/Update-ForeverTools.ps1', updater)
     addons = json.loads((ROOT / 'addons.json').read_text(encoding='utf-8'))
     if len(addons) != 1 or addons[0]['folder'] != 'ForeverTools':
         raise ValueError('All features must ship inside the single ForeverTools folder')

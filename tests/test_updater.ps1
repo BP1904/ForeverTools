@@ -46,6 +46,9 @@ try {
         Must-Reject { Assert-SafeFilePath $path }
     }
     foreach ($name in @('..', 'Bad/Folder', 'CON', 'C:\WoW')) { Must-Reject { Assert-SafeAddonPath $name } }
+    Assert-SafeFilePath 'Update.cmd'
+    Assert-SafeFilePath 'Updater/Update-ForeverTools.ps1'
+    Must-Reject { Assert-SafeFilePath 'Updater/Other.ps1' }
     $catalog.addons += @{folder='ForeverTools'; files=@()}
     Must-Reject { Install-AddonFiles $catalog $source $dest (Join-Path $work 'backup4') }
     $otherAddon = @{schema=1; addons=@(@{folder='AutoRank'; files=@()})}
