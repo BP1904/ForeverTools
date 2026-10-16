@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ForeverTools für WoW Forever installieren und über den Update-Button aktuell halten. Eine einfache Anleitung für unsere Gruppe.">
+  <title>ForeverTools – Installation und Updates</title>
+  <style>
+    :root { color-scheme: light; --ink:#172a38; --muted:#526471; --line:#dce4e7; --green:#176649; --paper:#f3f6f4; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    a { color:var(--green); text-underline-offset:4px; }
+    a:focus-visible, summary:focus-visible { outline:3px solid #dba947; outline-offset:5px; }
+    .wrap { max-width:1000px; margin:auto; padding:0 24px; }
+    header { color:#fff; background:#172e35; padding:44px 0 48px; }
+    .brand { display:flex; align-items:center; gap:12px; color:#c5d9d0; font-size:15px; font-weight:650; letter-spacing:.04em; }
+    .mark { display:grid; place-items:center; width:42px; height:42px; border:1px solid #5d7b72; border-radius:10px; color:#f1cf88; font-size:16px; }
+    h1 { margin:24px 0 12px; max-width:760px; font-size:clamp(32px,5vw,48px); line-height:1.15; letter-spacing:-.035em; }
+    header p { max-width:690px; margin:0 0 25px; color:#d7e3de; font-size:19px; }
+    .download { display:inline-block; background:#efd095; color:#182d31; border-radius:9px; padding:13px 22px; font-weight:750; text-decoration:none; }
+    .download:hover { background:#ffdfa1; }
+    .small { font-size:14px; }
+    header .small { margin:14px 0 0; color:#b8ccc2; }
+    main.wrap { padding-top:32px; padding-bottom:42px; }
+    .layout { display:grid; grid-template-columns:minmax(0,1fr) 280px; gap:24px; align-items:start; }
+    .card { background:white; border:1px solid var(--line); border-radius:14px; padding:27px; margin-bottom:24px; }
+    .eyebrow { color:var(--green); font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+    h2 { margin:5px 0 23px; font-size:26px; letter-spacing:-.025em; line-height:1.25; }
+    h3 { margin:0 0 5px; font-size:18px; line-height:1.4; }
+    p { margin:0 0 14px; }
+    .steps { list-style:none; counter-reset:step; padding:0; margin:0; }
+    .steps li { counter-increment:step; position:relative; padding-left:47px; margin:0 0 25px; }
+    .steps li:last-child { margin-bottom:0; }
+    .steps li::before { content:counter(step); position:absolute; left:0; top:0; display:grid; place-items:center; width:31px; height:31px; border-radius:50%; background:#eaf2ed; color:var(--green); font-size:14px; font-weight:800; }
+    .steps p { color:var(--muted); margin:0; }
+    code { background:#edf2f0; border-radius:5px; padding:2px 6px; font: .9em/1.6 Consolas,monospace; overflow-wrap:anywhere; }
+    .path { margin-top:12px; border-left:3px solid #93baa8; padding:9px 12px; background:#f5f8f6; font-size:14px; color:var(--muted); }
+    .path code { background:none; padding:0; }
+    .note { padding:15px 17px; background:#ecf5ef; border-radius:9px; margin-top:23px; font-size:15px; }
+    .note p:last-child { margin-bottom:0; }
+    .sidebar { font-size:15px; }
+    .sidebar h2 { font-size:20px; margin-bottom:14px; }
+    .sidebar p { color:var(--muted); }
+    .sidebar ul { margin:0; padding-left:19px; color:var(--muted); }
+    .sidebar li { margin-bottom:8px; }
+    .help h2 { margin-bottom:18px; }
+    details { border-top:1px solid var(--line); padding:13px 0; }
+    details:last-child { padding-bottom:0; }
+    summary { cursor:pointer; font-weight:650; font-size:16px; }
+    details p { font-size:15px; color:var(--muted); margin:10px 0 0; }
+    footer { border-top:1px solid var(--line); padding-top:20px; color:var(--muted); font-size:14px; display:flex; flex-wrap:wrap; gap:10px 25px; }
+    @media(max-width:760px) { .layout { grid-template-columns:1fr; gap:0; } header { padding:30px 0 35px; } .card { padding:22px; } .wrap { padding:0 18px; } }
+    @media print { body { background:white; font-size:11pt; } header { background:white; color:var(--ink); padding:0 0 20px; } header p, header .small, .brand { color:var(--ink); } .download { border:1px solid var(--line); } .layout { display:block; } .card { break-inside:avoid; margin-bottom:16px; } .sidebar { display:none; } details p { display:block; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand"><span class="mark" aria-hidden="true">FT</span> FOREVERTOOLS · WOW FOREVER</div>
+      <h1>Dein Addon. Schnell eingerichtet.</h1>
+      <p>Alle unsere Funktionen in einem Addon. So installierst du ForeverTools und hältst es aktuell.</p>
+      <a class="download" href="https://github.com/BP1904/ForeverTools/releases/latest/download/ForeverTools.zip">ForeverTools.zip herunterladen ↓</a>
+      <p class="small">Kostenloser Download · kein GitHub-Konto nötig · Windows</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="layout">
+      <div>
+        <section class="card" aria-labelledby="installation">
+          <span class="eyebrow">Einmal einrichten</span>
+          <h2 id="installation">In vier Schritten ins Spiel</h2>
+          <ol class="steps">
+            <li><h3>ZIP herunterladen und öffnen</h3><p>Oben auf den Download klicken. Anschließend die Datei <strong>ForeverTools.zip</strong> öffnen.</p></li>
+            <li><h3>ForeverTools in den AddOns-Ordner ziehen</h3><p>Den Ordner <strong>ForeverTools</strong> aus der ZIP nach <code>Interface\AddOns</code> in eurem verwendeten WoW-Ordner kopieren.</p><div class="path">Beispiel:<br><code>World of Warcraft\_classic_beta_\Interface\AddOns\ForeverTools</code></div></li>
+            <li><h3>WoW vollständig neu starten</h3><p>In der Charakterauswahl auf <strong>AddOns</strong> klicken und den Haken bei <strong>ForeverTools</strong> setzen.</p></li>
+            <li><h3>Im Spiel das Menü öffnen</h3><p><code>/ad</code> im Chat eingeben. Hier könnt ihr die einzelnen Funktionen ein- und ausschalten. Fertig!</p></li>
+          </ol>
+        </section>
+
+        <section class="card" aria-labelledby="updates">
+          <span class="eyebrow">Später aktuell halten</span>
+          <h2 id="updates">Ein Update für alle Funktionen</h2>
+          <ol class="steps">
+            <li><h3>Den Update-Helfer starten</h3><p>Im installierten <strong>ForeverTools</strong>-Ordner <strong>Update.cmd</strong> doppelklicken. Das einmal nach jedem Windows-Neustart machen. Der Helfer läuft danach im Hintergrund; sein Symbol findet ihr neben der Windows-Uhr.</p></li>
+            <li><h3>Im Spiel auf Update klicken</h3><p>Mit <code>/ad</code> das Menü öffnen, auf <strong>Update</strong> und anschließend auf <strong>Jetzt aktualisieren</strong> klicken. Die Oberfläche wird neu geladen und der Download startet über den Helfer.</p></li>
+            <li><h3>Fertigmeldung abwarten und neu laden</h3><p>Sobald Windows <strong>„Update fertig“</strong> meldet, im Spiel <code>/reload</code> eingeben. Jetzt sind alle Module auf dem neuen Stand.</p></li>
+          </ol>
+          <div class="note"><p><strong>Merken:</strong> Helfer einmal starten → Update im Spiel anklicken → Fertigmeldung abwarten → <code>/reload</code>.</p><p>Eine Verknüpfung zu <strong>Update.cmd</strong> auf dem Desktop spart die Suche nach dem Ordner.</p></div>
+        </section>
+
+        <section class="card help" aria-labelledby="hilfe">
+          <h2 id="hilfe">Falls etwas nicht klappt</h2>
+          <details><summary>ForeverTools wird in WoW nicht angezeigt</summary><p>Die Datei muss direkt unter <code>Interface\AddOns\ForeverTools\ForeverTools.toc</code> liegen. Es darf kein zusätzlicher Ordner wie <code>ForeverTools-main</code> dazwischenliegen. Den oben verlinkten fertigen ZIP-Download verwenden und WoW danach vollständig neu starten.</p></details>
+          <details><summary>Der Update-Button lädt nichts herunter</summary><p><strong>Update.cmd</strong> im installierten ForeverTools-Ordner starten und den Update-Button erneut verwenden. WoW selbst kann keine Dateien herunterladen; dafür muss der Helfer laufen. Bei einer Fehlermeldung den Internetzugriff auf GitHub prüfen.</p></details>
+          <details><summary>Wo liegt mein AddOns-Ordner?</summary><p>Im Launcher den verwendeten WoW-Spielordner öffnen. Bei unserer Forever-Installation liegt der Ordner unter <code>_classic_beta_\Interface\AddOns</code>. Verwendet den Ordner des Clients, den ihr tatsächlich startet.</p></details>
+        </section>
+      </div>
+
+      <aside class="card sidebar" aria-labelledby="inhalt">
+        <h2 id="inhalt">Ein Ordner. Alles dabei.</h2>
+        <p>Ihr installiert nur <strong>ForeverTools</strong>. Die enthaltenen Funktionen sind einzeln schaltbar:</p>
+        <ul><li>Händler &amp; Taschen</li><li>Quests</li><li>Materialien</li><li>Paladin</li><li>GTFO</li><li>Threat Plates</li><li>Decursive</li><li>Anti Fett Finger</li><li>Auto Rank</li></ul>
+        <div class="note"><strong>Menü öffnen:</strong><br><code>/ad</code> oder das Schmiede-Symbol an der Minimap.</div>
+      </aside>
+    </div>
+    <footer>
+      <span>ForeverTools · Anleitung für unsere Gruppe</span>
+      <a href="https://github.com/BP1904/ForeverTools">Projekt auf GitHub</a>
+      <a href="https://github.com/BP1904/ForeverTools/releases/latest">Aktueller Download &amp; Versionshinweise</a>
+    </footer>
+  </main>
+</body>
+</html>
