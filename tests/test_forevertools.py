@@ -230,7 +230,7 @@ class ForeverToolsTest(unittest.TestCase):
             assert(inventory[0][3] and repairCost == 100 and sortCalls == 0)
             SlashCmdList.FOREVERTOOLS()
             assert(ForeverTools.menu:IsShown())
-            assert(#ForeverTools.menu.checks == 5)
+            assert(#ForeverTools.menu.checks == 6)
             assert(not ForeverTools.menu.checks[2].box.enabled)
             SlashCmdList.FOREVERTOOLS(); assert(not ForeverTools.menu:IsShown())
         ''')

@@ -149,9 +149,9 @@ class QuestIntegrationTest(unittest.TestCase):
         self.lua.execute('''
             SlashCmdList.FOREVERTOOLS()
             local checks=ForeverTools.menu.checks
-            assert(#checks==5 and checks[5].box:GetChecked())
-            checks[5].box:SetChecked(false)
-            checks[5].box.scripts.OnClick(checks[5].box)
+            assert(#checks==6 and checks[6].box:GetChecked())
+            checks[6].box:SetChecked(false)
+            checks[6].box.scripts.OnClick(checks[6].box)
             assert(not ForeverTools:IsEnabled('quests'))
             assert(ForeverTools:IsEnabled('merchant'))
         ''')

@@ -14,6 +14,8 @@ Die Datei liegt danach direkt unter `Interface\AddOns\ForeverTools\ForeverTools.
 
 ## Ein Update aktualisiert alles
 
+**Jägermunition:** Unter `/ad → Händler & Taschen → Optionen` ist „Jäger: Köcher / Munitionsbeutel auffüllen“ standardmäßig aktiv. Beim Öffnen eines passenden Händlers kauft das Addon die beste Munition für eure Stufe und angelegte Fernkampfwaffe: Pfeile für Bogen/Armbrust, Kugeln für Schusswaffen. Es füllt nur den verfügbaren Platz im passenden Köcher/Munitionsbeutel und berücksichtigt Gold und Händlervorrat. Ohne passenden Beutel wird nichts gekauft. **Umschalt beim Öffnen des Händlers gedrückt halten**, um den Munitionskauf einmal auszusetzen.
+
 **Einmal nach der Installation `Update.cmd` im ForeverTools-Ordner doppelklicken.** Dadurch wird der Helfer gestartet und für die automatische Ausführung bei eurer Windows-Anmeldung eingerichtet. Das muss nach einem Neustart nicht wiederholt werden. Er läuft unsichtbar im Hintergrund; sein Symbol findet ihr neben der Windows-Uhr. Keine Ordnerauswahl und kein offenes Helferfenster nötig.
 
 Danach im Spiel einfach **`/ad → Update`** drücken – ohne zusätzlichen Bestätigungsdialog. Der Button speichert den Update-Auftrag und lädt die Oberfläche neu. Der Hintergrundhelfer lädt alle Module gemeinsam. Sobald Windows **„Update fertig“** meldet, im Spiel **`/reload`** eingeben. Dieser zweite Reload bleibt notwendig, damit WoW die heruntergeladenen Dateien einliest. WoW selbst darf keine Dateien herunterladen oder Windows-Programme starten. Die Menü-Fußzeile zeigt den zuletzt geprüften GitHub-Stand.

@@ -1,11 +1,12 @@
 local _, FT = ...
 local M = {
     title = "Händler & Taschen",
-    description = "Automatisch reparieren, graue Gegenstände verkaufen und WoWs Funktion „Taschen aufräumen“ starten.",
-    defaults = {repair = true, sell = true, sort = true},
+    description = "Reparieren, Graues verkaufen, Jägermunition auffüllen und Taschen aufräumen. Umschalt beim Öffnen: kein Munitionskauf.",
+    defaults = {repair = true, sell = true, sort = true, ammo = true},
     options = {
         {key = "repair", title = "Alle mitgeführten Gegenstände reparieren"},
         {key = "sell", title = "Graue Gegenstände automatisch verkaufen"},
+        {key = "ammo", title = "Jäger: Köcher / Munitionsbeutel auffüllen"},
         {key = "sort", title = "Danach WoWs „Taschen aufräumen“ starten"},
     },
 }
@@ -59,7 +60,7 @@ end
 function M:Start()
     if not FT:IsEnabled("merchant") or self.run then return end
     self.run = {phase = "repair", started = GetTime(), skipped = {}, sold = 0,
-        revenue = 0, lastChange = GetTime()}
+        revenue = 0, lastChange = GetTime(), skipAmmo = IsShiftKeyDown and IsShiftKeyDown()}
 end
 
 function M:BeginSort()
@@ -76,6 +77,9 @@ function M:Finish(reason)
     if run.sold > 0 then
         FT:Print(run.sold .. " graue Gegenstände verkauft (" .. GetMoneyString(run.revenue) .. ").")
     end
+    if run.ammoBought and run.ammoBought > 0 then
+        FT:Print(run.ammoBought .. " × " .. run.ammoName .. " nachgekauft.")
+    end
     if run.repairRequested then
         local remaining = GetRepairAllCost()
         if remaining == 0 then
@@ -86,6 +90,134 @@ function M:Finish(reason)
     end
     if reason then FT:Print(reason) end
     self.run = nil
+end
+
+-- Adapted from Guschi/AutoAmmo.lua: bow/crossbow -> arrows, gun -> bullets.
+local WEAPON_TO_AMMO = {[2] = 2, [18] = 2, [3] = 3}
+
+local function AmmoCount(id)
+    local count = 0
+    for _, position in ipairs(Bags()) do
+        local item = Info(position)
+        if item and item.itemID == id then count = count + item.stackCount end
+    end
+    return count
+end
+
+local function MerchantInfo(index)
+    if GetMerchantItemInfo then return GetMerchantItemInfo(index) end
+    local info = C_MerchantFrame and C_MerchantFrame.GetItemInfo and C_MerchantFrame.GetItemInfo(index)
+    if info then
+        return info.name, info.texture, info.price, info.stackCount, info.numAvailable,
+            info.isPurchasable, info.isUsable, info.hasExtendedCost
+    end
+end
+
+local function AmmoRoom(id, stack, family)
+    local room = 0
+    -- Only dedicated, equipped quivers/ammo pouches; normal bags never add capacity.
+    for bag = 1, NUM_BAG_SLOTS or 4 do
+        local free, bagFamily = C.GetContainerNumFreeSlots(bag)
+        if free and bagFamily and bagFamily > 0 and bit.band(bagFamily, family) > 0 then
+            room = room + free * stack
+            for slot = 1, C.GetContainerNumSlots(bag) do
+                local item = C.GetContainerItemInfo(bag, slot)
+                if item and item.itemID == id and not item.isLocked then
+                    room = room + math.max(0, stack - item.stackCount)
+                end
+            end
+        end
+    end
+    return room
+end
+
+function M:AmmoTick()
+    local run = self.run
+    -- Settle an issued purchase before sorting, even if the option was disabled.
+    if run.ammoPending then
+        local pending = run.ammoPending
+        local gained = AmmoCount(run.ammoID) - pending.before
+        if gained >= pending.quantity then
+            run.ammoBought = (run.ammoBought or 0) + gained
+            run.ammoLeft = math.max(0, run.ammoLeft - gained)
+            run.ammoPending = nil
+        elseif GetTime() - pending.time >= 2 then
+            run.ammoBought = (run.ammoBought or 0) + math.max(0, gained)
+            FT:Print("Munitionskauf nicht vollständig bestätigt; Auffüllen beendet.")
+            self:BeginSort()
+            return
+        else
+            return
+        end
+    end
+    if not self.merchantOpen or not self.settings.ammo or run.skipAmmo
+        or (IsShiftKeyDown and IsShiftKeyDown()) then self:BeginSort(); return end
+    if not UnitClass or select(2, UnitClass("player")) ~= "HUNTER"
+        or not C_Item.GetItemInfoInstant or not C_Item.GetItemFamily
+        or not C.GetContainerNumFreeSlots or not bit or not bit.band
+        or not GetInventoryItemID or not GetMerchantNumItems or not GetMerchantItemLink
+        or not BuyMerchantItem or not UnitLevel then self:BeginSort(); return end
+    if not run.ammoID then
+        local weapon = GetInventoryItemID("player", 18)
+        if not weapon then self:BeginSort(); return end
+        local _, _, _, _, _, class, subclass = C_Item.GetItemInfoInstant(weapon)
+        local want = class == 2 and WEAPON_TO_AMMO[subclass]
+        if not want then self:BeginSort(); return end
+        local best, bestLevel, bestID, bestStack, waiting
+        for index = 1, GetMerchantNumItems() do
+            local link = GetMerchantItemLink(index)
+            if link then
+                local id, _, _, _, _, itemClass, itemSubclass = C_Item.GetItemInfoInstant(link)
+                if not id or not itemClass then
+                    waiting = true
+                elseif itemClass == 6 and itemSubclass == want then
+                    local name, _, _, _, level, _, _, stack = C_Item.GetItemInfo(id)
+                    local _, _, _, _, available, purchasable, usable, extended = MerchantInfo(index)
+                    if not name or not level or not stack then
+                        waiting = true
+                    elseif level <= UnitLevel("player") and purchasable ~= false and usable ~= false
+                        and not extended and available ~= 0 and (not bestLevel or level > bestLevel) then
+                        best, bestLevel, bestID, bestStack = index, level, id, stack
+                    end
+                end
+            else
+                waiting = true
+            end
+        end
+        -- Missing data must not cause a purchase of weaker/unknown ammunition.
+        if waiting then
+            if GetTime() - run.ammoStarted >= 2 then self:BeginSort() end
+            return
+        end
+        if not best then self:BeginSort(); return end
+        local family = C_Item.GetItemFamily(bestID)
+        if not family or family == 0 then self:BeginSort(); return end
+        run.ammoID, run.ammoIndex, run.ammoStack = bestID, best, bestStack
+        run.ammoFamily = family
+        run.ammoLeft = AmmoRoom(bestID, bestStack, family)
+    end
+    if CursorHasItem() then
+        if GetTime() - run.ammoStarted >= TIMEOUT then self:BeginSort() end
+        return
+    end
+    local index = run.ammoIndex
+    local link = GetMerchantItemLink(index)
+    if not link or C_Item.GetItemInfoInstant(link) ~= run.ammoID then self:BeginSort(); return end
+    local name, _, price, quantity, available, purchasable, usable, extended = MerchantInfo(index)
+    if not price or price < 0 or not quantity or quantity < 1 or purchasable == false
+        or usable == false or extended then self:BeginSort(); return end
+    local maxStack = GetMerchantItemMaxStack or (C_MerchantFrame and C_MerchantFrame.GetItemMaxStack)
+    local limit = maxStack and maxStack(index) or run.ammoStack
+    local count = math.min(run.ammoLeft, limit or run.ammoStack, run.ammoStack,
+        AmmoRoom(run.ammoID, run.ammoStack, run.ammoFamily))
+    if available and available >= 0 then count = math.min(count, available) end
+    if price > 0 then count = math.min(count, math.floor(GetMoney() / price) * quantity) end
+    count = math.floor(count / quantity) * quantity
+    if count < quantity then self:BeginSort(); return end
+    run.ammoName = name or "Munition"
+    run.ammoPending = {before = AmmoCount(run.ammoID), quantity = count, time = GetTime()}
+    -- The API takes individual items, not the number of merchant bundles.
+    BuyMerchantItem(index, count)
 end
 
 function M:SellTick()
@@ -179,6 +311,8 @@ function M:Tick()
     if InCombatLockdown() then
         run.lastChange = GetTime()
         if run.pending then run.pending.time = GetTime() end
+        if run.ammoPending then run.ammoPending.time = GetTime() end
+        if run.ammoStarted then run.ammoStarted = GetTime() end
         return
     end
     if run.phase == "repair" then
@@ -193,8 +327,12 @@ function M:Tick()
     elseif run.phase == "settle" then
         if GetTime() - run.settleAt >= 0.5 then
             if run.saleFailed then FT:Print("Einige graue Gegenstände konnten nicht verkauft werden.") end
-            self:BeginSort()
+            run.phase = "ammo"
+            run.ammoStarted = GetTime()
+            self:AmmoTick()
         end
+    elseif run.phase == "ammo" then
+        self:AmmoTick()
     elseif run.phase == "sort" then
         self:SortTick()
     end

@@ -229,7 +229,7 @@ class GTFOTest(unittest.TestCase):
         self.lua.execute('''
             G.settings.high=false; G:Alert(1); assert(#played==0)
             G.settings.visual=false; G:Alert(2); assert(#played==1 and #visual==0)
-            SlashCmdList.FOREVERTOOLS(); assert(#ForeverTools.menu.checks==39)
+            SlashCmdList.FOREVERTOOLS(); assert(#ForeverTools.menu.checks==40)
         ''')
 
     def test_classic_activation_migrates_once_then_preserves_user_choice(self):
