@@ -1,0 +1,29 @@
+## Interface: 16001
+## Title: ForeverTools
+## Notes: Händler, Quests, Materialien, Paladin, GTFO, Threat Plates, Decursive, Anti Fett Finger und Auto Rank.
+## Author: ForeverTools
+## Version: 1.1.0
+## OptionalDeps: AntiFettFinger, AutoRank
+## SavedVariables: ForeverToolsDB
+## SavedVariablesPerCharacter: ForeverToolsMaterialMail, ForeverToolsPaladinDB
+
+Core.lua
+UpdateStatus.lua
+Updates.lua
+AddonCatalog.lua
+Modules\Merchant.lua
+Modules\Quests.lua
+Data\MaterialUses.lua
+Data\Recipes.lua
+Modules\Materials.lua
+Data\PaladinSpells.lua
+Modules\Paladin.lua
+Data\GTFOClassic.lua
+Modules\GTFO.lua
+Modules\ThreatPlates.lua
+Data\CleansingSpells.lua
+Modules\Decursive.lua
+Modules\AntiFettFinger.lua
+Modules\AutoRank.lua
+Modules\AddonCatalog.lua
+Menu.lua

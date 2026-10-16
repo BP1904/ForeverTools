@@ -1,0 +1,4 @@
+Warning sounds copied from the user's supplied GTFO 6.11 addon.
+GTFO author: Zensunim of Dragonblight (Classic: Myzrael).
+Files: alarmbuzzer.ogg, alarmbeep.ogg, alarmdouble.ogg, alarmbuzz.ogg.
+The original addon and its files remain unchanged.

@@ -1,0 +1,3 @@
+-- Local updater replaces this file after a successful check. No account data.
+local _, FT = ...
+FT.updateStatus = nil

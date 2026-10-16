@@ -1,0 +1,169 @@
+{
+  "schema": 1,
+  "addons": [
+    {
+      "folder": "ForeverTools",
+      "title": "ForeverTools",
+      "files": [
+        {
+          "path": "AddonCatalog.lua",
+          "sha256": "de9a3b53b3d9195d309cc38755a89c1544bc69cfed03fef2aa34064367cee7be"
+        },
+        {
+          "path": "Core.lua",
+          "sha256": "8a429a02970c2bfec843dbe99004866ef61e320792bc1c0b663eeed8ebbea471"
+        },
+        {
+          "path": "Data/CleansingSpells.lua",
+          "sha256": "e71bf5030c13615d4daf3842e449971535acfdd58d8a2f5541942b00f570d4e4"
+        },
+        {
+          "path": "Data/GTFOClassic.lua",
+          "sha256": "67e5120e73fdbad61ca7d07d14962f38744b64f3855508a0957f94fdd9d58d1c"
+        },
+        {
+          "path": "Data/MaterialUses.lua",
+          "sha256": "b5d815b3307a5a6b6b64d5b1e0bc250fe728df2a908c267c509d170f883742f9"
+        },
+        {
+          "path": "Data/PaladinSpells.lua",
+          "sha256": "4947272885ca6a776742f7761d25a7ab1411e7cc3cadd1a04ad7d9b8296028d7"
+        },
+        {
+          "path": "Data/Recipes.lua",
+          "sha256": "1d08499721e6053abff6f491fc774dd660baac04402ed57b755c49145e6b72de"
+        },
+        {
+          "path": "ForeverTools.toc",
+          "sha256": "71c7213042f6f0d3ff3e02fbf0cbf1e736d8df8fd1915c63ce3d3c660884fc6f"
+        },
+        {
+          "path": "ForeverTools_Camelot.toc",
+          "sha256": "71c7213042f6f0d3ff3e02fbf0cbf1e736d8df8fd1915c63ce3d3c660884fc6f"
+        },
+        {
+          "path": "Menu.lua",
+          "sha256": "1c0d8fb447b4cb8579c94f3c89bd4ef98147f106a5d45408615eab098a2d8b84"
+        },
+        {
+          "path": "Modules/AddonCatalog.lua",
+          "sha256": "62e7f6f7d13f9ba1857d52d6f52322703f9b216d9e86dffffdb3ae19f167f4be"
+        },
+        {
+          "path": "Modules/AntiFettFinger.lua",
+          "sha256": "95fbd6a0661e9d86e679b5a56c2d878ce929793744398926b90109b91f52cb65"
+        },
+        {
+          "path": "Modules/AutoRank.lua",
+          "sha256": "61b0b8452f4304b4bab8aeeff3c503a87f00cf19e11a53fa4130ff7088779138"
+        },
+        {
+          "path": "Modules/Decursive.lua",
+          "sha256": "29385b5ce6a8cda0bb2e3eea2b7239c4782767438033638414ae82c825aa12da"
+        },
+        {
+          "path": "Modules/GTFO.lua",
+          "sha256": "29c45286b0ca57e0e22fba53740d2206b20e9d8fe4bc37d48056d844d5b98057"
+        },
+        {
+          "path": "Modules/Materials.lua",
+          "sha256": "dd603bda02b18186cbce60476dbaacafdca5de2c8e72650a602a1fc8b5dcb361"
+        },
+        {
+          "path": "Modules/Merchant.lua",
+          "sha256": "6171e4d8f1a6373e03f0fb352909ab2c31b5de45dcff401baa8f5d6744247ff1"
+        },
+        {
+          "path": "Modules/Paladin.lua",
+          "sha256": "8caab65390745ef85b9fe472754e2b6fb9324434c2191d5bd36a38f3d3c595c7"
+        },
+        {
+          "path": "Modules/Quests.lua",
+          "sha256": "833cff358a74bdf9f59ffe22105998eceea13de9ade78691bc096b4f6fb24400"
+        },
+        {
+          "path": "Modules/ThreatPlates.lua",
+          "sha256": "1d7fb383ee5099a3b14e047c96d561967be052a421590f173614b42383bc1eaa"
+        },
+        {
+          "path": "README.md",
+          "sha256": "5209eaf345b661f3bff3264e4d53cb64643f8b4f73fcf230df27623e5f8520f1"
+        },
+        {
+          "path": "Sounds/GTFO/alarmbeep.ogg",
+          "sha256": "3546d1c06c39ed98aece100b1c18dc32f544f1f1fe7f522beac31887289bc443"
+        },
+        {
+          "path": "Sounds/GTFO/alarmbuzz.ogg",
+          "sha256": "59aec44d9f76872e912e1a4bd31831dc29671932d3018034098b0b04b8f6c9e3"
+        },
+        {
+          "path": "Sounds/GTFO/alarmbuzzer.ogg",
+          "sha256": "0299147d70de015eeebf756fd7777228ea1f974a1b4b2358bb01beae2f1cce5b"
+        },
+        {
+          "path": "Sounds/GTFO/alarmdouble.ogg",
+          "sha256": "1718d2a039076d1195d893d7ab83501822a475d4229f0f92cb14a7308b8c5c51"
+        },
+        {
+          "path": "Sounds/GTFO/CREDITS.txt",
+          "sha256": "4f9457912685634c870cddffb5e2fe03eb791e1f3f86bc8570d42ba488b9e649"
+        },
+        {
+          "path": "Updates.lua",
+          "sha256": "2aed2d31aec2c518da289fd05b328fa43fbfe3edfffc3e0c5715a0b2133f0017"
+        },
+        {
+          "path": "UpdateStatus.lua",
+          "sha256": "d88e7da860ff7402d366db5aede1ec6a0d3e2ae3d5809d1af906090cd88daba9"
+        }
+      ]
+    },
+    {
+      "folder": "AntiFettFinger",
+      "title": "Anti Fett Finger",
+      "module": "antifettfinger",
+      "files": [
+        {
+          "path": "AntiFettFinger.lua",
+          "sha256": "2d06f59dcfe06224ee5997a8fdfad0d3c3d354ce71e48bcb4b6d5b0271567f32"
+        },
+        {
+          "path": "AntiFettFinger.toc",
+          "sha256": "554e05a2fdd457c8c730302215533b298934239b9102a8e24e087f97ca9623ef"
+        },
+        {
+          "path": "AntiFettFinger_Camelot.toc",
+          "sha256": "554e05a2fdd457c8c730302215533b298934239b9102a8e24e087f97ca9623ef"
+        },
+        {
+          "path": "README.md",
+          "sha256": "8452169e23b6fe59e66e4ee8e2eacbd7dadf7bd7e15c5e18849f3699730b41cf"
+        }
+      ]
+    },
+    {
+      "folder": "AutoRank",
+      "title": "Auto Rank",
+      "module": "autorank",
+      "files": [
+        {
+          "path": "AutoRank.lua",
+          "sha256": "94691550044f6499006f2a4b6aad399c4ce48829dfbf4cfbbbe593188b2b8e34"
+        },
+        {
+          "path": "AutoRank.toc",
+          "sha256": "014361b4300098ea481cc0b42e272706d5c19f346260306eb18d093c65a21ee0"
+        },
+        {
+          "path": "AutoRank_Camelot.toc",
+          "sha256": "014361b4300098ea481cc0b42e272706d5c19f346260306eb18d093c65a21ee0"
+        },
+        {
+          "path": "README.md",
+          "sha256": "bb83439b42a4bf3037dfc5fa4fef52af60b101c9cf4909f786fed85d46498954"
+        }
+      ]
+    }
+  ]
+}
