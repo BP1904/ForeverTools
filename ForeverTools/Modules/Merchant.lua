@@ -57,6 +57,62 @@ function M:Repair(finalAttempt)
     self.run.repairRequested = true
 end
 
+local function BagDamage(position)
+    if not C.GetContainerItemDurability then return false end
+    local current, maximum = C.GetContainerItemDurability(position.bag, position.slot)
+    return current and maximum and current < maximum
+end
+
+function M:RepairBagsTick()
+    local run = self.run
+    local function Done()
+        run.phase = "ammo"
+        run.ammoStarted = GetTime()
+        self:AmmoTick()
+    end
+    if not self.settings.repair or not self.merchantOpen or not CanMerchantRepair() then Done(); return end
+    if not C.GetContainerItemDurability or not C.PickupContainerItem
+        or not ShowRepairCursor or not InRepairMode or not HideRepairCursor then
+        run.bagRepairIncomplete = true
+        Done(); return
+    end
+    -- Wait for the server before repairing another item or moving any bags.
+    if run.bagRepairPending then
+        local pending = run.bagRepairPending
+        local item = Info(pending.position)
+        if not item or item.hyperlink ~= pending.link or not BagDamage(pending.position) then
+            run.bagRepairPending = nil
+        elseif GetTime() - pending.time >= 2 then
+            run.bagRepairSkipped[Key(pending.position)] = true
+            run.bagRepairPending = nil
+        else
+            return
+        end
+    end
+    local waiting = false
+    for _, position in ipairs(Bags()) do
+        if BagDamage(position) and not run.bagRepairSkipped[Key(position)] then
+            local item = Info(position)
+            if item and (item.isLocked or CursorHasItem()) then
+                waiting = true
+            elseif item then
+                -- A repair cursor makes this click repair, rather than pick up or sell.
+                local wasRepairing = InRepairMode()
+                if not wasRepairing then ShowRepairCursor() end
+                if not InRepairMode() then run.bagRepairIncomplete = true; Done(); return end
+                local ok, err = pcall(C.PickupContainerItem, position.bag, position.slot)
+                if not wasRepairing then HideRepairCursor() end
+                if not ok then error(err) end
+                run.repairRequested = true
+                run.bagRepairPending = {position = position, link = item.hyperlink, time = GetTime()}
+                return
+            end
+        end
+    end
+    if waiting and GetTime() - run.bagRepairStarted < TIMEOUT then return end
+    Done()
+end
+
 function M:Start()
     if not FT:IsEnabled("merchant") or self.run then return end
     self.run = {phase = "repair", started = GetTime(), skipped = {}, sold = 0,
@@ -82,7 +138,11 @@ function M:Finish(reason)
     end
     if run.repairRequested then
         local remaining = GetRepairAllCost()
-        if remaining == 0 then
+        local bagsDamaged = run.bagRepairIncomplete
+        for _, position in ipairs(Bags()) do
+            if BagDamage(position) then bagsDamaged = true; break end
+        end
+        if remaining == 0 and not bagsDamaged then
             FT:Print("Alle reparierbaren, mitgeführten Gegenstände repariert.")
         else
             FT:Print("Reparatur konnte nicht vollständig bestätigt werden.")
@@ -313,6 +373,8 @@ function M:Tick()
         if run.pending then run.pending.time = GetTime() end
         if run.ammoPending then run.ammoPending.time = GetTime() end
         if run.ammoStarted then run.ammoStarted = GetTime() end
+        if run.bagRepairStarted then run.bagRepairStarted = GetTime() end
+        if run.bagRepairPending then run.bagRepairPending.time = GetTime() end
         return
     end
     if run.phase == "repair" then
@@ -327,10 +389,13 @@ function M:Tick()
     elseif run.phase == "settle" then
         if GetTime() - run.settleAt >= 0.5 then
             if run.saleFailed then FT:Print("Einige graue Gegenstände konnten nicht verkauft werden.") end
-            run.phase = "ammo"
-            run.ammoStarted = GetTime()
-            self:AmmoTick()
+            run.phase = "repairBags"
+            run.bagRepairStarted = GetTime()
+            run.bagRepairSkipped = {}
+            self:RepairBagsTick()
         end
+    elseif run.phase == "repairBags" then
+        self:RepairBagsTick()
     elseif run.phase == "ammo" then
         self:AmmoTick()
     elseif run.phase == "sort" then

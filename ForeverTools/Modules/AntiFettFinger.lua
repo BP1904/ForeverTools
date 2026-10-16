@@ -1,7 +1,7 @@
 local _, FT = ...
 local M={
     title="Anti Fett Finger",
-    description="Im Kampf nur 1 bis ´ und Bewegung. Menüänderungen im Kampf gelten nach Kampfende; der eigene Mausbutton schaltet sofort um.",
+    description="Im Kampf nur 1 bis ´ und Bewegung. Änderungen im Kampf gelten nach Kampfende.",
 }
 FT:RegisterModule("antifettfinger",M)
 
@@ -28,7 +28,7 @@ function M:OnSettingsChanged()
         return
     end
     if not AntiFettFinger:SetEnabled(self.settings.enabled) then
-        FT:Print("Anti Fett Finger: Änderung nach Kampfende. Zum sofortigen Umschalten den eigenen Mausbutton verwenden.")
+        FT:Print("Anti Fett Finger: Änderung gilt nach Kampfende.")
     end
     self:Sync()
 end

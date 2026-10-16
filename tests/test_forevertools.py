@@ -140,8 +140,23 @@ function C_Container.SortBags()
     if rejectSort then error('cleanup blocked') end
     sortCalls = sortCalls + 1
 end
-function C_Container.PickupContainerItem()
-    error('addon must not move items individually')
+function C_Container.GetContainerItemDurability(bag, slot)
+    local item = inventory[bag][slot]
+    if item then return item.durability, item.maxDurability end
+end
+function ShowRepairCursor() repairMode = true end
+function InRepairMode() return repairMode end
+function HideRepairCursor() repairMode = false end
+function C_Container.PickupContainerItem(bag, slot)
+    assert(repairMode and not CursorHasItem(), 'addon must only click bags in repair mode')
+    assert(ForeverTools.modules.merchant.merchantOpen and canRepair and not combat)
+    local item = inventory[bag][slot]
+    assert(not item.isLocked and item.durability < item.maxDurability)
+    bagRepairCalls = (bagRepairCalls or 0) + 1
+    if rejectBagRepair or money < (item.repairPrice or 25) then return end
+    if deferBagRepair then queuedRepair = item; return end
+    money = money - (item.repairPrice or 25)
+    item.durability = item.maxDurability
 end
 '''
 
@@ -208,6 +223,64 @@ class ForeverToolsTest(unittest.TestCase):
             Fire('MERCHANT_SHOW'); Advance(80)
             assert(repairCost == 0 and money == 100)
         ''')
+
+    def test_repairs_damaged_bag_items_even_without_equipped_damage(self):
+        self.run_lua('''
+            repairCost = 0
+            for _, bag in ipairs({0, 1, 5}) do
+                Put(bag, 1, 20 + bag, 2)
+                inventory[bag][1].durability = 0
+                inventory[bag][1].maxDurability = 100
+            end
+            Fire('MERCHANT_SHOW'); Advance(80)
+            assert(bagRepairCalls == 3 and money == 9925 and sortCalls == 1)
+            for _, bag in ipairs({0, 1, 5}) do
+                assert(inventory[bag][1].durability == 100)
+            end
+            assert(not repairMode and not CursorHasItem())
+        ''')
+
+    def test_bag_repair_waits_for_confirmation_and_locked_items(self):
+        self.run_lua('''
+            Put(0, 1, 20, 2, 1, true)
+            local item = inventory[0][1]
+            item.durability = 50; item.maxDurability = 100
+            deferBagRepair = true
+            Fire('MERCHANT_SHOW'); Advance(10)
+            assert(not bagRepairCalls and sortCalls == 0)
+            item.isLocked = false; Advance(1)
+            assert(queuedRepair == item and bagRepairCalls == 1)
+            Advance(2); assert(sortCalls == 0 and bagRepairCalls == 1)
+            item.durability = 100; queuedRepair = nil
+            Advance(10); assert(sortCalls == 1)
+        ''')
+
+    def test_rejected_bag_repair_terminates_without_false_success(self):
+        self.run_lua('''
+            Put(0, 1, 20, 2)
+            inventory[0][1].durability = 50; inventory[0][1].maxDurability = 100
+            rejectBagRepair = true
+            Fire('MERCHANT_SHOW'); Advance(100)
+            assert(bagRepairCalls == 1 and not ForeverTools.modules.merchant.run)
+            assert(not repairMode and not CursorHasItem() and sortCalls == 1)
+            for _, message in ipairs(messages) do
+                assert(not message:find('Alle reparierbaren', 1, true))
+            end
+        ''')
+
+    def test_bag_repair_respects_settings_vendor_and_existing_cursor(self):
+        for setup in ("ForeverTools.modules.merchant.settings.repair = false",
+                      "canRepair = false", "cursor = {itemID=99}"):
+            with self.subTest(setup=setup):
+                self.setUp()
+                self.run_lua('''
+                    Put(0, 1, 20, 2)
+                    inventory[0][1].durability = 50; inventory[0][1].maxDurability = 100
+                ''' + setup + '''
+                    Fire('MERCHANT_SHOW'); Advance(220)
+                    assert(not bagRepairCalls and inventory[0][1].durability == 50)
+                    assert(not ForeverTools.modules.merchant.run)
+                ''')
 
     def test_no_repair_vendor_still_sells(self):
         self.run_lua('''

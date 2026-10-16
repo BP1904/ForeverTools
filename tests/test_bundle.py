@@ -113,6 +113,34 @@ class BundleTest(unittest.TestCase):
                 if line and not line.startswith('#'):
                     self.assertTrue((ROOT / 'ForeverTools' / line.replace('\\', '/')).is_file(), line)
 
+    def test_legacy_screen_button_is_hidden_without_changing_enabled_state(self):
+        for in_combat in (False, True):
+            with self.subTest(in_combat=in_combat):
+                lua = self.runtime()
+                source = (ROOT / 'AntiFettFinger/AntiFettFinger.lua').read_text(encoding='utf-8')
+                lua.execute('assert(loadstring(...))("AntiFettFinger", {})', source)
+                lua.execute('''
+                    Fire('ADDON_LOADED', 'AntiFettFinger')
+                    oldAFF = AntiFettFinger
+                    assert(oldAFF.button:IsShown())
+                    function oldAFF.button:Hide()
+                        assert(not combat, 'protected button must only hide outside combat')
+                        self.shown = false
+                    end
+                ''')
+                lua.execute('combat=' + ('true' if in_combat else 'false'))
+                self.load_bundle(lua)
+                if in_combat:
+                    lua.execute('''
+                        assert(oldAFF.button:IsShown())
+                        State(false); Fire('PLAYER_REGEN_ENABLED')
+                    ''')
+                lua.execute('''
+                    assert(not oldAFF.button:IsShown())
+                    assert(AntiFettFinger == oldAFF and oldAFF:IsEnabled())
+                    assert(disabled.AntiFettFinger)
+                ''')
+
 
 if __name__ == '__main__':
     unittest.main()

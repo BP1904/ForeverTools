@@ -6,11 +6,22 @@ if type(previous) == "table" and previous.db and type(previous.SetEnabled) == "f
     FT.antiFettFinger = previous
     local migration = CreateFrame("Frame")
     migration:RegisterEvent("ADDON_LOADED")
-    migration:SetScript("OnEvent", function(_, _, name)
-        if name ~= addonName then return end
-        migration:UnregisterEvent("ADDON_LOADED")
-        ForeverToolsAntiFettFingerDB = previous.db
-        FT:RetireLegacyAddon("AntiFettFinger")
+    migration:SetScript("OnEvent", function(_, event, name)
+        if event == "ADDON_LOADED" then
+            if name ~= addonName then return end
+            migration:UnregisterEvent("ADDON_LOADED")
+            ForeverToolsAntiFettFingerDB = previous.db
+            FT:RetireLegacyAddon("AntiFettFinger")
+        end
+        -- The legacy engine is reused until reload, but its screen button is obsolete.
+        if previous.button then
+            if InCombatLockdown() then
+                migration:RegisterEvent("PLAYER_REGEN_ENABLED")
+            else
+                previous.button:Hide()
+                migration:UnregisterEvent("PLAYER_REGEN_ENABLED")
+            end
+        end
     end)
     return
 end
@@ -103,19 +114,9 @@ local APPLY = [[
 local ATTRIBUTE = [[
     if name == "enabled" or name == "state-combat" then self:RunAttribute("apply") end
 ]]
-local TOGGLE = [[
-    if button == "LeftButton" and not down then
-        local controller=self:GetFrameRef("controller")
-        controller:SetAttribute("enabled",not controller:GetAttribute("enabled"))
-    end
-]]
-
 function A:RefreshStatus()
     local enabled=self.controller:GetAttribute("enabled") and true or false
-    local active=self.controller:GetAttribute("active")
     self.db.enabled=enabled
-    self.button:SetText(not enabled and "Anti Fett Finger: AUS"
-        or active and "Anti Fett Finger: GESPERRT" or "Anti Fett Finger: bereit")
     self:NotifyState()
 end
 
@@ -160,13 +161,6 @@ function A:UpdatePlan()
     controller:Execute([[ self:RunAttribute("apply") ]])
 end
 
-function A:StopMoving()
-    if not self.moving or Combat() then return end
-    self.button:StopMovingOrSizing(); self.moving=false
-    local point,_,relativePoint,x,y=self.button:GetPoint()
-    self.db.position={point=point,relativePoint=relativePoint,x=x,y=y}
-end
-
 function A:Create()
     if self.controller then return end
     if Combat() then self.pending=true; return end
@@ -176,30 +170,6 @@ function A:Create()
     local controller=CreateFrame("Frame","AntiFettFingerController",UIParent,
         "SecureHandlerAttributeTemplate")
     self.controller=controller
-    local button=CreateFrame("Button","AntiFettFingerSwitch",UIParent,
-        "UIPanelButtonTemplate,SecureHandlerClickTemplate")
-    self.button=button
-    button:SetSize(205,24); button:SetClampedToScreen(true); button:SetMovable(true)
-    local p=self.db.position
-    if type(p)=="table" and type(p.point)=="string" and type(p.relativePoint)=="string"
-        and type(p.x)=="number" and type(p.y)=="number" then
-        button:SetPoint(p.point,UIParent,p.relativePoint,p.x,p.y)
-    else button:SetPoint("TOP",UIParent,"TOP",0,-90) end
-    button:RegisterForClicks("LeftButtonUp"); button:RegisterForDrag("RightButton")
-    button:SetFrameRef("controller",controller); button:SetAttribute("_onclick",TOGGLE)
-    button:SetScript("OnDragStart",function(_,mouse)
-        if mouse=="RightButton" and not Combat() then self.moving=true; button:StartMoving() end
-    end)
-    button:SetScript("OnDragStop",function() self:StopMoving() end)
-    button:SetScript("OnEnter",function()
-        GameTooltip:SetOwner(button,"ANCHOR_BOTTOM")
-        GameTooltip:AddLine("Anti Fett Finger")
-        GameTooltip:AddLine("Im Kampf: 1 bis ´ und belegte Bewegungstasten bleiben frei.",1,1,1,true)
-        GameTooltip:AddLine("Linksklick: Sperre ein/aus, auch im Kampf.",1,1,1,true)
-        GameTooltip:AddLine("Rechts ziehen: verschieben, außerhalb des Kampfes.",0.8,0.8,0.8,true)
-        GameTooltip:Show()
-    end)
-    button:SetScript("OnLeave",function() GameTooltip:Hide() end)
     controller:SetAttribute("apply",APPLY)
     controller:SetAttribute("enabled",self.db.enabled)
     controller:HookScript("OnAttributeChanged",function(_,name)
@@ -210,19 +180,17 @@ function A:Create()
     controller:SetAttribute("_onattributechanged",ATTRIBUTE)
     RegisterStateDriver(controller,"combat","[combat] combat; peace")
     self:RefreshStatus()
-    Print("geladen. Im Kampf: 1 bis ´ und Bewegung. Mausbutton oben: ein/aus. Hilfe: /aff")
+    Print("geladen. Im Kampf: 1 bis ´ und Bewegung. Einstellungen: /ad. Hilfe: /aff")
 end
 
 function A:Command(text)
     local command=(text or ""):lower():match("^%s*(%S*)")
     if command=="on" or command=="off" then
-        if Combat() then Print("Im Kampf den Mausbutton oben zum Ein-/Ausschalten anklicken."); return end
-        self:SetEnabled(command=="on")
+        if not self:SetEnabled(command=="on") then Print("Änderung gilt nach Kampfende.") end
     elseif command=="reset" then
-        if Combat() then Print("Position erst außerhalb des Kampfes zurücksetzen."); return end
-        self.db.position=nil; self.button:ClearAllPoints(); self.button:SetPoint("TOP",UIParent,"TOP",0,-90)
+        self.db.position=nil
     else
-        Print("/aff on | off | reset. Im Kampf bleiben 1 bis ´ und Bewegung frei. Mausbutton schaltet sofort um.")
+        Print("/aff on | off. Einstellungen: /ad. Änderungen im Kampf gelten nach Kampfende.")
     end
 end
 
@@ -245,7 +213,6 @@ events:SetScript("OnEvent",function(_,event,name)
         A:Create()
     elseif not A.controller then A:Create()
     elseif event=="PLAYER_REGEN_ENABLED" then
-        A:StopMoving()
         if A.requestedEnabled~=nil then A:SetEnabled(A.requestedEnabled) end
         if A.pending then A:UpdatePlan() end
     else A:UpdatePlan() end

@@ -1,4 +1,4 @@
-"""Temporary secure combat bindings, movement exceptions and mouse recovery."""
+"""Temporary secure combat bindings, movement exceptions and menu controls."""
 import unittest
 from test_forevertools import ROOT, MOCK, LuaRuntime
 
@@ -84,10 +84,6 @@ function RegisterStateDriver(frame,state,condition)
     assert(not combat and state=='combat' and condition=='[combat] combat; peace')
     State(false)
 end
-function MouseToggle()
-    local b=AntiFettFinger.button
-    ExecuteSnippet(b,b:GetAttribute('_onclick'),',button,down','LeftButton',false)
-end
 function InsecureAttempt() AntiFettFinger.controller:SetAttribute('enabled',false) end
 '''
 
@@ -118,19 +114,19 @@ class AntiFettFingerTest(unittest.TestCase):
             master=ForeverTools.menu.byModule.antifettfinger.master.box
         ''')
 
-    def test_forevertools_checkbox_and_standalone_switch_sync_both_ways(self):
+    def test_forevertools_checkbox_and_commands_sync_both_ways(self):
         self.load_forevertools_bridge()
         self.lua.execute('''
             assert(master:GetChecked() and master.enabled)
             master:SetChecked(false); master.scripts.OnClick(master)
             assert(not A:IsEnabled() and not A.controller:GetAttribute('enabled'))
-            MouseToggle()
+            SlashCmdList.ANTIFETTFINGER('on')
             assert(master:GetChecked() and ForeverTools:IsEnabled('antifettfinger'))
             SlashCmdList.ANTIFETTFINGER('off')
             assert(not master:GetChecked() and not ForeverTools:IsEnabled('antifettfinger'))
         ''')
 
-    def test_forevertools_combat_request_defers_and_mouse_can_override_it(self):
+    def test_forevertools_combat_request_defers_until_combat_ends(self):
         self.load_forevertools_bridge()
         self.lua.execute('''
             State(true)
@@ -143,7 +139,7 @@ class AntiFettFingerTest(unittest.TestCase):
             State(true)
             master:SetChecked(true); master.scripts.OnClick(master)
             assert(A.requestedEnabled==true and not A.controller:GetAttribute('enabled'))
-            MouseToggle()
+            State(false); Fire('PLAYER_REGEN_ENABLED'); State(true)
             assert(A.requestedEnabled==nil and A.controller:GetAttribute('enabled'))
             assert(master:GetChecked() and A.controller.bindings.B)
         ''')
@@ -160,7 +156,7 @@ class AntiFettFingerTest(unittest.TestCase):
         self.lua.execute('''
             assert(A.db.enabled and A.controller:GetAttribute('enabled'))
             assert(not next(A.controller.bindings))
-            assert(A.button.text=='Anti Fett Finger: bereit')
+            assert(not A.button and not AntiFettFingerSwitch)
         ''')
 
     def test_number_row_preserved_other_keyboard_keys_blocked(self):
@@ -172,7 +168,7 @@ class AntiFettFingerTest(unittest.TestCase):
                 assert(overrides[key].target=='AntiFettFingerBlockedKey')
             end
             assert(not AntiFettFingerBlockedKey:GetAttribute('type'))
-            assert(A.button.text=='Anti Fett Finger: GESPERRT')
+            assert(A.controller:GetAttribute('active'))
         ''')
 
     def test_movement_and_modifier_combinations_keep_moving(self):
@@ -187,14 +183,14 @@ class AntiFettFingerTest(unittest.TestCase):
             assert(overrides['ALT-CTRL-SHIFT-W'].command=='MOVEFORWARD')
         ''')
 
-    def test_mouse_is_not_intercepted_and_mouse_switch_works_in_combat(self):
+    def test_mouse_is_not_intercepted_and_commands_defer_in_combat(self):
         self.lua.execute('''
             State(true)
             assert(not A.controller.bindings.BUTTON4 and not A.controller.bindings.MOUSEWHEELUP)
-            MouseToggle()
+            SlashCmdList.ANTIFETTFINGER('off')
+            assert(A.db.enabled and A.controller.bindings.B and A.requestedEnabled==false)
+            State(false); Fire('PLAYER_REGEN_ENABLED')
             assert(not A.db.enabled and not next(A.controller.bindings))
-            MouseToggle()
-            assert(A.db.enabled and A.controller.bindings.B)
         ''')
 
     def test_no_insecure_combat_changes_and_release_at_combat_end(self):
@@ -237,14 +233,13 @@ class AntiFettFingerTest(unittest.TestCase):
             State(true); assert(A.controller.bindings.B)
         ''')
 
-    def test_drag_position_saved_and_reset(self):
+    def test_no_screen_button_and_old_position_can_be_cleared(self):
         self.lua.execute('''
-            A.button.scripts.OnDragStart(nil,'RightButton'); assert(A.button.moving)
-            A.button:SetPoint('TOPLEFT',UIParent,'TOPLEFT',50,-75)
-            A.button.scripts.OnDragStop(); assert(A.db.position.x==50 and not A.button.moving)
-            State(true); A.button.scripts.OnDragStart(nil,'RightButton'); assert(not A.button.moving)
-            State(false); SlashCmdList.ANTIFETTFINGER('reset')
-            assert(not A.db.position and A.button.position[4]==0 and A.button.position[5]==-90)
+            assert(not A.button and not AntiFettFingerSwitch)
+            A.db.position={point='TOP',relativePoint='TOP',x=10,y=-90}
+            SlashCmdList.ANTIFETTFINGER('reset')
+            assert(not A.db.position)
+            State(true); assert(A.controller.bindings.B)
         ''')
 
 

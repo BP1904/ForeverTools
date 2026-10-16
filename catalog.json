@@ -31,7 +31,7 @@
         },
         {
           "path": "Features/AntiFettFinger.lua",
-          "sha256": "98b5d05252151432a429ddfa4b0c05588dad3784269f142ed3de53291a10e9de"
+          "sha256": "1b1c883c4cfc143c74977bcf9592da31421914c1d7fefc44877adc3f6d6186b5"
         },
         {
           "path": "Features/AutoRank.lua",
@@ -39,19 +39,19 @@
         },
         {
           "path": "ForeverTools.toc",
-          "sha256": "b130aa954ac63da8659973f898dc5793c2d4f96759b3285b5b33d8b250a73bff"
+          "sha256": "8e02eb84e06c73a07bed6d40302da940be86af18243caf2acc5e64e5dffc03fc"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "b130aa954ac63da8659973f898dc5793c2d4f96759b3285b5b33d8b250a73bff"
+          "sha256": "8e02eb84e06c73a07bed6d40302da940be86af18243caf2acc5e64e5dffc03fc"
         },
         {
           "path": "Menu.lua",
-          "sha256": "3e26428fa6a8b9683bed19820186e7c6db77f087d7a5d3ab337e33281aa25c14"
+          "sha256": "3ba18ebfb70bfada83710b8745243140fe7055a6c28382e235843bf7252315fb"
         },
         {
           "path": "Modules/AntiFettFinger.lua",
-          "sha256": "5b27d63254e9abee66c52e8a6efb60adcf4a86914c792d56d43616f129f6c60c"
+          "sha256": "05c8c86f20322b2fb1c23ca4adf413e0437ef417320ff127fc102c9d0113887d"
         },
         {
           "path": "Modules/AutoRank.lua",
@@ -71,7 +71,7 @@
         },
         {
           "path": "Modules/Merchant.lua",
-          "sha256": "3877c18de89f98f3debfa57a610759152aecff6a81ac3ab8822e2e8a06822eda"
+          "sha256": "e9252f57602d2e6f58df1f26829bf3d22670c73a3f7ee4e5d0dff22e6163705c"
         },
         {
           "path": "Modules/Paladin.lua",
@@ -87,7 +87,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "e14ab3352bad8f0187b19663cecb36882f196359b32364cdcdd4ef23851474ac"
+          "sha256": "8edc3a06f7d6a1b3842c366123a773f493581f851418decc49703a9967e1b494"
         },
         {
           "path": "Sounds/GTFO/alarmbeep.ogg",
