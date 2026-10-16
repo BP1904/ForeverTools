@@ -9,6 +9,20 @@ function Must-Reject([scriptblock]$Action) {
     Assert $rejected 'Unsafe input was accepted'
 }
 try {
+    $startup = Join-Path $work 'startup-test'
+    $testScript = [IO.Path]::GetFullPath("$PSScriptRoot\..\tools\Update-ForeverTools.ps1")
+    $shortcutPath = Set-ForeverToolsStartup $testScript 'C:\Games\WoW Forever' $startup
+    $shortcutShell = New-Object -ComObject WScript.Shell
+    try {
+        $shortcut = $shortcutShell.CreateShortcut($shortcutPath)
+        Assert ($shortcut.Arguments.Contains('-ListenOnly')) 'Startup unexpectedly downloads on login'
+        Assert ($shortcut.Arguments.Contains('-WindowStyle Hidden')) 'Startup helper is not hidden'
+        Assert ($shortcut.Arguments.Contains('-GamePath "C:\Games\WoW Forever"')) 'Startup lost game path with spaces'
+        Assert ($shortcut.TargetPath.EndsWith('powershell.exe')) 'Unexpected startup target'
+    } finally { [void][Runtime.InteropServices.Marshal]::ReleaseComObject($shortcutShell) }
+    [void](Set-ForeverToolsStartup $testScript 'C:\Games\WoW Forever' $startup)
+    Assert (@(Get-ChildItem -LiteralPath $startup -File).Count -eq 1) 'Repeated setup created duplicate startup entries'
+    Write-Host 'PASS: startup shortcut, hidden launch, space-containing paths, idempotent setup'
     $source = Join-Path $work 'source'
     $dest = Join-Path $work 'game\Interface\AddOns'
     [void][IO.Directory]::CreateDirectory((Join-Path $source 'ForeverTools'))

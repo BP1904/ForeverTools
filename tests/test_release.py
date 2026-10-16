@@ -33,3 +33,4 @@ class ReleaseTest(unittest.TestCase):
                 self.assertIn('-GamePath "%~dp0..\\..\\.."', command)
                 self.assertNotIn('-Watch', command)
                 self.assertIn('-Background', command)
+                self.assertIn('-EnableStartup', command)

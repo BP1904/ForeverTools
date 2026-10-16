@@ -180,14 +180,11 @@ class ForeverToolsTest(unittest.TestCase):
             assert(ForeverToolsDB.updateRequest == nil)
         ''')
 
-    def test_update_button_accept_saves_request_and_reloads(self):
-        self.run_lua('StaticPopupDialogs = {}')
-        source = (ROOT / 'ForeverTools/Updates.lua').read_text(encoding='utf-8')
-        self.lua.execute('assert(loadstring(...))("ForeverTools", namespace)', source)
+    def test_update_button_saves_request_and_reloads_without_confirmation(self):
         self.run_lua('''
             function time() return 123 end
             function ReloadUI() reloadRequested = true end
-            StaticPopupDialogs.FOREVERTOOLS_UPDATE.OnAccept()
+            ForeverTools:ShowUpdates()
             assert(ForeverToolsDB.updateRequest == 123 and reloadRequested)
         ''')
 

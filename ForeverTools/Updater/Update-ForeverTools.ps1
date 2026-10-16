@@ -4,6 +4,8 @@ param(
     [switch]$Watch,
     [switch]$Background,
     [switch]$Notify,
+    [switch]$EnableStartup,
+    [switch]$ListenOnly,
     [switch]$LibraryOnly
 )
 $ErrorActionPreference = 'Stop'
@@ -14,6 +16,32 @@ function Get-Sha256([string]$Path) {
     $hash = [Security.Cryptography.SHA256]::Create()
     try { return ([BitConverter]::ToString($hash.ComputeHash($stream))).Replace('-', '').ToLowerInvariant() }
     finally { $hash.Dispose(); $stream.Dispose() }
+}
+
+function Get-HelperArguments([string]$Script, [string]$Root) {
+    return '-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + $Script + '" -GamePath "' + $Root + '" -Watch -Notify -ListenOnly'
+}
+
+function Set-ForeverToolsStartup([string]$Script, [string]$Root, [string]$Directory) {
+    if (!$Directory) { $Directory = [Environment]::GetFolderPath('Startup') }
+    [void][IO.Directory]::CreateDirectory($Directory)
+    $linkPath = Join-Path $Directory 'ForeverTools Update-Helfer.lnk'
+    $shell = New-Object -ComObject WScript.Shell
+    try {
+        $link = $shell.CreateShortcut($linkPath)
+        $link.TargetPath = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+        $link.Arguments = Get-HelperArguments $Script $Root
+        $link.WorkingDirectory = [IO.Path]::GetDirectoryName($Script)
+        $link.WindowStyle = 7
+        $link.Description = 'ForeverTools: Updates ueber den Button im Spiel empfangen'
+        $link.Save()
+    } finally { [void][Runtime.InteropServices.Marshal]::ReleaseComObject($shell) }
+    return $linkPath
+}
+
+function Remove-ForeverToolsStartup {
+    $path = Join-Path ([Environment]::GetFolderPath('Startup')) 'ForeverTools Update-Helfer.lnk'
+    if (Test-Path -LiteralPath $path) { Remove-Item -LiteralPath $path }
 }
 
 function Get-UpdateRequests([string]$Root) {
@@ -217,12 +245,18 @@ Assert-NoLink (Join-Path $GamePath 'Interface\AddOns')
 [IO.File]::WriteAllText($config, $GamePath)
 # A second watcher could race with file installation; allow only one per game folder.
 $lockName = 'Local\ForeverTools-' + (($GamePath.ToLowerInvariant() -replace '[^a-z0-9]', '_'))
+if ($EnableStartup) {
+    $installedScript = Join-Path $GamePath 'Interface\AddOns\ForeverTools\Updater\Update-ForeverTools.ps1'
+    if (!(Test-Path -LiteralPath $installedScript -PathType Leaf)) { throw 'ForeverTools zuerst im AddOns-Ordner installieren.' }
+    $startupLink = Set-ForeverToolsStartup $installedScript $GamePath
+    Write-Host "Einmalig eingerichtet: Windows startet den Update-Helfer kuenftig automatisch. ($startupLink)" -ForegroundColor Green
+}
 if ($Background) {
-    $arguments = '-NoProfile -ExecutionPolicy Bypass -File "' + $PSCommandPath + '" -GamePath "' + $GamePath + '" -Watch -Notify'
+    $arguments = Get-HelperArguments $PSCommandPath $GamePath
     $powershell = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
     Start-Process -FilePath $powershell -ArgumentList $arguments -WindowStyle Hidden
-    Write-Host 'Update-Helfer im Hintergrund gestartet. Im Spiel: /ad -> Update -> Jetzt aktualisieren.' -ForegroundColor Green
-    Write-Host 'Nach Windows-Neustart Update.cmd einmal starten. Beenden: ForeverTools-Symbol neben der Windows-Uhr.'
+    Write-Host 'Update-Helfer im Hintergrund gestartet. Im Spiel einfach /ad -> Update anklicken.' -ForegroundColor Green
+    Write-Host 'Beenden oder Autostart ausschalten: ForeverTools-Symbol neben der Windows-Uhr.'
     return
 }
 $mutex = New-Object Threading.Mutex($false, $lockName)
@@ -238,6 +272,8 @@ if ($Notify) {
     $tray.Icon = [Drawing.SystemIcons]::Application
     $tray.Text = 'ForeverTools: Ingame-Updates bereit'
     $trayMenu = New-Object Windows.Forms.ContextMenu
+    $startupItem = $trayMenu.MenuItems.Add('Autostart ausschalten und beenden')
+    $startupItem.add_Click({ Remove-ForeverToolsStartup; $script:stopWatcher = $true })
     $stopItem = $trayMenu.MenuItems.Add('Update-Helfer beenden')
     $stopItem.add_Click({ $script:stopWatcher = $true })
     $tray.ContextMenu = $trayMenu
@@ -246,12 +282,14 @@ if ($Notify) {
 try {
     Write-Host "ForeverTools-Updater | BP1904/ForeverTools | $GamePath"
     $seen = Get-UpdateRequests $GamePath
-    try { Sync-ForeverTools $GamePath } catch {
-        if (!$Watch) { throw }
-        Write-Host "FEHLER: $_" -ForegroundColor Red
+    if (!$ListenOnly) {
+        try { Sync-ForeverTools $GamePath } catch {
+            if (!$Watch) { throw }
+            Write-Host "FEHLER: $_" -ForegroundColor Red
+        }
     }
     if ($Watch) {
-        Write-Host 'Bereit. Im Spiel: /ad -> Update -> Jetzt aktualisieren.'
+        Write-Host 'Bereit. Im Spiel: /ad -> Update.'
         Write-Host 'Keine automatischen Downloads im Hintergrund; naechster Download erst nach Update-Anforderung. Beenden: Strg+C.'
         $script:stopWatcher = $false
         while (!$script:stopWatcher) {

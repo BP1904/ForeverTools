@@ -39,11 +39,11 @@
         },
         {
           "path": "ForeverTools.toc",
-          "sha256": "8faac914736395080949a017cb2d2f492b1bb1134fe9717411b1b4b4b718e01d"
+          "sha256": "b412e4f374fa041676068619eddaeae5f299d6ce9b0d24c6cf794ed23cec9901"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "8faac914736395080949a017cb2d2f492b1bb1134fe9717411b1b4b4b718e01d"
+          "sha256": "b412e4f374fa041676068619eddaeae5f299d6ce9b0d24c6cf794ed23cec9901"
         },
         {
           "path": "Menu.lua",
@@ -87,7 +87,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "df1bfb0088f834afec46fa073ecf74013d59e4f12cee837bd133900fe9a8040e"
+          "sha256": "e14ab3352bad8f0187b19663cecb36882f196359b32364cdcdd4ef23851474ac"
         },
         {
           "path": "Sounds/GTFO/alarmbeep.ogg",
@@ -111,15 +111,15 @@
         },
         {
           "path": "Update.cmd",
-          "sha256": "1a1afbfe25f1800e6af0cff5df83ab6bb3d37cc815cd083e5d81273d59d1c1f0"
+          "sha256": "8212f7e50d8413d1c12dfbb9f6bf791a83e9c66b13dffb1093e09d5116a878da"
         },
         {
           "path": "Updater/Update-ForeverTools.ps1",
-          "sha256": "cceb88a558e73fde206c3cfa3ec29af4fa17ee049f67cd89ee91d82e35fb7f56"
+          "sha256": "0c6a75f4295897c05bb1c289c3d97e08f2804552741423ba96f8c359d8090a58"
         },
         {
           "path": "Updates.lua",
-          "sha256": "d1d6cccea025c96f7b0243d7833ae576c0a0d02fa2cef6e15c59c2f38a492a84"
+          "sha256": "f7f4de0b1e4928457a71eef076078a338ae3bd36ce818590fe25a8b89f8e19e3"
         },
         {
           "path": "UpdateStatus.lua",

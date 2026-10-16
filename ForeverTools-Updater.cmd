@@ -1,5 +1,5 @@
 @echo off
 cd /d "%~dp0"
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\Update-ForeverTools.ps1" -Background
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\Update-ForeverTools.ps1" -EnableStartup -Background
 echo.
 pause

@@ -2,7 +2,7 @@
 
 Für **WoW Forever 1.60.1.70425 / Interface 16001**. Alle Funktionen liegen im einzigen Addon-Ordner **ForeverTools**: Händler & Taschen, Quests, Materialien, Paladin, GTFO, Threat Plates, Decursive, **Anti Fett Finger** und **Auto Rank**. Jedes Modul ist in der gemeinsamen Übersicht einzeln schaltbar.
 
-**[HTML-Anleitung herunterladen](https://github.com/BP1904/ForeverTools/releases/download/v1.4.0/Anleitung.html)** – im Browser öffnen oder direkt an Freunde weitergeben. Die Quelldatei liegt unter [Anleitung.html](Anleitung.html).
+**[HTML-Anleitung herunterladen](https://github.com/BP1904/ForeverTools/releases/latest/download/Anleitung.html)** – im Browser öffnen oder direkt an Freunde weitergeben. Die Quelldatei liegt unter [Anleitung.html](Anleitung.html).
 
 ## Für Freunde: einmal einrichten
 
@@ -14,11 +14,11 @@ Die Datei liegt danach direkt unter `Interface\AddOns\ForeverTools\ForeverTools.
 
 ## Ein Update aktualisiert alles
 
-Nach jedem Windows-Start einmal im installierten **ForeverTools**-Ordner **`Update.cmd` doppelklicken**. Der Helfer läuft danach unsichtbar im Hintergrund; ein Symbol neben der Windows-Uhr zeigt ihn an. Der Spielordner wird automatisch erkannt. Kein Fenster muss offen bleiben. Eine Verknüpfung zu `Update.cmd` auf dem Desktop ist möglich. Es wird kein Windows-Autostart eingerichtet.
+**Einmal nach der Installation `Update.cmd` im ForeverTools-Ordner doppelklicken.** Dadurch wird der Helfer gestartet und für die automatische Ausführung bei eurer Windows-Anmeldung eingerichtet. Das muss nach einem Neustart nicht wiederholt werden. Er läuft unsichtbar im Hintergrund; sein Symbol findet ihr neben der Windows-Uhr. Keine Ordnerauswahl und kein offenes Helferfenster nötig.
 
-Im Spiel **`/ad → Update → Jetzt aktualisieren`** drücken. Der Button speichert den Update-Auftrag und lädt die Oberfläche neu. Der Hintergrundhelfer erkennt den Auftrag und lädt alle Module gemeinsam. Sobald Windows **„Update fertig“** meldet, im Spiel **`/reload`** eingeben. Der Button fordert den Download tatsächlich an. Ohne gestarteten Helfer kann er keinen Download auslösen: WoW selbst darf keine Dateien aus GitHub herunterladen oder Windows-Programme starten. Die Menü-Fußzeile zeigt den zuletzt geprüften GitHub-Stand.
+Danach im Spiel einfach **`/ad → Update`** drücken – ohne zusätzlichen Bestätigungsdialog. Der Button speichert den Update-Auftrag und lädt die Oberfläche neu. Der Hintergrundhelfer lädt alle Module gemeinsam. Sobald Windows **„Update fertig“** meldet, im Spiel **`/reload`** eingeben. Dieser zweite Reload bleibt notwendig, damit WoW die heruntergeladenen Dateien einliest. WoW selbst darf keine Dateien herunterladen oder Windows-Programme starten. Die Menü-Fußzeile zeigt den zuletzt geprüften GitHub-Stand.
 
-Windows PowerShell 5.1 und Internetzugriff auf GitHub reichen aus; kein Python, Git oder GitHub-Account nötig. Erfolg oder Fehler eines angeforderten Updates erscheinen als Windows-Meldung. Über Rechtsklick auf das ForeverTools-Symbol neben der Windows-Uhr lässt sich der Helfer beenden. Im Leerlauf werden keine Updates heruntergeladen. Die bisherige `ForeverTools-Updater.cmd` im Quellcode-Download startet ebenfalls den Hintergrundhelfer.
+Windows PowerShell 5.1 und Internetzugriff auf GitHub reichen aus; kein Python, Git oder GitHub-Account nötig. Erfolg oder Fehler erscheinen als Windows-Meldung. Rechtsklick auf das ForeverTools-Symbol neben der Windows-Uhr bietet **„Autostart ausschalten und beenden“**. Es wird ausschließlich eine Verknüpfung im Autostartordner des aktuellen Windows-Benutzers angelegt. Im Leerlauf und bei der Windows-Anmeldung werden keine Updates heruntergeladen. Die bisherige `ForeverTools-Updater.cmd` im Quellcode-Download kann die Einrichtung ebenfalls vornehmen.
 
 ## Übergang von den alten Einzeladdons
 

@@ -1,8 +1,8 @@
-# ForeverTools 1.4.0
+# ForeverTools 1.5.0
 
 ## GitHub-Updates
 
-Nach dem Windows-Start einmal im installierten **ForeverTools**-Ordner **`Update.cmd` doppelklicken**. Der Helfer läuft anschließend unsichtbar weiter und zeigt ein Symbol neben der Windows-Uhr. Im Spiel **`/ad → Update → Jetzt aktualisieren`** drücken: Der Button speichert den Update-Auftrag und lädt die Oberfläche neu. Der Helfer lädt alle Module gemeinsam und meldet **Update fertig**. Danach **`/reload`** eingeben. WoW darf selbst keine Dateien herunterladen; deshalb muss der Helfer laufen. Beenden: Rechtsklick auf sein Symbol neben der Windows-Uhr.
+**Einmal nach der Installation `Update.cmd` doppelklicken.** Damit wird der Helfer gestartet und für die automatische Ausführung bei eurer Windows-Anmeldung eingerichtet. Danach genügt zum Anfordern ein Klick auf **Update** im `/ad`-Menü, ohne weiteren Bestätigungsdialog. Der Helfer lädt alle Module und meldet **Update fertig**. Danach **`/reload`** eingeben, damit WoW die neuen Dateien einliest. Der Helfer lädt weder im Leerlauf noch beim Windows-Start selbstständig Updates. Autostart abschalten: Rechtsklick auf sein Symbol neben der Windows-Uhr → **Autostart ausschalten und beenden**.
 
 Ein erweiterbares Addon für **WoW Forever 1.60.1.70425** (Interface 16001).
 Keine zusätzlichen Addons oder Bibliotheken im Spiel erforderlich.
