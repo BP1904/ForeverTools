@@ -136,7 +136,7 @@ function FT:CreateMenu()
     Label(panel, "Händleraktionen beim Händler; Questabgabe beim Questgeber.", 20, -381)
     local status = self.updateStatus
     Label(panel, status and ("GitHub: " .. status.commit .. " | " .. status.checked)
-        or "Alle Module aktualisieren: Update.cmd im ForeverTools-Ordner.", 20, -399)
+        or "Updates: Helfer per Update.cmd starten, dann Update klicken.", 20, -399)
     self.menu = panel
     panel:Layout()
     panel:Refresh()

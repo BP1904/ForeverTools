@@ -76,7 +76,8 @@ try {
             [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zipWriter, $file.FullName, $relative)
         }
     } finally { $zipWriter.Dispose() }
-    function Invoke-RestMethod { return @{sha=$script:testCommit} }
+    $script:syncCalls = 0
+    function Invoke-RestMethod { $script:syncCalls++; return @{sha=$script:testCommit} }
     function Invoke-WebRequest { param($Uri, $Headers, $OutFile, [switch]$UseBasicParsing)
         Assert ($Uri.EndsWith($script:testCommit)) 'Download not pinned to commit'
         Copy-Item -LiteralPath $script:testZip -Destination $OutFile
@@ -84,8 +85,18 @@ try {
     Sync-ForeverTools (Join-Path $work 'game')
     $status = Get-Content (Join-Path $dest 'ForeverTools\UpdateStatus.lua') -Raw
     Assert ($status.Contains('bbbbbbbb') -and $status.Contains('checked')) 'Status not written'
+    $seen = Get-UpdateRequests (Join-Path $work 'game')
+    $before = $script:syncCalls
+    Invoke-RequestedUpdates (Join-Path $work 'game') $seen
+    Assert ($script:syncCalls -eq $before) 'Idle watcher downloaded unnecessarily'
+    [IO.File]::WriteAllText((Join-Path $saved 'ForeverTools.lua'), 'ForeverToolsDB = { ["updateRequest"] = 123457, }')
+    Invoke-RequestedUpdates (Join-Path $work 'game') $seen
+    Assert ($script:syncCalls -eq ($before + 1)) 'Button request did not trigger update'
+    Invoke-RequestedUpdates (Join-Path $work 'game') $seen
+    Assert ($script:syncCalls -eq ($before + 1)) 'Button request ran twice'
     Write-Host 'PASS: install, backup, hash failure, unrelated files, path validation, duplicate catalog, safe request parsing'
     Write-Host 'PASS: complete offline download/extract/install/status flow'
+    Write-Host 'PASS: saved button request triggers update exactly once; idle watcher stays quiet'
 } finally {
     $resolved = [IO.Path]::GetFullPath($work)
     $temp = [IO.Path]::GetFullPath([IO.Path]::GetTempPath()).TrimEnd('\') + '\'

@@ -1,8 +1,8 @@
-# ForeverTools 1.3.1
+# ForeverTools 1.4.0
 
 ## GitHub-Updates
 
-Für ein Update im installierten **ForeverTools**-Ordner **`Update.cmd` doppelklicken**, auf **ERFOLG** warten und im Spiel **`/reload`** eingeben. Der Spielordner wird automatisch erkannt. Sämtliche Module einschließlich Anti Fett Finger und Auto Rank werden gemeinsam aktualisiert. Der Update-Button im `/ad`-Menü zeigt die Anleitung und bietet danach **Neu laden** an. Der Download muss außerhalb des Spiels gestartet werden.
+Nach dem Windows-Start einmal im installierten **ForeverTools**-Ordner **`Update.cmd` doppelklicken**. Der Helfer läuft anschließend unsichtbar weiter und zeigt ein Symbol neben der Windows-Uhr. Im Spiel **`/ad → Update → Jetzt aktualisieren`** drücken: Der Button speichert den Update-Auftrag und lädt die Oberfläche neu. Der Helfer lädt alle Module gemeinsam und meldet **Update fertig**. Danach **`/reload`** eingeben. WoW darf selbst keine Dateien herunterladen; deshalb muss der Helfer laufen. Beenden: Rechtsklick auf sein Symbol neben der Windows-Uhr.
 
 Ein erweiterbares Addon für **WoW Forever 1.60.1.70425** (Interface 16001).
 Keine zusätzlichen Addons oder Bibliotheken im Spiel erforderlich.

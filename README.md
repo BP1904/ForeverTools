@@ -12,11 +12,11 @@ Die Datei liegt danach direkt unter `Interface\AddOns\ForeverTools\ForeverTools.
 
 ## Ein Update aktualisiert alles
 
-Im installierten **ForeverTools**-Ordner **`Update.cmd` doppelklicken**, auf **ERFOLG** warten und im Spiel **`/reload`** eingeben. Alle Module werden zusammen aktualisiert. Keine Ordnerauswahl, kein zusätzliches Download-Paket, kein dauerhaft geöffnetes Helferfenster. Der Spielordner ergibt sich automatisch aus dem Installationsort. Für schnellen Zugriff kann eine Windows-Verknüpfung zu `Update.cmd` auf dem Desktop angelegt werden.
+Nach jedem Windows-Start einmal im installierten **ForeverTools**-Ordner **`Update.cmd` doppelklicken**. Der Helfer läuft danach unsichtbar im Hintergrund; ein Symbol neben der Windows-Uhr zeigt ihn an. Der Spielordner wird automatisch erkannt. Kein Fenster muss offen bleiben. Eine Verknüpfung zu `Update.cmd` auf dem Desktop ist möglich. Es wird kein Windows-Autostart eingerichtet.
 
-Der **Update**-Button im Spiel zeigt diese kurze Anleitung und bietet anschließend **Neu laden** an. WoW kann selbst keine Dateien aus GitHub herunterladen oder Windows-Programme starten. Der Download geschieht deshalb durch den Doppelklick in Windows. Die Menü-Fußzeile zeigt den zuletzt geprüften GitHub-Stand.
+Im Spiel **`/ad → Update → Jetzt aktualisieren`** drücken. Der Button speichert den Update-Auftrag und lädt die Oberfläche neu. Der Hintergrundhelfer erkennt den Auftrag und lädt alle Module gemeinsam. Sobald Windows **„Update fertig“** meldet, im Spiel **`/reload`** eingeben. Der Button fordert den Download tatsächlich an. Ohne gestarteten Helfer kann er keinen Download auslösen: WoW selbst darf keine Dateien aus GitHub herunterladen oder Windows-Programme starten. Die Menü-Fußzeile zeigt den zuletzt geprüften GitHub-Stand.
 
-Windows PowerShell 5.1 und Internetzugriff auf GitHub reichen aus; kein Python, Git oder GitHub-Account nötig. Bei Fehlern bleibt das Fenster mit einer Meldung geöffnet. Die bisherige `ForeverTools-Updater.cmd` im Quellcode-Download bleibt als erweiterte Variante verfügbar; für den normalen Ablauf wird sie nicht gebraucht.
+Windows PowerShell 5.1 und Internetzugriff auf GitHub reichen aus; kein Python, Git oder GitHub-Account nötig. Erfolg oder Fehler eines angeforderten Updates erscheinen als Windows-Meldung. Über Rechtsklick auf das ForeverTools-Symbol neben der Windows-Uhr lässt sich der Helfer beenden. Im Leerlauf werden keine Updates heruntergeladen. Die bisherige `ForeverTools-Updater.cmd` im Quellcode-Download startet ebenfalls den Hintergrundhelfer.
 
 ## Übergang von den alten Einzeladdons
 

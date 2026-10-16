@@ -2,6 +2,8 @@
 param(
     [string]$GamePath,
     [switch]$Watch,
+    [switch]$Background,
+    [switch]$Notify,
     [switch]$LibraryOnly
 )
 $ErrorActionPreference = 'Stop'
@@ -177,6 +179,22 @@ function Sync-ForeverTools([string]$Root) {
     }
 }
 
+function Invoke-RequestedUpdates([string]$Root, [hashtable]$Seen, [bool]$NotifyUser = $false) {
+    $requests = Get-UpdateRequests $Root
+    foreach ($file in $requests.Keys) {
+        if ($Seen[$file] -ne $requests[$file]) {
+            $Seen[$file] = $requests[$file]
+            try {
+                Sync-ForeverTools $Root
+                if ($NotifyUser) { [void][Windows.Forms.MessageBox]::Show('Alle ForeverTools-Module wurden aktualisiert. Im Spiel jetzt /reload eingeben.', 'ForeverTools: Update fertig') }
+            } catch {
+                Write-Host "FEHLER: $_ | Im Spiel Update erneut anfordern." -ForegroundColor Red
+                if ($NotifyUser) { [void][Windows.Forms.MessageBox]::Show("Update fehlgeschlagen: $_`nIm Spiel Update erneut anfordern.", 'ForeverTools: Update fehlgeschlagen') }
+            }
+        }
+    }
+}
+
 if ($LibraryOnly) { return }
 Add-Type -AssemblyName System.Windows.Forms
 $configDir = Join-Path $env:LOCALAPPDATA 'ForeverTools'
@@ -199,8 +217,32 @@ Assert-NoLink (Join-Path $GamePath 'Interface\AddOns')
 [IO.File]::WriteAllText($config, $GamePath)
 # A second watcher could race with file installation; allow only one per game folder.
 $lockName = 'Local\ForeverTools-' + (($GamePath.ToLowerInvariant() -replace '[^a-z0-9]', '_'))
+if ($Background) {
+    $arguments = '-NoProfile -ExecutionPolicy Bypass -File "' + $PSCommandPath + '" -GamePath "' + $GamePath + '" -Watch -Notify'
+    $powershell = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+    Start-Process -FilePath $powershell -ArgumentList $arguments -WindowStyle Hidden
+    Write-Host 'Update-Helfer im Hintergrund gestartet. Im Spiel: /ad -> Update -> Jetzt aktualisieren.' -ForegroundColor Green
+    Write-Host 'Nach Windows-Neustart Update.cmd einmal starten. Beenden: ForeverTools-Symbol neben der Windows-Uhr.'
+    return
+}
 $mutex = New-Object Threading.Mutex($false, $lockName)
-if (!$mutex.WaitOne(0)) { throw 'Fuer diesen Spielordner laeuft bereits ein Updater.' }
+if (!$mutex.WaitOne(0)) {
+    $mutex.Dispose()
+    if ($Watch) { return }
+    throw 'Fuer diesen Spielordner laeuft bereits ein Updater.'
+}
+$tray = $null
+if ($Notify) {
+    Add-Type -AssemblyName System.Drawing
+    $tray = New-Object Windows.Forms.NotifyIcon
+    $tray.Icon = [Drawing.SystemIcons]::Application
+    $tray.Text = 'ForeverTools: Ingame-Updates bereit'
+    $trayMenu = New-Object Windows.Forms.ContextMenu
+    $stopItem = $trayMenu.MenuItems.Add('Update-Helfer beenden')
+    $stopItem.add_Click({ $script:stopWatcher = $true })
+    $tray.ContextMenu = $trayMenu
+    $tray.Visible = $true
+}
 try {
     Write-Host "ForeverTools-Updater | BP1904/ForeverTools | $GamePath"
     $seen = Get-UpdateRequests $GamePath
@@ -209,17 +251,17 @@ try {
         Write-Host "FEHLER: $_" -ForegroundColor Red
     }
     if ($Watch) {
-        Write-Host 'Bereit. Fenster offen lassen. Im Spiel: /ad -> Update -> Update anfordern.'
+        Write-Host 'Bereit. Im Spiel: /ad -> Update -> Jetzt aktualisieren.'
         Write-Host 'Keine automatischen Downloads im Hintergrund; naechster Download erst nach Update-Anforderung. Beenden: Strg+C.'
-        while ($true) {
+        $script:stopWatcher = $false
+        while (!$script:stopWatcher) {
+            if ($Notify) { [Windows.Forms.Application]::DoEvents() }
+            if ($script:stopWatcher) { break }
             Start-Sleep -Seconds 2
-            $requests = Get-UpdateRequests $GamePath
-            foreach ($file in $requests.Keys) {
-                if ($seen[$file] -ne $requests[$file]) {
-                    $seen[$file] = $requests[$file]
-                    try { Sync-ForeverTools $GamePath } catch { Write-Host "FEHLER: $_ | Im Spiel Update erneut anfordern." -ForegroundColor Red }
-                }
-            }
+            Invoke-RequestedUpdates $GamePath $seen ([bool]$Notify)
         }
     }
-} finally { $mutex.ReleaseMutex(); $mutex.Dispose() }
+} finally {
+    if ($tray) { $tray.Visible = $false; $tray.Dispose() }
+    $mutex.ReleaseMutex(); $mutex.Dispose()
+}

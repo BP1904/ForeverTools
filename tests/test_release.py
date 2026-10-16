@@ -32,3 +32,4 @@ class ReleaseTest(unittest.TestCase):
                 command = archive.read('ForeverTools/Update.cmd').decode('utf-8')
                 self.assertIn('-GamePath "%~dp0..\\..\\.."', command)
                 self.assertNotIn('-Watch', command)
+                self.assertIn('-Background', command)
