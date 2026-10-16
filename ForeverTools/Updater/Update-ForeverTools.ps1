@@ -5,6 +5,14 @@ param(
     [switch]$LibraryOnly
 )
 $ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'
+
+function Get-Sha256([string]$Path) {
+    $stream = [IO.File]::OpenRead($Path)
+    $hash = [Security.Cryptography.SHA256]::Create()
+    try { return ([BitConverter]::ToString($hash.ComputeHash($stream))).Replace('-', '').ToLowerInvariant() }
+    finally { $hash.Dispose(); $stream.Dispose() }
+}
 
 function Get-UpdateRequests([string]$Root) {
     $requests = @{}
@@ -79,7 +87,7 @@ function Install-AddonFiles([object]$Catalog, [string]$Source, [string]$Destinat
             $relative = $addon.folder + '/' + $file.path
             $sourceFile = Join-Path $Source $relative
             if (!(Test-Path -LiteralPath $sourceFile -PathType Leaf) -or
-                (Get-FileHash -LiteralPath $sourceFile -Algorithm SHA256).Hash.ToLowerInvariant() -ne $file.sha256) {
+                (Get-Sha256 $sourceFile) -ne $file.sha256) {
                 throw "Dateipruefung fehlgeschlagen: $relative"
             }
             $target = Join-Path $Destination $relative

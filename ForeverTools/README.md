@@ -1,4 +1,4 @@
-# ForeverTools 1.3.0
+# ForeverTools 1.3.1
 
 ## GitHub-Updates
 
