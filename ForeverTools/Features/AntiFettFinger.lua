@@ -1,4 +1,21 @@
-local addonName, A = ...
+local addonName, FT = ...
+local previous = _G.AntiFettFinger
+if type(previous) == "table" and previous.db and type(previous.SetEnabled) == "function" then
+    -- OptionalDeps loads an enabled legacy copy first. Reuse it for this session,
+    -- save its settings under ForeverTools, and prevent a second keyboard handler.
+    FT.antiFettFinger = previous
+    local migration = CreateFrame("Frame")
+    migration:RegisterEvent("ADDON_LOADED")
+    migration:SetScript("OnEvent", function(_, _, name)
+        if name ~= addonName then return end
+        migration:UnregisterEvent("ADDON_LOADED")
+        ForeverToolsAntiFettFingerDB = previous.db
+        FT:RetireLegacyAddon("AntiFettFinger")
+    end)
+    return
+end
+local A = {}
+FT.antiFettFinger = A
 _G.AntiFettFinger = A
 local MOVEMENT = {
     MOVEFORWARD=true, MOVEBACKWARD=true, STRAFELEFT=true, STRAFERIGHT=true,
@@ -215,8 +232,8 @@ events:SetScript("OnEvent",function(_,event,name)
     if event=="ADDON_LOADED" then
         if name~=addonName then return end
         events:UnregisterEvent("ADDON_LOADED")
-        AntiFettFingerDB=type(AntiFettFingerDB)=="table" and AntiFettFingerDB or {}
-        A.db=AntiFettFingerDB
+        ForeverToolsAntiFettFingerDB=type(ForeverToolsAntiFettFingerDB)=="table" and ForeverToolsAntiFettFingerDB or {}
+        A.db=ForeverToolsAntiFettFingerDB
         if A.db.enabled==nil then A.db.enabled=true end
         events:RegisterEvent("UPDATE_BINDINGS"); events:RegisterEvent("PLAYER_REGEN_ENABLED")
         events:RegisterEvent("PLAYER_ENTERING_WORLD")

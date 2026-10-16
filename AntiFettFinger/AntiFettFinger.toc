@@ -1,8 +1,0 @@
-## Interface: 16001
-## Title: Anti Fett Finger
-## Notes: Im Kampf nur 1 bis ´ und Bewegung; übrige Spieltasten sperren.
-## Author: ForeverTools
-## Version: 1.0.0
-## SavedVariablesPerCharacter: AntiFettFingerDB
-
-AntiFettFinger.lua

@@ -1,4 +1,19 @@
-local addonName,A=...
+local addonName,FT=...
+local previous=_G.AutoRank
+if type(previous)=="table" and previous.db and type(previous.SetEnabled)=="function" then
+    FT.autoRank=previous
+    local migration=CreateFrame("Frame")
+    migration:RegisterEvent("ADDON_LOADED")
+    migration:SetScript("OnEvent",function(_,_,name)
+        if name~=addonName then return end
+        migration:UnregisterEvent("ADDON_LOADED")
+        ForeverToolsAutoRankDB=previous.db
+        FT:RetireLegacyAddon("AutoRank")
+    end)
+    return
+end
+local A={}
+FT.autoRank=A
 _G.AutoRank=A
 local function Secret(value) return issecretvalue and issecretvalue(value) end
 local function Read(fn,fallback,...)
@@ -317,7 +332,7 @@ frame:SetScript("OnEvent",function(_,event,name)
     if event=="ADDON_LOADED" then
         if name~=addonName then return end
         frame:UnregisterEvent("ADDON_LOADED")
-        AutoRankDB=type(AutoRankDB)=="table" and AutoRankDB or {}; A.db=AutoRankDB
+        ForeverToolsAutoRankDB=type(ForeverToolsAutoRankDB)=="table" and ForeverToolsAutoRankDB or {}; A.db=ForeverToolsAutoRankDB
         if A.db.enabled==nil then A.db.enabled=true end
         A.db.seen=type(A.db.seen)=="table" and A.db.seen or {}
         A.db.waiting=type(A.db.waiting)=="table" and A.db.waiting or {}

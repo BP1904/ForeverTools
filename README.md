@@ -1,30 +1,38 @@
-# ForeverTools – Addons für WoW Forever
+# ForeverTools – ein Addon für alle unsere Funktionen
 
-Für **WoW Forever 1.60.1.70425 / Interface 16001**. Enthält ForeverTools mit der gemeinsamen Menüübersicht sowie Anti Fett Finger und Auto Rank.
+Für **WoW Forever 1.60.1.70425 / Interface 16001**. Alle Funktionen liegen im einzigen Addon-Ordner **ForeverTools**: Händler & Taschen, Quests, Materialien, Paladin, GTFO, Threat Plates, Decursive, **Anti Fett Finger** und **Auto Rank**. Jedes Modul ist in der gemeinsamen Übersicht einzeln schaltbar.
 
 ## Für Freunde: einmal einrichten
 
 1. [ZIP herunterladen](https://github.com/BP1904/ForeverTools/archive/refs/heads/main.zip), vollständig entpacken.
-2. **ForeverTools-Updater.cmd** doppelklicken. Windows PowerShell 5.1 ist ausreichend; kein Python, Git oder GitHub-Account erforderlich. Der Updater braucht Internetzugriff auf GitHub.
+2. **ForeverTools-Updater.cmd** doppelklicken. Windows PowerShell 5.1 ist ausreichend; kein Python, Git oder GitHub-Account erforderlich.
 3. Den tatsächlich verwendeten WoW-Clientordner auswählen, z.B. `World of Warcraft\_classic_beta_` mit `Wow.exe` und `Interface`. Der Pfad wird lokal gespeichert.
-4. Auf die grüne **ERFOLG**-Meldung warten. Die drei Addons werden in `Interface\AddOns` installiert. WoW danach starten bzw. bei erstmals installierten Addons neu starten und diese in der Addon-Auswahl aktivieren.
+4. Auf die grüne **ERFOLG**-Meldung warten. Installiert wird ausschließlich `Interface\AddOns\ForeverTools` mit sämtlichen Modulen. WoW starten bzw. bei der ersten Installation neu starten und **ForeverTools** aktivieren.
 
-Der Updater installiert ausschließlich die in `catalog.json` aufgeführten Addon-Dateien. Spielkonten, Einstellungen und andere Addons werden nicht hochgeladen oder gelöscht. Er schreibt nur in die aufgeführten Addon-Ordner; eigene Änderungen an deren Dateien können dabei überschrieben werden.
+Alternativ lässt sich der Ordner `ForeverTools` manuell nach `Interface\AddOns` kopieren. Separate Installationen von Anti Fett Finger und Auto Rank sind nicht erforderlich. Menü: **`/ad`**, **`/forevertools`** oder das Schmiede-Symbol an der Minimap.
 
-## Später im Spiel aktualisieren
+## Ein Update aktualisiert alles
 
-Den Windows-Updater geöffnet lassen. **`/ad` → Update → Update anfordern** lädt die Oberfläche neu und speichert den Update-Wunsch. Der Windows-Updater liest nur diesen Zahlenwert aus den lokalen ForeverTools-Einstellungen, lädt die aktuelle veröffentlichte Version und meldet Erfolg oder Fehler in seinem Fenster. Danach **`/reload`** eingeben. Neue Addon-Ordner können einen vollständigen WoW-Neustart und die Aktivierung in der Addon-Auswahl benötigen. Neue Module im bereits vorhandenen ForeverTools-Ordner erscheinen nach `/reload`.
+Den Windows-Updater geöffnet lassen. **`/ad` → Update → Update anfordern** lädt die Oberfläche neu und speichert den Update-Wunsch. Der Helfer lädt das vollständige gemeinsame Addon einschließlich aller neuen und bestehenden Module. Auf seine Erfolgsmeldung warten, anschließend **`/reload`** eingeben. Neue Funktionen werden künftig im vorhandenen ForeverTools-Ordner veröffentlicht; weitere Addon-Ordner sind dafür nicht nötig.
 
-WoW kann selbst keine Dateien aus GitHub herunterladen oder Programme starten. Daher gehören der Windows-Helfer und die beiden Reload-Schritte zu diesem Ablauf. Ohne geöffneten Helfer bewirkt der Button keinen Download. Die Menü-Fußzeile zeigt den zuletzt vom Helfer geprüften GitHub-Stand, keine Live-Abfrage.
+WoW kann selbst keine Dateien aus GitHub herunterladen oder Programme starten. Deshalb gehören der Windows-Helfer und die beiden Reload-Schritte zum Ablauf. Ohne geöffneten Helfer erfolgt kein Download. Die Menü-Fußzeile zeigt den zuletzt vom Helfer geprüften GitHub-Stand, keine Live-Abfrage.
 
-Beim Start prüft/installiert der Helfer einmal alle veröffentlichten Addons. Danach prüft er nur lokale Update-Wünsche; er lädt nicht regelmäßig selbstständig neue Versionen. Fehler im Fenster prüfen und anschließend erneut Update anfordern. Schließen des Fensters beendet den Helfer. Ein neuer Spielpfad lässt sich mit `powershell -NoProfile -ExecutionPolicy Bypass -File tools\Update-ForeverTools.ps1 -GamePath "D:\WoW\_classic_beta_" -Watch` setzen.
+Beim Start aktualisiert der Helfer einmal das gesamte Addon. Danach lädt er nur auf lokale Update-Anforderung. Fehler im Fenster prüfen und Update erneut anfordern. Schließen des Fensters beendet den Helfer. Anderen Spielpfad setzen: `powershell -NoProfile -ExecutionPolicy Bypass -File tools\Update-ForeverTools.ps1 -GamePath "D:\WoW\_classic_beta_" -Watch`.
+
+## Übergang von den alten Einzeladdons
+
+Bei bereits aktivierten Einzelversionen übernimmt ForeverTools beim nächsten Laden ihre Einstellungen für den aktuellen Charakter, einschließlich Schalter, Buttonposition und Auto-Rank-Verlauf. In dieser Sitzung wird die bereits geladene Funktion weiterverwendet, damit keine doppelten Tastensperren oder Leistenänderungen entstehen. Die jeweilige alte Einzelversion wird für diesen Charakter deaktiviert; ab dem folgenden `/reload` verwendet ForeverTools seine eingebauten Funktionen. Andere Charaktere werden bei ihrem nächsten Login einzeln umgestellt.
+
+Die ursprünglichen Ordner und SavedVariables werden dabei nicht gelöscht. Bereits manuell deaktivierte Einzelversionen werden nicht geladen und können ihre alten Einstellungen nicht automatisch übergeben. Für deren Übernahme einmal die betreffende Einzelversion zusammen mit ForeverTools aktivieren und neu laden. Nur **ForeverTools** muss danach aktiv bleiben.
+
+Wer den bisherigen Updater bereits heruntergeladen hat, kann auch damit das gemeinsame Paket laden. Für die aktualisierte Anleitung und den auf ein Addon begrenzten Helfer einmal die neue ZIP herunterladen.
 
 ## Für die Entwicklung
 
-Nur unsere Ordner `ForeverTools`, `AntiFettFinger` und `AutoRank` werden veröffentlicht/installiert. Der lokale Ordner `AddOns` mit fremden Referenzaddons, ZIP-Dateien und `.tools` gehört nicht ins Repository.
+Alle neuen Funktionen als Module unter `ForeverTools/Modules` bzw. als interne Komponenten unter `ForeverTools/Features` ergänzen und in beiden TOC-Dateien eintragen. Menüeinträge über `FT:RegisterModule` registrieren. `addons.json` enthält dauerhaft nur **ForeverTools**. `python tools/build_catalog.py` erstellt dessen vollständige Dateiliste mit SHA-256-Prüfsummen. Separate Addon-Ordner werden vom Katalogbau und aktuellen Updater abgelehnt.
 
-Neue eigene Addons in `addons.json` eintragen, Ordner hinzufügen und **`python tools/build_catalog.py`** ausführen. Dadurch entstehen Dateiliste mit SHA-256-Prüfsummen und der Ingame-Katalog. Neue separate Addons bekommen automatisch einen Menüeintrag; für eine eigene Optionsoberfläche kann ein ForeverTools-Modul registriert werden. Bereits integrierte Einträge werden nicht doppelt angezeigt. Neue ForeverTools-Module müssen weiterhin in beiden TOC-Dateien eingetragen sein.
+Vor jedem Push nach `main`: Tests ausführen und Katalog neu bauen. `main` ist der gemeinsame Update-Kanal. Der Updater lädt einen festen Commit, prüft alle Dateien vor dem Kopieren und sichert überschriebene Dateien für die Wiederherstellung bei Kopierfehlern. Andere Addons und Spieleinstellungen bleiben erhalten; eigene Änderungen innerhalb von ForeverTools können überschrieben werden. Veraltete Dateien werden nicht automatisch gelöscht. Der Helfer selbst wird nicht automatisch ersetzt.
 
-Vor jedem Push nach `main`: Tests ausführen und Katalog neu bauen. `main` ist der Update-Kanal für Freunde: Jeder Push kann beim nächsten angeforderten Update installiert werden. Der Updater lädt einen festen Commit und prüft alle Dateien vor dem Kopieren. Er sichert überschriebene Dateien temporär und stellt sie bei Kopierfehlern wieder her. Veraltete Dateien werden nicht automatisch gelöscht. Der Helfer selbst wird aus Sicherheitsgründen nicht automatisch ersetzt; neue Helferversionen wieder als ZIP herunterladen.
+Der lokale Ordner `AddOns` mit fremden Referenzaddons, alte lokale Einzelversionen, ZIP-Dateien und `.tools` werden nicht veröffentlicht. Einstellungen oder Kontodaten werden nicht zu GitHub hochgeladen.
 
 Tests: `python -m unittest discover -s tests` (Lupa mit Lua 5.1 in `.tools`). Updater-Tests: `powershell -NoProfile -ExecutionPolicy Bypass -File tests/test_updater.ps1`.

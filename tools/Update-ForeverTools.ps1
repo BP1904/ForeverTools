@@ -59,7 +59,9 @@ function Assert-NoLink([string]$Path) {
 }
 
 function Install-AddonFiles([object]$Catalog, [string]$Source, [string]$Destination, [string]$Backup) {
-    if ($Catalog.schema -ne 1 -or @($Catalog.addons).Count -eq 0) { throw 'Ungueltiger Katalog.' }
+    if ($Catalog.schema -ne 1 -or @($Catalog.addons).Count -ne 1 -or $Catalog.addons[0].folder -ne 'ForeverTools') {
+        throw 'Ungueltiger Katalog: Nur das gemeinsame ForeverTools-Addon ist erlaubt.'
+    }
     $names = @{}
     $plan = New-Object 'System.Collections.Generic.List[object]'
     foreach ($addon in $Catalog.addons) {
@@ -151,7 +153,7 @@ function Sync-ForeverTools([string]$Root) {
         $checked = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
         $status = "local _, FT = ...`nFT.updateStatus = {commit = `"$short`", checked = `"$checked`"}`n"
         [IO.File]::WriteAllText((Join-Path $destination 'ForeverTools\UpdateStatus.lua'), $status, (New-Object Text.UTF8Encoding $false))
-        Write-Host "ERFOLG: $(@($catalog.addons).Count) Addons von GitHub installiert/geprueft ($short)." -ForegroundColor Green
+        Write-Host "ERFOLG: ForeverTools mit allen Modulen installiert/geprueft ($short)." -ForegroundColor Green
         Write-Host 'Jetzt im Spiel /reload. Bei neuen Addon-Ordnern WoW gegebenenfalls neu starten.'
         $success = $true
     } finally {

@@ -180,36 +180,6 @@ class ForeverToolsTest(unittest.TestCase):
             assert(ForeverToolsDB.updateRequest == nil)
         ''')
 
-    def test_catalog_adds_future_addons_without_duplicate_modules(self):
-        self.run_lua('''
-            function UnitName() return 'Tester' end
-            enabled = 2
-            C_AddOns = {
-                GetAddOnEnableState = function(name, character)
-                    assert(name == 'FutureAddon' and character == 'Tester'); return enabled
-                end,
-                EnableAddOn = function(name) assert(name == 'FutureAddon'); enabled = 2 end,
-                DisableAddOn = function(name) assert(name == 'FutureAddon'); enabled = 0 end,
-            }
-            ForeverTools.addonCatalog = {
-                {folder='ForeverTools'},
-                {folder='AlreadyIntegrated', module='merchant'},
-                {folder='FutureAddon', title='Future Addon'},
-            }
-        ''')
-        code = (ROOT / 'ForeverTools/Modules/AddonCatalog.lua').read_text(encoding='utf-8')
-        self.lua.execute('assert(loadstring(...))("ForeverTools", namespace)', code)
-        self.run_lua('''
-            ForeverTools:Initialize()
-            assert(#ForeverTools.order == 3)
-            assert(ForeverTools.modules.FutureAddon.title == 'Future Addon')
-            ForeverTools:SetEnabled('FutureAddon', false)
-            assert(enabled == 0)
-            combat = true
-            ForeverTools:SetEnabled('FutureAddon', true)
-            assert(enabled == 0 and not ForeverTools:IsEnabled('FutureAddon'))
-        ''')
-
     def test_repair_sell_and_native_cleanup(self):
         self.run_lua('''
             Put(0,3,10,0,5); Put(0,6,20,2); Put(1,4,30,1)

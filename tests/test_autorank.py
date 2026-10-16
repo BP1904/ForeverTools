@@ -74,9 +74,9 @@ class AutoRankTest(unittest.TestCase):
     def setUp(self):
         self.lua = LuaRuntime(unpack_returned_tuples=True)
         self.lua.execute(MOCK + AUTORANK_MOCK)
-        source = (ROOT / 'AutoRank/AutoRank.lua').read_text(encoding='utf-8')
-        self.lua.execute('assert(loadstring(...))("AutoRank",{})', source)
-        self.lua.execute("Fire('ADDON_LOADED','AutoRank'); A=AutoRank")
+        source = (ROOT / 'ForeverTools/Features/AutoRank.lua').read_text(encoding='utf-8')
+        self.lua.execute('assert(loadstring(...))("ForeverTools",{})', source)
+        self.lua.execute("Fire('ADDON_LOADED','ForeverTools'); A=AutoRank")
 
     def run_scan(self):
         self.lua.execute("Fire('PLAYER_ENTERING_WORLD'); Advance(4)")

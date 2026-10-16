@@ -48,6 +48,8 @@ try {
     foreach ($name in @('..', 'Bad/Folder', 'CON', 'C:\WoW')) { Must-Reject { Assert-SafeAddonPath $name } }
     $catalog.addons += @{folder='ForeverTools'; files=@()}
     Must-Reject { Install-AddonFiles $catalog $source $dest (Join-Path $work 'backup4') }
+    $otherAddon = @{schema=1; addons=@(@{folder='AutoRank'; files=@()})}
+    Must-Reject { Install-AddonFiles $otherAddon $source $dest (Join-Path $work 'backup-other') }
     $saved = Join-Path $work 'game\WTF\Account\123\SavedVariables'
     [void][IO.Directory]::CreateDirectory($saved)
     [IO.File]::WriteAllText((Join-Path $saved 'ForeverTools.lua'), 'ForeverToolsDB = { ["updateRequest"] = 123456, } error("NEVER EXECUTE")')

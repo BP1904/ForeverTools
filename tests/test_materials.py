@@ -54,7 +54,7 @@ class MaterialsTest(unittest.TestCase):
         self.lua.execute('namespace={}')
         toc = (ROOT / 'ForeverTools/ForeverTools.toc').read_text(encoding='utf-8')
         for line in toc.splitlines():
-            if line and not line.startswith('#'):
+            if line and not line.startswith(('#', 'Features\\')):
                 source = (ROOT / 'ForeverTools' / line.replace('\\', '/')).read_text(encoding='utf-8')
                 self.lua.execute('assert(loadstring(...))("ForeverTools", namespace)', source)
         self.lua.execute('Fire("ADDON_LOADED", "ForeverTools"); M=ForeverTools.modules.materials')

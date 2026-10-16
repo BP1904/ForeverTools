@@ -5,3 +5,6 @@ AddOns/
 *.zip
 *-Analyse.md
 AGENTS.md
+# Local copies of retired standalone addons; shipped inside ForeverTools now.
+AntiFettFinger/
+AutoRank/

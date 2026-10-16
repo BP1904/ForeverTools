@@ -4,6 +4,19 @@ FT.name = addonName
 FT.modules = {}
 FT.order = {}
 
+function FT:RetireLegacyAddon(name)
+    local api = C_AddOns or _G
+    if type(api.DisableAddOn) == "function" and UnitName then
+        -- Migrate each character when it logs in; do not disable unmigrated alts.
+        local ok = pcall(api.DisableAddOn, name, UnitName("player"))
+        if ok then
+            self:Print(name .. ": Einstellungen übernommen. Die alte Einzelversion ist deaktiviert; ab dem nächsten /reload läuft das integrierte Modul.")
+            return
+        end
+    end
+    self:Print(name .. ": Einstellungen übernommen. Bitte die alte Einzelversion in der Addon-Auswahl deaktivieren und /reload eingeben.")
+end
+
 function FT:Print(message)
     DEFAULT_CHAT_FRAME:AddMessage("|cff65d6adForeverTools:|r " .. message)
 end

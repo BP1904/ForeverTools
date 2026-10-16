@@ -19,7 +19,7 @@ end
 
 if StaticPopupDialogs then
     StaticPopupDialogs.FOREVERTOOLS_UPDATE = {
-        text = "ForeverTools aktualisieren\n\n1. ForeverTools-Updater.cmd in Windows starten und geöffnet lassen.\n2. Jetzt Update anfordern: Die Oberfläche wird neu geladen.\n3. Auf die Erfolgsmeldung im Updater warten, dann /reload eingeben.\n\nNeue Addon-Ordner benötigen eventuell einen Spielneustart. Ohne Windows-Updater erfolgt kein Download.",
+        text = "ForeverTools mit allen Modulen aktualisieren\n\n1. ForeverTools-Updater.cmd in Windows starten und geöffnet lassen.\n2. Jetzt Update anfordern: Die Oberfläche wird neu geladen.\n3. Auf die Erfolgsmeldung im Updater warten, dann /reload eingeben.\n\nAlle Module einschließlich Anti Fett Finger und Auto Rank gehören zu diesem einen Addon. Ohne Windows-Updater erfolgt kein Download.",
         button1 = "Update anfordern",
         button2 = "Abbrechen",
         OnAccept = function() FT:RequestUpdate() end,

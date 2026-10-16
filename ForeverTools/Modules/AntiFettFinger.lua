@@ -24,7 +24,7 @@ end
 
 function M:OnSettingsChanged()
     if not self:IsAvailable() then
-        self:Sync(); FT:Print("Anti Fett Finger muss in der Addon-Auswahl aktiviert sein.")
+        self:Sync(); FT:Print("Anti Fett Finger ist noch nicht bereit.")
         return
     end
     if not AntiFettFinger:SetEnabled(self.settings.enabled) then

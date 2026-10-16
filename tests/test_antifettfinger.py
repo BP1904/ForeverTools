@@ -97,11 +97,11 @@ class AntiFettFingerTest(unittest.TestCase):
         lua = LuaRuntime(unpack_returned_tuples=True)
         lua.execute(MOCK + SECURE_MOCK)
         if enabled is not None:
-            lua.execute('AntiFettFingerDB={enabled=' + ('true' if enabled else 'false') + '}')
+            lua.execute('ForeverToolsAntiFettFingerDB={enabled=' + ('true' if enabled else 'false') + '}')
         lua.execute('combat=' + ('true' if in_combat else 'false'))
-        source = (ROOT / 'AntiFettFinger/AntiFettFinger.lua').read_text(encoding='utf-8')
-        lua.execute('assert(loadstring(...))("AntiFettFinger",{})', source)
-        lua.execute("Fire('ADDON_LOADED','AntiFettFinger'); A=AntiFettFinger")
+        source = (ROOT / 'ForeverTools/Features/AntiFettFinger.lua').read_text(encoding='utf-8')
+        lua.execute('assert(loadstring(...))("ForeverTools",{})', source)
+        lua.execute("Fire('ADDON_LOADED','ForeverTools'); A=AntiFettFinger")
         return lua
 
     def setUp(self):

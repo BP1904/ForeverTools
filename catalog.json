@@ -6,12 +6,8 @@
       "title": "ForeverTools",
       "files": [
         {
-          "path": "AddonCatalog.lua",
-          "sha256": "de9a3b53b3d9195d309cc38755a89c1544bc69cfed03fef2aa34064367cee7be"
-        },
-        {
           "path": "Core.lua",
-          "sha256": "8a429a02970c2bfec843dbe99004866ef61e320792bc1c0b663eeed8ebbea471"
+          "sha256": "be63f7e6599d8ee7c96eaa78aaa134f342a8514e883acfe1ae2d2488e0f75ec5"
         },
         {
           "path": "Data/CleansingSpells.lua",
@@ -34,24 +30,28 @@
           "sha256": "1d08499721e6053abff6f491fc774dd660baac04402ed57b755c49145e6b72de"
         },
         {
+          "path": "Features/AntiFettFinger.lua",
+          "sha256": "98b5d05252151432a429ddfa4b0c05588dad3784269f142ed3de53291a10e9de"
+        },
+        {
+          "path": "Features/AutoRank.lua",
+          "sha256": "be4b784853eff1454aca75bcd786b8e44cf5d968e29ccbf4aabafc3692aaed64"
+        },
+        {
           "path": "ForeverTools.toc",
-          "sha256": "71c7213042f6f0d3ff3e02fbf0cbf1e736d8df8fd1915c63ce3d3c660884fc6f"
+          "sha256": "e33e48f14caa08a5de817f293314719c6144eac00bd16eca11b8d83eec6eac48"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "71c7213042f6f0d3ff3e02fbf0cbf1e736d8df8fd1915c63ce3d3c660884fc6f"
+          "sha256": "e33e48f14caa08a5de817f293314719c6144eac00bd16eca11b8d83eec6eac48"
         },
         {
           "path": "Menu.lua",
           "sha256": "1c0d8fb447b4cb8579c94f3c89bd4ef98147f106a5d45408615eab098a2d8b84"
         },
         {
-          "path": "Modules/AddonCatalog.lua",
-          "sha256": "62e7f6f7d13f9ba1857d52d6f52322703f9b216d9e86dffffdb3ae19f167f4be"
-        },
-        {
           "path": "Modules/AntiFettFinger.lua",
-          "sha256": "95fbd6a0661e9d86e679b5a56c2d878ce929793744398926b90109b91f52cb65"
+          "sha256": "5b27d63254e9abee66c52e8a6efb60adcf4a86914c792d56d43616f129f6c60c"
         },
         {
           "path": "Modules/AutoRank.lua",
@@ -87,7 +87,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "5209eaf345b661f3bff3264e4d53cb64643f8b4f73fcf230df27623e5f8520f1"
+          "sha256": "714c35aeb3e1650abc16df9eeae02d3264aa9efadb1089790116793c587c1c84"
         },
         {
           "path": "Sounds/GTFO/alarmbeep.ogg",
@@ -111,57 +111,11 @@
         },
         {
           "path": "Updates.lua",
-          "sha256": "2aed2d31aec2c518da289fd05b328fa43fbfe3edfffc3e0c5715a0b2133f0017"
+          "sha256": "42e65f713b1b7878e201fe8602730e350c36f37971c0883e800b696b4084db06"
         },
         {
           "path": "UpdateStatus.lua",
           "sha256": "d88e7da860ff7402d366db5aede1ec6a0d3e2ae3d5809d1af906090cd88daba9"
-        }
-      ]
-    },
-    {
-      "folder": "AntiFettFinger",
-      "title": "Anti Fett Finger",
-      "module": "antifettfinger",
-      "files": [
-        {
-          "path": "AntiFettFinger.lua",
-          "sha256": "2d06f59dcfe06224ee5997a8fdfad0d3c3d354ce71e48bcb4b6d5b0271567f32"
-        },
-        {
-          "path": "AntiFettFinger.toc",
-          "sha256": "554e05a2fdd457c8c730302215533b298934239b9102a8e24e087f97ca9623ef"
-        },
-        {
-          "path": "AntiFettFinger_Camelot.toc",
-          "sha256": "554e05a2fdd457c8c730302215533b298934239b9102a8e24e087f97ca9623ef"
-        },
-        {
-          "path": "README.md",
-          "sha256": "8452169e23b6fe59e66e4ee8e2eacbd7dadf7bd7e15c5e18849f3699730b41cf"
-        }
-      ]
-    },
-    {
-      "folder": "AutoRank",
-      "title": "Auto Rank",
-      "module": "autorank",
-      "files": [
-        {
-          "path": "AutoRank.lua",
-          "sha256": "94691550044f6499006f2a4b6aad399c4ce48829dfbf4cfbbbe593188b2b8e34"
-        },
-        {
-          "path": "AutoRank.toc",
-          "sha256": "014361b4300098ea481cc0b42e272706d5c19f346260306eb18d093c65a21ee0"
-        },
-        {
-          "path": "AutoRank_Camelot.toc",
-          "sha256": "014361b4300098ea481cc0b42e272706d5c19f346260306eb18d093c65a21ee0"
-        },
-        {
-          "path": "README.md",
-          "sha256": "bb83439b42a4bf3037dfc5fa4fef52af60b101c9cf4909f786fed85d46498954"
         }
       ]
     }
