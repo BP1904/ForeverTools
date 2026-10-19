@@ -22,6 +22,54 @@ function Get-HelperArguments([string]$Script, [string]$Root) {
     return '-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + $Script + '" -GamePath "' + $Root + '" -Watch -Notify -ListenOnly'
 }
 
+function Get-HelperLockName([string]$Root) {
+    return 'Local\ForeverTools-' + (($Root.ToLowerInvariant() -replace '[^a-z0-9]', '_'))
+}
+
+function Start-ForeverToolsHelper([string]$Script, [string]$Root, [string]$LogDirectory) {
+    $name = Get-HelperLockName $Root
+    $ready = New-Object Threading.EventWaitHandle($false, [Threading.EventResetMode]::ManualReset, ($name + '-Ready'))
+    $probe = New-Object Threading.Mutex($false, $name)
+    try {
+        try { $available = $probe.WaitOne(0) } catch [Threading.AbandonedMutexException] { $available = $true }
+        if (!$available) {
+            if ($ready.WaitOne(1000)) { Write-Host 'Update-Helfer laeuft bereits und ist bereit.'; return }
+            throw 'Ein alter oder blockierter Update-Helfer laeuft noch. Am Symbol neben der Windows-Uhr "Update-Helfer beenden" waehlen, dann Update.cmd erneut starten. Alternativ Windows neu starten.'
+        }
+        $probe.ReleaseMutex()
+        [void]$ready.Reset()
+        [void][IO.Directory]::CreateDirectory($LogDirectory)
+        $errorLog = Join-Path $LogDirectory 'helper-error.log'
+        $outputLog = Join-Path $LogDirectory 'helper-output.log'
+        $powershell = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+        $child = Start-Process -FilePath $powershell -ArgumentList (Get-HelperArguments $Script $Root) -WindowStyle Hidden -PassThru -RedirectStandardError $errorLog -RedirectStandardOutput $outputLog
+        try {
+            for ($attempt = 0; $attempt -lt 40; $attempt++) {
+                if ($ready.WaitOne(250)) { Write-Host 'Update-Helfer gestartet und bereit.' -ForegroundColor Green; return }
+                if ($child.HasExited) {
+                    $child.WaitForExit()
+                    $detail = ''
+                    for ($readAttempt = 0; $readAttempt -lt 10 -and !$detail; $readAttempt++) {
+                        if (Test-Path -LiteralPath $errorLog) { $detail = [IO.File]::ReadAllText($errorLog) }
+                        if (!$detail) { Start-Sleep -Milliseconds 100 }
+                    }
+                    throw "Update-Helfer konnte nicht starten. $detail Protokoll: $errorLog"
+                }
+            }
+            throw "Update-Helfer meldet sich nicht bereit. Protokoll: $errorLog"
+        } finally { $child.Dispose() }
+    } finally { $probe.Dispose(); $ready.Dispose() }
+}
+
+function Send-UpdateNotification([string]$Title, [string]$Message) {
+    # A modal MessageBox blocks the polling loop, often hidden behind WoW.
+    if ($script:tray) {
+        $script:tray.BalloonTipTitle = $Title
+        $script:tray.BalloonTipText = $Message
+        $script:tray.ShowBalloonTip(10000)
+    }
+}
+
 function Set-ForeverToolsStartup([string]$Script, [string]$Root, [string]$Directory) {
     if (!$Directory) { $Directory = [Environment]::GetFolderPath('Startup') }
     [void][IO.Directory]::CreateDirectory($Directory)
@@ -180,7 +228,7 @@ function Sync-ForeverTools([string]$Root, [string]$Request) {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     $headers = @{'User-Agent'='ForeverTools-Updater'; Accept='application/vnd.github+json'}
     $repo = 'https://api.github.com/repos/BP1904/ForeverTools'
-    $commit = (Invoke-RestMethod -Uri "$repo/commits/main" -Headers $headers).sha
+    $commit = (Invoke-RestMethod -Uri "$repo/commits/main" -Headers $headers -TimeoutSec 30).sha
     if ($commit -notmatch '^[a-f0-9]{40}$') { throw 'Ungueltige GitHub-Version.' }
     $tempRoot = [IO.Path]::GetFullPath([IO.Path]::GetTempPath())
     $work = Join-Path $tempRoot ('ForeverTools-' + [guid]::NewGuid().ToString('N'))
@@ -188,7 +236,7 @@ function Sync-ForeverTools([string]$Root, [string]$Request) {
     $success = $false
     try {
         $archive = Join-Path $work 'source.zip'
-        Invoke-WebRequest -UseBasicParsing -Uri "https://codeload.github.com/BP1904/ForeverTools/zip/$commit" -Headers $headers -OutFile $archive
+        Invoke-WebRequest -UseBasicParsing -Uri "https://codeload.github.com/BP1904/ForeverTools/zip/$commit" -Headers $headers -OutFile $archive -TimeoutSec 60
         Add-Type -AssemblyName System.IO.Compression.FileSystem
         $zip = [IO.Compression.ZipFile]::OpenRead($archive)
         try {
@@ -241,10 +289,10 @@ function Invoke-RequestedUpdates([string]$Root, [hashtable]$Seen, [bool]$NotifyU
                     $completed[$file] = $requests[$file]
                     Save-CompletedUpdateRequests $StatePath $completed
                 }
-                if ($NotifyUser) { [void][Windows.Forms.MessageBox]::Show('Alle ForeverTools-Module wurden aktualisiert. Im Spiel jetzt /reload eingeben.', 'ForeverTools: Update fertig') }
+                if ($NotifyUser) { Send-UpdateNotification 'ForeverTools: Update fertig' 'Alle Module wurden aktualisiert. Im Spiel jetzt /reload eingeben.' }
             } catch {
                 Write-Host "FEHLER: $_ | Im Spiel Update erneut anfordern." -ForegroundColor Red
-                if ($NotifyUser) { [void][Windows.Forms.MessageBox]::Show("Update fehlgeschlagen: $_`nIm Spiel Update erneut anfordern.", 'ForeverTools: Update fehlgeschlagen') }
+                if ($NotifyUser) { Send-UpdateNotification 'ForeverTools: Update fehlgeschlagen' "$_ | Update.cmd starten und Protokoll pruefen." }
             }
         }
     }
@@ -272,7 +320,7 @@ Assert-NoLink (Join-Path $GamePath 'Interface\AddOns')
 [void][IO.Directory]::CreateDirectory($configDir)
 [IO.File]::WriteAllText($config, $GamePath)
 # A second watcher could race with file installation; allow only one per game folder.
-$lockName = 'Local\ForeverTools-' + (($GamePath.ToLowerInvariant() -replace '[^a-z0-9]', '_'))
+$lockName = Get-HelperLockName $GamePath
 $pathHash = [Security.Cryptography.SHA256]::Create()
 try { $stateKey = ([BitConverter]::ToString($pathHash.ComputeHash([Text.Encoding]::UTF8.GetBytes($GamePath.ToLowerInvariant())))).Replace('-', '').ToLowerInvariant() }
 finally { $pathHash.Dispose() }
@@ -284,11 +332,10 @@ if ($EnableStartup) {
     Write-Host "Einmalig eingerichtet: Windows startet den Update-Helfer kuenftig automatisch. ($startupLink)" -ForegroundColor Green
 }
 if ($Background) {
-    $arguments = Get-HelperArguments $PSCommandPath $GamePath
-    $powershell = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
-    Start-Process -FilePath $powershell -ArgumentList $arguments -WindowStyle Hidden
-    Write-Host 'Update-Helfer im Hintergrund gestartet. Im Spiel einfach /ad -> Update anklicken.' -ForegroundColor Green
+    Start-ForeverToolsHelper $PSCommandPath $GamePath (Join-Path $configDir $stateKey)
+    Write-Host 'Im Spiel einfach /ad -> Update anklicken.' -ForegroundColor Green
     Write-Host 'Beenden oder Autostart ausschalten: ForeverTools-Symbol neben der Windows-Uhr.'
+    Write-Host ('Protokoll: ' + (Join-Path (Join-Path $configDir $stateKey) 'helper.log'))
     return
 }
 $mutex = New-Object Threading.Mutex($false, $lockName)
@@ -298,6 +345,15 @@ if (!$mutex.WaitOne(0)) {
     throw 'Fuer diesen Spielordner laeuft bereits ein Updater.'
 }
 $tray = $null
+$ready = $null
+$transcript = $false
+try {
+if ($Watch) {
+    $logDirectory = Join-Path $configDir $stateKey
+    [void][IO.Directory]::CreateDirectory($logDirectory)
+    try { Start-Transcript -LiteralPath (Join-Path $logDirectory 'helper.log') -Append | Out-Null; $transcript = $true }
+    catch { Write-Warning "Protokoll konnte nicht gestartet werden: $_" }
+}
 if ($Notify) {
     Add-Type -AssemblyName System.Drawing
     $tray = New-Object Windows.Forms.NotifyIcon
@@ -310,8 +366,8 @@ if ($Notify) {
     $stopItem.add_Click({ $script:stopWatcher = $true })
     $tray.ContextMenu = $trayMenu
     $tray.Visible = $true
+    $tray.add_DoubleClick({ Send-UpdateNotification 'ForeverTools: Update-Helfer bereit' 'Updates im Spiel mit /ad -> Update anfordern. Nach der Fertigmeldung /reload eingeben.' })
 }
-try {
     Write-Host "ForeverTools-Updater | BP1904/ForeverTools | $GamePath"
     # Do not seed this from SavedVariables: that discards requests made before startup.
     $seen = Get-CompletedUpdateRequests $statePath
@@ -322,6 +378,8 @@ try {
         }
     }
     if ($Watch) {
+        $ready = New-Object Threading.EventWaitHandle($false, [Threading.EventResetMode]::ManualReset, ($lockName + '-Ready'))
+        [void]$ready.Set()
         Write-Host 'Bereit. Im Spiel: /ad -> Update.'
         Write-Host 'Keine automatischen Downloads im Hintergrund; naechster Download erst nach Update-Anforderung. Beenden: Strg+C.'
         $script:stopWatcher = $false
@@ -333,6 +391,8 @@ try {
         }
     }
 } finally {
+    if ($ready) { [void]$ready.Reset(); $ready.Dispose() }
     if ($tray) { $tray.Visible = $false; $tray.Dispose() }
     $mutex.ReleaseMutex(); $mutex.Dispose()
+    if ($transcript) { Stop-Transcript | Out-Null }
 }

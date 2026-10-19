@@ -23,6 +23,46 @@ try {
     [void](Set-ForeverToolsStartup $testScript 'C:\Games\WoW Forever' $startup)
     Assert (@(Get-ChildItem -LiteralPath $startup -File).Count -eq 1) 'Repeated setup created duplicate startup entries'
     Write-Host 'PASS: startup shortcut, hidden launch, space-containing paths, idempotent setup'
+    # Real Windows PowerShell child: readiness, duplicate launch, legacy helper and startup error.
+    $helperRoot = Join-Path $work 'WoW helper test'
+    $helperScript = Join-Path $work 'helper test.ps1'
+    $helperLibrary = $testScript.Replace("'", "''")
+    $helperCode = @'
+param([string]$GamePath, [switch]$Watch, [switch]$Notify, [switch]$ListenOnly)
+$testRoot = $GamePath
+. '__LIBRARY__' -LibraryOnly
+$name = Get-HelperLockName $testRoot
+$mutex = New-Object Threading.Mutex($false, $name)
+if (!$mutex.WaitOne(0)) { throw 'Duplicate test helper' }
+$ready = New-Object Threading.EventWaitHandle($false, [Threading.EventResetMode]::ManualReset, ($name + '-Ready'))
+$stop = New-Object Threading.EventWaitHandle($false, [Threading.EventResetMode]::ManualReset, ($name + '-TestStop'))
+try { [IO.File]::WriteAllText(($PSCommandPath + '.pid'), [string]$PID); [void]$ready.Set(); [void]$stop.WaitOne(15000) }
+finally { [void]$ready.Reset(); $ready.Dispose(); $stop.Dispose(); $mutex.ReleaseMutex(); $mutex.Dispose() }
+'@
+    [IO.File]::WriteAllText($helperScript, $helperCode.Replace('__LIBRARY__', $helperLibrary))
+    $helperName = Get-HelperLockName $helperRoot
+    $stop = New-Object Threading.EventWaitHandle($false, [Threading.EventResetMode]::ManualReset, ($helperName + '-TestStop'))
+    $ready = New-Object Threading.EventWaitHandle($false, [Threading.EventResetMode]::ManualReset, ($helperName + '-Ready'))
+    try {
+        Start-ForeverToolsHelper $helperScript $helperRoot (Join-Path $work 'helper-logs')
+        Assert ($ready.WaitOne(0)) 'Launcher claimed success before helper was ready'
+        Start-ForeverToolsHelper $helperScript $helperRoot (Join-Path $work 'helper-logs')
+        [void]$ready.Reset()
+        Must-Reject { Start-ForeverToolsHelper $helperScript $helperRoot (Join-Path $work 'helper-logs') }
+    } finally {
+        $pidPath = $helperScript + '.pid'
+        $testChild = if (Test-Path -LiteralPath $pidPath) { Get-Process -Id ([int][IO.File]::ReadAllText($pidPath)) -ErrorAction SilentlyContinue }
+        [void]$stop.Set()
+        if ($testChild) { Assert ($testChild.WaitForExit(5000)) 'Test helper did not stop'; $testChild.Dispose() }
+        $ready.Dispose(); $stop.Dispose()
+    }
+    $brokenScript = Join-Path $work 'broken helper.ps1'
+    [IO.File]::WriteAllText($brokenScript, "throw 'TEST_BOOT_FAILURE'")
+    $bootError = ''
+    try { Start-ForeverToolsHelper $brokenScript ($helperRoot + '-broken') (Join-Path $work 'broken-logs') }
+    catch { $bootError = $_.Exception.Message }
+    Assert ($bootError.Contains('TEST_BOOT_FAILURE')) ("Hidden child error was not reported to launcher: " + $bootError)
+    Write-Host 'PASS: real child readiness, duplicate launch, legacy helper rejection and visible startup error'
     $source = Join-Path $work 'source'
     $dest = Join-Path $work 'game\Interface\AddOns'
     [void][IO.Directory]::CreateDirectory((Join-Path $source 'ForeverTools'))
@@ -135,6 +175,17 @@ try {
     Invoke-RequestedUpdates (Join-Path $work 'game') $seen $false $statePath
     Assert ($script:syncCalls -eq ($attempts + 1)) 'Restart lost the failed request'
     Assert ((Get-CompletedUpdateRequests $statePath).Values -contains '123458') 'Successful retry not remembered'
+    $script:notifications = 0
+    $script:tray = New-Object PSObject -Property @{BalloonTipTitle=''; BalloonTipText=''}
+    $script:tray | Add-Member ScriptMethod ShowBalloonTip { param($Duration) $script:notifications++ }
+    [IO.File]::WriteAllText((Join-Path $saved 'ForeverTools.lua'), 'ForeverToolsDB = { ["updateRequest"] = 123459, }')
+    Invoke-RequestedUpdates (Join-Path $work 'game') $seen $true $statePath
+    [IO.File]::WriteAllText((Join-Path $saved 'ForeverTools.lua'), 'ForeverToolsDB = { ["updateRequest"] = 123460, }')
+    Invoke-RequestedUpdates (Join-Path $work 'game') $seen $true $statePath
+    Assert ($script:notifications -eq 2) 'Notifications blocked the next update request'
+    Assert ($script:tray.BalloonTipTitle -eq 'ForeverTools: Update fertig') 'Completion notification missing'
+    $script:tray = $null
+    Write-Host 'PASS: successive updates keep working without dismissing Windows notifications'
     Write-Host 'PASS: requests survive late helper startup and restart; only successful updates are persisted'
     Write-Host 'PASS: install, backup, hash failure, unrelated files, path validation, duplicate catalog, safe request parsing'
     Write-Host 'PASS: complete offline download/extract/install/status flow'
