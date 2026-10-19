@@ -49,6 +49,8 @@ function CreateFrame(_, name)
     function f:StartMoving() end
     function f:StopMovingOrSizing() end
     function f:SetJustifyH() end
+    function f:SetFont() end
+    function f:SetTextColor() end
     function f:SetText(t) self.text = t end
     function f:SetScrollChild(c) self.child = c end
     function f:SetChecked(c) self.checked = c end

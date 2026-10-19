@@ -14,6 +14,8 @@ Die Datei liegt danach direkt unter `Interface\AddOns\ForeverTools\ForeverTools.
 
 ## Ein Update aktualisiert alles
 
+**Neu in 1.7.0:** Quest-Gegner erhalten ein gelbes Questzeichen mit kompaktem Fortschritt wie **2/7** über dem Namen. Quest-Sammelobjekte können funkeln und zeigen den Zähler beim Darüberfahren im Tooltip. Einstellungen: **`/ad → Quest-Gegner → Optionen`**. Die Funkeloption passt Umrandungen und bei Bedarf die Partikeldichte an; vorherige Werte werden beim Abschalten wiederhergestellt. Nach dem ersten Update einmal WoW vollständig neu starten.
+
 **Jägermunition:** Unter `/ad → Händler & Taschen → Optionen` ist „Jäger: Köcher / Munitionsbeutel auffüllen“ standardmäßig aktiv. Beim Öffnen eines passenden Händlers kauft das Addon die beste Munition für eure Stufe und angelegte Fernkampfwaffe: Pfeile für Bogen/Armbrust, Kugeln für Schusswaffen. Es füllt nur den verfügbaren Platz im passenden Köcher/Munitionsbeutel und berücksichtigt Gold und Händlervorrat. Ohne passenden Beutel wird nichts gekauft. **Umschalt beim Öffnen des Händlers gedrückt halten**, um den Munitionskauf einmal auszusetzen.
 
 **Einmal nach der Installation `Update.cmd` im ForeverTools-Ordner doppelklicken.** Dadurch wird der Helfer gestartet und für die automatische Ausführung bei eurer Windows-Anmeldung eingerichtet. Das muss nach einem Neustart nicht wiederholt werden. Er läuft unsichtbar im Hintergrund; sein Symbol findet ihr neben der Windows-Uhr. Keine Ordnerauswahl und kein offenes Helferfenster nötig.

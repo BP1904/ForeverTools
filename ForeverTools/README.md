@@ -1,4 +1,4 @@
-# ForeverTools 1.5.0
+# ForeverTools 1.7.0
 
 ## GitHub-Updates
 
@@ -15,7 +15,7 @@ Keine zusätzlichen Addons oder Bibliotheken im Spiel erforderlich.
 
 Menü öffnen: **Schmiede-Symbol unten links an der Minimap**, **`/ad`** oder **`/forevertools`**. Das Fenster ist verschiebbar und lässt sich mit Escape schließen.
 
-Die Hauptübersicht zeigt nur ein Ein-/Aus-Häkchen pro Modul, derzeit neun einschließlich **Anti Fett Finger** und **Auto Rank**. Alle Unterpunkte starten eingeklappt. **„Optionen +“** öffnet die Beschreibung, Aktionen und Einstellungen des jeweiligen Moduls; **„Optionen -“** klappt sie wieder zu. Das Aufklappen verändert keine Einstellungen. Unterpunkte und Aktionen ausgeschalteter Module sind deaktiviert, die Optionen lassen sich weiterhin ansehen.
+Die Hauptübersicht zeigt ein Ein-/Aus-Häkchen pro Modul, einschließlich **Quest-Gegner**, **Anti Fett Finger** und **Auto Rank**. Alle Unterpunkte starten eingeklappt. **„Optionen +“** öffnet die Beschreibung, Aktionen und Einstellungen des jeweiligen Moduls; **„Optionen -“** klappt sie wieder zu. Das Aufklappen verändert keine Einstellungen. Unterpunkte und Aktionen ausgeschalteter Module sind deaktiviert, die Optionen lassen sich weiterhin ansehen.
 
 **Anti Fett Finger** ist vollständig integriert. Die Steuerung erfolgt über das Häkchen in der ForeverTools-Übersicht (`/ad`) oder `/aff on` und `/aff off`. Der Zustand wird pro Charakter gespeichert. Änderungen während eines Kampfes gelten nach Kampfende. Bei einer noch aktivierten alten Einzelversion werden deren Einstellungen übernommen und die alte Version für den aktuellen Charakter deaktiviert. Sie wird in dieser Sitzung weiterverwendet; ab dem folgenden `/reload` läuft die integrierte Funktion.
 
@@ -39,6 +39,16 @@ Im Kampf wartet das Modul. Gesperrte Gegenstände werden abgewartet; dauerhafte 
 Das übergeordnete Modul-Häkchen stoppt laufende Automatik. Einzelne Funktionen lassen sich unabhängig abschalten. Eine bereits vom Spiel angenommene Aktion wird durch das Abschalten nicht rückgängig gemacht.
 
 ## Automatische Questabgabe
+
+**Quest-Sammelobjekte:** Unter `/ad → Quest-Gegner → Optionen` sind Funkeln und Tooltip-Zähler anfangs eingeschaltet. Beim Darüberfahren zeigt der Objekt-Tooltip das gelbe Questzeichen mit einem Zähler wie **2/7** für offene eigene Questziele.
+
+Das native Funkeln wird mit ausgeschalteten Umrandungen (`Outline` und Grafik-Outline-Modi) angefordert. `ShowQuestObjectHighlightEffect` wird zusätzlich aktiviert, sofern der Client diese Einstellung anbietet. Partikeldichten unter 100 werden auf den dokumentierten Standard 100 angehoben; höhere Werte bleiben erhalten. Das kann auch andere Partikeleffekte deutlicher machen. Die zuvor geänderten Grafikwerte werden beim Abschalten wiederhergestellt. Nach dem Laden und nach Grafikänderungen werden die Werte verzögert erneut geprüft.
+
+Zusätzlich zeichnet ForeverTools goldene Lichtpunkte an **allen verfügbaren und einzeln als Questobjekt erkannten Ankern**. Mehrere Objekte können gleichzeitig funkeln; das Addon begrenzt den eigenen Effekt nicht mehr auf das Interaktionsziel. Es erfindet keine Bildschirmpositionen: Wenn der Client nur den nahen Interaktionsanker liefert, bleibt der eigene Effekt auf diesen beschränkt. Der native Effekt ist der Ansatz für alle weiteren vom Spiel dargestellten Questobjekte. Die allgemeine Interaktionsreichweite des Forever-Clients wird dadurch nicht aufgehoben.
+
+NPCs, Leichen und erledigte Sammelziele erhalten den eigenen Effekt nicht. Im Kampf pausiert er; Änderungen an Einstellungen warten bis zum Kampfende. `/ftquest sparkle` zeigt Grafikwerte, Partikeldichten und die Zahl der gleichzeitig verwendeten Objekt-Anker. Nach Änderungen an der nativen Darstellung einmal vollständig neu starten, damit die Weltobjekte neu geladen werden. Bereits aktives natives Funkeln kann nach dem Abschalten bis zum Spielneustart bleiben. Die vierfach gleichzeitige Darstellung ist mit simulierten APIs geprüft. Das Funkeln bei den Mirkkrautsamenkapseln der Quest „Pigmente für Farben“ wurde zusätzlich im Forever-Client bestätigt; weitere Sammelquests wurden noch nicht einzeln im Spiel geprüft.
+
+**Quest-Gegner:** Das eigene Modul unter `/ad` zeigt über dem Gegnernamen ein gelbes Quest-Ausrufezeichen mit kompaktem Zähler **1/15** für offene Questziele aus deinem Questlog. Das Modul schaltet Gegnerplaketten auch außerhalb des Kampfes ein und fordert 100 Reichweite an (vom Client begrenzt). Beim Ausschalten werden die vorherigen Werte wiederhergestellt, sofern du sie zwischenzeitlich nicht selbst geändert hast. Nicht ausgewählte Plaketten bleiben sichtbar; nachgeladene Client-Einstellungen werden berücksichtigt. Reine Weltnamen außerhalb der Namensplaketten-Reichweite können keine Questzeichen erhalten. Der Fortschritt aktualisiert sich automatisch; erfüllte Ziele verschwinden. Mehrere offene Ziele erscheinen untereinander. Tötungsziele werden zusätzlich anhand des exakten Gegnernamens aus dem Questlog erkannt, auch ohne Anklicken oder verfügbare Tooltipdaten. Sammelziele werden angezeigt, sofern der Gegner-Tooltip sie mit einem Zähler meldet. Ziele anderer Gruppenmitglieder werden nicht übernommen. Ohne passende Questdaten bleibt die Anzeige leer. `/ftquest` zeigt zur Fehlersuche die aktuelle Reichweite und die Anzahl erkannter Namensplaketten an. Die Funktion ist unabhängig von der automatischen Questabgabe und von Threat Plates schaltbar.
 
 Das zweite Modul integriert die Quest-Schnellabgabe aus `Guschi.zip`, Datei `Guschi/QuickTurnIn.lua` (Guschi 1.2.1, Autor: Philipp).
 

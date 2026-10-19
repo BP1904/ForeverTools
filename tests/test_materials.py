@@ -192,8 +192,9 @@ class MaterialsTest(unittest.TestCase):
         self.lua.execute('''
             SlashCmdList.FOREVERTOOLS()
             local checks=ForeverTools.menu.checks
-            assert(#checks==40 and checks[7].box:GetChecked())
-            checks[7].box:SetChecked(false); checks[7].box.scripts.OnClick(checks[7].box)
+            local master=ForeverTools.menu.byModule.materials.master.box
+            assert(#checks==43 and master:GetChecked())
+            master:SetChecked(false); master.scripts.OnClick(master)
             assert(not ForeverTools:IsEnabled('materials') and ForeverTools:IsEnabled('merchant'))
         ''')
         a = (ROOT / 'ForeverTools/ForeverTools.toc').read_text(encoding='utf-8')
