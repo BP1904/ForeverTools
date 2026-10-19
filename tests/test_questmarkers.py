@@ -85,6 +85,53 @@ class QuestMarkersTest(unittest.TestCase):
             assert(record.text.text=='')
         ''')
 
+    def test_multiple_quest_enemies_sparkle_and_keep_animating_in_combat(self):
+        self.lua.execute('''
+            assert(Q.enemyGlows[plate].active)
+            units.nameplate2={name='Enemy',enemy=true}
+            local second=MakePlate('nameplate2'); Fire('NAME_PLATE_UNIT_ADDED','nameplate2')
+            assert(Q.enemyGlows[second].active)
+            Q:AnimateObjectSparkles(0.05)
+            local first=Q.enemyGlows[plate].stars[1].color[4]
+            combat=true; Q:AnimateObjectSparkles(0.05)
+            assert(Q.enemyGlows[plate].alpha==1 and Q.enemyGlows[plate].stars[1].color[4]~=first)
+            assert(Q.enemyGlows[second].stars[1].color[4]>0)
+        ''')
+
+    def test_enemy_sparkles_switch_is_independent_of_objects_and_markers(self):
+        self.lua.execute('''
+            units.softinteract={name='Vorräte',object=true}; MakePlate('softinteract')
+            Q:Refresh(); assert(Q.objectEffectActive and Q.enemyGlows[plate].active)
+            Q.settings.enemySparkles=false; Q:OnSettingsChanged()
+            assert(not Q.enemyGlows[plate].active and Q.enemyGlows[plate].alpha==0)
+            assert(record.text.text==icon..'1/15' and Q.objectEffectActive)
+            Q.settings.enemySparkles=true; Q.settings.objectSparkles=false; Q:OnSettingsChanged()
+            assert(Q.enemyGlows[plate].active and not Q.objectEffectActive)
+            ForeverTools:SetEnabled('questmarkers',false)
+            assert(Q.enemyGlows[plate].alpha==0 and not Q.enemyGlows[plate].active)
+        ''')
+
+    def test_enemy_sparkles_stop_for_finished_dead_friendly_and_removed_units(self):
+        self.lua.execute('''
+            local glow=Q.enemyGlows[plate]
+            lines[2].leftText='15/15 Wölfe getötet'; Fire('QUEST_LOG_UPDATE')
+            assert(not glow.active and glow.alpha==0)
+            lines[2].leftText='14/15 Wölfe getötet'; units.nameplate1.dead=true; Q:Refresh()
+            assert(not glow.active)
+            units.nameplate1.dead=false; units.nameplate1.enemy=false; Q:Refresh(); assert(not glow.active)
+            units.nameplate1.enemy=true; Q:Refresh(); assert(glow.active)
+            Fire('NAME_PLATE_UNIT_REMOVED','nameplate1'); assert(not glow.active and glow.alpha==0)
+            units.nameplate2={name='Enemy',enemy=true}; plates.nameplate1=nil; plates.nameplate2=plate
+            plate.UnitFrame.unit='nameplate2'; Fire('NAME_PLATE_UNIT_ADDED','nameplate2')
+            assert(Q.enemyGlows[plate]==glow and glow.active)
+        ''')
+
+    def test_world_object_does_not_receive_an_additional_enemy_effect(self):
+        self.lua.execute('''
+            units.nameplate1.object=true; Q:Refresh()
+            assert(not Q.enemyGlows[plate].active and Q.objectEffectActive)
+        ''')
+
     def test_custom_sparkles_on_nearby_quest_object_and_animation(self):
         self.lua.execute('''
             units.softinteract={name='Vorräte',guid='GameObject-1',object=true}

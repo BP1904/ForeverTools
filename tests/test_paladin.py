@@ -114,7 +114,7 @@ class PaladinTest(unittest.TestCase):
             assert(P.classCasts[1]:GetAttribute('spell1')=='Spell19740')
             assert(P.classCasts[1]:GetAttribute('spell2')=='Spell19740')
             assert(P.classCasts[1]:GetAttribute('unit')=='Ben Forever')
-            SlashCmdList.FOREVERTOOLS(); assert(#ForeverTools.menu.checks==43)
+            SlashCmdList.FOREVERTOOLS(); assert(#ForeverTools.menu.checks==44)
         ''')
 
     def test_greater_left_normal_right_and_player_override(self):

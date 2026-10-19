@@ -39,11 +39,11 @@
         },
         {
           "path": "ForeverTools.toc",
-          "sha256": "dec56fca7cd700ae6660b4ec3843fe6094f3d399e9748d21758dd64ba05287d8"
+          "sha256": "dd716fab90cf7c843d408aaaf2e9fd83fa625081d86067f0dfaec6ce5f414b17"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "dec56fca7cd700ae6660b4ec3843fe6094f3d399e9748d21758dd64ba05287d8"
+          "sha256": "dd716fab90cf7c843d408aaaf2e9fd83fa625081d86067f0dfaec6ce5f414b17"
         },
         {
           "path": "Menu.lua",
@@ -79,7 +79,7 @@
         },
         {
           "path": "Modules/QuestMarkers.lua",
-          "sha256": "fd96d4b434ce8416bc62828987e548c976bf272164f52b3fffeb5ea5c3898112"
+          "sha256": "8ba4b9cff2d3eba6e97879583f096c222ba308bc55b649ea4327f7e729263cfc"
         },
         {
           "path": "Modules/Quests.lua",
@@ -91,7 +91,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "ab57f9b98a00afeea8781a4e3c91f31d22f2dcdb807562483887d62147d0587f"
+          "sha256": "b326775bbe6f21e2ae75615798931f1187ab7fd85af2a2b129098c59b47dc6e5"
         },
         {
           "path": "Sounds/GTFO/alarmbeep.ogg",

@@ -12,6 +12,8 @@ function CreateFrame(...)
     function frame:SetFrameLevel(value) self.frameLevel=value end
     function frame:GetFrameLevel() return self.frameLevel or 2 end
     function frame:IsForbidden() return self.forbidden or false end
+    function frame:SetIgnoreParentAlpha() end
+    function frame:SetAlpha(alpha) self.alpha=alpha end
     local makeTexture=frame.CreateTexture
     function frame:CreateTexture(...)
         local texture=makeTexture(self,...)
@@ -22,6 +24,9 @@ function CreateFrame(...)
         function texture:SetShown(value) self.shown=value end
         function texture:GetAlpha() return self.alpha or 1 end
         function texture:SetAlpha(value) self.alpha=value end
+        function texture:SetBlendMode() end
+        function texture:ClearAllPoints() self.point=nil end
+        function texture:SetVertexColor(...) self.color={...} end
         return texture
     end
     return frame
