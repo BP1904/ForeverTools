@@ -2,11 +2,10 @@ local _, FT = ...
 local M = {
     title = "Quest-Gegner",
     description = "Gelbes Questzeichen mit Fortschritt über dem Gegnernamen, z. B. 1/15. Gegnerplaketten auch ohne Auswahl anzeigen.",
-    defaults = {objectSparkles = true, objectTooltips = true, enemySparkles = true},
+    defaults = {objectSparkles = true, objectTooltips = true},
     options = {
         {key = "objectSparkles", title = "Quest-Sammelobjekte funkeln lassen"},
         {key = "objectTooltips", title = "Sammelobjekt-Tooltip: ! mit Zähler anzeigen"},
-        {key = "enemySparkles", title = "Quest-Gegner ebenfalls funkeln lassen"},
     },
 }
 FT:RegisterModule("questmarkers", M)
@@ -215,26 +214,23 @@ function M:ObjectNeedsSparkles(unit)
         or C_QuestLog and Safe(C_QuestLog.UnitIsRelatedToActiveQuest, unit) == true
 end
 
-function M:CreateQuestGlow(plate)
-    local glow = CreateFrame("Frame", nil, plate)
-    glow:SetSize(1, 1); glow:EnableMouse(false)
-    glow:SetIgnoreParentAlpha(true)
-    glow:SetPoint("CENTER", plate, "CENTER", 0, -30)
-    glow:SetFrameLevel((Safe(plate.GetFrameLevel, plate) or 1) + 5)
-    glow.stars = {}
-    for index = 1, 5 do
-        local star = glow:CreateTexture(nil, "OVERLAY")
-        star:SetTexture("Interface\\Cooldown\\star4")
-        star:SetBlendMode("ADD")
-        glow.stars[index] = star
-    end
-    glow:SetAlpha(0)
-    return glow
-end
-
 function M:ShowObjectGlow(plate)
-    local glow = self.objectGlows[plate] or self:CreateQuestGlow(plate)
-    self.objectGlows[plate] = glow
+    local glow = self.objectGlows[plate]
+    if not glow then
+        glow = CreateFrame("Frame", nil, plate)
+        glow:SetSize(1, 1); glow:EnableMouse(false)
+        glow:SetIgnoreParentAlpha(true)
+        glow:SetPoint("CENTER", plate, "CENTER", 0, -30)
+        glow:SetFrameLevel((Safe(plate.GetFrameLevel, plate) or 1) + 5)
+        glow.stars = {}
+        for index = 1, 5 do
+            local star = glow:CreateTexture(nil, "OVERLAY")
+            star:SetTexture("Interface\\Cooldown\\star4")
+            star:SetBlendMode("ADD")
+            glow.stars[index] = star
+        end
+        self.objectGlows[plate] = glow
+    end
     glow.active = true
     glow:SetAlpha(1)
     return glow
@@ -278,19 +274,21 @@ function M:UpdateObjectSparkles()
 end
 
 function M:AnimateObjectSparkles(delta)
+    if not self.objectEffectActive then return end
+    if Safe(InCombatLockdown) then
+        for _, glow in pairs(self.objectGlows) do glow:SetAlpha(0) end
+        return
+    end
     self.objectGlowTime = (self.objectGlowTime or 0) + math.min(delta, 0.1)
-    for _, group in ipairs({self.objectGlows, self.enemyGlows}) do
-        for _, glow in pairs(group) do
-            if group == self.objectGlows and Safe(InCombatLockdown) then glow:SetAlpha(0)
-            elseif glow.active then
-                for index, star in ipairs(glow.stars) do
-                    local phase = (self.objectGlowTime * 0.65 + index * 0.19) % 1
-                    local brightness = math.sin(phase * math.pi)
-                    star:ClearAllPoints()
-                    star:SetPoint("CENTER", glow, "CENTER", (index - 3) * 12, phase * 22 - index % 2 * 14)
-                    star:SetSize(8 + brightness * 20, 8 + brightness * 20)
-                    star:SetVertexColor(1, 0.85, 0.35, brightness)
-                end
+    for _, glow in pairs(self.objectGlows) do
+        if glow.active then
+            for index, star in ipairs(glow.stars) do
+                local phase = (self.objectGlowTime * 0.65 + index * 0.19) % 1
+                local brightness = math.sin(phase * math.pi)
+                star:ClearAllPoints()
+                star:SetPoint("CENTER", glow, "CENTER", (index - 3) * 12, phase * 22 - index % 2 * 14)
+                star:SetSize(8 + brightness * 20, 8 + brightness * 20)
+                star:SetVertexColor(1, 0.85, 0.35, brightness)
             end
         end
     end
@@ -322,19 +320,10 @@ function M:Update(unit)
     local record = self.byUnit[unit]
     if not record then return end
     record.text:SetText("")
-    local glow = self.enemyGlows[record.plate]
-    if glow then glow.active = false; glow:SetAlpha(0) end
     if not FT:IsEnabled("questmarkers") or not Accessible(record.plate) then return end
     -- Tooltip APIs may reject units or restrict data during combat. Retry next tick.
     local ok, text = pcall(self.Progress, self, unit)
-    if ok then
-        record.text:SetText(text)
-        if text ~= "" and self.settings.enemySparkles and Safe(UnitIsGameObject, unit) ~= true then
-            glow = glow or self:CreateQuestGlow(record.plate)
-            self.enemyGlows[record.plate] = glow
-            glow.active = true; glow:SetAlpha(1)
-        end
-    end
+    if ok then record.text:SetText(text) end
 end
 
 function M:Attach(unit)
@@ -377,10 +366,7 @@ end
 
 function M:Refresh()
     self:UpdateObjectSparkles()
-    if not FT:IsEnabled("questmarkers") then
-        for _, glow in pairs(self.enemyGlows) do glow.active = false; glow:SetAlpha(0) end
-        return
-    end
+    if not FT:IsEnabled("questmarkers") then return end
     local plates = C_NamePlate and Safe(C_NamePlate.GetNamePlates)
     for _, plate in pairs(plates or {}) do
         if Accessible(plate) and Accessible(plate.UnitFrame) then
@@ -407,7 +393,6 @@ function M:Initialize()
     if self.frame then return end
     self.byUnit = {}
     self.objectGlows = setmetatable({}, {__mode = "k"})
-    self.enemyGlows = setmetatable({}, {__mode = "k"})
     self.byPlate = setmetatable({}, {__mode = "k"})
     self:ApplyVisibility()
     self:ReadQuestLog()
@@ -464,8 +449,6 @@ function M:Initialize()
             if self.visibilityPending then self:ApplyVisibility(); self:ScheduleVisibility(1); self:Refresh() end
         elseif event == "NAME_PLATE_UNIT_REMOVED" then
             local record = self.byUnit[unit]
-            local glow = record and self.enemyGlows[record.plate]
-            if glow then glow.active = false; glow:SetAlpha(0) end
             if record then record.text:SetText(""); record.unit = nil; self.byUnit[unit] = nil end
         elseif event == "NAME_PLATE_UNIT_ADDED" then self:Attach(unit)
         else

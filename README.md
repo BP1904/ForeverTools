@@ -14,9 +14,9 @@ Die Datei liegt danach direkt unter `Interface\AddOns\ForeverTools\ForeverTools.
 
 ## Ein Update aktualisiert alles
 
-**Neu in 1.7.2:** Update-Aufträge bleiben beim verspäteten Start oder Neustart des Windows-Helfers erhalten. Im Spiel erscheint ein Hinweis auf die Windows-Fertigmeldung und den zweiten `/reload`.
+**Neu in 1.7.3:** Das Funkeln der Quest-Gegner wurde entfernt. Ausrufezeichen, Fortschrittszähler und das Funkeln der Sammelobjekte bleiben erhalten.
 
-**Seit 1.7.1:** Benötigte Quest-Gegner funkeln zusätzlich golden, auch im Kampf. Das Gegner-Funkeln lässt sich unabhängig vom Sammelobjekt-Funkeln abschalten.
+**Seit 1.7.2:** Update-Aufträge bleiben beim verspäteten Start oder Neustart des Windows-Helfers erhalten. Im Spiel erscheint ein Hinweis auf die Windows-Fertigmeldung und den zweiten `/reload`.
 
 **Seit 1.7.0:** Quest-Gegner erhalten ein gelbes Questzeichen mit kompaktem Fortschritt wie **2/7** über dem Namen. Quest-Sammelobjekte können funkeln und zeigen den Zähler beim Darüberfahren im Tooltip. Einstellungen: **`/ad → Quest-Gegner → Optionen`**. Die Funkeloption passt Umrandungen und bei Bedarf die Partikeldichte an; vorherige Werte werden beim Abschalten wiederhergestellt. Nach dem ersten Update einmal WoW vollständig neu starten.
 
