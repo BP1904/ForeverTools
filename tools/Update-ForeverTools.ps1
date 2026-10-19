@@ -64,6 +64,26 @@ function Get-UpdateRequests([string]$Root) {
     return $requests
 }
 
+function Get-CompletedUpdateRequests([string]$Path) {
+    $completed = @{}
+    if (Test-Path -LiteralPath $Path) {
+        try {
+            $data = [IO.File]::ReadAllText($Path) | ConvertFrom-Json
+            foreach ($property in $data.PSObject.Properties) {
+                if ([string]$property.Value -match '^\d+$') { $completed[$property.Name] = [string]$property.Value }
+            }
+        } catch { Write-Warning 'Update-Merkdatei unlesbar; offene Auftraege werden erneut geprueft.' }
+    }
+    return $completed
+}
+
+function Save-CompletedUpdateRequests([string]$Path, [hashtable]$Completed) {
+    [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($Path))
+    $temporary = $Path + '.tmp'
+    [IO.File]::WriteAllText($temporary, ($Completed | ConvertTo-Json), (New-Object Text.UTF8Encoding $false))
+    Move-Item -LiteralPath $temporary -Destination $Path -Force
+}
+
 function Assert-SafeAddonPath([string]$Name) {
     if ($Name -notmatch '^[A-Za-z][A-Za-z0-9_-]{0,79}$' -or $Name -match '^(CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9])$') {
         throw "Ungueltiger Addon-Ordner: $Name"
@@ -156,7 +176,7 @@ function Install-AddonFiles([object]$Catalog, [string]$Source, [string]$Destinat
     }
 }
 
-function Sync-ForeverTools([string]$Root) {
+function Sync-ForeverTools([string]$Root, [string]$Request) {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     $headers = @{'User-Agent'='ForeverTools-Updater'; Accept='application/vnd.github+json'}
     $repo = 'https://api.github.com/repos/BP1904/ForeverTools'
@@ -193,6 +213,7 @@ function Sync-ForeverTools([string]$Root) {
         $short = $commit.Substring(0, 8)
         $checked = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
         $status = "local _, FT = ...`nFT.updateStatus = {commit = `"$short`", checked = `"$checked`"}`n"
+        if ($Request -match '^\d+$') { $status += "FT.updateStatus.request = $Request`n" }
         [IO.File]::WriteAllText((Join-Path $destination 'ForeverTools\UpdateStatus.lua'), $status, (New-Object Text.UTF8Encoding $false))
         Write-Host "ERFOLG: ForeverTools mit allen Modulen installiert/geprueft ($short)." -ForegroundColor Green
         Write-Host 'Jetzt im Spiel /reload. Bei neuen Addon-Ordnern WoW gegebenenfalls neu starten.'
@@ -207,13 +228,19 @@ function Sync-ForeverTools([string]$Root) {
     }
 }
 
-function Invoke-RequestedUpdates([string]$Root, [hashtable]$Seen, [bool]$NotifyUser = $false) {
+function Invoke-RequestedUpdates([string]$Root, [hashtable]$Seen, [bool]$NotifyUser = $false, [string]$StatePath) {
     $requests = Get-UpdateRequests $Root
     foreach ($file in $requests.Keys) {
         if ($Seen[$file] -ne $requests[$file]) {
             $Seen[$file] = $requests[$file]
             try {
-                Sync-ForeverTools $Root
+                Sync-ForeverTools $Root $requests[$file]
+                # Persist only SUCCESSFUL requests. A restarted helper must pick up pending work.
+                if ($StatePath) {
+                    $completed = Get-CompletedUpdateRequests $StatePath
+                    $completed[$file] = $requests[$file]
+                    Save-CompletedUpdateRequests $StatePath $completed
+                }
                 if ($NotifyUser) { [void][Windows.Forms.MessageBox]::Show('Alle ForeverTools-Module wurden aktualisiert. Im Spiel jetzt /reload eingeben.', 'ForeverTools: Update fertig') }
             } catch {
                 Write-Host "FEHLER: $_ | Im Spiel Update erneut anfordern." -ForegroundColor Red
@@ -236,6 +263,7 @@ if (!$GamePath) {
     $picker.Dispose()
 }
 $GamePath = [IO.Path]::GetFullPath($GamePath)
+if ($GamePath.Length -gt [IO.Path]::GetPathRoot($GamePath).Length) { $GamePath = $GamePath.TrimEnd('\', '/') }
 if (!(Test-Path -LiteralPath (Join-Path $GamePath 'Interface') -PathType Container) -or
     @((Get-ChildItem -LiteralPath $GamePath -Filter 'Wow*.exe' -File)).Count -eq 0) {
     throw 'Kein WoW-Clientordner. Mit -GamePath den Ordner mit WoW.exe und Interface angeben.'
@@ -245,6 +273,10 @@ Assert-NoLink (Join-Path $GamePath 'Interface\AddOns')
 [IO.File]::WriteAllText($config, $GamePath)
 # A second watcher could race with file installation; allow only one per game folder.
 $lockName = 'Local\ForeverTools-' + (($GamePath.ToLowerInvariant() -replace '[^a-z0-9]', '_'))
+$pathHash = [Security.Cryptography.SHA256]::Create()
+try { $stateKey = ([BitConverter]::ToString($pathHash.ComputeHash([Text.Encoding]::UTF8.GetBytes($GamePath.ToLowerInvariant())))).Replace('-', '').ToLowerInvariant() }
+finally { $pathHash.Dispose() }
+$statePath = Join-Path $configDir ($stateKey + '-requests.json')
 if ($EnableStartup) {
     $installedScript = Join-Path $GamePath 'Interface\AddOns\ForeverTools\Updater\Update-ForeverTools.ps1'
     if (!(Test-Path -LiteralPath $installedScript -PathType Leaf)) { throw 'ForeverTools zuerst im AddOns-Ordner installieren.' }
@@ -281,7 +313,8 @@ if ($Notify) {
 }
 try {
     Write-Host "ForeverTools-Updater | BP1904/ForeverTools | $GamePath"
-    $seen = Get-UpdateRequests $GamePath
+    # Do not seed this from SavedVariables: that discards requests made before startup.
+    $seen = Get-CompletedUpdateRequests $statePath
     if (!$ListenOnly) {
         try { Sync-ForeverTools $GamePath } catch {
             if (!$Watch) { throw }
@@ -296,7 +329,7 @@ try {
             if ($Notify) { [Windows.Forms.Application]::DoEvents() }
             if ($script:stopWatcher) { break }
             Start-Sleep -Seconds 2
-            Invoke-RequestedUpdates $GamePath $seen ([bool]$Notify)
+            Invoke-RequestedUpdates $GamePath $seen ([bool]$Notify) $statePath
         }
     }
 } finally {

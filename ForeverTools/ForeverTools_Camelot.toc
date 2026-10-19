@@ -2,7 +2,7 @@
 ## Title: ForeverTools
 ## Notes: Händler, Quests, Materialien, Paladin, GTFO, Threat Plates, Decursive, Anti Fett Finger und Auto Rank.
 ## Author: ForeverTools
-## Version: 1.7.1
+## Version: 1.7.2
 ## OptionalDeps: AntiFettFinger, AutoRank
 ## SavedVariables: ForeverToolsDB
 ## SavedVariablesPerCharacter: ForeverToolsMaterialMail, ForeverToolsPaladinDB, ForeverToolsAntiFettFingerDB, ForeverToolsAutoRankDB

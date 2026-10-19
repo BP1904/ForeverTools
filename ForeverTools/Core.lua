@@ -57,6 +57,7 @@ function FT:Initialize()
     end
     if self.CreateLauncher and not self.launcher then self:CreateLauncher() end
     self:Print("geladen. Menü: Minimap-Schaltfläche, /ad oder /forevertools")
+    if self.PrintUpdateStatus then self:PrintUpdateStatus() end
 end
 
 local events = CreateFrame("Frame")

@@ -1,4 +1,4 @@
-# ForeverTools 1.7.1
+# ForeverTools 1.7.2
 
 ## GitHub-Updates
 

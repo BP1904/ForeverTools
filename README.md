@@ -14,7 +14,9 @@ Die Datei liegt danach direkt unter `Interface\AddOns\ForeverTools\ForeverTools.
 
 ## Ein Update aktualisiert alles
 
-**Neu in 1.7.1:** Benötigte Quest-Gegner funkeln zusätzlich golden, auch im Kampf. Das Gegner-Funkeln lässt sich unabhängig vom Sammelobjekt-Funkeln abschalten.
+**Neu in 1.7.2:** Update-Aufträge bleiben beim verspäteten Start oder Neustart des Windows-Helfers erhalten. Im Spiel erscheint ein Hinweis auf die Windows-Fertigmeldung und den zweiten `/reload`.
+
+**Seit 1.7.1:** Benötigte Quest-Gegner funkeln zusätzlich golden, auch im Kampf. Das Gegner-Funkeln lässt sich unabhängig vom Sammelobjekt-Funkeln abschalten.
 
 **Seit 1.7.0:** Quest-Gegner erhalten ein gelbes Questzeichen mit kompaktem Fortschritt wie **2/7** über dem Namen. Quest-Sammelobjekte können funkeln und zeigen den Zähler beim Darüberfahren im Tooltip. Einstellungen: **`/ad → Quest-Gegner → Optionen`**. Die Funkeloption passt Umrandungen und bei Bedarf die Partikeldichte an; vorherige Werte werden beim Abschalten wiederhergestellt. Nach dem ersten Update einmal WoW vollständig neu starten.
 
@@ -24,7 +26,9 @@ Die Datei liegt danach direkt unter `Interface\AddOns\ForeverTools\ForeverTools.
 
 Danach im Spiel einfach **`/ad → Update`** drücken – ohne zusätzlichen Bestätigungsdialog. Der Button speichert den Update-Auftrag und lädt die Oberfläche neu. Der Hintergrundhelfer lädt alle Module gemeinsam. Sobald Windows **„Update fertig“** meldet, im Spiel **`/reload`** eingeben. Dieser zweite Reload bleibt notwendig, damit WoW die heruntergeladenen Dateien einliest. WoW selbst darf keine Dateien herunterladen oder Windows-Programme starten. Die Menü-Fußzeile zeigt den zuletzt geprüften GitHub-Stand.
 
-Windows PowerShell 5.1 und Internetzugriff auf GitHub reichen aus; kein Python, Git oder GitHub-Account nötig. Erfolg oder Fehler erscheinen als Windows-Meldung. Rechtsklick auf das ForeverTools-Symbol neben der Windows-Uhr bietet **„Autostart ausschalten und beenden“**. Es wird ausschließlich eine Verknüpfung im Autostartordner des aktuellen Windows-Benutzers angelegt. Im Leerlauf und bei der Windows-Anmeldung werden keine Updates heruntergeladen. Die bisherige `ForeverTools-Updater.cmd` im Quellcode-Download kann die Einrichtung ebenfalls vornehmen.
+Windows PowerShell 5.1 und Internetzugriff auf GitHub reichen aus; kein Python, Git oder GitHub-Account nötig. Erfolg oder Fehler erscheinen als Windows-Meldung. Rechtsklick auf das ForeverTools-Symbol neben der Windows-Uhr bietet **„Autostart ausschalten und beenden“**. Es wird ausschließlich eine Verknüpfung im Autostartordner des aktuellen Windows-Benutzers angelegt. Ohne offenen Update-Auftrag wird nichts heruntergeladen. Erledigte Aufträge merkt sich der Helfer lokal unter `%LOCALAPPDATA%\ForeverTools`; beim Neustart holt er offene Aufträge nach. Die bisherige `ForeverTools-Updater.cmd` im Quellcode-Download kann die Einrichtung ebenfalls vornehmen.
+
+**Falls der alte Updater festhängt:** Das aktuelle ZIP über den installierten ForeverTools-Ordner kopieren. Den bisherigen Helfer über sein Symbol neben der Windows-Uhr mit **„Update-Helfer beenden“** schließen und **`Update.cmd`** im installierten Ordner starten. Danach im Spiel Update anklicken, die Windows-Fertigmeldung abwarten und `/reload` eingeben.
 
 ## Übergang von den alten Einzeladdons
 

@@ -91,7 +91,11 @@ try {
         }
     } finally { $zipWriter.Dispose() }
     $script:syncCalls = 0
-    function Invoke-RestMethod { $script:syncCalls++; return @{sha=$script:testCommit} }
+    function Invoke-RestMethod {
+        $script:syncCalls++
+        if ($script:failDownload) { throw 'Simulated network failure' }
+        return @{sha=$script:testCommit}
+    }
     function Invoke-WebRequest { param($Uri, $Headers, $OutFile, [switch]$UseBasicParsing)
         Assert ($Uri.EndsWith($script:testCommit)) 'Download not pinned to commit'
         Copy-Item -LiteralPath $script:testZip -Destination $OutFile
@@ -108,6 +112,30 @@ try {
     Assert ($script:syncCalls -eq ($before + 1)) 'Button request did not trigger update'
     Invoke-RequestedUpdates (Join-Path $work 'game') $seen
     Assert ($script:syncCalls -eq ($before + 1)) 'Button request ran twice'
+    # A button click BEFORE helper startup was previously discarded by seeding Seen from WTF.
+    $statePath = Join-Path $work 'state\requests.json'
+    $seen = Get-CompletedUpdateRequests $statePath
+    $before = $script:syncCalls
+    Invoke-RequestedUpdates (Join-Path $work 'game') $seen $false $statePath
+    Assert ($script:syncCalls -eq ($before + 1)) 'Request made before helper startup was lost'
+    $status = Get-Content (Join-Path $dest 'ForeverTools\UpdateStatus.lua') -Raw
+    Assert ($status.Contains('request = 123457')) 'Installed status does not acknowledge the button request'
+    $seen = Get-CompletedUpdateRequests $statePath
+    Invoke-RequestedUpdates (Join-Path $work 'game') $seen $false $statePath
+    Assert ($script:syncCalls -eq ($before + 1)) 'Restart repeated an already completed update'
+    [IO.File]::WriteAllText((Join-Path $saved 'ForeverTools.lua'), 'ForeverToolsDB = { ["updateRequest"] = 123458, }')
+    $script:failDownload = $true
+    Invoke-RequestedUpdates (Join-Path $work 'game') $seen $false $statePath
+    $attempts = $script:syncCalls
+    Invoke-RequestedUpdates (Join-Path $work 'game') $seen $false $statePath
+    Assert ($script:syncCalls -eq $attempts) 'Failed request retried every poll'
+    Assert ((Get-CompletedUpdateRequests $statePath).Values -notcontains '123458') 'Failed update marked completed'
+    $script:failDownload = $false
+    $seen = Get-CompletedUpdateRequests $statePath
+    Invoke-RequestedUpdates (Join-Path $work 'game') $seen $false $statePath
+    Assert ($script:syncCalls -eq ($attempts + 1)) 'Restart lost the failed request'
+    Assert ((Get-CompletedUpdateRequests $statePath).Values -contains '123458') 'Successful retry not remembered'
+    Write-Host 'PASS: requests survive late helper startup and restart; only successful updates are persisted'
     Write-Host 'PASS: install, backup, hash failure, unrelated files, path validation, duplicate catalog, safe request parsing'
     Write-Host 'PASS: complete offline download/extract/install/status flow'
     Write-Host 'PASS: saved button request triggers update exactly once; idle watcher stays quiet'

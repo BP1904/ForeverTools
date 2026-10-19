@@ -197,6 +197,22 @@ class ForeverToolsTest(unittest.TestCase):
             assert(ForeverToolsDB.updateRequest == nil)
         ''')
 
+    def test_update_explains_second_reload_until_request_is_installed(self):
+        self.run_lua('''
+            function time() return 123 end
+            function ReloadUI() end
+            ForeverTools:RequestUpdate()
+            ForeverTools.updateStatus = {request = 122, commit = 'old'}
+            ForeverTools:PrintUpdateStatus()
+            assert(ForeverToolsDB.updatePending)
+            assert(messages[#messages]:find('Update.cmd', 1, true))
+            assert(messages[#messages]:find('nochmals /reload', 1, true))
+            ForeverTools.updateStatus = {request = 123, commit = 'new'}
+            ForeverTools:PrintUpdateStatus()
+            assert(ForeverToolsDB.updatePending == nil)
+            assert(messages[#messages]:find('installiert und geladen', 1, true))
+        ''')
+
     def test_update_button_saves_request_and_reloads_without_confirmation(self):
         self.run_lua('''
             function time() return 123 end
