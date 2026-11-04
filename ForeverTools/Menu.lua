@@ -144,6 +144,7 @@ end
 
 function FT:ToggleMenu()
     if not FT.db then return end
+    if self.launcherMenu then self.launcherMenu:SetShown(false) end
     if not FT.menu then
         FT:CreateMenu()
     else
@@ -151,19 +152,88 @@ function FT:ToggleMenu()
     end
 end
 
+function FT:ToggleLauncherMenu()
+    if not self.db or not self.launcher then return end
+    if not self.launcherMenu then
+        local panel = CreateFrame("Frame", "ForeverToolsLauncherMenu", UIParent, "BasicFrameTemplateWithInset")
+        self.launcherMenu = panel
+        panel:SetSize(246, 227)
+        panel:SetPoint("TOPRIGHT", self.launcher, "BOTTOMLEFT", 0, 0)
+        panel:SetFrameStrata("DIALOG")
+        panel:SetClampedToScreen(true)
+        panel.TitleText:SetText("ForeverTools")
+        UISpecialFrames[#UISpecialFrames + 1] = "ForeverToolsLauncherMenu"
+        panel.entries = {}
+        local entries = {
+            {id = "attune", title = "Attune", icon = "Interface\\Icons\\INV_Scroll_03"},
+            {id = "disenchantry", title = "Disenchantry", icon = 136244},
+            {id = "bigwigs", title = "BigWigs", icon = "Interface\\Icons\\INV_Helmet_06"},
+            {id = "novainstancetracker", title = "Nova Instance Tracker", icon = "Interface\\Icons\\Spell_Arcane_PortalOrgrimmar", options = "options"},
+        }
+        for index, entry in ipairs(entries) do
+            local item = entry
+            local button = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+            button:SetSize(218, 30)
+            button:SetPoint("TOPLEFT", 14, -36 - (index - 1) * 36)
+            button:SetText(item.title)
+            local icon = button:CreateTexture(nil, "ARTWORK")
+            icon:SetSize(22, 22)
+            icon:SetPoint("LEFT", 7, 0)
+            icon:SetTexture(item.icon)
+            button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+            button:SetScript("OnClick", function(_, mouse)
+                local module = self.modules[item.id]
+                if not module or not self:IsEnabled(item.id) then return end
+                panel:SetShown(false)
+                if GameTooltip then GameTooltip:Hide() end
+                if item.id == "attune" then module:Open(mouse == "RightButton")
+                else module:Open(mouse == "RightButton" and (item.options or "settings") or nil) end
+            end)
+            button:SetScript("OnEnter", function(b)
+                GameTooltip:SetOwner(b, "ANCHOR_LEFT")
+                GameTooltip:AddLine(item.title)
+                GameTooltip:AddLine("Linksklick: öffnen. Rechtsklick: Einstellungen.", 1, 1, 1)
+                GameTooltip:Show()
+            end)
+            button:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            panel.entries[item.id] = button
+        end
+        local manage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+        manage:SetSize(218, 26)
+        manage:SetPoint("TOPLEFT", 14, -182)
+        manage:SetText("Module verwalten")
+        manage:SetScript("OnClick", function() self:ToggleMenu() end)
+        panel.manage = manage
+        panel:SetScript("OnShow", function()
+            for id, button in pairs(panel.entries) do
+                button:SetEnabled(self.modules[id] ~= nil and self:IsEnabled(id))
+            end
+        end)
+        panel:SetScript("OnHide", function() if GameTooltip then GameTooltip:Hide() end end)
+        panel:SetShown(false)
+    end
+    local shown = not self.launcherMenu:IsShown()
+    if shown and self.menu then self.menu:SetShown(false) end
+    self.launcherMenu:SetShown(shown)
+end
+
 function FT:CreateLauncher()
-    if not Minimap then return end
+    if not Minimap or self.launcher then return end
     local button = CreateFrame("Button", "ForeverToolsLauncher", Minimap)
     button:SetSize(30, 30)
     button:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", -4, -4)
     button:SetFrameStrata("MEDIUM")
     button:SetNormalTexture("Interface\\Icons\\Trade_Engineering")
     button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
-    button:SetScript("OnClick", function() self:ToggleMenu() end)
+    button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+    button:SetScript("OnClick", function(_, mouse)
+        if mouse == "RightButton" then self:ToggleMenu() else self:ToggleLauncherMenu() end
+    end)
     button:SetScript("OnEnter", function()
         GameTooltip:SetOwner(button, "ANCHOR_LEFT")
         GameTooltip:AddLine("ForeverTools")
-        GameTooltip:AddLine("Klicken: Module ein- und ausschalten", 1, 1, 1)
+        GameTooltip:AddLine("Linksklick: Attune und Disenchantry", 1, 1, 1)
+        GameTooltip:AddLine("Rechtsklick: Module verwalten", 1, 1, 1)
         GameTooltip:Show()
     end)
     button:SetScript("OnLeave", function() GameTooltip:Hide() end)

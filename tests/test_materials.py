@@ -14,14 +14,20 @@ function NewTooltip()
     local tip = {lines={}}
     function tip:AddLine(text, r, g, b) self.lines[#self.lines+1]={text,r,g,b} end
     function tip:Show() end
-    function tip:HookScript(event, fn) self.hook = fn end
+    function tip:HookScript(event, fn)
+        local old=self.hook
+        self.hook=function(...) if old then old(...) end; fn(...) end
+    end
     function tip:GetItem() return '', 'item:765' end
     return tip
 end
 GameTooltip = NewTooltip()
 ItemRefTooltip = NewTooltip()
 Enum = {TooltipDataType={Item=0}}
-TooltipDataProcessor = {AddTooltipPostCall=function(_, fn) postcall=fn end}
+TooltipDataProcessor = {AddTooltipPostCall=function(_, fn)
+    local old=postcall
+    postcall=function(...) if old then old(...) end; fn(...) end
+end}
 counts, names, requests = {}, {}, {}
 C_Item.GetItemCount = function(id, bank) assert(bank); return counts[id] or 0 end
 C_Item.GetItemInfo = function(id) return names[id] end
@@ -54,7 +60,7 @@ class MaterialsTest(unittest.TestCase):
         self.lua.execute('namespace={}')
         toc = (ROOT / 'ForeverTools/ForeverTools.toc').read_text(encoding='utf-8')
         for line in toc.splitlines():
-            if line and not line.startswith(('#', 'Features\\')):
+            if line.endswith(".lua") and not line.startswith(('#', 'Features\\')):
                 source = (ROOT / 'ForeverTools' / line.replace('\\', '/')).read_text(encoding='utf-8')
                 self.lua.execute('assert(loadstring(...))("ForeverTools", namespace)', source)
         self.lua.execute('Fire("ADDON_LOADED", "ForeverTools"); M=ForeverTools.modules.materials')
@@ -193,7 +199,7 @@ class MaterialsTest(unittest.TestCase):
             SlashCmdList.FOREVERTOOLS()
             local checks=ForeverTools.menu.checks
             local master=ForeverTools.menu.byModule.materials.master.box
-            assert(#checks==43 and master:GetChecked())
+            assert(#checks==68 and master:GetChecked())
             master:SetChecked(false); master.scripts.OnClick(master)
             assert(not ForeverTools:IsEnabled('materials') and ForeverTools:IsEnabled('merchant'))
         ''')

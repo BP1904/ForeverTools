@@ -1,0 +1,24 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+  <Include file="Libraries.xml"/>
+  <Script file="Registry.lua"/>
+  <Script file="NovaInstanceTracker/Locale/enUS.lua"/>
+  <Script file="NovaInstanceTracker/Locale/deDE.lua"/>
+  <Script file="NovaInstanceTracker/Locale/esES.lua"/>
+  <Script file="NovaInstanceTracker/Locale/esMX.lua"/>
+  <Script file="NovaInstanceTracker/Locale/frFR.lua"/>
+  <Script file="NovaInstanceTracker/Locale/itIT.lua"/>
+  <Script file="NovaInstanceTracker/Locale/koKR.lua"/>
+  <Script file="NovaInstanceTracker/Locale/ptBR.lua"/>
+  <Script file="NovaInstanceTracker/Locale/ruRU.lua"/>
+  <Script file="NovaInstanceTracker/Locale/zhCN.lua"/>
+  <Script file="NovaInstanceTracker/Locale/zhTW.lua"/>
+  <Script file="NovaInstanceTracker/NovaInstanceTracker.lua"/>
+  <Script file="NovaInstanceTracker/Modules/Options.lua"/>
+  <Script file="NovaInstanceTracker/Modules/Help.lua"/>
+  <Script file="NovaInstanceTracker/Modules/Data.lua"/>
+  <Script file="NovaInstanceTracker/Modules/Creatures.lua"/>
+  <Script file="NovaInstanceTracker/Modules/Zones.lua"/>
+  <Script file="NovaInstanceTracker/Modules/LevelLog.lua"/>
+  <Script file="NovaInstanceTracker/Modules/LootReminder.lua"/>
+  <Script file="NovaInstanceTracker/Modules/Douses.lua"/>
+</Ui>

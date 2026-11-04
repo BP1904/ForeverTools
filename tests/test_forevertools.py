@@ -38,6 +38,7 @@ function CreateFrame(_, name)
     function f:SetSize() end
     function f:SetFrameStrata() end
     function f:SetNormalTexture() end
+    function f:SetTexture() end
     function f:SetHighlightTexture() end
     function f:SetHeight() end
     function f:SetWidth() end
@@ -46,6 +47,7 @@ function CreateFrame(_, name)
     function f:SetMovable() end
     function f:EnableMouse() end
     function f:RegisterForDrag() end
+    function f:RegisterForClicks() end
     function f:StartMoving() end
     function f:StopMovingOrSizing() end
     function f:SetJustifyH() end
@@ -62,6 +64,7 @@ function CreateFrame(_, name)
         if c and self.scripts.OnShow then self.scripts.OnShow(self) end
     end
     function f:CreateFontString() return CreateFrame() end
+    function f:CreateTexture() return CreateFrame() end
     f.TitleText = {SetText = function() end}
     f.Text = {SetText = function() end, SetWidth = function() end, SetJustifyH = function() end}
     if name then _G[name] = f end
@@ -86,6 +89,8 @@ function Put(bag, slot, id, quality, count, locked, family, price)
         stackCount = count or 1, isLocked = locked, family = family or 0, price = price or 20}
 end
 function GetTime() return now end
+function GetRealmName() return 'TestRealm' end
+function UnitFactionGroup() return 'Alliance' end
 function GetMoney() return money end
 function GetMoneyString(n) return tostring(n) end
 function CanMerchantRepair() return canRepair end
@@ -436,12 +441,55 @@ class ForeverToolsTest(unittest.TestCase):
             assert(money == 9900)
         ''')
 
-    def test_minimap_launcher_opens_menu(self):
+    def test_minimap_launcher_opens_shortcuts_and_module_menu(self):
         self.run_lua('''
             Minimap = {}; ForeverTools:CreateLauncher()
             assert(ForeverTools.launcher)
             ForeverTools.launcher.scripts.OnClick()
-            assert(ForeverTools.menu:IsShown())
+            assert(ForeverTools.launcherMenu:IsShown())
+            local shortcuts=ForeverTools.launcherMenu
+            ForeverTools.launcher.scripts.OnClick()
+            assert(not shortcuts:IsShown())
+            ForeverTools.launcher.scripts.OnClick(nil,'RightButton')
+            assert(ForeverTools.menu:IsShown() and not shortcuts:IsShown())
+            ForeverTools.launcher.scripts.OnClick()
+            assert(ForeverTools.launcherMenu==shortcuts)
+            shortcuts.manage.scripts.OnClick()
+            assert(not shortcuts:IsShown() and ForeverTools.menu:IsShown())
+        ''')
+
+    def test_minimap_shortcuts_route_windows_and_settings(self):
+        self.run_lua('''
+            Minimap={}; ForeverTools:CreateLauncher()
+            GameTooltip={Hide=function() end}
+            local FT=ForeverTools
+            FT.modules.attune={Open=function(_,options) attuneOptions=options; attuneCalls=(attuneCalls or 0)+1 end}
+            FT.modules.disenchantry={Open=function(_,view) deView=view; deCalls=(deCalls or 0)+1 end}
+            FT.modules.bigwigs={Open=function() bwCalls=(bwCalls or 0)+1 end}
+            FT.modules.novainstancetracker={Open=function(_,view) novaView=view; novaCalls=(novaCalls or 0)+1 end}
+            FT.db.modules.attune={enabled=true}; FT.db.modules.disenchantry={enabled=true}
+            FT.db.modules.bigwigs={enabled=true}; FT.db.modules.novainstancetracker={enabled=true}
+            FT:ToggleLauncherMenu()
+            local panel=FT.launcherMenu
+            panel.entries.attune.scripts.OnClick(nil,'LeftButton')
+            assert(attuneCalls==1 and attuneOptions==false and not panel:IsShown())
+            panel.entries.attune.scripts.OnClick(nil,'RightButton')
+            assert(attuneCalls==2 and attuneOptions==true)
+            panel.entries.disenchantry.scripts.OnClick(nil,'LeftButton')
+            assert(deCalls==1 and deView==nil)
+            panel.entries.disenchantry.scripts.OnClick(nil,'RightButton')
+            assert(deCalls==2 and deView=='settings')
+            panel.entries.bigwigs.scripts.OnClick(nil,'LeftButton')
+            assert(bwCalls==1)
+            panel.entries.novainstancetracker.scripts.OnClick(nil,'LeftButton')
+            assert(novaCalls==1 and novaView==nil)
+            panel.entries.novainstancetracker.scripts.OnClick(nil,'RightButton')
+            assert(novaCalls==2 and novaView=='options')
+            FT.db.modules.attune.enabled=false
+            FT:ToggleLauncherMenu()
+            assert(panel.entries.attune.enabled==false and panel.entries.disenchantry.enabled)
+            panel.entries.attune.scripts.OnClick(nil,'LeftButton')
+            assert(attuneCalls==2)
         ''')
 
     def test_large_inventory_starts_cleanup_without_per_item_delays(self):

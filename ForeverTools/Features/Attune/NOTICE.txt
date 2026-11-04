@@ -1,0 +1,7 @@
+Attune Forever 16001-34, CixiDelmont / Antoine Desmarets.
+Copyright (c) 2019-2021 by Antoine Desmarets. All Rights Reserved.
+Source: user-installed Attune, adapted locally at the user request.
+https://www.curseforge.com/wow/addons/attune/files/9263982
+No redistribution license is granted by this integration. Bundled libraries retain their notices.
+Changes: isolated environment, frame/locale/widget identifiers and asset paths;
+ForeverTools settings, lifecycle, timer guards, migration and launcher.

@@ -1,0 +1,7 @@
+NovaInstanceTracker: local adaptation of user-installed sources for WoW Forever.
+Nova Instance Tracker 2.31. Author: Novaspark-Arugal OCE.
+Upstream: https://www.curseforge.com/wow/addons/nova-instance-tracker
+Original copyright and library licenses retained in the copied files.
+Changes: deferred internal package loading, private API environment, bundled asset paths,
+separate saved variables, migration, ForeverTools module controls and commands.
+This local integration grants no additional redistribution rights.

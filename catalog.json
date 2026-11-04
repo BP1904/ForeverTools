@@ -18,6 +18,10 @@
           "sha256": "67e5120e73fdbad61ca7d07d14962f38744b64f3855508a0957f94fdd9d58d1c"
         },
         {
+          "path": "Data/Maps.lua",
+          "sha256": "0e20c742cbed075b61e2a17697caf36febccf1aee8bc10c43ec46eda77da2c9c"
+        },
+        {
           "path": "Data/MaterialUses.lua",
           "sha256": "b5d815b3307a5a6b6b64d5b1e0bc250fe728df2a908c267c509d170f883742f9"
         },
@@ -30,28 +34,3276 @@
           "sha256": "1d08499721e6053abff6f491fc774dd660baac04402ed57b755c49145e6b72de"
         },
         {
+          "path": "Data/Training/Bootstrap.lua",
+          "sha256": "2327cce3d7f0ac39ca45958fa879a2c120acb58a07a1152c0b4cdc1c8ad4b478"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/Druid.lua",
+          "sha256": "c1784e679bdbad93e0cbd8f02ebd9fbf18540d8a7fe62c5135936cee61a04a2d"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/Hunter.lua",
+          "sha256": "5d14ba357ad3e2fbd19556a3f4103661cc0947fb02635e62fb2b82bbd206d6a1"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/HunterPets.lua",
+          "sha256": "f3f2abb43a782946fad5cafae78127c695231e07fad4024cdd79d81fd229213c"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/Mage.lua",
+          "sha256": "16866620045af10305b326b4e6207ba5ea0c8bca0e85a2aaaffb6ba603aa1bbb"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/Paladin.lua",
+          "sha256": "6248bb695e38ba1e99bba3620c93f33074ab0bf921212ade05c623678bc3159e"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/Priest.lua",
+          "sha256": "10e894891e97fad57a13648c5bf6983e545bdff1b811e41ad48b66d603b0b991"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/QuestSpells.lua",
+          "sha256": "f749e83589d7765bda55092919372c8fef348922d39ce34414951159c8e610db"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/Rogue.lua",
+          "sha256": "38c48adf6b28c3f1a199d4d0ddf3f7cae97630b462b67a3333be6ec766d1ff23"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/Shaman.lua",
+          "sha256": "8114eb2c1bbfb843dd1f714c44db48aef5e317e36dfb8c272eeb52e501df8fd6"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/TrainerFactions.lua",
+          "sha256": "823249808ed55847571d8ecfd5233417e7e9d6c1fc77e47fd0c28c2671a95a10"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/Warlock.lua",
+          "sha256": "aee2c7e4fc2914585fe7e0568c9a22bf49fd74ba6db740df9447c68f9dd65a4e"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/WarlockTomes.lua",
+          "sha256": "0554367fb935e576531fa73b64576498200efb5e297707f39c06a2bc6481e81c"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/Warrior.lua",
+          "sha256": "f9f48829085f5ca81659b30da066bb5f0bb902600301491a3021401820db8d24"
+        },
+        {
+          "path": "Data/Training/Classes/Camelot/WeaponSkills.lua",
+          "sha256": "999e4bd0b85883f3820efcdf87e5d7931429e8da832055c7a76e467eedd34be6"
+        },
+        {
+          "path": "Data/Training/Classes/WeaponSkills.lua",
+          "sha256": "965b25eaac2e43cf7629a41f7133564e2a2e8b127a116834001cfa42e42ea76a"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Alchemy.lua",
+          "sha256": "324d04b26925dea0a1d26661830595da25893b28bff27345bfde32775b9fc710"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Blacksmithing.lua",
+          "sha256": "a7c6a0dfb698f83679c59d7134b8a3890749dff5df6d4d7237226ee279555d3a"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Cooking.lua",
+          "sha256": "d4eb749a3a8eb3a6f236f2daf07d447198a14e8e9bbc59dce3c7c5d5b68b23b7"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Enchanting.lua",
+          "sha256": "7eb9595957cf319290c854043472fec5ca8c58e7fc72de9821962d851520b6c3"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Engineering.lua",
+          "sha256": "60321d9dcd365c5374450475622c6baa4484f0a8246dc8d35c92fbd848a400da"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/FirstAid.lua",
+          "sha256": "daaf2c0cb4115f1acf88d4a6220657a2518900b87ee4706485436a8321e69933"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Fishing.lua",
+          "sha256": "3773248ecd495795f3e434f89e953fa95d9c554bbe6e42b49480a58d6b9696d3"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Herbalism.lua",
+          "sha256": "47bf45244ef7ecf7a4495d88dc2b134d15765f86fe3c57b92947dfe6f9fc914c"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Leatherworking.lua",
+          "sha256": "fac76e87814e9db00042f42bb0852bee28dbdc0efb7556c18c47061195585f45"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Mining.lua",
+          "sha256": "8980f819a105b296fdef533ab1dcfb084585c55f1a0d35e8ec9165f4c5af9714"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Skinning.lua",
+          "sha256": "b235ef817e057f9a039703f1594366a48a8f30d9249afad4da8051d57ef509ee"
+        },
+        {
+          "path": "Data/Training/Crafting/Recipes/Tailoring.lua",
+          "sha256": "6acdaf4bcbcb602b0d4f66e5c7bdd8b3db4931a56c03291fd18de1a645bea9a0"
+        },
+        {
+          "path": "Data/Training/LICENSE.txt",
+          "sha256": "64c4e54df59cc6516ddffd512abb053e7cee2e064d2af53ce5ada164be4a67fa"
+        },
+        {
+          "path": "Data/Training/Manifest.xml",
+          "sha256": "7db6c8f72bb7132d230985fe1f82f73a9776d6dec738c55d95b0a6d5c89d3236"
+        },
+        {
+          "path": "Data/Training/NOTICE.md",
+          "sha256": "2d741ccc00805662b820be22da013f518c3b87a514e64b69a50bf3ade18df93a"
+        },
+        {
+          "path": "Embedded.lua",
+          "sha256": "a1ab2cef69c0a6bbf9ef9affc574298f06377ca13785ff261e6bd5ba78f47f2c"
+        },
+        {
           "path": "Features/AntiFettFinger.lua",
           "sha256": "1b1c883c4cfc143c74977bcf9592da31421914c1d7fefc44877adc3f6d6186b5"
+        },
+        {
+          "path": "Features/Attune/Attune.lua",
+          "sha256": "91100727a6b6a374f1a9535ebbb9d65a83ce55fdc95290e857a457432e09f2ac"
+        },
+        {
+          "path": "Features/Attune/AttuneClassQuests.lua",
+          "sha256": "5751ce319fe32bc2be14a66b11c2c8184d0cdfb146b1f0f06ab4ee7ad296b692"
+        },
+        {
+          "path": "Features/Attune/AttuneData.lua",
+          "sha256": "519cbab7d9991ca4bbd349a47944f49759e3b76e7337e154e3f1ecc659c88392"
+        },
+        {
+          "path": "Features/Attune/AttuneQuestGivers.lua",
+          "sha256": "33540c86402917528362da3bc8a4e80d9ffa6a1f1975ab3c3ef4a0c675738716"
+        },
+        {
+          "path": "Features/Attune/AttuneQuestRewards.lua",
+          "sha256": "fe7615e67aa7942b423ee57793f09d62e45fb52ffe5e7bc9e7a21a9eb16788da"
+        },
+        {
+          "path": "Features/Attune/Bootstrap.lua",
+          "sha256": "561f713ef07310614c11c0519b8a3cefd4f6e405b8ff1a67d2524caf6c06bbb3"
+        },
+        {
+          "path": "Features/Attune/embeds.xml",
+          "sha256": "61a735aa498952c7ac1d24b22901d05bf704602dd3ef650358dd2312c408a648"
+        },
+        {
+          "path": "Features/Attune/Images/ability_druid_forceofnature.tga",
+          "sha256": "8cf948f5519c6f0286da730e206a4d47bc1f317bb443ee192cc8855226dca947"
+        },
+        {
+          "path": "Features/Attune/Images/ability_hunter_pet_chimera.tga",
+          "sha256": "31fb3b82524fca382d73244d2ea46c0532ef85b7e522fa44e7ac61759d5fe2f4"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_aeonus_01.tga",
+          "sha256": "7bdd57717df0c87bae10e5ab47141f6290d6e9044b1e8b835fc80ba52413be92"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_archimonde.tga",
+          "sha256": "65bda0ca372b221392b4edc8168ef44e9aff030b8e7dc9cbcd562a1d706a3515"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_epochhunter.tga",
+          "sha256": "7ebbc3a6f99c29edbddff2e969d76061d86073bbfe7b14857e85e5db5bc206bb"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_gruulthedragonkiller.tga",
+          "sha256": "eba8f8f7cffe02ba1f647c56bee3be98193e06598a725797680a0ef013f06214"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_harbinger_skyriss.tga",
+          "sha256": "5ffe195b190edd34b770753198ec9463849514bce3435b660a61c4d14875de5d"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_illidan.tga",
+          "sha256": "5cf1944b8dfbcee470f9eff8764296243f622b62fc23ed1baf581e0bb9bb44c2"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_kael-thassunstrider_01.tga",
+          "sha256": "a0636488a7a602d2c268e54bdebcb3fd3c13e868f0efb14d9cc423c527b76b7a"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_kargathbladefist_01.tga",
+          "sha256": "b6dbb7802fa77fdb09f886ca6bcc68ba5aa4dea65a679e77ca0cc7a012cae117"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_ladyvashj.tga",
+          "sha256": "84f17a1cf2628a3b8578e70eae7dd66d335085dc6179d27ad18e96c177d72eb3"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_magtheridon.tga",
+          "sha256": "71b20b8a3bac8761eb21f9837d7fe1660faf9d0b9c1245db8d00c1d3b1b7fcbd"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_murmur.tga",
+          "sha256": "0663cc3dd09c6e921e608e78bc277060b5ba240c9caf12b79a9c17136485372b"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_princemalchezaar_02.tga",
+          "sha256": "ce1c0a6d39e0ce56c164ebb4bb2759b51511b281330a4ae9a5e051d519178ec9"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_talonkingikiss.tga",
+          "sha256": "2ecd02ecad2dd237573aaed2939d9e53e9a460763252d446ab2d18d71d8366d0"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_boss_warlord_kalithresh.tga",
+          "sha256": "e85e14e8e83930876119f96fdf63e5957ac8c6e096b36468c2be2bf8631f09f0"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_character_bloodelf_male.tga",
+          "sha256": "bb03d87345102923c7947331907f2f06ebd8299cf3fda8296f6253f61220b3bc"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_character_gnome_male.tga",
+          "sha256": "b6b2927483428c001dd2f55f995a4838b7b4e065fde17de1a925c849eadcafa1"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_dungeon_theviolethold.tga",
+          "sha256": "32cba1d9c3ba911a5b1bb566fa97c92b064e55f177ae05ef09d349e0a70d30c6"
+        },
+        {
+          "path": "Features/Attune/Images/achievement_femalegoblinhead.tga",
+          "sha256": "f34dcd1ecea434d6aa6f446fca9206770b637a4b12d51108a16fe97de246e272"
+        },
+        {
+          "path": "Features/Attune/Images/class_paladin.tga",
+          "sha256": "79fadbe31a6937b974c044a53350c21ccc9d8b69a92871a123251bcf58fa09dc"
+        },
+        {
+          "path": "Features/Attune/Images/class_priest.tga",
+          "sha256": "e4674753d2e83a2075526fe114385b5928e2748f53dbb8d589dbd006d5fcc365"
+        },
+        {
+          "path": "Features/Attune/Images/class_rogue.tga",
+          "sha256": "14b8577cd287ea99976b0733854ca37301d0a7c0c3ef3d1e2084773827f5ce57"
+        },
+        {
+          "path": "Features/Attune/Images/completion.tga",
+          "sha256": "0baf248b604508c5c73ea719057bae664424e6ba49a8583ba29cf543469cb647"
+        },
+        {
+          "path": "Features/Attune/Images/empty.tga",
+          "sha256": "29b0eeed15e433fee560b780f4283a2df80b126766d31952b0372239ab883fd2"
+        },
+        {
+          "path": "Features/Attune/Images/flamewalker-blue.tga",
+          "sha256": "0021823282ba804f6427c17c5f4e88005dbb91fafddb86d2583355d10403ef75"
+        },
+        {
+          "path": "Features/Attune/Images/flamewalker-gray.tga",
+          "sha256": "f1603339b3f7805811af27f1e4d00e9e421a121eeba2c6027a642b2b152cc7ea"
+        },
+        {
+          "path": "Features/Attune/Images/flamewalker-red.tga",
+          "sha256": "60f829eb8ebd53bb502a57e5b363099c46e16b19b91f505824dbdcc5b3693024"
+        },
+        {
+          "path": "Features/Attune/Images/flamewalker.tga",
+          "sha256": "e85e14e8e83930876119f96fdf63e5957ac8c6e096b36468c2be2bf8631f09f0"
+        },
+        {
+          "path": "Features/Attune/Images/inv_datacrystal03.tga",
+          "sha256": "929c5ca648f016ef6942ed444a7670308ad43f47680d6512ebdfd9385f40fa43"
+        },
+        {
+          "path": "Features/Attune/Images/inv_datacrystal06.tga",
+          "sha256": "ddfaacfec844d633d5b8842511a9071ab6c1e8d6045978ba296fc95b05fa3cdb"
+        },
+        {
+          "path": "Features/Attune/Images/inv_datacrystal11.tga",
+          "sha256": "bbb5bab56602f82cc2b5be29b8332a4d40e8797c3fdd97bff449842afa751a26"
+        },
+        {
+          "path": "Features/Attune/Images/inv_elemental_mote_shadow01.tga",
+          "sha256": "0fcbaa8b839739b7fea6d8fd3ad92a7c9d84bb50ffa4a21268e963d58ee92ba6"
+        },
+        {
+          "path": "Features/Attune/Images/inv_enchant_shardprismaticlarge.tga",
+          "sha256": "12700ab9fa2de05add78eca0e2bbc5e2a9e4e9d29d2464cedb271717fe44500d"
+        },
+        {
+          "path": "Features/Attune/Images/inv_jewelry_talisman_11.tga",
+          "sha256": "8b8ba49da761327b4b24b547b3529fedab6ed3d51903fca137728d2c2a376eb1"
+        },
+        {
+          "path": "Features/Attune/Images/inv_misc_apexis_crystal.tga",
+          "sha256": "54ec96499b5d8c12183d9a2ce9331620d6d82e3780ccc6454881491ad0ededd6"
+        },
+        {
+          "path": "Features/Attune/Images/inv_misc_gem_azuredraenite_01.tga",
+          "sha256": "eda7a6d986ceae48945a931df4e12051b6c15ad026f854c1bd3311f26f8077f0"
+        },
+        {
+          "path": "Features/Attune/Images/inv_misc_gem_bloodgem_01.tga",
+          "sha256": "071ec97a16882718f3949adc14a052fbcd286bb025eaa60dd18b050beadbb3bb"
+        },
+        {
+          "path": "Features/Attune/Images/inv_misc_head_centaur_01.tga",
+          "sha256": "54f58dfdb0050074bd9877ef8a321b65e0a65f7261633ceab3c6b577ac5eb025"
+        },
+        {
+          "path": "Features/Attune/Images/inv_misc_head_orc_01.tga",
+          "sha256": "b333c61b11bf26684dc1688a03dc1a98a37d91774a72964b273e9bc608b0052d"
+        },
+        {
+          "path": "Features/Attune/Images/inv_misc_head_undead_01.tga",
+          "sha256": "cc09c21d73cefae849d7b70896b0ca5dd4dedcac20ba6a078c98d34f6bdb0c12"
+        },
+        {
+          "path": "Features/Attune/Images/inv_misc_nagafemale.tga",
+          "sha256": "4e7759c5844931944fed64db7079390b3e827e6ee12a0a17869d4b4a149f0a06"
+        },
+        {
+          "path": "Features/Attune/Images/inv_misc_token_thrallmar.tga",
+          "sha256": "5d9df560d8183039706acb29d639cde898310645bfe38524773fbea13c30a0d8"
+        },
+        {
+          "path": "Features/Attune/Images/inv_netherwhelp.tga",
+          "sha256": "5fb3579ee233c007ce289b7be1e77e3ed564aaa28ac34e59776fc56c7b02079b"
+        },
+        {
+          "path": "Features/Attune/Images/inv_ore_thorium_01.tga",
+          "sha256": "13b1b8a8085793a84876e6ef954ee091448c656f67d9c38db5aec247f7730db5"
+        },
+        {
+          "path": "Features/Attune/Images/inv_pet_babyshark.tga",
+          "sha256": "fd06fa7e3b81ad88cd12867de3b433fd17c63be8ed94f0bc33fa297557d3690d"
+        },
+        {
+          "path": "Features/Attune/Images/inv_pet_naaru.tga",
+          "sha256": "75c9722c382ac8bf68906c9a8366d80fbe22dea73b5362b1a1885f4b1a3d8029"
+        },
+        {
+          "path": "Features/Attune/Images/inv_pet_naaru_yellow.tga",
+          "sha256": "fa83dfcdbffaf8271bb3f45dc745017f87be1e7485d6cc19bc45e806a4ba89d0"
+        },
+        {
+          "path": "Features/Attune/Images/inv_shield_30.tga",
+          "sha256": "82aa614f7e38a9f09090b58a7077fb810e18d5ae04f3a2e27f220abad17ef4db"
+        },
+        {
+          "path": "Features/Attune/Images/inv_shield_48.tga",
+          "sha256": "d80d47fd5b9384f0c43cc9df3c8dcaa1e8f5c76d700cb873632bd0e2561a726e"
+        },
+        {
+          "path": "Features/Attune/Images/next.tga",
+          "sha256": "eaac4ae2a2b76ac76e9b93840fa5bde852feb0f7990cf7c1a78428e50f8330d2"
+        },
+        {
+          "path": "Features/Attune/Images/notification.tga",
+          "sha256": "e0f0b82050d17d1d29f6ae2dbb2681b263cc8ccc3545f856518ed3bbbe97f697"
+        },
+        {
+          "path": "Features/Attune/Images/raidslot.tga",
+          "sha256": "9b32cd50bc66cac3cc82b357c5b8b44158dd1e654e31472261b47028cce5c7c4"
+        },
+        {
+          "path": "Features/Attune/Images/spell_fire_burnout.tga",
+          "sha256": "136c69747c1590bc8cbb9c052f8fc2e42ca9e373ffaf2d94086f0eb4db427721"
+        },
+        {
+          "path": "Features/Attune/Images/spell_holy_borrowedtime.tga",
+          "sha256": "1029767077e9cfbad4d76160ffbd6dad719693f6e50ee4b27be3ff2a0a715016"
+        },
+        {
+          "path": "Features/Attune/Images/spell_misc_hellifrepvphonorholdfavor.tga",
+          "sha256": "7930ec555d5d8086e5450676c826a477eb7c75c94353d2431b746570acc7e38c"
+        },
+        {
+          "path": "Features/Attune/Images/spellframe.tga",
+          "sha256": "973b24fa8d981463c5d67c7b52a5ad01833b5ca26f78b018d5d711101054643b"
+        },
+        {
+          "path": "Features/Attune/Images/success.tga",
+          "sha256": "ad9b0cdbec11629fe413db51fbed63f1a761d69c14a8cbfa308668faa16e2a6e"
+        },
+        {
+          "path": "Features/Attune/Images/successinactive.tga",
+          "sha256": "a9f5feadfdad507cd2b983341fb0fd1dfcd33f6aee923688e44926c9e5aeaa87"
+        },
+        {
+          "path": "Features/Attune/Libs/AceAddon-3.0/AceAddon-3.0.lua",
+          "sha256": "9aaec858b04820b597155b040dd76ef0d6e8e4f0707e54630001bcfe68497307"
+        },
+        {
+          "path": "Features/Attune/Libs/AceAddon-3.0/AceAddon-3.0.xml",
+          "sha256": "611d8d8150de656a7ac5311a4bfe63a1e57a8cf48d636d399a6a821ef6238f98"
+        },
+        {
+          "path": "Features/Attune/Libs/AceComm-3.0/AceComm-3.0.lua",
+          "sha256": "aba2e0dbc50f151da02f71e93d04c67288c28daead424742ecaeb425ba3ee45b"
+        },
+        {
+          "path": "Features/Attune/Libs/AceComm-3.0/AceComm-3.0.xml",
+          "sha256": "6466474a164193282764c0532cb25305a4bcaf2d03ad947ac51e2b91d6e9e0e2"
+        },
+        {
+          "path": "Features/Attune/Libs/AceComm-3.0/ChatThrottleLib.lua",
+          "sha256": "3491b6c98cae1634a9f0494b436e86df1632309fb68181c25240b53c4d86dde8"
+        },
+        {
+          "path": "Features/Attune/Libs/AceConfig-3.0/AceConfig-3.0.lua",
+          "sha256": "25d745c5a8b50cf4b145caa55b5aeb389762286690117f51341d4111f98ee462"
+        },
+        {
+          "path": "Features/Attune/Libs/AceConfig-3.0/AceConfig-3.0.xml",
+          "sha256": "95640308a21beeaf87eccf4d92424eb4de63b92baed51f8e43533156350f629b"
+        },
+        {
+          "path": "Features/Attune/Libs/AceConfig-3.0/AceConfigCmd-3.0/AceConfigCmd-3.0.lua",
+          "sha256": "936138368dd8fa2523937428b321dab6ac9b5e0e502c6b49d5faa66dc5d5c609"
+        },
+        {
+          "path": "Features/Attune/Libs/AceConfig-3.0/AceConfigCmd-3.0/AceConfigCmd-3.0.xml",
+          "sha256": "32c6e2c5bc38a940b3c8e7f499a8d3e8dfc76da387a67c969f39b229e912109c"
+        },
+        {
+          "path": "Features/Attune/Libs/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.lua",
+          "sha256": "defe75be7186eb87cc24b61e33e262d0e288053c9147105815c363c373f6a53a"
+        },
+        {
+          "path": "Features/Attune/Libs/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.xml",
+          "sha256": "589196f0f55bfb5587dc0d7647fff4839ac7625317f001970a1b390d10639f91"
+        },
+        {
+          "path": "Features/Attune/Libs/AceConfig-3.0/AceConfigRegistry-3.0/AceConfigRegistry-3.0.lua",
+          "sha256": "dc0fa1aee9ac56690109078cd58045ae237635cf9dc7d80496242ab358e4d5fe"
+        },
+        {
+          "path": "Features/Attune/Libs/AceConfig-3.0/AceConfigRegistry-3.0/AceConfigRegistry-3.0.xml",
+          "sha256": "bd9790653701c529d70a565ae509e441f6355b0fb228300cf152004f1b22f5a5"
+        },
+        {
+          "path": "Features/Attune/Libs/AceConsole-3.0/AceConsole-3.0.lua",
+          "sha256": "3372abc50efcfa4f643bf7c2f3254de19327d28e2040997d672f94d1845a5499"
+        },
+        {
+          "path": "Features/Attune/Libs/AceConsole-3.0/AceConsole-3.0.xml",
+          "sha256": "047fceb9632ac6c99e80ccf12115b5104851ceac3cbd02ab665cdef1644b5a79"
+        },
+        {
+          "path": "Features/Attune/Libs/AceEvent-3.0/AceEvent-3.0.lua",
+          "sha256": "928729c0edae955407778463d345baa0e59fc8f6f6ad53877b6243e0f225da4e"
+        },
+        {
+          "path": "Features/Attune/Libs/AceEvent-3.0/AceEvent-3.0.xml",
+          "sha256": "365d75a5b296df4d5bef6512cd4fd6ca2ed63b1878df06e528b336d3203dc7c5"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/AceGUI-3.0.lua",
+          "sha256": "db24d1193ec97955bc7c1c47f22009042fdc4c680eecc2a28852bd95a6bb741a"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/AceGUI-3.0.xml",
+          "sha256": "e54bd15393700719dbec2b1b433e570a3f364fa5e927f9227f63037eb16ad522"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-BlizOptionsGroup.lua",
+          "sha256": "566551ddd7c8c434d6bb6f4a4c9a67479e6e8a719fcc3a504b18eec4f11e6586"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-DropDownGroup.lua",
+          "sha256": "ecf7743bd5fb9059d4226e35cd2374aa13282eca720938498f85d7f328f8c070"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-Frame.lua",
+          "sha256": "faf59b0a44fe489e9d789a5e5fa810dd7a47ea32fc9e3bf1453408a9fc133181"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-InlineGroup.lua",
+          "sha256": "e9458bd6378d017994408618cbc6921ef7e6bbe152e9bbded199255c399468a5"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-ScrollFrame.lua",
+          "sha256": "fef3da3ce311b861d669bc503906cdd0780a372fbea039c1e2d3f75ac6e68709"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-SimpleGroup.lua",
+          "sha256": "4694e8b2047da47ee34f395d6d7ca0c2124c9835576df6a07f8fd93166388c14"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-TabGroup.lua",
+          "sha256": "ad73ed3b619cba61778ec39b73206daac423bd1f539241f4a58ff623b0b0b687"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-TreeGroup.lua",
+          "sha256": "311b097199d201b93bc56e7d26788a1205a87cd500cc4b80a369e466a1a4d0ec"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-Window.lua",
+          "sha256": "d57f41b781d8c021fb69a94e084efadbb891d3a353738e6ca68853da21f94645"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-Button.lua",
+          "sha256": "1bcc3592c6315d1369f448316f4bc990c812a37d2a7b5c31fd2324daf6ad7e87"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-CheckBox.lua",
+          "sha256": "81cef4bb6ddef3b8bc31360f292fe7b7a7916d675b9336a697545c9ba9adfd77"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-ColorPicker.lua",
+          "sha256": "d69b7e600acf2e6f9d0e222d40952f4f25115eb6a48c039bfa71d2807668e5ef"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-DropDown-Items.lua",
+          "sha256": "aa7d0bd54525e63b9549ec0a41ff3b3595267a377e0ae65da42577856cf03f4b"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-DropDown.lua",
+          "sha256": "42e2a9d9c41bc4f481af1721b6cc45988e2bc5573fd0282499e9bf3af8e8ec20"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-EditBox.lua",
+          "sha256": "24a7570e949647c67a0364a8b21d8904c7df812ce0a3d58a74413e473cd023e2"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-Heading.lua",
+          "sha256": "ebf0271a8e6f7bce8947cbd339a6a08a6c856bf45e35ae9156c79320521dfa51"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-Icon.lua",
+          "sha256": "62df520dba9234f704ac956141e95e9716896b006210f4ae67a9afbff3b93a50"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-InteractiveLabel.lua",
+          "sha256": "e47543663cc5c4272ef6fb6d356fb63a49f6b101d3cc0501e769ac6615442cce"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-Keybinding.lua",
+          "sha256": "5d372eb175c2768e0e13f46f77b5d5ec4a1ca74636b2ad940725040496a6ba7e"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-Label.lua",
+          "sha256": "7d953f5fd4cb6ba8fb25c0c732e6dd61564684c57bc5175f4d734d646b99842d"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-MultiLineEditBox.lua",
+          "sha256": "ac67fd32a7a5642c0bebc5104ee4ac57088fb04e44b15cee64513b78e532e7cd"
+        },
+        {
+          "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIWidget-Slider.lua",
+          "sha256": "d4aab13b831961cbef9c0639ba2f08c0d7ac1baae7e2d4de7621cea61850de37"
+        },
+        {
+          "path": "Features/Attune/Libs/AceLocale-3.0/AceLocale-3.0.lua",
+          "sha256": "584b30b5cd9da71408cdd83a49469aa4348941e185a42cbd218d964678d88e57"
+        },
+        {
+          "path": "Features/Attune/Libs/AceLocale-3.0/AceLocale-3.0.xml",
+          "sha256": "3bf70169970f1a9953d11396c3816e3ecb6946f1bc1db992b8274762435e4a0f"
+        },
+        {
+          "path": "Features/Attune/Libs/CallbackHandler-1.0/CallbackHandler-1.0.lua",
+          "sha256": "d8a175f5823a999d8a188ee5e8e1133c393fd8c25b71931ab929d4691eff750b"
+        },
+        {
+          "path": "Features/Attune/Libs/CallbackHandler-1.0/CallbackHandler-1.0.xml",
+          "sha256": "5fc06440452a82be9554fc9650fa7de0b6df786c6d188d05d7d0ec4aa3e002fd"
+        },
+        {
+          "path": "Features/Attune/Libs/ChatThrottleLib/ChatThrottleLib.lua",
+          "sha256": "43fb93b5c70f1198ad37289d4568df0d8929d1326072486ba2e5abaa12d19701"
+        },
+        {
+          "path": "Features/Attune/Libs/ChatThrottleLib/ChatThrottleStats.lua",
+          "sha256": "5edd82873da0c8bcd59c2c3f18123375f46b6a409cd15336a0f4409cf697ef51"
+        },
+        {
+          "path": "Features/Attune/Libs/LibDataBroker-1.1/LibDataBroker-1.1.lua",
+          "sha256": "d79b3eada649684543bbbc3c511c2515e16d644f198fa991a201ee64d045b0f2"
+        },
+        {
+          "path": "Features/Attune/Libs/LibDBIcon-1.0/lib.xml",
+          "sha256": "3c959d5954f2680f063baa3a7903cd347e8f4f9755cd9be639fa45a50238f85a"
+        },
+        {
+          "path": "Features/Attune/Libs/LibDBIcon-1.0/LibDBIcon-1.0.lua",
+          "sha256": "bd9249c720b511f1ca23f45ac1117c079b054060d764550efe04875d8d9e26bc"
+        },
+        {
+          "path": "Features/Attune/Libs/LibStub/LibStub.lua",
+          "sha256": "d34235c85f869505fdd9ef321d2420f69db7d2eb873d2b3bbf57584a314060fa"
+        },
+        {
+          "path": "Features/Attune/Libs/LibStub/LibStub.toc",
+          "sha256": "d6ef350c07edf6be550c586e32473776e310d212bf39962cafee04a8d415405f"
+        },
+        {
+          "path": "Features/Attune/Locales/deDE.lua",
+          "sha256": "33340ff738b040ad8a98d23de317910d6b1c97f8e40e459317c61947735ce65e"
+        },
+        {
+          "path": "Features/Attune/Locales/enUS.lua",
+          "sha256": "691930f63eebe7b34efaf254da39d5ccf855a41926093723e30c0ccb20a176e3"
+        },
+        {
+          "path": "Features/Attune/Locales/esES.lua",
+          "sha256": "9da4661c3f21aa99b4676cfe30fed0dd02e09baa7aa5453afe0cd7819f33cf76"
+        },
+        {
+          "path": "Features/Attune/Locales/frFR.lua",
+          "sha256": "27030c21562d29fa0db3cd2932de675dad1fb93b46001b6528617dc60202abc1"
+        },
+        {
+          "path": "Features/Attune/Locales/koKR.lua",
+          "sha256": "46007aee8336b32372af5d9a5c0b20614e62de12d315557799ee5190fba90312"
+        },
+        {
+          "path": "Features/Attune/Locales/ruRU.lua",
+          "sha256": "7886259f9d7145eccbb848a3ca52d8bc8b19348eeab772bdf6d5822d18926a1c"
+        },
+        {
+          "path": "Features/Attune/Locales/zhCN.lua",
+          "sha256": "fe8ae72712469825ebcbfe5c817863715de4c639e978470ae877a705f2180f92"
+        },
+        {
+          "path": "Features/Attune/Locales/zhTW.lua",
+          "sha256": "3338a4196fc10dab141e67e6a06a01a0f0c2b027863883a8c001a22f8339a847"
+        },
+        {
+          "path": "Features/Attune/Manifest.xml",
+          "sha256": "02330c928e2e424ae9700bd6a9b47aa84d41908d004792f5bf2ddf228b08df6f"
+        },
+        {
+          "path": "Features/Attune/NOTICE.txt",
+          "sha256": "08258b1beb894f18cef2cc0c25b01768a56a3c920b8436a0151cd0e45e4c23d5"
         },
         {
           "path": "Features/AutoRank.lua",
           "sha256": "be4b784853eff1454aca75bcd786b8e44cf5d968e29ccbf4aabafc3692aaed64"
         },
         {
+          "path": "Features/BigWigs/BigWigs/API.lua",
+          "sha256": "ca6009a47ced6c187ac42d83f7efc4e285e87017b72e49f84ba1ab20a13e57eb"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/BigWigs.toc",
+          "sha256": "44148aed6895ee8d38dc60907d2f8d8941dbe23e8dfde7e7b514e6ecf1d03c0e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/CHANGELOG.md",
+          "sha256": "1639ddcc1664d56627c38a9e0006272a58fbc0e13fe5cd3391fe364fc8bf0e62"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/GuildVersion.lua",
+          "sha256": "39dab40a47833335a39207a62b257ed567bbc57c5afa4a5e8b467438e5e12f76"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Init_Camelot.lua",
+          "sha256": "ef90cb4bcb3fe07c38bcf16f79119896c117af4cac39599f7bdbfc38403b44d6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Init_Cata.lua",
+          "sha256": "fb8f21c0d2b85370b0bbdb432e5f3a7c99645dea2065f1ace54188511b42381a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Init_Mists.lua",
+          "sha256": "d5e0da142ca797da6ea769640e398938d97483badf404b3d210d2263e1c5b4c5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Init_Standard.lua",
+          "sha256": "6db3734c9da7eaf2f1a8295d4456ee331efe11478af4710201b0fb042543c890"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Init_TBC.lua",
+          "sha256": "cf174ac1aa35a83d4330eabad07d8e2ca0730ba2ecf2b96265aa37c52f4e0621"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Init_Vanilla.lua",
+          "sha256": "3300462e9595fa65367b1f34ba15b970c161c919a298516f613fb3d5ab970820"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Init_Wrath.lua",
+          "sha256": "515b05a7e573fa3df0e7310fddd7f960bcd4edc3075f3f42f71e7b72f153a517"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/AceDB-3.0/AceDB-3.0.lua",
+          "sha256": "2194c1691af08bab150dc2ff7791c0c358c0e00a5b8c6c42f5d994ce71886c41"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/CallbackHandler-1.0/CallbackHandler-1.0.lua",
+          "sha256": "84a15af505e728ac5e5eb6a8eaba8989d1131d5f8ba14d11abcfe4ce086de3c1"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/LibDataBroker-1.1/LibDataBroker-1.1.lua",
+          "sha256": "f3d4758f2060215492c9764b1d7dc2a336826d4cd253cd54ff9ff7c6d78f04e2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/LibDBIcon-1.0/LibDBIcon-1.0.lua",
+          "sha256": "cafa823dfb9f216eb476af4bcd2fad4c25c718f39b7565fa1c924dbebac41f91"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/LibDualSpec-1.0/LibDualSpec-1.0.lua",
+          "sha256": "aed44cfe6c2ab787614e05049c57780fd43a3dd629ece34dde47798209b0e5a2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/LibDurability/LibDurability.lua",
+          "sha256": "47383a7b055b4d2f40de3bc98e0a2af1d913201474fa6972ca59c1efe0912df3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/LibKeystone/LibKeystone.lua",
+          "sha256": "04f4bd466f78cdd56f74a52dcc774153d1e8f4cef31634ee013d4c95839a2020"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/LibLatency/LibLatency.lua",
+          "sha256": "d76267ceb5452396be6840f7ffdc199375a02b2f88bf1520abeb66963228294d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/LibSharedMedia-3.0/LibSharedMedia-3.0.lua",
+          "sha256": "3cf50b53f0be14cbb05fd416a18639dbfdd1a4b4d1174fe5505e6ce8b4571638"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/LibSpecialization/LibSpecialization.lua",
+          "sha256": "743f6170f87f8d252b079e28a100c41891c174fd28d6290da1aeaa86b56c66db"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Libs/LibStub/LibStub.lua",
+          "sha256": "f93f7dfbd280c0f8e0328bb194faa6db541c3c50b3d4d37eb064c816f0ec5576"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Loader.lua",
+          "sha256": "a8201c6c60ffae7a336122b2c3b728dd9437c6e168c883acb5c3a5e0a21adb22"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/deDE.lua",
+          "sha256": "f78f07b3487cd58e0c1e9f8bb861e94386ff78843109a3490c4d0b47f15df4a0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/deDE_bosses.lua",
+          "sha256": "7f0eeb339966b88b4e48fa3180e6065c48efeb9600ed88e862ec6bae461fead3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/deDE_common.lua",
+          "sha256": "4a3e2679a9eb31bcf92c095682405560d726e18f6c319a8b0a700c89a864d252"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.deDE.lua",
+          "sha256": "af737d942b9536b7f6de3b02802c745bf463e143277ea0ddb3f48e4256bb2aa6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.enUS.lua",
+          "sha256": "b3a8b5d7f8ca4f0e80de59bc0c878ec6932b519e4d6732d993bb1975ceb9fe47"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.esES.lua",
+          "sha256": "d7115605ada5aeb787f256814e47c676f2561149f181bc914ea9a61a05816e09"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.esMX.lua",
+          "sha256": "0a9edce646e8f8dc6f02cba2bc9dfa1c751b7169c7a9280f7c7bc8db7a2a5453"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.frFR.lua",
+          "sha256": "339ad50ba7419b25d2386d5d758a5ef31f84ecbfbeb9ecaa15af975708e5de1b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.itIT.lua",
+          "sha256": "33c4e4e4ba09b7b7e396ec7a9bbd158b16d7fec3a5e25c59d795f7319a2a2ac7"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.koKR.lua",
+          "sha256": "f9d304bd2981b54e034562318c5263500523759b5d0877e1d29e6c2b79c211b3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.ptBR.lua",
+          "sha256": "3947ce227877dc03a17f6b72f332033529ddc9aa0da6914c4f1efee67b69c0a5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.ruRU.lua",
+          "sha256": "751f7d3fe55910a37503d00321bb2c6173c10b5e4b81444ecca011ded33757cf"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.zhCN.lua",
+          "sha256": "1135fad6eac70d419a8b76f8b657fda44f1fead8d309cea347abd97bbe16f33b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounter.zhTW.lua",
+          "sha256": "0d0f4aff4f3b04fb4cf568c7efaf4d71423625f6c60434293c2326f7ef438905"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.deDE.lua",
+          "sha256": "bdadf650d8e941dd7b96ad8482b046194373499a77d3c074119b7946d59e06e6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.enUS.lua",
+          "sha256": "a1f19928460f8adf4446396b622c452d89c0680f6406c80aca308facce5120e1"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.esES.lua",
+          "sha256": "3b8f02010cdf5909e7c94ed8b9df51384bd44d21e5e90de3718e420d3a17af9e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.esMX.lua",
+          "sha256": "23ad298847ee2218c0e01ef61bb3aaf724ffb4172550203ab751a922a0283daa"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.frFR.lua",
+          "sha256": "cd09d05539fb5fd92f59d72c136f95836c02696ae3c9dcb625a56d59c16a39ff"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.itIT.lua",
+          "sha256": "fc4a7bbba1597269c4b30416406485103bac2188dfaba9b2308fb5c8812ca31f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.koKR.lua",
+          "sha256": "d1c0ae41de46bac4e7a73b01bb4889e84c1b357f8d853149ce00ff3319422372"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.ptBR.lua",
+          "sha256": "e8d2f1379b2e026494061167ef95945f5a81b49c9e0a36121f5cdd6009acec58"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.ruRU.lua",
+          "sha256": "90dab60bc49aa2e6cb1cc352f1473935c56841f926f2be8db8f9af7e4066e96b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.zhCN.lua",
+          "sha256": "7ff14a9a938ee3999f29167b87046b39fb0393fb77924246b64e8cf91858a713"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/Encounters_Classic/encounterInfo.zhTW.lua",
+          "sha256": "97f972a470eb2d8f0802d7a7465f6cfab958fad41cce9ef1962b0bc165191b1d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/enUS.lua",
+          "sha256": "df9e6b9988fbbc958fdd28a5e5d746717a0c1045ba9223cd154cc8c23822ac94"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/enUS_common.lua",
+          "sha256": "1338c43ca18b24ab34d09e05f2898ff7d826d3caf78f91f6af335dbf35d5282c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/esES.lua",
+          "sha256": "bc421dcb5eaf3783c590fb2e70cd3884e2045a75ea94e3d9b0d63f1dbc999963"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/esES_bosses.lua",
+          "sha256": "281f95a096454cdbf733389d17364819c99d85574709376bc670f9acbf3ea179"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/esES_common.lua",
+          "sha256": "b0348fbf50b34d06332a4316608b1dd15a77892e3d5b1ab89fc55ccf4ab69799"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/esMX.lua",
+          "sha256": "616e792fef8351a3d4f845b013997b10390b10e29d2253fe602df252335f71a9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/esMX_bosses.lua",
+          "sha256": "f412b56a3f387cc666428cf0ae632b28d5abef7d254ee3c3a4756265106bc5d1"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/esMX_common.lua",
+          "sha256": "09ce3b89dc9dbaf779b881682cb548978365caf7464417987d2a1455a5400af3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/frFR.lua",
+          "sha256": "ac2837baaf624fd84fe962d287ca9a9a36b4f71bea92f64106997ec2f14f2e16"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/frFR_bosses.lua",
+          "sha256": "3df9f66dd917b4e60e9b4232a99471891096e8914379b943bc4ddd42a8e97e41"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/frFR_common.lua",
+          "sha256": "cd7b2698d151bffa941114e2f2121c3cc2d1d451f30a0a49fbf2fce929e270b8"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/itIT.lua",
+          "sha256": "e6ae53054a29606e93729fb62cf8f1a4ce8e18f861bc84f38c977f59989d0071"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/itIT_bosses.lua",
+          "sha256": "7aef6a07d918ab8e50e0e37aca4ba908586fa9b9be10abaecd53c052d7374c33"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/itIT_common.lua",
+          "sha256": "ff4bbbfbdf3f0fd780f569b6a6f1307d625ed41b1ae26ed79540c9598e12aa32"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/koKR.lua",
+          "sha256": "49d0057c359dc8b345eee2fe4f2b1cd83850fe7f513e1637bea97da71428480b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/koKR_bosses.lua",
+          "sha256": "29515f903505a2515015484e04303d960bb13f61a8dff5d4e8dcd02df7d88cf5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/koKR_common.lua",
+          "sha256": "af849bc1c1939fb907191b7328367263c4de568f42fb7c0ab592a670ce46c63e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/ptBR.lua",
+          "sha256": "11b80f2e60787bebbf3ecb456c81d1ff3d87012a9afd7b21c0340f335c3f97fa"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/ptBR_bosses.lua",
+          "sha256": "9ea14c9db4b02938502a54a76a4a3cc3358761dfc9c7f039692ce82368c3979d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/ptBR_common.lua",
+          "sha256": "08c041c0b54f67dd251b454f0f122c4b51bb9068ab0ef7d95c4c46cda1186762"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/ruRU.lua",
+          "sha256": "a50b7b1af9b1d2e7746f739bdd02bd46ae8caabe446c554b0ddae2eb16f42b2f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/ruRU_bosses.lua",
+          "sha256": "e9e211d8b48de7e3ceaee8bb9be7c370bf6bd65ef8fd149a1af35f584f92f929"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/ruRU_common.lua",
+          "sha256": "16ca14da2d1f83f477f5cd9a2d37f26243c2b69672fe661784367e0c50abe4c1"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/zhCN.lua",
+          "sha256": "2e813bea237cd6dbfc88d12c77c45cf1cc1f1ba7a66fab1f3989ab2eef84562a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/zhCN_bosses.lua",
+          "sha256": "e8344882ed5144eb97305f29111893282aa9c857be6f08852f2d07f8dcdfb745"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/zhCN_common.lua",
+          "sha256": "da069da375fa7acc1f9a3e0da1f31b9cc6e51e2bc1fd003863d0c3ff91b06482"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/zhTW.lua",
+          "sha256": "14483a23f71d20eb244ed317156b657cb3c1ce804fb6f681fea56ed58a10362f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/zhTW_bosses.lua",
+          "sha256": "7f1bfbd2557845e0e670a09b497fc80a2a6814658f40630c6a1f7f9255f85b4b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Locales/zhTW_common.lua",
+          "sha256": "41cf738010bc84acd1e916f2c1b84f36c62790c4b0a3ba641f677de3a6d44e69"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Fonts/Noto_license.txt",
+          "sha256": "c8deef01e8a2f2cc138a7d10b91b74daad25a6c9156e69153f64a26666cf130d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Fonts/NotoSans-Medium.otf",
+          "sha256": "f91e438495805f0bf0884c8810e5f23efb9432e18bc8cf7027bbd083b1ed2db2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Fonts/NotoSans-Regular.otf",
+          "sha256": "76c021109ac1edf3134ea9ce3d3af9495a5fec01212892a77b315619900c6d45"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Fonts/NotoSans-SemiCondensed.otf",
+          "sha256": "77dc126e7872c6fbae9c26eca59811091e138b8343e0c81483d1dcc33f5fdeb3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/arrows_down.blp",
+          "sha256": "b1f03d7059c2fa4d421793a3bdec34f34606ca1b75b3213081fa8196b5abf68e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/arrows_up.blp",
+          "sha256": "833f0e9dd433babf29346e23e25bfe5768913d34f4a0dc2f568d8cda22d692dc"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/close.blp",
+          "sha256": "6d5bd2b4334613858d7062707bc81e7854f26296f174ad90356afcca95231d8b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/core-disabled.tga",
+          "sha256": "044a9b297e8eb9f5a925f690d47d066a5daed6415d42e5d01493e5cedbb99e55"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/core-enabled.tga",
+          "sha256": "f6cb67d1beee231605928150a0633f3949221330c015ff8ffb7023b73dcbe9a6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/draghandle.blp",
+          "sha256": "5c011244bb769dc35f233e290d4137fc5f7a8556e2917f58914d87955ec7aad4"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/license.txt",
+          "sha256": "76c272b59b93b7dfb6672d08b9fe42ca617248b9891abc53a304971d855a86da"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/AltPower.blp",
+          "sha256": "a1b2e320f9ce6d681d422da94a9897b08a17bf1c0105d3d54ad68713e4cf06ed"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/AutoReply.blp",
+          "sha256": "19b4b3d33b8341c232cbb6f3e1ff2e58bb9aeefac6c810f424770bb4898fcd3c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Bars.blp",
+          "sha256": "f85d2193f57d604ca742e947977f13eb81af6335d1822d22c0602e6b61b767bb"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Block.blp",
+          "sha256": "5e4785dd495cf93364dfca675224443a70d959ce3f12e669b789599457e15679"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Colors.blp",
+          "sha256": "351cbd7d16098b7a186f6fd4a49f5984d76520a356b6da5467729af863ae005c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Countdown.blp",
+          "sha256": "4d6ff007390b79e84db3e54be70eaeab680e8a77da9ec41a81705ccb341d3b4a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Curse.blp",
+          "sha256": "b135b141c6531553c387b731f5babb636a9e1f544315c643f31b8240d0c47099"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Disease.blp",
+          "sha256": "a93fb7c057b0df9519cc2a1db3c1f31f3af1f12279daacbcd27501b19035de40"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Dispel.blp",
+          "sha256": "20f5627432cc636f8f8090ee60b01a965e48db2e7d0823981a4fb460ccaadcbd"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/EmphasizeMessage.blp",
+          "sha256": "66a1e4f38f5c6cdbb4b98938ed44ab2345af8944094ba27cab115a63b8e9c460"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/EmphasizeMessageMeOnly.blp",
+          "sha256": "29d82df5dcab1a7c933e7b0fbde183c508b59b9bd66ffbc65558822fbbc0d4d2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Enrage.blp",
+          "sha256": "c2863ee275f63e96d0fb22b4efaaf139130a8a4763843da8dc69126d1c2ae5f8"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Flash.blp",
+          "sha256": "8bf44de05347f3b4aff100a93f3357d23ea594ef5c762656cf43eef3349ca3e9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Heroic.blp",
+          "sha256": "979a1ffdb40b4554e5d7c152567c1d0792058df097423c421a8130307110b431"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Info.blp",
+          "sha256": "d0ea5ce56bc8254d4360863d1a9392e58184e6c49f296a2ebec8156f57d07ed3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Interrupt.blp",
+          "sha256": "779e83e6f687095c4924d4eded30cf5d00c7fd056ee164fe83089be16ec8c956"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/license.txt",
+          "sha256": "3172f2eb7fc6a249e7458cb4c9e888135ee802f1204204c437d2337b338d2c76"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Markers.blp",
+          "sha256": "757599518ddf0339bf7224507227864b757027cc2fb75ad5617663de94ff408a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/MeOnly.blp",
+          "sha256": "46793bdb14c6e5ea128101cfd5abb5359478712b959192a4780e5fd5680d7156"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Messages.blp",
+          "sha256": "1a2747a8494ea3bdc57f7189e020126d2ef43d015a2bbde2ee8672aa650015db"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Mythic.blp",
+          "sha256": "344f36606af9f98c4c0b65ea6041b28e193ddd558db61f2db7350588a46d0f3f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Nameplates.blp",
+          "sha256": "e7f4b49cee43160d876c497a9a790365d649e1554031c1152cf44ce2f8c2cbed"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Poison.blp",
+          "sha256": "bbd0f6096db27704b3b4c1f4730823c08a0d136cbf99efa3a23ffe662c4df007"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Private.blp",
+          "sha256": "697a6b17987f35f092aceded74ab5cd0c49448ae5633c826f09e551ba623ba50"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Profile.blp",
+          "sha256": "e0881586b0a31046ecf129ccca41a8b4043754700e2530c6aa9afa258a2d765e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Proximity.blp",
+          "sha256": "91e194dd5e619d740543df90ef520e69a1aa58e38f51168494d3598b0d8b622c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Pull.blp",
+          "sha256": "8ad2d7abbf7555347591d91c81f47753d2d1eb506f5d7a29f0095a7d6b1e49cc"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Pulse.blp",
+          "sha256": "63670e96dc15c13915caa3d84c2059cefee5975faf8a7ac3461a65c702a89092"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Role_Damage.blp",
+          "sha256": "f1b9804f4a74633d7406f476f3454b4fbdb64f8d0285f1b94474484ef7b20d9f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Role_Healer.blp",
+          "sha256": "b0387f88c046814e0e624c7a4d6bd45d7f6f898774357ea23510a95c54fa2586"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Role_Tank.blp",
+          "sha256": "c5f94cd58035f3b9309b1fcfed285756dc1e6c282bce1ab0924b5536ecdb428d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Say.blp",
+          "sha256": "4bfc2c0b74a7b7849024ebbc28943a6171218e22dbfc016f4b2c6f3f3de03d72"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/SayCountdown.blp",
+          "sha256": "7f833bae74ebf2ccba6c54551f6502a313c8977cab7fc2307ccab676b4f13018"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Sliders.blp",
+          "sha256": "42c773181d8cdaf01a0ab94fc136e851f1ba3d717a4039b8c9bf40506f5e9f11"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Sounds.blp",
+          "sha256": "d9cbe5340c10356cc24f13d801376bfc6d8b37ecba47ae44ae481403ef4aa872"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Stages.blp",
+          "sha256": "6cadbe389859cb9e9b3f680fdf418d46024650f19d2809e441b3ce62d241fe06"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Stats.blp",
+          "sha256": "548dbb843b1e3b26f958c8cdcf07317b0acb2ee61b4589de8131297a0b563b33"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Timeline.blp",
+          "sha256": "51e1cb59204c6fe13929f58d39f8d073839ba05713213f81d74b39a29571a2af"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Victory.blp",
+          "sha256": "dfa96d58fd02facdfd54e09bae5e293fdfebfd65dcec0fa07e43a92f55b26849"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Voice.blp",
+          "sha256": "920a88fbda8e93b019560a54e2fe8bc84de0411932e5814ee93127531f5c49d2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Warmup.blp",
+          "sha256": "27b480bf69ce50ce3188aac7efd98df766810676de816090ffad0bdda0f1d75e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Wipe.blp",
+          "sha256": "c4511391bdf0386ec27c655068cb55b54b0172831dc98cf4d9cc65990edeb457"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/Yell.blp",
+          "sha256": "120cdcf3084f1799c0fa38a8e9ed51e859dc1c92179dcd6407c67a09e6ad2a20"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/Menus/YellCountdown.blp",
+          "sha256": "e7f9a18bc1212431e853a45e538ec4fc7c547342bc0fc638a4162e11a9bd4a58"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/minimap_disabled.tga",
+          "sha256": "ebcc7febcef1aa2c43fa5d63eb575ef94f6c314e0ea93c5c985f3d5fa6f4dcfa"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/minimap_legacy.tga",
+          "sha256": "8591fa0b071c0009ed7d8ae6909d7028688583e90a8c5ac71803b1004869f2fd"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/minimap_party.tga",
+          "sha256": "197c678fc2d3af23a22c977c5ba7c9b61cdb36380bf9fa0fff51913c94596296"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/minimap_raid.tga",
+          "sha256": "3b564a068b857913aa495b5bb08d3e12236cf0e497a69427477354cc6b5e727e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/misc_arrowdown.tga",
+          "sha256": "9aeb5e132aedb9a8e534885f500e31668d8ff0a77402e6b6f549103b8f534df9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/misc_arrowleft.tga",
+          "sha256": "1c78722a65502d8f88af965cd31f6323dc8acc4a9a304b5e30ac5675fd9a9d33"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/misc_arrowlup.tga",
+          "sha256": "0fdd28cfb1f7f3101835adbba3569aa3cf6b5e908952cad6f5c11316038bb6e0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/misc_arrowright.tga",
+          "sha256": "03c12d1a47e5761f818709a23e089ba6daa73fb4a9c32453cfc2fb1befc8bb99"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/mute.blp",
+          "sha256": "f8be3cfa631d4b17563c16ef7860bf9723235154d12a8e796f77e7a3f35ffd89"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Icons/unmute.blp",
+          "sha256": "1ef2cbe66aefef99c0d112535df3448fdc7d5179c3230dd3aa4251a6efea477a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Media.lua",
+          "sha256": "d4d053a13bd2f1e6ac2243809fe99f5da8462733b6e7df41ee66ff1fbf167dbb"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Alarm.ogg",
+          "sha256": "3a4d63a3bc560fa8fc9536afd18bcb9c770d3748cd0d589836a262bbf8ae4c74"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Alert.ogg",
+          "sha256": "5ba06f9c3676907088478fe73cb5d2f425d275c20c5882d27c452bdc756f785c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/1.ogg",
+          "sha256": "0f424665d913e79fcc740c49405ce8a934868f4ab137f3a96e414252e343e308"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/10.ogg",
+          "sha256": "0c98cfa973bc703fa6bd46201adbe96382617dcad46953dea707cbbc225e61da"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/2.ogg",
+          "sha256": "c94feb42a71a5f51265547d6a177df1f87eb1d6337bff7d3bba6fe6c3a365297"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/3.ogg",
+          "sha256": "15329c9897f4eb2ea047f7c3595e3874604d205748464a11a12258dcba0524ad"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/4.ogg",
+          "sha256": "3caa2a3245e11037ba0c11176413fb2dfe611e198a253b18520e4dd6795080f0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/5.ogg",
+          "sha256": "841cbab246338c9fd83a7fee834990544d5851d7d30f9bffb7c3006b299e560f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/6.ogg",
+          "sha256": "250919812676d57528e2a86681893e174da7ac3b64affb1c9e4ddda7dc6473f3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/7.ogg",
+          "sha256": "ecfed3d1f863e8d6eb72a3b5dee5c42e3398808c8dbe3b27ef5dedf9e5f8c776"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/8.ogg",
+          "sha256": "aa3b7b8ff408cd5205a81bc5f565367fdea04ca100d199d2fab3bb730df4f883"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/9.ogg",
+          "sha256": "cfdb169923e20d9fe9d4e902810c2ea68b048dc6a1e94ab79ff02e6b20d25547"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Amy/license.txt",
+          "sha256": "92b649d4fa5eb613dac033f30505bbfa0acba6540d06c54a10d2ccbdbd171148"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/1.ogg",
+          "sha256": "8ad9f4e987156d661f8eb123b06ff3415796de82001a33083cd1460565504ef0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/10.ogg",
+          "sha256": "519430b0eca369ada27a4d36fb2cce4bdaff6b30ec966d0d5d104e17f1795d5e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/2.ogg",
+          "sha256": "c1a8a74bb8f371822819d4c9d45ce558bd5dab5090d2c5b2e276e147d348261f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/3.ogg",
+          "sha256": "db3f5b69e158f9b65cfa7bd83fe691cb5e27c413418144cff3423e465dd954bb"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/4.ogg",
+          "sha256": "4bf23ce675ba463ef2fcfe883eb0459ad9f064d286130bff831fc4c561ec2dea"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/5.ogg",
+          "sha256": "9f1a1c77eb10bfa2101e5e0e7df37245a595a4bcf4a0f12e46beb92cb6e3c810"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/6.ogg",
+          "sha256": "a8ff25d49880b1e181f135e6bc6328c97ef58cdf4a840640e21e02b1acc4b91f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/7.ogg",
+          "sha256": "a2ca8f2e614576087817bb60aad71333ff4e09d817ab319fb2fb051f094060fa"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/8.ogg",
+          "sha256": "a4dfac48f6e43d8f960452e0f99c861178cc3f9e19cf9e91827e0fff7e483207"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/9.ogg",
+          "sha256": "0c6e7008d9aeeb8fe8a933bc1ebe05a4572072cbbd5ca4eb0a2949a3b55fa01e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/David/license.txt",
+          "sha256": "215488641bc86b004b2a6e453e8b96f36dbbfd581c6dea4f18f4eca7f6e79a44"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/deDE/female/1.ogg",
+          "sha256": "e474df83b4fb0416d47c134d40f0a86f3d258147db9a740c4687678bf3981677"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/deDE/female/2.ogg",
+          "sha256": "a8d3950048b4e6fc6cd14280cdd02c008e0bc77448230fc8ea19de3e956bb805"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/deDE/female/3.ogg",
+          "sha256": "9c1664ed290bac54f8dbb65f9c917c3c7f97fc35e26feb7758c2504cedaa4c7e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/deDE/female/4.ogg",
+          "sha256": "39ba079b67a7e9459617823f1200be3767f9d8a6d79996adff88e66cba668ce3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/deDE/female/5.ogg",
+          "sha256": "b984cf3b88d83836b49c730347f151b329bce40e3c697c3b29a6c4d39b0b5c34"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/deDE/male/1.ogg",
+          "sha256": "034aae7cd89b94d4bef49ec795d46375f962b7118d08b5a16d716b31caca3f17"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/deDE/male/2.ogg",
+          "sha256": "83db1220625add508694df3f0794797cd4df42d2deb8c91b428c0f96c935565b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/deDE/male/3.ogg",
+          "sha256": "c224b7a74d6dc51ef259d47464d7121aeec25bdecba0431f0d3ab42fe92e2a29"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/deDE/male/4.ogg",
+          "sha256": "c04b373664885ec8c56bdc87fbbdaf965ea2980b637163628dc9b1cbf781b4a2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/deDE/male/5.ogg",
+          "sha256": "b60dfa9b232647d5e394a3dbc075698ea2fb848a4c41cb55f30bb671c86a8131"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/enUS/female/1.ogg",
+          "sha256": "7443715944d3cda72bbdae6128b6edb49568cdbf6732adec2bcc9004c502d062"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/enUS/female/2.ogg",
+          "sha256": "2d7159202c14f0107dd1f5a30d32f848345b119918271b7788c5c462958436a8"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/enUS/female/3.ogg",
+          "sha256": "4ca87e7f47ed9f1f2d0942cd63ff4d14aca3cad527b3ca5a54956eb5a49f0be4"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/enUS/female/4.ogg",
+          "sha256": "a03fcd02315bc3f83964fe7490f2e554f868df169e672fa5e9153879c10f47f7"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/enUS/female/5.ogg",
+          "sha256": "478ccb2cb9e0bca75342edd865bb55b5ee42ebaf045d7e12bf0318a69d7dd582"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/enUS/male/1.ogg",
+          "sha256": "d183a38d65b8fd43f9416632b49331e5d6ebb2974f7cf491ce0a0b40bc2badea"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/enUS/male/2.ogg",
+          "sha256": "c8e30593fa9ea81bd04c6e245ff252b6d4a3e8a19f2e5843348208eb8394d1d1"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/enUS/male/3.ogg",
+          "sha256": "df64625ce0fb151f46c4427e532641c916d8ae1b29dadcab0fe64a5b730b9806"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/enUS/male/4.ogg",
+          "sha256": "f596421c81ba7b93ca57517bcfe0787058c793adde255965a8427a3fd5569d66"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/enUS/male/5.ogg",
+          "sha256": "ef32199cbd4e8085e1d80959d8634a793320c626a768b76c15be66a6045cf2be"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esES/female/1.ogg",
+          "sha256": "72de9acd84a932a02262ee6510fd58df1c29f136244c9a8d4d559c0377b4b859"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esES/female/2.ogg",
+          "sha256": "551ceec46040d0324f6e6fb882cc0f1e638f422377d6be078522a1a528d54bb5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esES/female/3.ogg",
+          "sha256": "2027dab633dc19d9a17766dc8de108a071d0389d4ee97e5b6db75e438a99cde9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esES/female/4.ogg",
+          "sha256": "7479bb2f842c9e84c65c62baaef9d9a0535876dcf912dd54ba42d94f47e4c08f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esES/female/5.ogg",
+          "sha256": "e6dd8fbed40744221f2647bf5a81b005eb8bfd4b9243e58b21907bdb95f0c5c0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esES/male/1.ogg",
+          "sha256": "1f8f2b3bef14e6a8c42015a7129813c20b111e190980974b30196130554f01f1"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esES/male/2.ogg",
+          "sha256": "284bcb7929d47b4380e72725a57b7a40acc7bb3c6af0094d7252c0e8070ad234"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esES/male/3.ogg",
+          "sha256": "fc7583820bf5e459997b8e436d3ebae074e7bc007b7355c04c03adccd511d9e0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esES/male/4.ogg",
+          "sha256": "2d4e3b6f39cf3fa3335547491442b4867051cd94cc6a290d622cf597e6763c48"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esES/male/5.ogg",
+          "sha256": "8a9ad46dcbeae3783dc23529034ca754ace55148d136a797455d0f555dabe1e5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esMX/male/1.ogg",
+          "sha256": "4a3d6933b8dad9e38ab7399f1195cc5ae9b865d6941b9a92ef2d5e6029bf89f2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esMX/male/2.ogg",
+          "sha256": "5ff75122c8fcfb8990c66d83da9de2b0f7b6d1691910877d329c25680ea405bb"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esMX/male/3.ogg",
+          "sha256": "5f1dedf1cec593ee14fbe2e55b9c778c4b8be9f923b8c9d9f172a0b6a0ca673a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esMX/male/4.ogg",
+          "sha256": "a865136b7ac046cdb42ba88974b28ca503abf2042ca33c52d5825ea6281214b7"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/esMX/male/5.ogg",
+          "sha256": "560886631f09e83413f43b53cf761bde4922046b55067206e17c6062fdad3cf4"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/frFR/female/1.ogg",
+          "sha256": "50153908293d97aef5da98aa50457bfa127e6baceec4320485ff79af32618452"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/frFR/female/2.ogg",
+          "sha256": "efca34b930e8a39671dc08c37c4ca799f7f1e9d0f388df29d7af475057bb31a9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/frFR/female/3.ogg",
+          "sha256": "b669cf337182a03b12b9bb99d9876598944868fa0f7f1af984b563cfe6e9edf6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/frFR/female/4.ogg",
+          "sha256": "c32995679b20de6a3f8175e0eb6af05d66b4d282de0e1d5c8901d14a4640ded8"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/frFR/female/5.ogg",
+          "sha256": "0321bfdb07c0996ac91e543937ab64ef96f247afb115a06af0c264db1c38d274"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/frFR/male/1.ogg",
+          "sha256": "2864ce849961eefb62e7ecb3177e089d29267a3c5d7c30fabbc3f5bef3bbe0e0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/frFR/male/2.ogg",
+          "sha256": "f43b08ff89b82ad6513b7deadc22aa221d2ec25d88b7d0b280ad57d529717972"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/frFR/male/3.ogg",
+          "sha256": "92711c7aebf954997914e0a0f6b1bbe6355574f8782a5a0f59363b077cfcb1b7"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/frFR/male/4.ogg",
+          "sha256": "67b625e4268d767e1a04f750252406a79e4ee6df9898ba8578fee9e83c0261c3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/frFR/male/5.ogg",
+          "sha256": "f6795ad363c7b41ec33e4de8dd240d454169547ede6ea8b49ef4d94419ef19fa"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/itIT/female/1.ogg",
+          "sha256": "7919bbeb72752d03e8bebfb85ee9af2b9dfb045d99b7ff4ae4fa029cc6b59372"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/itIT/female/2.ogg",
+          "sha256": "c35748ad28d0167c6f61b74b02c3a3bd8effe9ab412c5d4aa1f57180986c9c68"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/itIT/female/3.ogg",
+          "sha256": "31640572107449ba392d7a2f140931e6daacc0db912543e7e811d8ae99ff1f38"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/itIT/female/4.ogg",
+          "sha256": "2c103198720b76d0f24cfbf118fccd61cb3dba582ce4af503bc3b9391c12a743"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/itIT/female/5.ogg",
+          "sha256": "0f5db0b8c51d8b2642259e1734ad91e88f94a8c5c29713777351671993590fbc"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/itIT/male/1.ogg",
+          "sha256": "880ba7b68682dd5966639bbb6fddcea34757b2e25b2b31e4042a0f541f0e0380"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/itIT/male/2.ogg",
+          "sha256": "9f1753f4eff320d085c9ec811e6f64188d7d1466a172417b0b925454b9d4f5ee"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/itIT/male/3.ogg",
+          "sha256": "f3a3e98365e73c81bbcc1484014ef8774ce1f7a38b1fd1950fb3d0e3537e1a3b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/itIT/male/4.ogg",
+          "sha256": "20d6606f49c55175587b30ba48eed0654d162073cbb539cbd2bd832f6ad80df5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/itIT/male/5.ogg",
+          "sha256": "3ddd79c90638d03b6100ec9005ba143332655754130554e9bcecbaa6211e630f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/koKR/female/1.ogg",
+          "sha256": "2dbe592aa360f83074bb384395c7ac045538dd108087d1d7412b5f3a53a49d69"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/koKR/female/2.ogg",
+          "sha256": "d1d20d023b6a72f44865b67251d0ab26b2f881fa011fefd3fc4401fc7059ba27"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/koKR/female/3.ogg",
+          "sha256": "b02306f29144ba843cde8c0a724b80e7ca488fc3c8f17ec57c7bfef4b88013b7"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/koKR/female/4.ogg",
+          "sha256": "e8d0ec4f8db15c456b6c6b03d1bfa4b08469bd7fdc79d36e1e6e3af5af2cb227"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/koKR/female/5.ogg",
+          "sha256": "943216f42eecc938408a80c67388c07920b0e66ccb95e14bf5a18a027af4b463"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/koKR/male/1.ogg",
+          "sha256": "a9b954658346059c5c911fce6025ad65540b887cc22850ce90794bf7d9ef516c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/koKR/male/2.ogg",
+          "sha256": "205e9d7237649b2bc875281ff74abcbf5ce4c4844747883d496bc062e204429e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/koKR/male/3.ogg",
+          "sha256": "f6f90622007c7671d890c7d3559822ba886b489fd6b915eb2e69a728546914c7"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/koKR/male/4.ogg",
+          "sha256": "ce0de18979e62fefb7286d9af1840a4868f6acc7e58429babb47586912f0f0f5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/koKR/male/5.ogg",
+          "sha256": "c6cbd9235acfd4c9a4c7884748a4fedd65e17817030d68c1bc902290446d6ad2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/license.txt",
+          "sha256": "e48031081db28bcd5799c57a825f05a4e46d29d9b0cfcc04a3e959ebd9598f32"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ptBR/female/1.ogg",
+          "sha256": "2041fe83d50fd6612eabaa8346b753a9b158da35f71606349d203b17f053c638"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ptBR/female/2.ogg",
+          "sha256": "808e04c0a09e2147804f8fdc6627ee4716d2bd79c5879c7a2b89a5acd8368bfb"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ptBR/female/3.ogg",
+          "sha256": "fe8aaa9ad4c954879c56d4098a45737d2b030ff512c5b88a1ab51da833d4094d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ptBR/female/4.ogg",
+          "sha256": "479e8fdc67ee903f32ed2442ab1f377b4d2c955fe79f7818d95bfa47e56439f4"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ptBR/female/5.ogg",
+          "sha256": "43899c82076baf16948ecc98c04046809da28d8ad97d5c61cc0ca1741e46d3af"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ptBR/male/1.ogg",
+          "sha256": "61c281bc2ccfb529487ed86be6815d32f8fdb608175e37d86cdecb10cafe9703"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ptBR/male/2.ogg",
+          "sha256": "35e6410727907f12eed0d3f94393495c1944001fea718871fe7e4b5ef10a05fa"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ptBR/male/3.ogg",
+          "sha256": "b0b451c640496607da8cc8171bfb1c84715266398a698e91f574e8303a2234b2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ptBR/male/4.ogg",
+          "sha256": "6196251abb0e2c68bdd63b23bbeb5dac8c85afd198fc9574599997ae05742ad4"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ptBR/male/5.ogg",
+          "sha256": "5a5e49c931fdeb8e2af0eedf0ece41d78de903c212d8c04fba70c76632e905ae"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ruRU/female/1.ogg",
+          "sha256": "1d61c4ea8f9b664252388bf543f98bce60afcf015fa2c4673d5dd093272bc319"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ruRU/female/2.ogg",
+          "sha256": "d7e39a06e4c5d61befc4dd57c54bc2ef57b293c222688c92a06e1638c189b463"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ruRU/female/3.ogg",
+          "sha256": "68ba04015f6258bfec455d29c77e1eb555ae74a89b94545bc8b913ef7d0fde25"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ruRU/female/4.ogg",
+          "sha256": "a3c413280e19ca620a211a34ebef4f10239680524a3e2825692352602494d583"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ruRU/female/5.ogg",
+          "sha256": "a0b00cedb7be605d726aaf3782fa68b359dbd177a8f8576cb4c30e01e3f972f8"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ruRU/male/1.ogg",
+          "sha256": "19c108904193a16fbd59773c28a577bd3a6f4d7dfdc4ba7f9aae8a91c8d07dc1"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ruRU/male/2.ogg",
+          "sha256": "af63fead16cbcd40f3fdd943daa5417babf86cf32bbeb0f53f18603ec491abb0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ruRU/male/3.ogg",
+          "sha256": "ba9bc9bd33c167e1b473b05ad1c9ec3f39bef7fc3829033eddb2141ddbd5da25"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ruRU/male/4.ogg",
+          "sha256": "1f54b51507ff727ab1dabc230b427e0a99b7adcf5a58e9e243eb38cb2fe75e68"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/ruRU/male/5.ogg",
+          "sha256": "68132140193f78bdca773bafcbc5775cf6c8bfcf61bc5d0458afe6235bac06e0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhCN/female/1.ogg",
+          "sha256": "6629630f98499719333407179511e8c9fa8c4f737ddebf5b4387cf45df228541"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhCN/female/2.ogg",
+          "sha256": "dc3b3ffc5644e28c7bd4b9c0b16473a3891e80e606f9b96e8da5aff5ff6fc1fc"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhCN/female/3.ogg",
+          "sha256": "37b712d33324d9dcb6022c066af6734657d70dcfad373ac32b102580d07a4c3d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhCN/female/4.ogg",
+          "sha256": "1951234b32ad98b08e0f4840d73b924d4998c2efc370cebf8689cbb2b4491f46"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhCN/female/5.ogg",
+          "sha256": "04098e263c4fc2a66e636087952742cd046b7187e521a277317d7518c98e5d2e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhCN/male/1.ogg",
+          "sha256": "84f3b19edeacf8e786a69d5142bb79be5396c5f852a3c3f029597c4dbac3d064"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhCN/male/2.ogg",
+          "sha256": "c04509f69507589d85469d294e39392a51f0a1f77eca89d2da0d675ec43e54be"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhCN/male/3.ogg",
+          "sha256": "40f13442b9f654d9c1e7ab74525c5d07c0f194c19e336d89f4b1e4045f346cfd"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhCN/male/4.ogg",
+          "sha256": "8f5653aa053204cb5854f5a2c983846e66a7a76dae1cc3108a5f7a4333da75a3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhCN/male/5.ogg",
+          "sha256": "378214485ee027317c0abd4656e4f038e0c7868d6969ce5f98c94e73f261550d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhTW/female/1.ogg",
+          "sha256": "18cd51398256f50f87fadafea2c74baaa5a8ac84112cc455bb10684d7cfdc1c2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhTW/female/2.ogg",
+          "sha256": "af04f1187d094d8d926ef659adb4ec90935512133f4a4f505a1b058011dfd32b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhTW/female/3.ogg",
+          "sha256": "df287061f91caf422cbe41357ede494bbf40ae9b20ee28e5c301bbf73768363b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhTW/female/4.ogg",
+          "sha256": "54a7584592518cb310cace8130c90a6040eb428e027902e9912a45ae4e226ac3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhTW/female/5.ogg",
+          "sha256": "a6836d14ac35aae235be48e427aa44a8103e4ad4565f50dfd4ef3f5484831aa9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhTW/male/1.ogg",
+          "sha256": "7265b413a4af92d6ee732e3b32f1e96abb34afbdbf090648788bacdf52dca3a5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhTW/male/2.ogg",
+          "sha256": "5a019a41ef826ac80f4ee849fc39b4b9ea187e2291ec2e3df0443bee1314b9c7"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhTW/male/3.ogg",
+          "sha256": "17da06d70cbdbf06ed5c8f0c984cd89a532d36c377f6a0853d61684cb6f8543c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhTW/male/4.ogg",
+          "sha256": "3ea1b1e041f28a7023e19597a244ee2a650d4a5c5e9169fe1e8e644a178ac3a1"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Heroes/zhTW/male/5.ogg",
+          "sha256": "18c6454b9dd6bc74ebeef26c182b1f4256674a8c0cf3f8f029b19a05dac39696"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Info.ogg",
+          "sha256": "a55cadbe13e14cea698530deae5c72dcffdf055cb1a6023b4ad5e3a3cf68fa9e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/1.ogg",
+          "sha256": "1a5316b175b947cea4d5ec657d5a54373a2c2a398de687cd9cd49d6ba4d1e170"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/10.ogg",
+          "sha256": "02a67f75b35bf3e98b267aa78f7aef83b3a16cd5402d692bf68236c80852613e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/2.ogg",
+          "sha256": "482fef96741749f7e8b168d662490eec1e0d141889da6217e76ac503f8234504"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/3.ogg",
+          "sha256": "7d6d42a839dbb2d3809651ce257be059c6c54194e9970fcab56cf2b3ba452623"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/4.ogg",
+          "sha256": "4cecbaec6938d30a6fd8572b9e231e8fc8edd1fc2335d71c107ecc500779a29c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/5.ogg",
+          "sha256": "ea85163ef62c4ac4fef4606cbbd82a98724df8cd0b2ae7ee2858268f5bcf7147"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/6.ogg",
+          "sha256": "f3bfcb6b4f282951d2180ba00d8044c3a14058e8a6ead2e3f95f412d0cb9709c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/7.ogg",
+          "sha256": "83fd7e7807f9ffa46892b919784d98ed232c2f6be668fc54b5d4c300b7f70167"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/8.ogg",
+          "sha256": "8d05198f43c509338c71d6c0abaef577d3beec77c895ee55cc830c64c708d947"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/9.ogg",
+          "sha256": "8e93c6ac9cad72b51064f84ae04938f94041753317f5a8bb690636dd9fa3044e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Jim/license.txt",
+          "sha256": "f07f6219ddf77c3bf03faea6e909c3bea37aeb119fac762cd518ada590f5ed16"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/license.txt",
+          "sha256": "cdedfda96ce0328851efb74e6d9b425ab55fcb87fbd2368a7e18a88437fd8c94"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Long.ogg",
+          "sha256": "3838a8567ecb1b73d7dba8c56a7f4b90faea05c407aed54b458f82f19e5b1403"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/spell_on_you.ogg",
+          "sha256": "ae81d2ae4d73e481de5caa0cd4b971b97a034c7cf09d13a92b9011ec20691804"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/spell_under_you.ogg",
+          "sha256": "884474ddecc6686e4443a261c4df442e71a2f81555f8725a577166fa29ef7dc2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/Victory.ogg",
+          "sha256": "bdc6f062d027bbf9d05fb584e4779d688063c5e9b6db1c0f50c10d7035a24935"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/VictoryClassic.ogg",
+          "sha256": "6400d89177b3fe787a9e56dfa30027eaf1b9846fdbca21b32859c720d3af2414"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Sounds/VictoryLong.ogg",
+          "sha256": "6b937b886bfd6dc944f225fd8567138993755e83f6fa3f52db3610da9cb45539"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/BantoBar.tga",
+          "sha256": "5a5deac548c4639de44db55ed79a6784bba95fc8286e7a4e7235ea7da24e19c3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/beautycase.tga",
+          "sha256": "5b9c29fc8a683b2065ef2bd833343fcd221aa81ed005b3bffc17f1f2109720b6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/blip.tga",
+          "sha256": "d11809d96767a8f414bee424251e88ae96af0c4b86e773ee5fe26ae08065bb33"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/Charcoal.tga",
+          "sha256": "dfb8508485a3dbf5dc3c479d3f6b4555fbaeb47118c9ef58cb1adaeac114d757"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/Glaze.tga",
+          "sha256": "5bd704e0c4d1c3553823a48905d107694aba5f40e0ad985404ef02d8c618081b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/Otravi.tga",
+          "sha256": "e300a87224e7c1a044574ec915a1f9c0de49c3e26f854ecd3e1ea8ed920aaba9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/Smooth.tga",
+          "sha256": "00e8084e83bf25b941464e2619b59e993b6ac7ae0bd8a6f37b12872e686ded6d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/Smoother.tga",
+          "sha256": "9aee6cd66bbed869170cf34188792efea5f9e612e1b16c22b5c4e907f8dd73ad"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/Smoothv2.tga",
+          "sha256": "a08b5085568fb0aeffb469a89ee96e15909a6d85fd86e423fb9f6733ac70dcd9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/UICooldownManager2x.blp",
+          "sha256": "e27b6c33d784202d539669dc5559a7c40fa3ec69b578495c53c57ab485e81a1e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Media/Textures/UICooldownManagerMask.blp",
+          "sha256": "9146d789cca37ceee269911f807e4aabb04662c9f41a53becd5b914466b3b18e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Tools/AutoInvite.lua",
+          "sha256": "6b995074cbca2f17e16fb498943d89aaf333f544f4fb605263d537a37457c1bd"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Tools/AutoRole.lua",
+          "sha256": "b49124d29057baaa09e8f713a18c1ede26d767620df9c19d5c01b8587e0c8ec0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Tools/CombatTimer.lua",
+          "sha256": "bac56dab76dd0314c321c72f3c8ea5c69cda2400e6ecca32f4e544ff50162092"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Tools/Keystones.lua",
+          "sha256": "5f0341c5e109325189e1d76cc33ff5b3d35b2bbf7dbc80d695e34751a4cec790"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs/Tools/LFGTimer.lua",
+          "sha256": "4d572286a071fa617eeeaf2b9fa725eb6202953fac03c584ba26378cd175f39e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Core/BigWigs_Core.toc",
+          "sha256": "fa8a08ae4587d02e295c0db9c83d71bf54e0455c8afa4b30db24c0ffd9ac320a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Core/BossPrototype.lua",
+          "sha256": "115e540985f10948db11d278472d6bef475f94328c88dc888dc8e6ec152135f4"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Core/BossPrototype_Classic.lua",
+          "sha256": "2578abac85bbfe542a0ebc9ad0a4c2094e38672e4757612996cf495670fe0195"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Core/Constants.lua",
+          "sha256": "baca9592dd5a4494259c25b2abfb86504a3e4af9b4ca162bfbb679b8d4b324d1"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Core/Core.lua",
+          "sha256": "44ce117a665af1e827368f26fdce119e52ea8cea07893acd5f9eab39cfaec585"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Core/PluginPrototype.lua",
+          "sha256": "33f110f13d33aad0d262ba0ad0c757da207fa1581a90c20df8778bd37f87ed8b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MarchOnQuelDanas/!Options.lua",
+          "sha256": "5e9bb7a9633bd25eb9d655c91fcc2650167bfba939e71dc47412c41aa1075805"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MarchOnQuelDanas/Beloren.lua",
+          "sha256": "62bc17b33133abcafc0d1d6ccc930cbb1e5c4606e88385e98782b24303cec54c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MarchOnQuelDanas/BigWigs_MarchOnQuelDanas.toc",
+          "sha256": "df952634eff9db56a96bf3f44b08214641ecab314e47bbbc5513dafa8e1de1d6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MarchOnQuelDanas/MidnightFalls.lua",
+          "sha256": "2dec6cfe0ff03796bc637a3ec3ac3f46fad405b99dd05585417499a3477817cb"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MidnightLairs/!Options.lua",
+          "sha256": "eb41e1d90ab499337318bec924c0d13a8934203afc397069463e4ca2f058cc62"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MidnightLairs/BigWigs_MidnightLairs.toc",
+          "sha256": "1624e61db3e4b6810388868cd8230d403060803b967bee22a07521eedbd472f3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MidnightLairs/Nymrissa.lua",
+          "sha256": "8966a683922b1ae6042cee353fd7f77d9ab2375b07a41571fffb489df49688cd"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MidnightWorld/!Options.lua",
+          "sha256": "fd76d19846bbc557f283421c25531031017d8505a026d3e1dd205bfb55364bb3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MidnightWorld/BigWigs_MidnightWorld.toc",
+          "sha256": "edf964290c75177fd05a0a5f065c284351fa0d40af3a078ce675f604eec96ec5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MidnightWorld/Cragpine.lua",
+          "sha256": "0613385a667362f3cebd52b18904f777f3ff06e324b269cb193ae6b876ea2245"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MidnightWorld/Luashal.lua",
+          "sha256": "03c6fa3605e5bd1aecd876ac6df9ad9725be2efd90956aa894fb664588c5b82d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_MidnightWorld/Thormbelan.lua",
+          "sha256": "63b93193f1d8d2ab799f124c215ec3dc622d283f493c99e49fe804205e3bc3a4"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/BigWigs_Options.toc",
+          "sha256": "870c29151355e433e23636a444751f0fdf930d37924d0037aeae47c5650b246d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/InstanceSharing.lua",
+          "sha256": "5bf4a7fc14828ce8d61cb1a80df55c1df3347adc2bf84aaa156deda7f1ddadcb"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceConfigDialog-3.0/AceConfigDialog-3.0.lua",
+          "sha256": "56f9cc0e8da69975296e22a1bfe0bc02b86c34a63c28bd5464e3d386fcdb523e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceConfigRegistry-3.0/AceConfigRegistry-3.0.lua",
+          "sha256": "dc0fa1aee9ac56690109078cd58045ae237635cf9dc7d80496242ab358e4d5fe"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceDBOptions-3.0/AceDBOptions-3.0.lua",
+          "sha256": "f6959caf4ca1fae0f2713e3c32efa9dbe488f3d25f686a4453774308ad2c0eb6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/AceGUI-3.0.lua",
+          "sha256": "bcfcef55d727f8434606bdba2375929123422e051c27fd1bfcbd95e7ab723ed7"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/AceGUI-3.0.xml",
+          "sha256": "e54bd15393700719dbec2b1b433e570a3f364fa5e927f9227f63037eb16ad522"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIContainer-BlizOptionsGroup.lua",
+          "sha256": "566551ddd7c8c434d6bb6f4a4c9a67479e6e8a719fcc3a504b18eec4f11e6586"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIContainer-DropDownGroup.lua",
+          "sha256": "ecf7743bd5fb9059d4226e35cd2374aa13282eca720938498f85d7f328f8c070"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIContainer-Frame.lua",
+          "sha256": "fb3f9f3b3414bd3b27e1281c2b8836749e38906458df6b69e9f385fbe041df91"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIContainer-InlineGroup.lua",
+          "sha256": "e9458bd6378d017994408618cbc6921ef7e6bbe152e9bbded199255c399468a5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIContainer-ScrollFrame.lua",
+          "sha256": "fef3da3ce311b861d669bc503906cdd0780a372fbea039c1e2d3f75ac6e68709"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIContainer-SimpleGroup.lua",
+          "sha256": "d65968489c0fa5749d2e35be69c60d0dd7969189aa14a9031f0654715625d214"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIContainer-TabGroup.lua",
+          "sha256": "ad73ed3b619cba61778ec39b73206daac423bd1f539241f4a58ff623b0b0b687"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIContainer-TreeGroup.lua",
+          "sha256": "faf9f1eb9bec0af6d3493c8e264fbf6aef244c364ed72c85069578d69115682d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIContainer-Window.lua",
+          "sha256": "d57f41b781d8c021fb69a94e084efadbb891d3a353738e6ca68853da21f94645"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-Button.lua",
+          "sha256": "1bcc3592c6315d1369f448316f4bc990c812a37d2a7b5c31fd2324daf6ad7e87"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-CheckBox.lua",
+          "sha256": "81cef4bb6ddef3b8bc31360f292fe7b7a7916d675b9336a697545c9ba9adfd77"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-ColorPicker.lua",
+          "sha256": "beae8057a0e8939b1dbb335332071e1e3bd5f338f92060565d9ada9e69f710b6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-DropDown-Items.lua",
+          "sha256": "aa7d0bd54525e63b9549ec0a41ff3b3595267a377e0ae65da42577856cf03f4b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-DropDown.lua",
+          "sha256": "42e2a9d9c41bc4f481af1721b6cc45988e2bc5573fd0282499e9bf3af8e8ec20"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-EditBox.lua",
+          "sha256": "24a7570e949647c67a0364a8b21d8904c7df812ce0a3d58a74413e473cd023e2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-Heading.lua",
+          "sha256": "43db0151f5ff7daaeb5bba3cb99d2aa6d8f0a0b8f5bf47477d274ee7b5d43773"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-Icon.lua",
+          "sha256": "ebfe6a6d699dfdb32c1eab93f974d21ffc5eedc634dae297afc9bad3fd2117de"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-InteractiveLabel.lua",
+          "sha256": "e47543663cc5c4272ef6fb6d356fb63a49f6b101d3cc0501e769ac6615442cce"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-Keybinding.lua",
+          "sha256": "5d372eb175c2768e0e13f46f77b5d5ec4a1ca74636b2ad940725040496a6ba7e"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-Label.lua",
+          "sha256": "5a62305ac4eaf31d173d84cc40bede59b0fe32c8b5fbbc9f015a1c5b7894c7d0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-MultiLineEditBox.lua",
+          "sha256": "ac67fd32a7a5642c0bebc5104ee4ac57088fb04e44b15cee64513b78e532e7cd"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUI-3.0/widgets/AceGUIWidget-Slider.lua",
+          "sha256": "d4aab13b831961cbef9c0639ba2f08c0d7ac1baae7e2d4de7621cea61850de37"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/AceGUIWidget-BigWigsSharedDropdown.lua",
+          "sha256": "3640864fbae555c45dfc6191e313703c39f0ff333715a1bdee4bb231827ed00f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Libs/LibDDI-1.0/lib.lua",
+          "sha256": "4e54a51258fb0e722ff3efc05c402839efb42df329927628c0a2d8005ce04ccd"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Options.lua",
+          "sha256": "dd09546fac26d4255f0d856606b1a6de6fe1deca0cb1f479b3d00262e4fdd361"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Options/Sharing.lua",
+          "sha256": "adce094db73f7b0756a77e3136e84b0d240119085fa483c6f30bfc43781d3d72"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/AltPower.lua",
+          "sha256": "cfbec07331dacea075387f50910c8d86a7a3ff5042003f71c348d0aa4b87e7e6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Auras.lua",
+          "sha256": "ead289f6a83c36629a957d8de3769351a795e50a67b6e82118c62baa7fc1721c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/AutoReply.lua",
+          "sha256": "76711a8ca544a8aeb5bff598067a5c239c9cd689681fcbd826c28bce4871f3de"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Bars.lua",
+          "sha256": "cb6006314f7904a29c0c963493666e205800b6514be4dbfcab43a1fb1b7e33f4"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/BarStyles.lua",
+          "sha256": "d82c9d18021886eea4e2aa17b30718a27cc55c0b652bbfa90e669d612e9215fb"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/BattleRes.lua",
+          "sha256": "c955694004f83476a63158e783189da7501d7787304aa41fb5dab970ca7f651b"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/BigWigs_Plugins.toc",
+          "sha256": "f20c6883a90c9baf9ad95e2ada5975361400f433f046a244bf0bd166ca8ff4ae"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/BossBlock.lua",
+          "sha256": "081f04ca4704bd0511ce22a482c3b97af6e6ab9bd01f7412a8f227ccc32ba9c9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Break.lua",
+          "sha256": "15b13c4599bcc943ae1288f034a2acf8a40e05f922a9b28c3caf58a5db083615"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Colors.lua",
+          "sha256": "d046a5bff9a489e000c4f1f67c824126aa3ec47c945d3b9058d8f7dbf244285a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Countdown.lua",
+          "sha256": "38843c08ca746a828425af27b2281763c3bdd7257f9f348adbc9dcf370e2b7ca"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Flash.lua",
+          "sha256": "8e418b782f797bc4225459067b2ea49747eddef1d05d0c2bb376660c8878cef9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/InfoBox.lua",
+          "sha256": "af17bab0edf8924f8652d3d0b76a4f51e7e90c1ac924f38c2296b1b711b3870a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Libs/LibCandyBar-3.0/LibCandyBar-3.0.lua",
+          "sha256": "5c0d8d91523c968dda7339076c6fb1b8e84b8b83df46378c85d22a06f8a740d0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Libs/LibCustomGlow-1.0/LibCustomGlow-1.0.lua",
+          "sha256": "0bf263c8a9bd95dc85b677a15b310e40144c91806199e7d167bda77f2c79a43c"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Libs/LibSink-2.0/LibSink-2.0.lua",
+          "sha256": "c05e4c8f418ff72cbd6641b0277dce8fd7f759ebe2185030ff02d3c719e19627"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Messages.lua",
+          "sha256": "b203b931cfd3a184ddf8dae4a18476a53c0061ba47fd2e7fa0c384ac67b881e0"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Nameplates.lua",
+          "sha256": "2379fe0f358feda85bb5828b5d85add79f4978b0e218ed24838cbee01f7a4350"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Proximity.lua",
+          "sha256": "13bc2a1bcf552cdc9be72997a1a91e0b04fd90cfb133b1f3220d68a8ff61fde8"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Pull.lua",
+          "sha256": "37f8f1f0bf555c714ad456e0b15ed84ac3153ba5791a484fa9fa2af3dbd30ca6"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/RaidIcon.lua",
+          "sha256": "6f49e3d225c44030b9107addba057efaf40bc79b6da2060b1f93db18e672ef37"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Sound.lua",
+          "sha256": "44fddfe4d6d50b8cdd2c68506fd3cdb809fb92228b99986579def6fd8753920f"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Statistics.lua",
+          "sha256": "71ab919bb74fb26fdc643ac748af8b224c70bd31c10597501cd3ed9fd1b490f5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Timeline.lua",
+          "sha256": "8f574acdced5618c7b52e186aa418d741f51aa56c9a5d6a3c2c36269f4037068"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Victory.lua",
+          "sha256": "5c425ffcb3fe6cec99087591e11db70464f3b4a77de46c558b4dae7542541127"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Plugins/Wipe.lua",
+          "sha256": "97a36d7920ed71a4d7b1824b7930f1764ed29ba9443c08896453ca29ffdc1782"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Sporefall/!Options.lua",
+          "sha256": "eff24cb98c34f2b2e38f9a92d1ce87d126e50a9cbc0761d6729e7f56328ff2ce"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Sporefall/BigWigs_Sporefall.toc",
+          "sha256": "34ebc44a5eabb6b298d371ec879e06ed2ee7e30e8a815d87d4c8a16499e9b42d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_Sporefall/Rotmire.lua",
+          "sha256": "57f461288a2d0d02c7f24b722904eccf94018c5c1277582ba56e616a24394540"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheDreamrift/!Options.lua",
+          "sha256": "dc70ed7561c5525afa48ec049c0620fc2f573f6d2ecd716b8316d060aa946bb5"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheDreamrift/BigWigs_TheDreamrift.toc",
+          "sha256": "3c0f90cc6d861a788886476ec55b1bdc710f4f718b0720e439d3d78ebeeb0993"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheDreamrift/Chimaerus.lua",
+          "sha256": "904a2ed10d702e0fe8fd7009572ae7dd0ffaab4cca5f3dbf0f2b4416430fb3b4"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheUnbindingOfKithix/!Options.lua",
+          "sha256": "25b3d78fa4307678e41d42931b61b6069be4f733486f45225d5377f5d08874e8"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheUnbindingOfKithix/BigWigs_TheUnbindingOfKithix.toc",
+          "sha256": "8af4d0a78adf19fed27ba0fa828d0a7661988c576f95e938fdddc93ada57a667"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheUnbindingOfKithix/Kithix.lua",
+          "sha256": "4de87aadf85bd1a3e2b9bae5ee1a1a94cfd3002c7189bd4b8392bb2defd1a9c3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/!Options.lua",
+          "sha256": "1b5991990d770001723867db1625f21b795bf9df16cfb7161e0e7038646509af"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/BigWigs_TheVenomousAbyss.toc",
+          "sha256": "d6b716fde0b327689e6678c27e11da069c3baf644e5d3ae7bc7d41ac09092555"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/CoiledAltar.lua",
+          "sha256": "63eae631b0a499dd31031a6d12b050375a1c41a7b34c3dfe7601ddf56cd1755a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/Explorers.lua",
+          "sha256": "5f74823c7ce4670389a9b711d602a73d414e3b24ffe2d430135bc9ee9922bc12"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/Nekzali.lua",
+          "sha256": "dd8f381a61d588a6180b1f14c4870b079e30052980140f550938559790111dcc"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/Sentinels.lua",
+          "sha256": "0c846dbc08c237282877c8b6a921425de5c58f889fb3f4d858de594814ef15a9"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/Sszorak.lua",
+          "sha256": "cc035243e6b604fe812bbe860bbdc5834e1b42a0d3d06dbb28f6460cdb5ffe2d"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/TwinFangs.lua",
+          "sha256": "9f81e30762b7b0eccc736e34136a65b8d953a4dec7418b0b6cc10ed07066eba2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/Ulatek.lua",
+          "sha256": "92b1c2e2664f70dbe3e9053f7dca29de1f55c6cda16e5379e1dbf9b42645d794"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/Vashnik.lua",
+          "sha256": "ced6bf62e321df2ea406ea261102cbe06d8f6b8548621e22bd495ba59b121d5a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVoidspire/!Options.lua",
+          "sha256": "278e768688bf7d0f40fc75ff0150f40e7546167fb75ea3005f956d5315736337"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVoidspire/Averzian.lua",
+          "sha256": "73c323317bcaf12db1b3d5d069838b69ed6eb2659385844719d181270ba46f5a"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVoidspire/BigWigs_TheVoidspire.toc",
+          "sha256": "9e8052f363b7a6aa5cf23a561383b1101165e63620f4471a3dce9ab5398cb9e2"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVoidspire/Crown.lua",
+          "sha256": "a2aa4be9fa4016f24c678948d525b4caebcbd71757edeb1c962496c06a4d5dda"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVoidspire/Salhadaar.lua",
+          "sha256": "887fab657ddacde5618d54c07920f34d4442e784208e62ffa813e607b4b89eb3"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVoidspire/VaelgorAndEzzorak.lua",
+          "sha256": "4f122d784af7f371237659715dcfeb4f764b988c2e31ed8681e35689c94b6332"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVoidspire/Vanguard.lua",
+          "sha256": "30e9bf22237e70c2e46fa82cb52fb5e9dda56f6f074548cb1b82b52464c45435"
+        },
+        {
+          "path": "Features/BigWigs/BigWigs_TheVoidspire/Vorasius.lua",
+          "sha256": "907e9c03631988bdc28bc9aa5bb66a11aaa5d96569440bd8bd2bca30dbb16bba"
+        },
+        {
+          "path": "Features/BigWigs/Libraries.xml",
+          "sha256": "80d8077cf31abb7fe0cc502b6dc14939b19054710865c7da2dbcb7398440b2b0"
+        },
+        {
+          "path": "Features/BigWigs/Manifest.xml",
+          "sha256": "e8777918df612a4164f860218eaf616ac17b660ff388c8762554f09c2177f562"
+        },
+        {
+          "path": "Features/BigWigs/NOTICE.txt",
+          "sha256": "82b1981a99584b7185debcbaff423573471df3540d6d6730c196383fb09f5cb0"
+        },
+        {
+          "path": "Features/BigWigs/Registry.lua",
+          "sha256": "435cc84d9743d0f899a0762a7f002295f9ff3e1b4a831801bf1a64509bcdadc7"
+        },
+        {
+          "path": "Features/Disenchantry/Bootstrap.lua",
+          "sha256": "b3aa3621586f39dbade004da41271806f4b39314101716937ded5dbc7e6b5d6a"
+        },
+        {
+          "path": "Features/Disenchantry/Core/Client.lua",
+          "sha256": "fedd7f183d24f1729e2c39c06899c7902013160c2b62b44f4d169c435496ba7c"
+        },
+        {
+          "path": "Features/Disenchantry/Core/Inventory.lua",
+          "sha256": "b79b2a816309f98e0dd6ef466a7d46f2ca2d347e999aabbc8cfc9a049996ead5"
+        },
+        {
+          "path": "Features/Disenchantry/Core/ItemRules.lua",
+          "sha256": "ed7e4ec4331a03fa0b0828fc80a5389eddf0c2039981f98e61e25466e314ef3e"
+        },
+        {
+          "path": "Features/Disenchantry/Core/Processing.lua",
+          "sha256": "a929fdd3c8b07f3c87c6da461237aa797e1591a8b2e5b447703be3faad2cfcc1"
+        },
+        {
+          "path": "Features/Disenchantry/Core/Professions.lua",
+          "sha256": "dd4e405e3657407ff71bb599d149780110bd1527508c056e29d1381f8666b20d"
+        },
+        {
+          "path": "Features/Disenchantry/Core/Queue.lua",
+          "sha256": "4f74dacdf90e9b0b01f074ff5fc8d0b327110bb83558edf04b4f84f13bb383ca"
+        },
+        {
+          "path": "Features/Disenchantry/Core/Runtime.lua",
+          "sha256": "00d7d2c4d8feaf8d5dc9a2f5ed3d417dc3aeb60970063d859df5a2098faa166f"
+        },
+        {
+          "path": "Features/Disenchantry/Core/Storage.lua",
+          "sha256": "113eb3cd88bb7904473e53dc566c82ca0daa773f1b6320fdba749af535b28d83"
+        },
+        {
+          "path": "Features/Disenchantry/DisenchantResults.lua",
+          "sha256": "9aabdb212f384d3ed830dcc36bd31d56bcdd637a437e342ac96f328147048d7a"
+        },
+        {
+          "path": "Features/Disenchantry/Hotkeys.lua",
+          "sha256": "bf4abf90db280d73ef953543cc0afece08bb25ee5f9b83035ec1f68ac94082e7"
+        },
+        {
+          "path": "Features/Disenchantry/Integration.md",
+          "sha256": "777d58043701551ac50d921eed41cbaa7d8bd99db55b817440aefd3d4507ee44"
+        },
+        {
+          "path": "Features/Disenchantry/LICENSE.txt",
+          "sha256": "5c9751abd88410f14fe20f844b3d1ac663bbf99f4315e045f4c713b9067f8279"
+        },
+        {
+          "path": "Features/Disenchantry/Locales.lua",
+          "sha256": "7cbf46869c64d3e02ce40c0a105924b1cbf344253b022ab8e893e1c146577909"
+        },
+        {
+          "path": "Features/Disenchantry/Manifest.xml",
+          "sha256": "c35955e0ba51874586b4ba17c8201e9ee933f9ce7095f496054da3b32f3e4e52"
+        },
+        {
+          "path": "Features/Disenchantry/NOTICE.txt",
+          "sha256": "f9bdddfa8e832026234a6d111e21d1bd082593992e15a6caff97d42227f36e86"
+        },
+        {
+          "path": "Features/Disenchantry/PriceProviders.lua",
+          "sha256": "ee0be6e669e6d7786956f61e14816e75000e9f4b037566e25a78c3b48815f1ff"
+        },
+        {
+          "path": "Features/Disenchantry/Statistics.lua",
+          "sha256": "865ea5323a2e567424e56b119180d07fbc56c3798561c531d3135be1bc4029bc"
+        },
+        {
+          "path": "Features/Disenchantry/UI/ActionButton.lua",
+          "sha256": "e2453fd670cdca82d25c40d0d1f43faacbcd7072491a4d23abefb5f3713b7d29"
+        },
+        {
+          "path": "Features/Disenchantry/UI/Blacklist.lua",
+          "sha256": "fa1820e32e837bae6225033589666c7acce3d10bb083aa4a7b69bad1e60e104f"
+        },
+        {
+          "path": "Features/Disenchantry/UI/Compact.lua",
+          "sha256": "fb5ef00b73dce1c6766144e015d7f47c1546eb5247dbe545026a9578706ab7b2"
+        },
+        {
+          "path": "Features/Disenchantry/UI/Diagnostics.lua",
+          "sha256": "869df3b1fbeea8e8df1b4e6c5e0692f67075ea8e29c1f4a763aa9b366a5cba36"
+        },
+        {
+          "path": "Features/Disenchantry/UI/ItemList.lua",
+          "sha256": "c73634abafcc26062cd2770fad06c84b580734076fc0b6ded80b7c0cdfac242b"
+        },
+        {
+          "path": "Features/Disenchantry/UI/MainWindow.lua",
+          "sha256": "391f04e6876d00421e45988613ef6342ba890008e9ca5fad522c0fe1075ab491"
+        },
+        {
+          "path": "Features/Disenchantry/UI/Modes.lua",
+          "sha256": "ce18648d435c7e4aaed13495b5f406e53a9d55194c8c55770e1b04aeea604b25"
+        },
+        {
+          "path": "Features/Disenchantry/UI/Settings.lua",
+          "sha256": "79594f4d6478d83d7a36b7f3285f8847fdf0a8de58e6add848b7e85fa7ab13e0"
+        },
+        {
+          "path": "Features/Disenchantry/UI/Widgets.lua",
+          "sha256": "c741a0e84c376fc8804536f50da8ac4dd55cfc1188c42c1448bbad6f28dc5c78"
+        },
+        {
+          "path": "Features/Disenchantry/UI/Windows.lua",
+          "sha256": "6e73cb5eeca4de0967f6c199f11aeb306158212dcf629b7ef3acb04ca6acfd12"
+        },
+        {
+          "path": "Features/Maps.xml",
+          "sha256": "07e0945708a8f149cbf64398696c1a12395326851825ca59e0a0c587162b7086"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/Libraries.xml",
+          "sha256": "51db4044e40d5e0d41ba380d7be342eb0db00723996cb91a72df36af4944cb10"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/Manifest.xml",
+          "sha256": "464bdbb799a83f80b7fa27af79565a8e944bffa780ec58147dc785dc56371cf7"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NOTICE.txt",
+          "sha256": "a1f0e8199e5a72bc357bb31045376b8abcb8440d57737124dfc46072b3b98292"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/embeds.xml",
+          "sha256": "30cfa1a74f842f086f8c5328179b064e967a6e464e38f78cff5e507d7bf31ce7"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceAddon-3.0/AceAddon-3.0.lua",
+          "sha256": "9aaec858b04820b597155b040dd76ef0d6e8e4f0707e54630001bcfe68497307"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceAddon-3.0/AceAddon-3.0.xml",
+          "sha256": "611d8d8150de656a7ac5311a4bfe63a1e57a8cf48d636d399a6a821ef6238f98"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceComm-3.0/AceComm-3.0.lua",
+          "sha256": "aba2e0dbc50f151da02f71e93d04c67288c28daead424742ecaeb425ba3ee45b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceComm-3.0/AceComm-3.0.xml",
+          "sha256": "6466474a164193282764c0532cb25305a4bcaf2d03ad947ac51e2b91d6e9e0e2"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceComm-3.0/ChatThrottleLib.lua",
+          "sha256": "3491b6c98cae1634a9f0494b436e86df1632309fb68181c25240b53c4d86dde8"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceConfig-3.0/AceConfig-3.0.lua",
+          "sha256": "25d745c5a8b50cf4b145caa55b5aeb389762286690117f51341d4111f98ee462"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceConfig-3.0/AceConfig-3.0.xml",
+          "sha256": "95640308a21beeaf87eccf4d92424eb4de63b92baed51f8e43533156350f629b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceConfig-3.0/AceConfigCmd-3.0/AceConfigCmd-3.0.lua",
+          "sha256": "936138368dd8fa2523937428b321dab6ac9b5e0e502c6b49d5faa66dc5d5c609"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceConfig-3.0/AceConfigCmd-3.0/AceConfigCmd-3.0.xml",
+          "sha256": "32c6e2c5bc38a940b3c8e7f499a8d3e8dfc76da387a67c969f39b229e912109c"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.lua",
+          "sha256": "56f9cc0e8da69975296e22a1bfe0bc02b86c34a63c28bd5464e3d386fcdb523e"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.xml",
+          "sha256": "589196f0f55bfb5587dc0d7647fff4839ac7625317f001970a1b390d10639f91"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceConfig-3.0/AceConfigRegistry-3.0/AceConfigRegistry-3.0.lua",
+          "sha256": "dc0fa1aee9ac56690109078cd58045ae237635cf9dc7d80496242ab358e4d5fe"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceConfig-3.0/AceConfigRegistry-3.0/AceConfigRegistry-3.0.xml",
+          "sha256": "bd9790653701c529d70a565ae509e441f6355b0fb228300cf152004f1b22f5a5"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceConsole-3.0/AceConsole-3.0.lua",
+          "sha256": "3372abc50efcfa4f643bf7c2f3254de19327d28e2040997d672f94d1845a5499"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceConsole-3.0/AceConsole-3.0.xml",
+          "sha256": "047fceb9632ac6c99e80ccf12115b5104851ceac3cbd02ab665cdef1644b5a79"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceDB-3.0/AceDB-3.0.lua",
+          "sha256": "16d5f1859ce491ef5905336fb83cef0f05a0629da4a00f4aad7997a0dc3cca48"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceDB-3.0/AceDB-3.0.xml",
+          "sha256": "db086e63b8af39bd4857394119324573868a8bf5815d4c6f3d1af1027cba0625"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceDBOptions-3.0/AceDBOptions-3.0.lua",
+          "sha256": "f6959caf4ca1fae0f2713e3c32efa9dbe488f3d25f686a4453774308ad2c0eb6"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceDBOptions-3.0/AceDBOptions-3.0.xml",
+          "sha256": "45538ee0179edfc1e2e64dbcc151ef40ef74846eec7075701460edf69c6feb3f"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/AceGUI-3.0.lua",
+          "sha256": "bcfcef55d727f8434606bdba2375929123422e051c27fd1bfcbd95e7ab723ed7"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/AceGUI-3.0.xml",
+          "sha256": "e54bd15393700719dbec2b1b433e570a3f364fa5e927f9227f63037eb16ad522"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIContainer-BlizOptionsGroup.lua",
+          "sha256": "566551ddd7c8c434d6bb6f4a4c9a67479e6e8a719fcc3a504b18eec4f11e6586"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIContainer-DropDownGroup.lua",
+          "sha256": "ecf7743bd5fb9059d4226e35cd2374aa13282eca720938498f85d7f328f8c070"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIContainer-Frame.lua",
+          "sha256": "fb3f9f3b3414bd3b27e1281c2b8836749e38906458df6b69e9f385fbe041df91"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIContainer-InlineGroup.lua",
+          "sha256": "e9458bd6378d017994408618cbc6921ef7e6bbe152e9bbded199255c399468a5"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIContainer-ScrollFrame.lua",
+          "sha256": "fef3da3ce311b861d669bc503906cdd0780a372fbea039c1e2d3f75ac6e68709"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIContainer-SimpleGroup.lua",
+          "sha256": "d65968489c0fa5749d2e35be69c60d0dd7969189aa14a9031f0654715625d214"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIContainer-TabGroup.lua",
+          "sha256": "ad73ed3b619cba61778ec39b73206daac423bd1f539241f4a58ff623b0b0b687"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIContainer-TreeGroup.lua",
+          "sha256": "faf9f1eb9bec0af6d3493c8e264fbf6aef244c364ed72c85069578d69115682d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIContainer-Window.lua",
+          "sha256": "d57f41b781d8c021fb69a94e084efadbb891d3a353738e6ca68853da21f94645"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-Button.lua",
+          "sha256": "1bcc3592c6315d1369f448316f4bc990c812a37d2a7b5c31fd2324daf6ad7e87"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-CheckBox.lua",
+          "sha256": "81cef4bb6ddef3b8bc31360f292fe7b7a7916d675b9336a697545c9ba9adfd77"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-ColorPicker.lua",
+          "sha256": "d69b7e600acf2e6f9d0e222d40952f4f25115eb6a48c039bfa71d2807668e5ef"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-DropDown-Items.lua",
+          "sha256": "aa7d0bd54525e63b9549ec0a41ff3b3595267a377e0ae65da42577856cf03f4b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-DropDown.lua",
+          "sha256": "42e2a9d9c41bc4f481af1721b6cc45988e2bc5573fd0282499e9bf3af8e8ec20"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-EditBox.lua",
+          "sha256": "24a7570e949647c67a0364a8b21d8904c7df812ce0a3d58a74413e473cd023e2"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-Heading.lua",
+          "sha256": "43db0151f5ff7daaeb5bba3cb99d2aa6d8f0a0b8f5bf47477d274ee7b5d43773"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-Icon.lua",
+          "sha256": "ebfe6a6d699dfdb32c1eab93f974d21ffc5eedc634dae297afc9bad3fd2117de"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-InteractiveLabel.lua",
+          "sha256": "e47543663cc5c4272ef6fb6d356fb63a49f6b101d3cc0501e769ac6615442cce"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-Keybinding.lua",
+          "sha256": "5d372eb175c2768e0e13f46f77b5d5ec4a1ca74636b2ad940725040496a6ba7e"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-Label.lua",
+          "sha256": "5a62305ac4eaf31d173d84cc40bede59b0fe32c8b5fbbc9f015a1c5b7894c7d0"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-MultiLineEditBox.lua",
+          "sha256": "ac67fd32a7a5642c0bebc5104ee4ac57088fb04e44b15cee64513b78e532e7cd"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-Slider.lua",
+          "sha256": "d4aab13b831961cbef9c0639ba2f08c0d7ac1baae7e2d4de7621cea61850de37"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/BackgroundWidget.lua",
+          "sha256": "642b4e167913d72b60c36fa26a1a1745950cd0e21eedaeb657b23a628217e70c"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/BorderWidget.lua",
+          "sha256": "8c19fb02fe8bddf8a8fa5de6c78a05f10b334d8786c83c65c12162d9c6de3324"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/FontWidget.lua",
+          "sha256": "c30ef9394ced7641b5071f545b44a3ffb39e4138e9ee094cdce3c70c20302a6d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/prototypes.lua",
+          "sha256": "6bf55412c2ee6af93ae484f94b8ebffc4bee3c7c6a84ddc3eefe064f229a1b95"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/SoundWidget.lua",
+          "sha256": "b5bffea8b2d9e20401389eb99df38e5c13ee0f5ad244650cd9aa02a4d51cce69"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/StatusbarWidget.lua",
+          "sha256": "e4275fd70f5069db7f757d5f89909d18a6e41f7d92e6b1cf7297e8006b1784ef"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/widget.xml",
+          "sha256": "6f6688df8c87a87dccfa76ffbdf54aa54b89a03aa7e7eda6f3864e15d8e3a06f"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets.toc",
+          "sha256": "823c6b564534839a93b49ccffe4a6271ddf76832423363ec34b2e0f29fccbc02"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/BackgroundWidget.lua",
+          "sha256": "6e17461d2db813d826d349cf3af43920fa3fbda62a77e623890b623b1e08a498"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/BorderWidget.lua",
+          "sha256": "d085eb9aac70398839f53408f80df29c62c0153f801cbaa06b98d67aa2db10cf"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/CHANGES.txt",
+          "sha256": "527b5e38eff55b8c3dffe75dade4e558ed7cd41fd2e2c08bfa4a42534818bfb8"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/FontWidget.lua",
+          "sha256": "42e5e43e83f500161b015fb3c228b24fad36a6217aa76ee0aa91ea0ff488eb4a"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/AceGUI-3.0.lua",
+          "sha256": "ae196ca9c76f5159a0d9bb9cb36d18467f37541fef711829b73c491578ddf74a"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/AceGUI-3.0.xml",
+          "sha256": "e54bd15393700719dbec2b1b433e570a3f364fa5e927f9227f63037eb16ad522"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIContainer-BlizOptionsGroup.lua",
+          "sha256": "140a2d986173e93d563265c89822c99f4d3916da0154811591e4b66498ea1ffa"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIContainer-DropDownGroup.lua",
+          "sha256": "1084e44f3e6750c9d68e5800f2e0c918ae8a6d5bf863c9aa18357abf193dd6e1"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIContainer-Frame.lua",
+          "sha256": "5ba2a1663d4be2f8dce6a541cc13d515defbcd0b8a0feecb5666ca38cc74842d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIContainer-InlineGroup.lua",
+          "sha256": "227c929c04640e8fc805128b7d7ed76ab3544c8e43657afedd3c3b08dc65e7d8"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIContainer-ScrollFrame.lua",
+          "sha256": "fef3da3ce311b861d669bc503906cdd0780a372fbea039c1e2d3f75ac6e68709"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIContainer-SimpleGroup.lua",
+          "sha256": "d65968489c0fa5749d2e35be69c60d0dd7969189aa14a9031f0654715625d214"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIContainer-TabGroup.lua",
+          "sha256": "6d0c1866d7c4423bcfeaad398e6ed8c02bb3bca06e1f82ae762586ebae79bed5"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIContainer-TreeGroup.lua",
+          "sha256": "054c269a04fce6e7c92ff19664c9663ab368f7aafa6175baed073a2483ac86a4"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIContainer-Window.lua",
+          "sha256": "eef434f8f1cb7d6280c6c12240e3243e371217ceb654f66cf3778b634bd2a2b0"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-Button.lua",
+          "sha256": "1bcc3592c6315d1369f448316f4bc990c812a37d2a7b5c31fd2324daf6ad7e87"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-CheckBox.lua",
+          "sha256": "00b34a2c45d22f5e9f34040485f18826744035fc6e3d80233e6ef7b9c24c4bff"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-ColorPicker.lua",
+          "sha256": "4ada341408dc1a97d9446550cacc1561c41ac648d65e40fbb5e3fe8e8ad1d558"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-DropDown-Items.lua",
+          "sha256": "e1a4b73eafa189b666bc5e05fe12c47c964da476748cb1092918a914f71499f1"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-DropDown.lua",
+          "sha256": "5672b671fbbc42a0a058fd1d11d72a3f572d8840781007e02ffaca6c1971d7b2"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-EditBox.lua",
+          "sha256": "78c631548c6eea79253511dfaa4dfd1ba763fc7a93eb180573490e25d07e00b5"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-Heading.lua",
+          "sha256": "ebf0271a8e6f7bce8947cbd339a6a08a6c856bf45e35ae9156c79320521dfa51"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-Icon.lua",
+          "sha256": "62df520dba9234f704ac956141e95e9716896b006210f4ae67a9afbff3b93a50"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-InteractiveLabel.lua",
+          "sha256": "e47543663cc5c4272ef6fb6d356fb63a49f6b101d3cc0501e769ac6615442cce"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-Keybinding.lua",
+          "sha256": "f580c4a31cc7261d36e28dc76bc5c4f3f06df57610925076cc8a453994a9799e"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-Label.lua",
+          "sha256": "4b07ac6de4881a061cefe07928423413e5f4a607264b130b1120f2f4958c6d24"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-MultiLineEditBox.lua",
+          "sha256": "8007ebc390c77ba242249a631fd9e70d81d2441f270a9a27492a6c0513bfbce8"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/AceGUI-3.0/widgets/AceGUIWidget-Slider.lua",
+          "sha256": "0f29ae5c3c99aab5253d74ff0ff8c0d22ae008edb345071034bdd314ac2cc2fb"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/CallbackHandler-1.0/CallbackHandler-1.0.lua",
+          "sha256": "fff201ea7de21735f5d087b11eb518172ab73365ba83e55541ee921e562d651b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/CallbackHandler-1.0/CallbackHandler-1.0.xml",
+          "sha256": "9310765c5310a395652e60a04f378e836785deb6f0b7181a448c74751d6f0185"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/LibSharedMedia-3.0/lib.xml",
+          "sha256": "bd4f30d101a13ffb915114f6cd2d510fee506bca333f35387b3e08f238d85f8c"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/LibSharedMedia-3.0/LibSharedMedia-3.0.lua",
+          "sha256": "7272b86e0bdebc5f8d698c2dddf3a0fca14e96bd6c8bfd3c43df26a2d45b638d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/LibStub/LibStub.lua",
+          "sha256": "a59b4c745c1fdb1b5ad22a86394814afecf8549516c18f6a16353960646b47f8"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/Libs/LibStub/LibStub.toc",
+          "sha256": "e01f590f6dfb5419595b640e6b5391092b5e39f8581d010adb9d852f4a30578d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/LibSharedMedia-3.0/CallbackHandler-1.0/CallbackHandler-1.0.lua",
+          "sha256": "1162195cc971b525d26a0b721054b7d6080cb67af8fa082c31c33a6530c53e0b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/LibSharedMedia-3.0/Changelog-LibSharedMedia-3.0-7.1.0.txt",
+          "sha256": "5e1355f78d851c08b040dfb4400c4efc468fa279ec5b529cb119a357375fb698"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/LibSharedMedia-3.0/CHANGES.txt",
+          "sha256": "1531a38b317c4755270b4208beeaa150e667746d89263d226270459e8021cc51"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/LibSharedMedia-3.0/lib.xml",
+          "sha256": "77dff78daf507775d379c11b4a5750225e8cbd02a5e3cc4f41db0fd02fd77ad5"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/LibSharedMedia-3.0/LibSharedMedia-3.0/lib.xml",
+          "sha256": "169a6f659ac94933c5cbfbf66098699cfce93fd44a7cc751cc8fa62177e25d57"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/LibSharedMedia-3.0/LibSharedMedia-3.0/LibSharedMedia-3.0.lua",
+          "sha256": "4e6d83c0dadaddba02dcdb85f87b7686d29536baa2c71712d00f0954c5b66772"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/LibSharedMedia-3.0/LibSharedMedia-3.0.toc",
+          "sha256": "b99fb45f1f22f711e5d0aef814fd37f8d085875d9886c48924ff11024cf738b8"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/LibSharedMedia-3.0/LibStub/LibStub.lua",
+          "sha256": "f93f7dfbd280c0f8e0328bb194faa6db541c3c50b3d4d37eb064c816f0ec5576"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/prototypes.lua",
+          "sha256": "d7c81c0b8675be17c4fb5523e15f066e7c031f2a7609033a0fd293796be8e0e7"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/SoundWidget.lua",
+          "sha256": "2a32b8c1aaec37fc8a91f0dca2a177237d278166990110f731b570323c2bc27a"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/StatusbarWidget.lua",
+          "sha256": "4b437d48f689ebd5f747a415bbcd2f607ef3516884f189022ba583699b872b43"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0-SharedMediaWidgets/widget.xml",
+          "sha256": "67af256d14a40165642129f9cc36128d187ed771b737b931f7a87af03405ad86"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceLocale-3.0/AceLocale-3.0.lua",
+          "sha256": "584b30b5cd9da71408cdd83a49469aa4348941e185a42cbd218d964678d88e57"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceLocale-3.0/AceLocale-3.0.xml",
+          "sha256": "3bf70169970f1a9953d11396c3816e3ecb6946f1bc1db992b8274762435e4a0f"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceSerializer-3.0/AceSerializer-3.0.lua",
+          "sha256": "874fabab25ee5c5c08599e37744abe9205659b6f33c59250bccbfbf4fe5d0a41"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceSerializer-3.0/AceSerializer-3.0.xml",
+          "sha256": "5e346ce596cfe2e203dd8e8b8b45a3d2de960357b314b4a194de8f00d7d5ccff"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/CallbackHandler-1.0/CallbackHandler-1.0.lua",
+          "sha256": "e37ca6e5cd4e39c69d600468c8fe2a425b8a4d50023d9903fa3dc7aeeae1561f"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/CallbackHandler-1.0/CallbackHandler-1.0.xml",
+          "sha256": "893bd83f5eb818a93a5c8bec4ed37edf2493a9fa655acbcb0cdde02bea5448e5"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/HereBeDragons/CallbackHandler-1.0/CallbackHandler-1.0.lua",
+          "sha256": "84a15af505e728ac5e5eb6a8eaba8989d1131d5f8ba14d11abcfe4ce086de3c1"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/HereBeDragons/CallbackHandler-1.0/CallbackHandler-1.0.xml",
+          "sha256": "9310765c5310a395652e60a04f378e836785deb6f0b7181a448c74751d6f0185"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/HereBeDragons/CHANGELOG.md",
+          "sha256": "ee1e86527efad15ba85967d233ef5b8f9997e761297cd683056345a122fea0c4"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/HereBeDragons/HereBeDragons-2.0.lua",
+          "sha256": "1e44cb336b6c598d830e075cfee2a92edc33445785bf55243ab313d22e67f4ee"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/HereBeDragons/HereBeDragons-Migrate.lua",
+          "sha256": "c26239536e6e33c0d63f1bd2818376ba68fabe832045aef003f9a00fd8af70f7"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/HereBeDragons/HereBeDragons-Pins-2.0.lua",
+          "sha256": "fb6ce275f58c03f28f611c1de79d6d2d51985cba16881ca889c87f46601d6be5"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/HereBeDragons/HereBeDragons.toc",
+          "sha256": "d81123c0d4005259bec2b11bcece25c7127e4ccf8388d28ddda9c57c541111c2"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/HereBeDragons/LibStub/LibStub.lua",
+          "sha256": "a59b4c745c1fdb1b5ad22a86394814afecf8549516c18f6a16353960646b47f8"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/HereBeDragons/LibStub/LibStub.toc",
+          "sha256": "e01f590f6dfb5419595b640e6b5391092b5e39f8581d010adb9d852f4a30578d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDataBroker-1.1/LibDataBroker-1.1.lua",
+          "sha256": "f3d4758f2060215492c9764b1d7dc2a336826d4cd253cd54ff9ff7c6d78f04e2"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDBIcon-1.0/lib.xml",
+          "sha256": "f9f8ad1829bee7f9aabb610e3a2e6e930119e4b7ea5e4acdff9524567a440356"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDBIcon-1.0/LibDBIcon-1.0.lua",
+          "sha256": "0f071cfb62b2f48ab56106e365095d4a8eae48edc52301205fc46e547d6eb293"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/changelog.md",
+          "sha256": "d39208496072379168fe60283865cab8b799f275d8ffd57e895bfa8f616240dc"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/docs/benchmark.md",
+          "sha256": "fb9d3fbb8cbd5096dd62ddc2a2865dfac08ed5ded72eeb125bc138ccae0b40a2"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/docs/config.ld",
+          "sha256": "63456614da0db209b70ce8475e48c00b69430f191f0bd2240d283a62305c667d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/docs/examples/example.lua.html",
+          "sha256": "9555fef5aaef16fe54e9c34e322cced8d2cb38bd9e9405c0559d3993dfefd23a"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/docs/index.html",
+          "sha256": "e98c3dc3193e0d4d2a2cdbedccbd99e96321fcd5f355c4b5e676ceecf44b75c4"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/docs/ldoc.css",
+          "sha256": "d520893b6924ad82a2b0aa5890fd086e3b262ec1cf97cf207471d586d5b8b774"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/docs/README.md",
+          "sha256": "f2f7a5bbd1ba90a98a243333f8202f92d76adfc3510edfe61b02a5f75a40d6da"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/docs/source/LibDeflate.lua.html",
+          "sha256": "c455ea26f729201f63f7566c60659369fb15d51d488c7af297748ea8bbf5e60b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/docs/topics/benchmark.md.html",
+          "sha256": "f955b72541583b161b5219433b089ac04d15ba36deca8e975e397bd10169bcf7"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/docs/topics/changelog.md.html",
+          "sha256": "2b77dce8d4f5b3dab774fbdf5cad54b88265bbea18d791ac0a5d555636f01628"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/docs/topics/readme.md.html",
+          "sha256": "a60c7b76e39d900b9d13eaca1dc6a2da4c176e42f1bcd3db21e57184181ddd1a"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/examples/example.lua",
+          "sha256": "eee8524d2cc9f370e99dbc8d46f399ff2815966dc5a44ed384410d58daaa971f"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/lib.xml",
+          "sha256": "2eb76857bacf7fc7229fe4c55874db9f1e77e1a83ef15f2ab5edf7677feb5ea0"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/LibDeflate.lua",
+          "sha256": "5f4b9f9295a8fff6b0e51fe8a5e5e2b96a8ffaf3921f4090111cfa0afd8d6d4d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/LibDeflate.toc",
+          "sha256": "cbba94c26a618b471a55aa87c54fa304439362cd06e476631209e7a046406762"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/LibStub/LibStub.lua",
+          "sha256": "186bac9553513504fac3a5c4550ff59f3aee9e8a497376134f3ca01de2ed18d0"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/LibStub/LibStub.toc",
+          "sha256": "0e276448cc269122f1cb10bf98087db945d923bf006825de7ebed8e647822ef1"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/LICENSE.txt",
+          "sha256": "bfbcb8752dae24606660205d232d34bee7b3eb66b0fdc562799da2465e9934da"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeflate/README.md",
+          "sha256": "0d62f39af93fbb4c3db56f42bf83567296452115957184a7079cdf046c5a3556"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeformat-3.0/Changelog-LibDeformat-3.0-v1.txt",
+          "sha256": "85cab4e92f7ea0b4e0f9906557e4e2e2a9078e8be920d5c1277caf67e998dbf3"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeformat-3.0/lib.xml",
+          "sha256": "5444aec2707d33fd292a9456063336a66a86947309345d0925bbee8a93d07e58"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeformat-3.0/LibDeformat-3.0.lua",
+          "sha256": "bc3b5b7c6d28e63baee376c6ce8b44ee7a6724c13d6159834832987469be3b46"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeformat-3.0/LibDeformat-3.0.toc",
+          "sha256": "1be92c44a0a3352864de7e53de25d079f5b452a5dfeb97be0971b640c9d7f3c2"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDeformat-3.0/LibStub/LibStub.lua",
+          "sha256": "a59b4c745c1fdb1b5ad22a86394814afecf8549516c18f6a16353960646b47f8"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDurability/LibDurability.lua",
+          "sha256": "c3ca45bb0bd02cc8895ab129943ca3b409df13b9d9b91452e40f2ab9db3703c5"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibDurability/LibDurability.xml",
+          "sha256": "3028dbcc97754973540c9a2b116d28c1a8200ff003fdc09e4e657fe0d8b30777"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/.pkgmeta",
+          "sha256": "f1eb66cd94087ba8d1f458ecfcbf7ac725ffea1144d5f4e05149555fd3215417"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/lib.xml",
+          "sha256": "a0c1c36038b0b5c3efb2771377f7c2ec8e2d275efdcd22f2a71a767dbac88765"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/LibSerialize.lua",
+          "sha256": "3cec28b2b84e8c88ecf0d1705b14240b45841d833598be073d3102b9be08887d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/LICENSE",
+          "sha256": "20dfddf4b7b254dc9048734b9cf67658769299189cd0a53b3c638eafd4c0da06"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/README.md",
+          "sha256": "2f463d72afbcac3b611796a7038df51c6ab759ae61d5db34be1d2f9c0e2518b3"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/tests.lua",
+          "sha256": "1473ec5de1b03656f7a1c2a4becaedfda37d91e6bb73a78bf4d32f5fee2362dd"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSharedMedia-3.0/CallbackHandler-1.0/CallbackHandler-1.0.lua",
+          "sha256": "1162195cc971b525d26a0b721054b7d6080cb67af8fa082c31c33a6530c53e0b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSharedMedia-3.0/CHANGES.txt",
+          "sha256": "35a1a314203880198328b8dae078aee172da2808ceb0041185fa08e78020a34b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSharedMedia-3.0/lib.xml",
+          "sha256": "77dff78daf507775d379c11b4a5750225e8cbd02a5e3cc4f41db0fd02fd77ad5"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSharedMedia-3.0/LibSharedMedia-3.0/lib.xml",
+          "sha256": "169a6f659ac94933c5cbfbf66098699cfce93fd44a7cc751cc8fa62177e25d57"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSharedMedia-3.0/LibSharedMedia-3.0/LibSharedMedia-3.0.lua",
+          "sha256": "26d56fe73f0ccdfa918b40ea77338039671d7ebbae8d784b11330f9239ca2248"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSharedMedia-3.0/LibSharedMedia-3.0.toc",
+          "sha256": "bd347213e56796e57e9f5b7c263532b0ec27ff19e588d3f38fe1150bfb96bec8"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSharedMedia-3.0/LibStub/LibStub.lua",
+          "sha256": "f93f7dfbd280c0f8e0328bb194faa6db541c3c50b3d4d37eb064c816f0ec5576"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibStub/LibStub.lua",
+          "sha256": "26401bc42c26d1d1b6f7ad9410aa464edcbe4d32d74ebadeeecd8c0110236f7d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibUIDropDownMenu/LibEasyMenu.lua",
+          "sha256": "b1320b297f688b41d8e6f8ca655efe9ef682ba15474678d308607835e39b6ead"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibUIDropDownMenu/LibUIDropDownMenu.lua",
+          "sha256": "2a2caef84ec1f6322717d639af75cbe5305e40577b508b2c327d1cc092833f71"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibUIDropDownMenu/LibUIDropDownMenu.xml",
+          "sha256": "2fe3937d6b6e43da4d5283abe4dc92befd03c421180bf0538ffcadbcc8317d54"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/deDE.lua",
+          "sha256": "ec2e8a075eda8a3fd0e9afbdbc2f123a54614cdf5fae916993eb8d24f20e7b86"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/enUS.lua",
+          "sha256": "54ebab270a3e48e5957c501a18e1fd22965ad4b076a1510e05b21658b8db4d7f"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/esES.lua",
+          "sha256": "8a2c4157977ce37b09cd0de1c32fd5c4874745a3835c35960f7b58e4c3cc405b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/esMX.lua",
+          "sha256": "12ef6083a5f1ff54581e59ddb3eba0ddc72b4f8f1a077a6eda46dd60ef83a1c9"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/frFR.lua",
+          "sha256": "a35d25433528183864fdf26eeb1ad6b573b7cb2bb95e0a332b30184ea7bc32b6"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/itIT.lua",
+          "sha256": "ab827117a6bdc37606106eb7fa1793cc890bde4a98f1a6ac5123097bfbc3c00f"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/koKR.lua",
+          "sha256": "20ed5026ca7c282bdd16ab5ca714cdfc19f74307ee3e1918a615127450f69f02"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/Locales.xml",
+          "sha256": "f01cfc71b25f5c7b16f9d1d9ff7d2b9c91a9c35cdbf1d80846882aa97cb732e6"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/ptBR.lua",
+          "sha256": "c603ff24c9bf871c07f55a4e06bcbe342651f88fa46945fa83a60ddfb128e70a"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/ruRU.lua",
+          "sha256": "5e4ae46968f422c52fd603a96b319aad3a8108415ce6c1319a7710ec244c73a3"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/zhCN.lua",
+          "sha256": "1bf68bfd440f652ed7cd0ff464b118ce79a1ed08ab9a063b08e175775197cdd6"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Locale/zhTW.lua",
+          "sha256": "598e6e90b2894a1b39bbca2adfc643e8bd92e8c61f7dc2160fb75346699e13d2"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/00C800Square.tga",
+          "sha256": "af658a489f16040911641025689462c4949332b80c50c702dbcac97aaacf5a46"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/AltsSquare.tga",
+          "sha256": "8f632e0fe646bb48d9bb8fc1559551e158ad8ae220db1dd07c9de44ccd14f10b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/FF0000Square.tga",
+          "sha256": "f66dca8c8323bba5863a624e275e15f3c725c540a0b7d7de23693b08110d5fc3"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/FFFF00Square.tga",
+          "sha256": "1501675f4466aca788012611671a069aab7f4a0ac56a6086659552891d9407c7"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/greenCircle.tga",
+          "sha256": "b8ce57cd208dc5a41348610437c320c959e90d600d44b80afc2feed3f1506eaf"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/greenTick.tga",
+          "sha256": "5309125908433963f4d9b46b08cb6dedace09076efb5a2ae7400c99f117c2c9d"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/nitLogo32.tga",
+          "sha256": "b5dd98a11c317382a271a44ab5aa9be9284dee4f35625cdedcda0594af6a716e"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/portal.tga",
+          "sha256": "b50ec34af2ac7bcda2ba2df2a40c5e278d1bb0109f6d898c4471f6c82deca803"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/portal2.tga",
+          "sha256": "9f12a84add68582e40b11a74886513432721bf51d7ade745358a1ee2b54447f1"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/portal3.tga",
+          "sha256": "f48a67b49efd964ac62462a231dd20c21bfac77411d63c07e639af19f7222714"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/RaidSquare.tga",
+          "sha256": "7c3d623adea05d2fda94a90083b88c3f7aba3fc52974ad08c25a5f5f9f24d80a"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/redX.tga",
+          "sha256": "b2e05cc08f11acf80fd9746c6438fb9be42291e0c0521f843f198c33d71e757b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/redX2.tga",
+          "sha256": "187d6b082b9090f00f537f2adeea34a00dbe0cd79ede828b20f7c6eb184a5710"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/sfk3.tga",
+          "sha256": "a893fc298282845e4cb7d56174143b5687fb19be8871c377b7c1aef2eb029162"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/sfk4.tga",
+          "sha256": "74703c418264c9cce6688057ec28facc02e4e1b0f7d7fe96ee92a4e31d52f1f6"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Media/X.tga",
+          "sha256": "24633a64b9352374c1f0bea44f95db2f99a816bba7642b745a707fb8f45a055b"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Modules/Creatures.lua",
+          "sha256": "501e766a166d04a3738c92ea7bf8e4afb4a51806bc0c8a1b1fd91b247643cd96"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Modules/Data.lua",
+          "sha256": "d8c0297c4e36a15f61513c1c2b267cf8dfbb38a6f66b2e83290f4209368986c0"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Modules/Douses.lua",
+          "sha256": "4b876a3645aff4defeb0deeb7533a8bebc8997d52631cfbb7b9deba52c605cce"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Modules/Help.lua",
+          "sha256": "220d68186c4452faf081652c627f4c59c7981bdcf4e940777f7c3fc4f297764f"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Modules/LevelLog.lua",
+          "sha256": "2d7cc28241f6935637c3a6557dcf202b402b1d946c84c0acf96894bd84c4af2c"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Modules/LootReminder.lua",
+          "sha256": "c2c357b0bbea1c208c08596b0968b44e2ead2eb49d4de90eea1a9a27b7bbd249"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Modules/Options.lua",
+          "sha256": "917975ca55a695d93045ea5af7c5f34df66a036454658fcaff7a290c3037a459"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Modules/README.txt",
+          "sha256": "210e76c12e8c0b11cdc4975e9d427daf564065ba40b8bf691fa55db93956b6dd"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Modules/Zones.lua",
+          "sha256": "475bc6a22f63d8abccf15e1b7dd26a6ca42c10a8c2e01dcb8117ece807ff0444"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/NovaInstanceTracker.lua",
+          "sha256": "7683df7172fdb002c929066e63ee0a2a1ac4c4b15bfbaa1ac2f5a156f93b93d1"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/NovaInstanceTracker.toc",
+          "sha256": "2a3f635903e590c8eb94c6ddf9192836ba71f7f664637074ce302851f5da6680"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/NovaInstanceTracker/readme.txt",
+          "sha256": "c50264d9980d43453c45a7eeadca97efbb37812d8e9f3c7f385771d013442d25"
+        },
+        {
+          "path": "Features/NovaInstanceTracker/Registry.lua",
+          "sha256": "312c33361c28664690ab9ba3c7b61cfbb0c25e7ab43de7c9e3f2dcdb7383b505"
+        },
+        {
           "path": "ForeverTools.toc",
-          "sha256": "a3261b159fcec06aebb7c1917b53906149f095b2d5c922af4e96f06ac093c138"
+          "sha256": "b01adea04468a7e29e286e15068cfac394b948e5b00915ba0340e4a052fe6936"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "a3261b159fcec06aebb7c1917b53906149f095b2d5c922af4e96f06ac093c138"
+          "sha256": "b01adea04468a7e29e286e15068cfac394b948e5b00915ba0340e4a052fe6936"
         },
         {
           "path": "Menu.lua",
-          "sha256": "3ba18ebfb70bfada83710b8745243140fe7055a6c28382e235843bf7252315fb"
+          "sha256": "281616b6699abb755c0e25833545d8a95bbc443c21d0ff5d6c1d9555aa3273b2"
         },
         {
           "path": "Modules/AntiFettFinger.lua",
           "sha256": "05c8c86f20322b2fb1c23ca4adf413e0437ef417320ff127fc102c9d0113887d"
+        },
+        {
+          "path": "Modules/Attune.lua",
+          "sha256": "5f3c9efb4d72068632ec32b2a9ebdf79b223e59e0e3e5f764bbdaa01fe3d26b6"
+        },
+        {
+          "path": "Modules/Auctionator.lua",
+          "sha256": "a7a8335a2eef376c2ba33f59bbb686e84137d6ba2e1eb29b8d06e59f4d2b14e6"
+        },
+        {
+          "path": "Modules/AuctionatorTrading.lua",
+          "sha256": "25553006290a11fede33b8185923f0fb85d1a649931c169d74eb17ff1e72e243"
+        },
+        {
+          "path": "Modules/AuctionatorUI.lua",
+          "sha256": "16a2a93df79ccbd3f5e67b4b4a8237861cefc43af37b43d709d89335c7a230d1"
         },
         {
           "path": "Modules/AutoRank.lua",
@@ -62,8 +3314,24 @@
           "sha256": "29385b5ce6a8cda0bb2e3eea2b7239c4782767438033638414ae82c825aa12da"
         },
         {
+          "path": "Modules/Disenchantry.lua",
+          "sha256": "030ac04678197618920ecbd5f5a063daa24a9397813c00bc1cd15969b2f14dd5"
+        },
+        {
+          "path": "Modules/DisenchantryMinimap.lua",
+          "sha256": "36170bd8370d297bacc59d6f2ee45b53f763260e1e27113f3be505024d7fdb0b"
+        },
+        {
+          "path": "Modules/EncounterAddons.lua",
+          "sha256": "7ce7812101f747e6a3709a1be82c56bacd251bde809583bcc75eb274885a6675"
+        },
+        {
           "path": "Modules/GTFO.lua",
           "sha256": "29c45286b0ca57e0e22fba53740d2206b20e9d8fe4bc37d48056d844d5b98057"
+        },
+        {
+          "path": "Modules/Maps.lua",
+          "sha256": "cadc1e474fe944c6921e90aab9981675a4954f63e4297e6fabf3513c322811c5"
         },
         {
           "path": "Modules/Materials.lua",
@@ -75,7 +3343,7 @@
         },
         {
           "path": "Modules/Paladin.lua",
-          "sha256": "8caab65390745ef85b9fe472754e2b6fb9324434c2191d5bd36a38f3d3c595c7"
+          "sha256": "ad802149d3e4c4ac5ff389f67b8f4252e00d335584be2049fe0aa6ecd8c763b4"
         },
         {
           "path": "Modules/QuestMarkers.lua",
@@ -90,8 +3358,16 @@
           "sha256": "1d7fb383ee5099a3b14e047c96d561967be052a421590f173614b42383bc1eaa"
         },
         {
+          "path": "Modules/Training.lua",
+          "sha256": "1a785ab6a43342a89a39683652b3687d27614019dcee66062259f82bd9b8f857"
+        },
+        {
+          "path": "Modules/TrainingExtras.lua",
+          "sha256": "59631329b0e1a7703a7f45f152bd308f3f186f70b11671b453e0abed909e325f"
+        },
+        {
           "path": "README.md",
-          "sha256": "42840e0ee20808cf294ee77b06ead12df3d4fb591d7d3ad0cef29d3c0d4d9e86"
+          "sha256": "1824c05f83222e48059ba83bb7d642aa76f30b7fdd2e1944bb256aee28519b99"
         },
         {
           "path": "Sounds/GTFO/alarmbeep.ogg",

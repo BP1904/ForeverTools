@@ -1,15 +1,16 @@
 ## Interface: 16001
 ## Title: ForeverTools
-## Notes: Händler, Quests, Materialien, Paladin, GTFO, Threat Plates, Decursive, Anti Fett Finger und Auto Rank.
+## Notes: HÃ¤ndler, Quests, Materialien, Paladin, GTFO, Threat Plates, Decursive, Anti Fett Finger, Auto Rank, Karten, Auktionshaus, LernÃ¼bersicht Disenchantry, Attune, BigWigs und Nova Instance Tracker.
 ## Author: ForeverTools
-## Version: 1.7.4
-## OptionalDeps: AntiFettFinger, AutoRank
-## SavedVariables: ForeverToolsDB
-## SavedVariablesPerCharacter: ForeverToolsMaterialMail, ForeverToolsPaladinDB, ForeverToolsAntiFettFingerDB, ForeverToolsAutoRankDB
+## Version: 1.15.0
+## OptionalDeps: AntiFettFinger, AutoRank, Leatrix_Maps, WhatsTraining, Disenchantry, Attune, BigWigs, NovaInstanceTracker
+## SavedVariables: ForeverToolsDB, ForeverToolsDisenchantryDB, ForeverToolsAttuneDB, ForeverToolsBigWigsDB, ForeverToolsBigWigsIconDB, ForeverToolsBigWigsStatsDB, ForeverToolsNovaDB
+## SavedVariablesPerCharacter: ForeverToolsMaterialMail, ForeverToolsPaladinDB, ForeverToolsAntiFettFingerDB, ForeverToolsAutoRankDB, ForeverToolsTrainingDB, ForeverToolsAttuneLastViewed, ForeverToolsAttuneTreeExpandStatus, ForeverToolsAttuneMigrated
 
 Features\AntiFettFinger.lua
 Features\AutoRank.lua
 Core.lua
+Embedded.lua
 UpdateStatus.lua
 Updates.lua
 Modules\Merchant.lua
@@ -27,4 +28,23 @@ Data\CleansingSpells.lua
 Modules\Decursive.lua
 Modules\AntiFettFinger.lua
 Modules\AutoRank.lua
+Features\Maps.xml
+Data\Maps.lua
+Modules\Maps.lua
+Modules\Auctionator.lua
+Modules\AuctionatorTrading.lua
+Modules\AuctionatorUI.lua
+Data\Training\Bootstrap.lua
+Data\Training\Manifest.xml
+Modules\Training.lua
+Modules\TrainingExtras.lua
+Features\Disenchantry\Bootstrap.lua
+Features\Disenchantry\Manifest.xml
+Modules\Disenchantry.lua
+Modules\DisenchantryMinimap.lua
+Features\Attune\Manifest.xml
+Modules\Attune.lua
+Features\BigWigs\Manifest.xml
+Features\NovaInstanceTracker\Manifest.xml
+Modules\EncounterAddons.lua
 Menu.lua

@@ -1,0 +1,17 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+  <Include file="embeds.xml"/>
+  <Script file="Bootstrap.lua"/>
+  <Script file="Locales/enUS.lua"/>
+  <Script file="Locales/deDE.lua"/>
+  <Script file="Locales/esES.lua"/>
+  <Script file="Locales/frFR.lua"/>
+  <Script file="Locales/koKR.lua"/>
+  <Script file="Locales/ruRU.lua"/>
+  <Script file="Locales/zhCN.lua"/>
+  <Script file="Locales/zhTW.lua"/>
+  <Script file="Attune.lua"/>
+  <Script file="AttuneData.lua"/>
+  <Script file="AttuneQuestGivers.lua"/>
+  <Script file="AttuneClassQuests.lua"/>
+  <Script file="AttuneQuestRewards.lua"/>
+</Ui>

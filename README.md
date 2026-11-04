@@ -1,6 +1,24 @@
 # ForeverTools – ein Addon für alle unsere Funktionen
 
-Für **WoW Forever 1.60.1.70425 / Interface 16001**. Alle Funktionen liegen im einzigen Addon-Ordner **ForeverTools**: Händler & Taschen, Quests, Materialien, Paladin, GTFO, Threat Plates, Decursive, **Anti Fett Finger** und **Auto Rank**. Jedes Modul ist in der gemeinsamen Übersicht einzeln schaltbar.
+**Neu in 1.15.0: BigWigs und Nova Instance Tracker sind vollständig eingebaut.** Öffnen über das Schmiede-Schnellmenü oder `/ad → BigWigs / Nova Instance Tracker → Optionen`. Direktbefehle: `/ftbw` für BigWigs-Einstellungen, `/ftnit` für den Instanzverlauf und `/ftnit options` für Nova-Einstellungen. Auch `/bw` und `/nit` bleiben nach der Umstellung verfügbar. Die beiden Modulschalter werden mit `/reload` übernommen.
+
+Beim ersten Laden werden Einstellungen und Verlauf aus aktiven Einzelversionen kopiert. Die alten Addons werden für den aktuellen Charakter deaktiviert; nach dem Hinweis **nochmals `/reload`** eingeben. Ihre Ordner und Originaldaten bleiben als Sicherung erhalten. Alle Laufzeitdateien und Medien liegen in ForeverTools. BigWigs übernimmt den vorhandenen Umfang von v427.8 einschließlich der installierten Bossmodule; ein Classic-/Forever-Bosspaket war bisher nicht installiert und wird dadurch nicht ergänzt. Nova 2.31 behält seine Forever-Erkennung und Instanzlimits. Darstellung und Bosswarnungen im Spiel müssen noch geprüft werden.
+
+**Neu in 1.14.1: Schnellmenü am Schmiede-Symbol.** Linksklick auf den ForeverTools-Minimapbutton öffnet **Attune** und **Disenchantry**. Dort öffnet Linksklick die Funktion, Rechtsklick deren Einstellungen. **Module verwalten**, Rechtsklick auf das Schmiede-Symbol oder `/ad` öffnet die bisherige Modulübersicht. Abgeschaltete Module sind im Schnellmenü ausgegraut. Escape schließt das Schnellmenü. MinimapButtonButton wird dafür nicht benötigt. Nach dem Update `/reload` eingeben.
+
+**Neu in 1.14.0: Attune ist eigenständig integriert.** `/ftattune` oder `/ad → Attune: Freischaltungen und Questketten → Optionen` öffnet Freischaltungen, Dungeon- und Klassenquests mit Fortschritt, Karten und Belohnungen. Das separate Attune ist nicht erforderlich. Eine aktive Einzelversion wird nach einmaliger Datenübernahme für den aktuellen Charakter deaktiviert; nach dem Hinweis nochmals `/reload` eingeben. Details und Rechtehinweise: [Attune-Analyse.md](Attune-Analyse.md).
+
+**Neu in 1.13.0:** Die Lernübersicht ist aus dem Zauber-/Berufsbuch erreichbar, berücksichtigt Rufpreise und setzt Lehrer-Kartenpunkte. Grimoires werden pro Begleiterfamilie erkannt. Disenchantry erhält ein eigenes, optionales Minimapsymbol: `/ad → Entzaubern: Disenchantry → Optionen → Eigenes Disenchantry-Minimapsymbol anzeigen`. Nach dem Update `/reload` eingeben.
+
+**Neu in 1.12.0: Disenchantry ist integriert.** Öffnen über `/ad → Entzaubern: Disenchantry → Optionen` oder `/ftde`. Enthalten sind Gegenstandsauswahl, Schutzfilter, Sperrlisten, Materialprognosen, Hauptfenster, Kompaktleiste, Tastenkürzel und Statistik. Preise kommen zuerst aus unserem Auktionsscan; ein separates Disenchantry oder Auctionator wird nicht benötigt. Nach dem Update `/reload` eingeben. Eine aktive alte Disenchantry-Einzelversion wird nach Übernahme ihrer Einstellungen für den aktuellen Charakter deaktiviert; nach dem entsprechenden Hinweis nochmals `/reload` eingeben.
+
+**Neu in 1.11.0: „Was kann ich lernen?“** Die Lernübersicht nach dem Vorbild von What's Training ist direkt integriert: `/ad → Was kann ich lernen? → Optionen → Lernübersicht öffnen` oder `/ftlernen`. Vier Ansichten zeigen Klassenzauber, Waffenmeister, Begleiter und Berufsrezepte. Dazu kommen nächste Ränge, Voraussetzungen, Grundpreise, Suche, Ausblenden per Umschalt-Klick und Hinweise bei Stufenaufstieg. Ein separates What's Training ist nicht nötig. Nach dem Update `/reload` eingeben.
+
+**Neu in 1.10.0: Auktionshaus erweitert – ohne separates Auctionator.** Unter `/ad → Auktionshaus → Optionen` stehen jetzt **Kaufen**, **Verkaufen**, **Eigene Auktionen**, **Einkaufslisten** und **Verlauf** bereit. Käufe und Abbrüche laden das Angebot erneut und verlangen eine Bestätigung. Verkaufsansicht mit Stückpreis, Stapelgröße, Stapelanzahl, Konkurrenzvergleich und Mehrfach-Einstellen. Eigene Auktionen lassen sich über alle Seiten auf Unterbietungen prüfen. Dazu kommen benannte Listen, Suchfilter, Text-Import/Export, Such- und Preisverlauf sowie Materialkosten und Gewinnschätzung für das ausgewählte Berufsrezept. Nach dem Update `/reload` eingeben.
+
+**Neu in 1.9.0: Eigenes Auktionshaus-Modul ohne Auctionator.** Unter `/ad → Auktionshaus → Optionen` das Fenster öffnen oder beim Auktionator auf **FT Auktionshaus** klicken. Vollscan starten, danach Stückpreis und Verkaufsvorschlag im Gegenstands-Tooltip lesen. Namen eingeben, zur Einkaufsliste hinzufügen und per Klick suchen. Kaufen und Einstellen erfolgen über das normale Spielfenster. Nach dem Update `/reload` eingeben. Das alte Auctionator ist nicht erforderlich und kann in der Addon-Auswahl deaktiviert werden.
+
+Für **WoW Forever 1.60.1.70425 / Interface 16001**. Alle Funktionen liegen im einzigen Addon-Ordner **ForeverTools**: Händler & Taschen, Quests, Materialien, Paladin, GTFO, Threat Plates, Decursive, **Anti Fett Finger**, **Auto Rank** und **Karten**. Jedes Modul ist in der gemeinsamen Übersicht einzeln schaltbar.
 
 **[HTML-Anleitung herunterladen](https://github.com/BP1904/ForeverTools/releases/latest/download/Anleitung.html)** – im Browser öffnen oder direkt an Freunde weitergeben. Die Quelldatei liegt unter [Anleitung.html](Anleitung.html).
 
@@ -14,7 +32,17 @@ Die Datei liegt danach direkt unter `Interface\AddOns\ForeverTools\ForeverTools.
 
 ## Ein Update aktualisiert alles
 
-**Neu in 1.7.4:** Der Update-Helfer wird nicht mehr durch unbestätigte Windows-Meldungen angehalten. `Update.cmd` prüft den tatsächlichen Start, erkennt bereits laufende ältere Helfer und zeigt Startfehler an. Protokolle liegen lokal unter `%LOCALAPPDATA%\ForeverTools` im Unterordner des Spielclients.
+**Neu in 1.8.4:** Menethil und alle anderen Flugpunkte werden für beide Fraktionen angezeigt. Die Karte lässt sich durch Ziehen an der oberen Titelleiste verschieben; die Position wird gespeichert. Nach dem Update **`/reload`** eingeben.
+
+**Seit 1.8.3:** Flugpunkte erscheinen nur auf einzelnen Gebietskarten. Horde-Flugpunkte sind rot, Allianz-Flugpunkte blau. Nach dem Update **`/reload`** eingeben.
+
+**Seit 1.8.2:** Gebietsstufen erscheinen nur beim Darüberfahren direkt neben dem Gebietsnamen oben. Flugpunkte verwenden jetzt die native Kartenverwaltung und zusätzlich die aktuellen Clientdaten. Nach dem Update **`/reload`** eingeben.
+
+**Seit 1.8.1:** Ein Fehler beim ersten Laden der Karte ist behoben. Flugpunkte und Gebietsstufen aktualisieren sich unabhängig von der Kartenaufdeckung. Auf der Kontinentkarte erscheinen jetzt ebenfalls Flugpunkte sowie die Stufen der einzelnen Gebiete. Nach dem Update **`/reload`** eingeben.
+
+**Seit 1.8.0:** Kartenfunktionen im Leatrix-Stil sind integriert: **`/ad → Karten: Leatrix-Stil → Optionen`**. Unerforschte Bereiche werden blau aufgedeckt; Instanzen, Flugpunkte und Reiseorte erhalten Symbole. Dazu kommen Koordinaten und Gebietsstufen. Karte an der **oberen Titelleiste** verschieben; Größe und Position über die Aktionen ändern bzw. zurücksetzen. Eine aktive Leatrix-Maps-Einzelversion hat Vorrang. Nach dem Update genügt **`/reload`**.
+
+**Seit 1.7.4:** Der Update-Helfer wird nicht mehr durch unbestätigte Windows-Meldungen angehalten. `Update.cmd` prüft den tatsächlichen Start, erkennt bereits laufende ältere Helfer und zeigt Startfehler an. Protokolle liegen lokal unter `%LOCALAPPDATA%\ForeverTools` im Unterordner des Spielclients.
 
 **Seit 1.7.3:** Das Funkeln der Quest-Gegner wurde entfernt. Ausrufezeichen, Fortschrittszähler und das Funkeln der Sammelobjekte bleiben erhalten.
 

@@ -1,0 +1,11 @@
+Disenchantry attribution
+
+Disenchantry originally used code from Disenchant Helper by Rakuga,
+distributed under the MIT License. The project has since been substantially
+reworked and extended. Rakuga's copyright notice and the MIT License are
+retained in LICENSE for the portions originating from Disenchant Helper.
+
+Original project: https://www.curseforge.com/wow/addons/disenchant-helper
+
+Original work: Copyright (c) 2026 Rakuga
+Disenchantry modifications and additions: Copyright (c) 2026 x_Raven_x

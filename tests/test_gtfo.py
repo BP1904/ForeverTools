@@ -52,7 +52,7 @@ class GTFOTest(unittest.TestCase):
             lua.execute('function GetBuildInfo() return "client", "70425", "date", ... end'.replace('...', str(interface)))
         lua.execute(capabilities)
         for line in (ROOT / 'ForeverTools/ForeverTools.toc').read_text(encoding='utf-8').splitlines():
-            if line and not line.startswith(('#', 'Features\\')):
+            if line.endswith(".lua") and not line.startswith(('#', 'Features\\')):
                 source = (ROOT / 'ForeverTools' / line.replace('\\', '/')).read_text(encoding='utf-8')
                 lua.execute('assert(loadstring(...))("ForeverTools",namespace)', source)
         lua.execute('Fire("ADDON_LOADED","ForeverTools"); G=ForeverTools.modules.gtfo')
@@ -90,7 +90,7 @@ class GTFOTest(unittest.TestCase):
         self.lua.execute('namespace={}')
         toc = (ROOT / 'ForeverTools/ForeverTools.toc').read_text(encoding='utf-8')
         for line in toc.splitlines():
-            if line and not line.startswith(('#', 'Features\\')):
+            if line.endswith(".lua") and not line.startswith(('#', 'Features\\')):
                 source = (ROOT / 'ForeverTools' / line.replace('\\', '/')).read_text(encoding='utf-8')
                 self.lua.execute('assert(loadstring(...))("ForeverTools",namespace)', source)
         self.lua.execute('Fire("ADDON_LOADED","ForeverTools"); G=ForeverTools.modules.gtfo')
@@ -229,7 +229,7 @@ class GTFOTest(unittest.TestCase):
         self.lua.execute('''
             G.settings.high=false; G:Alert(1); assert(#played==0)
             G.settings.visual=false; G:Alert(2); assert(#played==1 and #visual==0)
-            SlashCmdList.FOREVERTOOLS(); assert(#ForeverTools.menu.checks==43)
+            SlashCmdList.FOREVERTOOLS(); assert(#ForeverTools.menu.checks==68)
         ''')
 
     def test_classic_activation_migrates_once_then_preserves_user_choice(self):

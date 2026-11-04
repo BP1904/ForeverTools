@@ -1,0 +1,10 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Frame name="ForeverToolsMapPinTemplate" virtual="true" mixin="MapCanvasPinMixin, ForeverToolsMapPinMixin" enableMouseClicks="false" enableMouseMotion="true">
+        <Size x="28" y="28"/>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture parentKey="icon" setAllPoints="true"/>
+            </Layer>
+        </Layers>
+    </Frame>
+</Ui>

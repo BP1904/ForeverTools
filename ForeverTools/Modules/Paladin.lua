@@ -1,6 +1,8 @@
 -- Independent ForeverTools implementation of the supplied PallyPower feature model.
 local _, FT = ...
 local D = FT.paladinData
+local _, build = (GetBuildInfo or function() end)()
+local salvationAvailable = (tonumber(build) or 0) < 70753
 local M = {
     title = "Paladin: Segen & Gruppenbuffs",
     description = "Kleine dauerhafte Buffleiste. Zuweisungen separat über /ftpp bearbeiten.",
@@ -13,6 +15,7 @@ local M = {
         {key="freeassign", title="Andere Gruppenmitglieder dürfen mir zuweisen"},
     },
 }
+if not salvationAvailable then table.remove(M.options,3) end
 M.actions = {{title="Paladin-Zuweisungen öffnen", run=function() M:ToggleWindow() end}}
 FT:RegisterModule("paladin", M)
 local function Secret(value) return issecretvalue and issecretvalue(value) end
@@ -47,7 +50,12 @@ local function Wire(name) return (name:gsub(" ", "_")) end
 local function Unwire(name) return (name:gsub("_", " ")) end
 local function ValidBlessing(value)
     value = tonumber(value)
+    if value==4 and not salvationAvailable then return nil end
     return value and value >= 0 and value <= 8 and value == math.floor(value) and value or nil
+end
+
+function M:SalvationEnabled()
+    return salvationAvailable and self.settings.salvation
 end
 
 function M:Profile(name)
@@ -61,11 +69,13 @@ end
 function M:ScanSpells()
     self.spells, self.greater = {}, {}
     for id, entry in pairs(D.blessings) do
-        for _, spell in ipairs(entry.normal) do
-            if Known(spell) then self.spells[id] = Spell(spell); break end
-        end
-        for _, spell in ipairs(entry.greater) do
-            if Known(spell) then self.greater[id] = Spell(spell); break end
+        if ValidBlessing(id) then
+            for _, spell in ipairs(entry.normal) do
+                if Known(spell) then self.spells[id] = Spell(spell); break end
+            end
+            for _, spell in ipairs(entry.greater) do
+                if Known(spell) then self.greater[id] = Spell(spell); break end
+            end
         end
     end
     self.capabilities[self.player] = self.spells
@@ -142,7 +152,7 @@ end
 
 function M:Assignment(row, owner)
     local p = self:Profile(owner or self.player)
-    return p.players[row.name] or p.classes[row.class] or 0
+    return ValidBlessing(p.players[row.name]) or ValidBlessing(p.classes[row.class]) or 0
 end
 
 -- Unknown/secret auras retain only previously measured timers; never invent a full duration.
@@ -291,7 +301,7 @@ function M:Broadcast()
     for index in ipairs(D.auras) do auras=auras..(self:AuraSpell(index) and "10" or "nn") end
     self:Send("ASELF "..auras.."@"..(p.aura or 0))
     self:Send(self.settings.freeassign and "FREEASSIGN YES" or "FREEASSIGN NO")
-    self:Send(self.settings.salvation and "SALV YES" or "SALV NO")
+    self:Send(self:SalvationEnabled() and "SALV YES" or "SALV NO")
     for name,id in pairs(p.players) do
         local row=self.byName[name]
         if row then self:Send(("NASSIGN %s %d %s %d"):format(Wire(self.player),row.class,Wire(name),id)) end
@@ -617,7 +627,7 @@ function M:RefreshBar()
     if not bar then return end
     bar.frame:SetShown(FT:IsEnabled("paladin") and true or false)
     local y=109
-    if self.settings.salvation then y=y+29 end
+    if self:SalvationEnabled() then y=y+29 end
     for i,b in ipairs(bar.classes) do
         b.preparedAt=nil; self:PrepareSmart(b,i,false)
         local members={}
@@ -664,7 +674,7 @@ function M:RefreshBar()
     -- The class field already displays the active blessing; do not repeat it in a summary row.
     bar.smart:Hide()
     bar.salvation.preparedAt=nil; self:PrepareSmart(bar.salvation,nil,true)
-    bar.salvation:SetShown(self.settings.salvation)
+    bar.salvation:SetShown(self:SalvationEnabled())
     local own=self:Profile(self.player)
     for _,entry in ipairs({{bar.aura,self:AuraSpell(own.aura)},{bar.fury,D.fury},{bar.seal,D.seals[own.seal]}}) do
         local b,id=unpack(entry)
@@ -829,8 +839,9 @@ function M:RefreshAssignmentGrid()
         row.name:SetText(owner)
         local count=(C_Item and C_Item.GetItemCount) or GetItemCount
         row.count:SetText(owner==self.player and tostring(Read(count,0,21177)) or "")
-        row.salvation:SetEnabled(owner==self.player)
-        row.salvation:SetChecked((owner==self.player and self.settings.salvation) or
+        row.salvation:SetShown(salvationAvailable)
+        row.salvation:SetEnabled(salvationAvailable and owner==self.player)
+        row.salvation:SetChecked((owner==self.player and self:SalvationEnabled()) or
             (owner~=self.player and self.remoteSalvation[owner]) or false)
         local skillText={}
         for id=1,6 do
@@ -964,7 +975,7 @@ function M:Refresh()
     for i,row in ipairs(self.rows) do
         local member=self.roster[i]
         row.member=member
-        row.buff:SetShown(member~=nil); row.salv:SetShown(member~=nil and self.settings.salvation)
+        row.buff:SetShown(member~=nil); row.salv:SetShown(member~=nil and self:SalvationEnabled())
         row.label:SetText(member and member.name or ""); row.timer:SetText("")
         if member then
             local id=self:Assignment(member)
@@ -972,7 +983,7 @@ function M:Refresh()
             row.buff:SetText((D.blessings[id] and D.blessings[id].label or "Kein Segen")..
                 (selectedID and (" | Ausnahme: "..D.blessings[selectedID].label) or ""))
             self:Configure(row.buff,member,id,not self:Profile(self.player).players[member.name])
-            self:Configure(row.salv,self.settings.salvation and not member.tank and member or nil,4,false)
+            self:Configure(row.salv,self:SalvationEnabled() and not member.tank and member or nil,4,false)
         else
             self:Configure(row.buff,nil,nil); self:Configure(row.salv,nil,nil)
         end
@@ -982,7 +993,7 @@ function M:Refresh()
     self:PrepareSmart(self.smart,nil,false)
     self.salvationButton.preparedAt=nil
     self:PrepareSmart(self.salvationButton,nil,true)
-    self.salvationButton:SetShown(self.settings.salvation)
+    self.salvationButton:SetShown(self:SalvationEnabled())
     local own=self:Profile(self.player)
     local assignedID=self.selected==self.player and self:AuraSpell(p.aura) or D.auras[p.aura]
     self.assignedAura:SetText("Aura-Zuweisung: "..(Spell(assignedID) or "aus"))

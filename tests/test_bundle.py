@@ -1,6 +1,7 @@
 """Single-addon loading order, settings persistence and legacy migration."""
 import json
 import unittest
+import xml.etree.ElementTree as ET
 from test_forevertools import ROOT, MOCK, LuaRuntime
 from test_antifettfinger import SECURE_MOCK
 from test_autorank import AUTORANK_MOCK
@@ -29,18 +30,23 @@ class BundleTest(unittest.TestCase):
                     'Modules/AntiFettFinger.lua', 'Modules/AutoRank.lua', 'Menu.lua'}
         for line in toc.splitlines():
             filename = line.replace('\\', '/')
-            if filename in selected or (full and filename and not filename.startswith('#')):
+            if full and filename in ('Data/Training/Manifest.xml', 'Features/Disenchantry/Manifest.xml'):
+                manifest = ROOT / 'ForeverTools' / filename
+                for entry in ET.parse(manifest).getroot():
+                    code = (manifest.parent / entry.attrib['file']).read_text(encoding='utf-8')
+                    lua.execute('assert(loadstring(...))("ForeverTools", namespace)', code)
+            if filename in selected or (full and filename.endswith(".lua") and not filename.startswith('#')):
                 code = (ROOT / 'ForeverTools' / filename).read_text(encoding='utf-8')
                 lua.execute('assert(loadstring(...))("ForeverTools", namespace)', code)
         lua.execute('Fire("ADDON_LOADED", "ForeverTools")')
 
-    def test_full_production_toc_loads_all_ten_modules(self):
+    def test_full_production_toc_loads_all_seventeen_modules(self):
         lua = self.runtime(full=True)
         self.load_bundle(lua, full=True)
         lua.execute('''
-            assert(#ForeverTools.order == 10)
+            assert(#ForeverTools.order == 17)
             ForeverTools:ToggleMenu()
-            assert(#ForeverTools.menu.sections == 10)
+            assert(#ForeverTools.menu.sections == 17)
             assert(ForeverTools.modules.antifettfinger:IsAvailable())
             assert(ForeverTools.modules.autorank:IsAvailable())
         ''')

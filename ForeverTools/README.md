@@ -1,4 +1,83 @@
-# ForeverTools 1.7.4
+# ForeverTools 1.15.0
+
+**BigWigs und Nova Instance Tracker sind vollständig enthalten.** Im Schmiede-Schnellmenü öffnen oder mit `/ad` verwalten. BigWigs-Einstellungen: `/ftbw` bzw. `/bw`. Nova-Instanzverlauf: `/ftnit` bzw. `/nit`; Einstellungen: `/ftnit options`. Die beiden Modulschalter speichern die Auswahl; zum Übernehmen `/reload` eingeben.
+
+Aktive Einzelversionen werden beim ersten Laden für den aktuellen Charakter deaktiviert. Zuvor werden BigWigs-Profile, Symbolposition und Statistik sowie Novas Einstellungen und Verlauf in eigene ForeverTools-Speicher kopiert. Nach dem Hinweis nochmals `/reload` eingeben. Vorhandene ForeverTools-Daten werden nicht überschrieben. Originalordner und Originaldaten bleiben erhalten. Bereits deaktivierte Einzelversionen können ihre Daten nicht übergeben; für eine Übernahme einmal zusammen mit ForeverTools einschalten und neu laden.
+
+Enthalten: BigWigs v427.8 mit Kern, Plugins, Optionen und den zwölf bisher installierten Paketen; Nova Instance Tracker 2.31 einschließlich aller Module, Bibliotheken und Medien. BigWigs lädt Kern, Optionen und Bossmodule bei Bedarf aus internen Paketen. Ein Classic-/Forever-Bosspaket war in der Ausgangsinstallation nicht enthalten; zusätzliche Bosswarnungen entstehen durch die Integration nicht. Quellen und Rechtehinweise stehen in `Features/BigWigs/NOTICE.txt` und `Features/NovaInstanceTracker/NOTICE.txt`. Die lokale Anpassung erteilt keine zusätzlichen Weiterveröffentlichungsrechte.
+
+Prüfung: Lua-5.1-Syntax, vollständige Dateiverweise, Start der Originalanwendungen mit simulierten Spiel-APIs, internes Nachladen von BigWigs-Kern/Plugins/Optionen, Datenübernahme und Modulschalter. Live-Darstellung und Bosskämpfe müssen im Spiel geprüft werden.
+
+**Neu in 1.14.1: Schnellmenü am Schmiede-Symbol.** Linksklick auf den ForeverTools-Minimapbutton öffnet **Attune** und **Disenchantry**. Dort öffnet Linksklick die Funktion, Rechtsklick deren Einstellungen. **Module verwalten**, Rechtsklick auf das Schmiede-Symbol oder `/ad` öffnet die bisherige Modulübersicht. Abgeschaltete Module sind im Schnellmenü ausgegraut. Escape schließt das Schnellmenü. MinimapButtonButton wird dafür nicht benötigt. Nach dem Update `/reload` eingeben.
+
+**Neu in 1.14.0: Attune läuft direkt in ForeverTools.** Öffnen mit `/ftattune` oder `/ad → Attune: Freischaltungen und Questketten → Optionen`. Das separate Attune-Addon ist nicht erforderlich. Nach der Installation `/reload` eingeben.
+
+Enthalten sind die Freischaltungs-, Schlüssel-, Dungeon- und Klassenquestketten der installierten Forever-Version 16001-34: Fortschritt je Charakter, verzweigte Ketten, Questgeberkarten, Gegenstands-/Zauberbelohnungen, Gruppenabfragen und gespeicherte Charakterübersichten. Die Datenbasis umfasst 144 Ketten mit 2.905 Schritten, einschließlich Fraktionsvarianten und noch leerer Vorschauketten. Unvollständige Referenzdaten bleiben entsprechend unvollständig. Der im Original abgeschaltete Raidplaner bleibt abgeschaltet.
+
+Eine geladene Attune-Einzelversion wird erkannt. Einstellungen, Charakterdaten und die zuletzt ausgewählte Kette werden einmal kopiert; die Originaldaten bleiben erhalten. Die Einzelversion wird für den aktuellen Charakter deaktiviert. Danach **nochmals `/reload`** eingeben. In der Übergangssitzung bleibt die integrierte Laufzeit gesperrt. Weitere Charaktere übernehmen ihre Auswahl beim ersten Laden; vorhandene ForeverTools-Charakterdaten werden dabei nicht überschrieben.
+
+`/ftattune settings` öffnet die vollständigen Attune-Optionen. Ein zusätzliches Attune-Minimapsymbol ist dort optional; neue Einstellungen verwenden zunächst unser gemeinsames Schmiede-Symbol. Abschalten im `/ad`-Menü beendet die Ereignisverarbeitung, blendet Fenster und Symbol aus und verwirft ausstehende Timer. Daten bleiben gespeichert.
+
+Die Anpassung verwendet einen eigenen Namensraum, eigene Speicher-/Fensternamen und alle benötigten Bibliotheken im ForeverTools-Ordner. Keine Laufzeitdatei wird aus dem separaten Attune-Ordner geladen. Attune ist von CixiDelmont / Antoine Desmarets; Rechtehinweise stehen unter `Features/Attune/NOTICE.txt`. Die lokale Anpassung erteilt keine Weiterveröffentlichungsrechte am Original. Analyse: `../Attune-Analyse.md`.
+
+Mit Lua 5.1 und simulierten Forever-APIs geprüft: vollständiger Start ohne Originaladdon, Questabgabe/Freischaltung, Datenübernahme, Modulwechsel, Timer und Fehlstart. Die Darstellung und Bedienung im laufenden Spiel müssen noch geprüft werden.
+
+**Neu in 1.13.0:** Die Lernübersicht ist aus dem Zauber-/Berufsbuch erreichbar, berücksichtigt Rufpreise und setzt Lehrer-Kartenpunkte. Grimoires werden pro Begleiterfamilie erkannt. Disenchantry erhält ein eigenes, optionales Minimapsymbol: `/ad → Entzaubern: Disenchantry → Optionen → Eigenes Disenchantry-Minimapsymbol anzeigen`. Nach dem Update `/reload` eingeben.
+
+### Ergänzungen zur Lernübersicht
+
+- **Im Buch öffnen:** Unter dem geöffneten Zauber-/Berufsbuch erscheint eine Schaltfläche zur jeweiligen Lernansicht. Auch geöffnete Herstellungs-/Verzauberungsfenster werden unterstützt. Der Link lässt sich im `/ad`-Menü unter „Was kann ich lernen?“ abschalten. Die nativen Buchseiten bleiben bedienbar.
+- **Lehrerpreise:** „Rufrabatte bei Lehrerpreisen berücksichtigen“ ist standardmäßig aktiv. Der Automodus schätzt den günstigsten bekannten Preis je Fähigkeit; die Preisschaltfläche kann eine einzelne Lehrerfraktion oder Grundpreise auswählen. Aktuelle, direkt beim geöffneten Lehrer gelesene Preise sind gesondert markiert. Die Datenbasis verwendet für Forever 10 Prozent ab Wohlwollend; das ist eine Schätzung und keine Übernahme der Retail-Rabatttabelle. Grimoires und Lehrer ohne passende Fraktionsdaten erhalten keinen erfundenen Rabatt.
+- **Kartenpunkt:** Waffenfertigkeit auswählen, unten den Lehrer wählen und „Kartenpunkt“ drücken. Es werden nur vorhandene, fraktionspassende Koordinaten verwendet. Zuerst wird ein nativer Kartenpunkt versucht, danach optional TomTom. Falls nötig, verwendet unser aktives Kartenmodul einen grünen Lehrer-Marker. Die Lernübersicht schaltet kein anderes Kartenaddon um und erfindet keine fehlenden NPC-Koordinaten.
+- **Begleiterwissen:** Beschworene Hexerbegleiter werden nach einer stabilen Aktualisierung des Begleiter-Zauberbuchs gelesen. Ein Familienwechsel wartet auf das zugehörige Begleiterleisten-Ereignis. Höhere Ränge decken ersetzte niedrigere Ränge ab; unvollständige Daten erzeugen keinen falschen Gelernt-Status. Jägerwissen aktualisiert sich zusätzlich durch die eigene Lernmeldung.
+
+Auto Rank, Materialkosten und unsere Kartendarstellung werden weiterverwendet; dafür wird keine zweite Umsetzung installiert.
+
+**Neu in 1.12.0: Disenchantry ist integriert.** Öffnen über `/ad → Entzaubern: Disenchantry → Optionen` oder `/ftde`. Enthalten sind Gegenstandsauswahl, Schutzfilter, Sperrlisten, Materialprognosen, Hauptfenster, Kompaktleiste, Tastenkürzel und Statistik. Preise kommen zuerst aus unserem Auktionsscan; ein separates Disenchantry oder Auctionator wird nicht benötigt. Nach dem Update `/reload` eingeben. Eine aktive alte Disenchantry-Einzelversion wird nach Übernahme ihrer Einstellungen für den aktuellen Charakter deaktiviert; nach dem entsprechenden Hinweis nochmals `/reload` eingeben.
+
+### Disenchantry kurz erklärt
+
+1. `/ftde` oder die Aktion im `/ad`-Menü öffnen. Neue Installationen starten im Hauptfenster mit manueller Auswahl; seltene und epische Gegenstände sind zunächst ausgefiltert. Übernommene Original-Einstellungen bleiben erhalten.
+2. Gewünschte Gegenstände markieren und pro Verarbeitung einmal auf **Entzaubern** klicken. Ausgerüstete Gegenstände werden nicht eingescannt. Vor jedem Klick werden Zielposition, Gegenstandsidentität, Sperre, Mindestmenge, Sperrliste und belegter Cursor geprüft.
+3. Unter **Schutzfilter und Einstellungen** Gegenstandsstufe, Wertgrenze, Qualitätsfilter, Material-/Wertanzeige und Tastenkürzel einstellen. Die Tastenzuweisung gilt nur bei sichtbarem Verarbeitungsfenster. Schließen oder Abschalten gibt sie wieder frei.
+4. **Kompaktleiste** bietet eine automatische Kandidatenauswahl, aber weiterhin nur eine Verarbeitung pro eigenem Klick. Set-, Stufen- und Wertschutz greifen bei dieser automatischen Auswahl. Bei eingeschaltetem Wertschutz werden auch unbekannte Preise übersprungen. Eine bewusst manuelle Auswahl kann diese automatischen Schutzfilter übersteuern. Die Sperrliste gilt weiterhin.
+5. **Sperrliste** verwaltet ausgeschlossene Gegenstandsarten getrennt nach Modus. **Statistik** zeigt Sitzung und Gesamtwerte pro Charakter, Materialausbeute und geschätzte Werte; die Aufzeichnung beginnt beim ersten Öffnen des Moduls.
+
+Mahlen und Sondieren sind nur nutzbar, wenn Client und gelernter Beruf passen; dafür werden mindestens fünf Kräuter bzw. Erze im Zielstapel benötigt. Im Kampf werden keine geschützten Ziele neu gesetzt. Beim Abschalten werden Entzauberziel, Auswahl und Tastenzuweisung freigegeben; nötige geschützte Änderungen warten bis Kampfende. Laufende, bereits gestartete Spielzauber werden nicht automatisch abgebrochen.
+
+**Preise:** Zuerst unseren Auktionshaus-Vollscan durchführen. Marktwerte und Materialwerte sind Schätzungen aus gespeicherten Stückpreisen; fehlen Preise, wird kein Wert als Null vorgetäuscht. TSM oder Auctionator können optional weitere Preise liefern. Materialwahrscheinlichkeiten sind Tabellenprognosen und keine garantierte Ausbeute.
+
+Befehle: `/ftde`, `/ftde settings`, `/ftde blacklist`, `/ftde stats`, `/ftde compact`, `/ftde de`, `/ftde mill`, `/ftde prospect`, `/ftde refresh`, `/ftde check`, `/ftde copy`. Alias: `/ftentzaubern`. Das vorhandene Schmiede-Symbol öffnet weiterhin das gemeinsame ForeverTools-Menü. Das zusätzliche Disenchantry-Symbol lässt sich dort unter Optionen per Häkchen anzeigen. Linksklick öffnet Disenchantry, Rechtsklick dessen Einstellungen. Ziehen ändert die gespeicherte Position.
+
+Bei einer aktiven alten Einzelversion werden deren gespeicherte Einstellungen, Sperrlisten und Statistiken einmal kopiert. Die Originaldateien und Originaldaten bleiben erhalten. In dieser Sitzung bleibt die eingebettete Verarbeitung gesperrt, damit keine zwei Verarbeitungsoberflächen und Tastenzuweisungen konkurrieren. Nach dem angezeigten zweiten `/reload` läuft nur die integrierte Version. Die MIT-Lizenz und Hinweise von x_Raven_x und Rakuga liegen unter `Features/Disenchantry/LICENSE.txt` und `NOTICE.txt`.
+
+**Neu in 1.11.0: „Was kann ich lernen?“** Die Lernübersicht nach dem Vorbild von What's Training ist direkt integriert: `/ad → Was kann ich lernen? → Optionen → Lernübersicht öffnen` oder `/ftlernen`. Vier Ansichten zeigen Klassenzauber, Waffenmeister, Begleiter und Berufsrezepte. Dazu kommen nächste Ränge, Voraussetzungen, Grundpreise, Suche, Ausblenden per Umschalt-Klick und Hinweise bei Stufenaufstieg. Ein separates What's Training ist nicht nötig. Nach dem Update `/reload` eingeben.
+
+### Lernübersicht kurz erklärt
+
+- **Klasse:** Offene Lehrerzauber, nächste Ränge und noch fehlende Voraussetzungen. Bereits gelernte Zauber sind zunächst verborgen. Ersetzte ältere Ränge werden berücksichtigt.
+- **Waffenmeister:** Für die Klasse geeignete Waffenfertigkeiten mit Lehrernamen, Gebiet und Koordinaten. Eintrag anklicken, um die Angaben unten zu lesen.
+- **Begleiter:** Jägerfähigkeiten und Hexer-Grimoires. Jäger öffnen einmal die Begleiter-Ausbildung, damit bereits erlernte Fähigkeiten erfasst werden. Hexer beschwören jede Begleiterfamilie einmal. Nach Aktualisierung des Begleiter-Zauberbuchs werden bekannte und fehlende Grimoires pro Familie gespeichert. Sukkubus und Inkubus bleiben getrennt; nicht sicher erfasste Fähigkeiten bleiben als „Bitte prüfen“ markiert.
+- **Berufsrezepte:** Nur eigene erlernte Berufe; Anforderungen an Fertigkeit, Stufe, Ruf und Händlergunst sowie Lehrer-, Händler-, Quest- und andere Quellen. Unbekannte Voraussetzungen werden als zu prüfen gekennzeichnet.
+
+**Eintrag anklicken** zeigt Details, **Umschalt-Klick** blendet ihn aus bzw. wieder ein. „Gelernte ein/aus“ und „Versteckte ein/aus“ ändern die Ansicht. Ignorierliste und Begleiterwissen werden pro Charakter gespeichert. Wenn die alte Einzelversion beim ersten Laden aktiv ist, werden deren Ignorierliste und vorhandene Jägerdaten übernommen; andere Original-Einstellungen werden nicht übertragen. Das alte What's Training kann anschließend deaktiviert werden. `/wt` bleibt dem Original vorbehalten.
+
+Lehrerpreise berücksichtigen auf Wunsch Rufrabatte. Schätzungen und Grundpreise sind gekennzeichnet; beim geöffneten Lehrer gelesene Preise haben im Automodus Vorrang. „Preise: Auto“ wechselt zwischen Automodus, Grundpreisen und einzelnen Lehrerfraktionen. Gelernt wird weiterhin manuell beim Lehrer. Auto Rank verwendet anschließend die gelernten Ränge auf den Aktionsleisten; die Lernübersicht verändert diese nicht. Datenbasis: Forever/Camelot aus What's Training 11.0.0-beta25, MIT-Lizenz einschließlich Originalhinweis unter `Data/Training/LICENSE.txt`.
+
+**Neu in 1.10.0: Auktionshaus erweitert – ohne separates Auctionator.** Unter `/ad → Auktionshaus → Optionen` stehen jetzt **Kaufen**, **Verkaufen**, **Eigene Auktionen**, **Einkaufslisten** und **Verlauf** bereit. Käufe und Abbrüche laden das Angebot erneut und verlangen eine Bestätigung. Verkaufsansicht mit Stückpreis, Stapelgröße, Stapelanzahl, Konkurrenzvergleich und Mehrfach-Einstellen. Eigene Auktionen lassen sich über alle Seiten auf Unterbietungen prüfen. Dazu kommen benannte Listen, Suchfilter, Text-Import/Export, Such- und Preisverlauf sowie Materialkosten und Gewinnschätzung für das ausgewählte Berufsrezept. Nach dem Update `/reload` eingeben.
+
+### Auktionshaus kurz erklärt
+
+- **Kaufen:** Namen eingeben und suchen. Alle Ergebnisseiten werden geladen und nach Stückpreis sortiert. „Kaufen“ lädt das Angebot erneut; die Bestätigung zeigt den Gesamtpreis des Stapels.
+- **Verkaufen:** Gegenstand aus der Tasche auf das Verkaufsfeld ziehen. Stückpreis in Kupfer, Stapelgröße und Stapelanzahl eingeben. „Aktuelle Konkurrenz suchen“ schlägt einen Preis vor. „Einstellen“ bestätigt Menge, Stapelpreis und Anzahlung; zusätzliche Spielwarnungen bleiben wirksam. Ein Klick auf das belegte Feld nimmt den Gegenstand wieder auf.
+- **Eigene Auktionen:** Aktualisieren oder „Unterbietungen prüfen (alle)“. Ein Abbruch lädt die betreffende Serverseite erneut und verlangt eine Bestätigung. Die Anzahlung geht dabei verloren. Kein automatischer Massenabbruch.
+- **Listen:** Listenname eingeben und öffnen/anlegen. Import/Export verwendet lesbare Zeilen, je eine Suche. Beispiel: `Kupfererz;max=10000;minlevel=1;maxlevel=60;quality=1;exact=1`. `max` ist der maximale Stückpreis in Kupfer, `quality` die Qualitätsnummer (0 grau, 1 weiß, 2 grün usw.). Filter können weggelassen werden. Bis zu 20 Listen mit je 100 Einträgen. Alte ForeverTools-Listen werden übernommen.
+- **Verlauf:** Bis zu 30 Suchtexte, 30 Scantage je Gegenstandsvariante und 100 Aktionsmeldungen. Ein angefragter Kauf ist noch keine Serverbestätigung.
+- **Materialkosten:** Rezept im Berufsfenster auswählen, dann den Knopf unten im FT-Auktionsfenster drücken. Gewinnschätzung berücksichtigt AH-Gebühr, aber keine Anzahlung; Grundlage sind gespeicherte Scanpreise. „Reagenzien auf Liste“ ergänzt die Materialnamen. Verzauberungsmaterialien werden ebenfalls unterstützt.
+
+Alle Geld-Eingaben sind **Kupfer**: 1 Silber = 100 Kupfer, 1 Gold = 10000 Kupfer. Einkaufslisten können auch außerhalb des Auktionshauses bearbeitet werden. Die Abfragesperre des Servers wird eingehalten; laufende Abfragen lassen sich abbrechen. Alte Auctionator-SavedVariables und dessen eigenes Exportformat werden nicht automatisch importiert. Der Textimport führt keinen Lua-Code aus.
+
+**Neu in 1.9.0: Eigenes Auktionshaus-Modul ohne Auctionator.** Unter `/ad → Auktionshaus → Optionen` das Fenster öffnen oder beim Auktionator auf **FT Auktionshaus** klicken. Vollscan starten, danach Stückpreis und Verkaufsvorschlag im Gegenstands-Tooltip lesen. Namen eingeben, zur Einkaufsliste hinzufügen und per Klick suchen. Kaufen und Einstellen erfolgen über das normale Spielfenster. Nach dem Update `/reload` eingeben. Das alte Auctionator ist nicht erforderlich und kann in der Addon-Auswahl deaktiviert werden.
 
 ## GitHub-Updates
 
@@ -205,3 +284,21 @@ Die bisherige Taschenfunktion wurde vom Benutzer im Spiel erfolgreich getestet. 
 Für den ersten Spieltest: einen grauen Gegenstand und einen höherwertigen Gegenstand mitnehmen, Taschenlücken schaffen, einen Reparaturhändler öffnen und danach Verkauf, Reparatur, Taschenpositionen sowie jedes Häkchen einzeln prüfen. Bei einer Fehlermeldung mit `/console scriptErrors 1` die Fehleranzeige aktivieren und die Meldung sichern.
 
 API-Referenz: [Container-API im WoW-UI-Quelltext](https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_APIDocumentationGenerated/ContainerDocumentation.lua). Versions-/Interface-Abgleich: [Forever-Addon-Manager](https://github.com/julius-retzer/forever-addons).
+
+## Karten im Leatrix-Stil
+
+Unter **`/ad → Karten: Leatrix-Stil → Optionen`** sind Kartenaufdeckung, blaue Markierung unerforschter Flächen, Instanzen und Schlachtzüge, Flugpunkte, Schiffe/Zeppeline/Tiefenbahn/Portale, native Koordinaten und Gebietsstufen einzeln schaltbar. Flugpunkte werden über die native Kartenverwaltung angezeigt und durch die Flugpunktdaten des Clients ergänzt. Gebietsstufen stehen ausschließlich beim Darüberfahren direkt neben dem Gebietsnamen oben, etwa „Westfall (10–20)“. Flugpunkte werden für beide Fraktionen angezeigt; Geistheiler und Reiseorte der gegnerischen Fraktion sind optional. Die Ortsnamen stammen aus den Referenzdaten und sind überwiegend Englisch. Die Daten decken 44 Kartenvarianten und 214 Orte ab; Karten ohne Daten behalten ihre normale Darstellung. Aufgedeckte Flächen zählen weiterhin als unerforscht und gewähren keine Erkundungserfolge.
+
+Zum Verschieben die **obere Titelleiste der Karte mit der linken Maustaste ziehen**. Positionen werden für Fenster und Vollbild getrennt gespeichert. Die Aktionen ändern die Größe um jeweils 10 % (50–150 %) oder setzen Position und Größe zurück. Während eines Kampfes warten Layoutänderungen bis Kampfende. Beim Abschalten werden die vorherigen Koordinaten-, Kartenfade- und Instanzsymbol-Einstellungen sowie das Layout wiederhergestellt.
+
+Eine gleichzeitig geladene **Leatrix_Maps**-Einzelversion hat Vorrang; das integrierte Modul pausiert dann. Für ForeverTools-Karten die Einzelversion deaktivieren und `/reload` eingeben. Es werden keine anderen Addons automatisch deaktiviert.
+
+Referenz: [Leatrix Maps 1.60.24 für Forever](https://www.curseforge.com/wow/addons/leatrix-maps/files/9262568), Autor Leatrix. Eigenständige Laufzeit mit Blizzard-Grafiken und aufbereiteten Karten-/Ortsdaten. Nicht übernommen: Leatrix-Grafiken, dessen Einstellungsfenster, vereinfachter Kartenrahmen, Gebietspfeile, Angelstufen und Schlachtfeldkarten-Erweiterung. Es ist keine vollständige Kopie von Leatrix Maps.
+
+**Korrektur in 1.8.1:** Beim ersten Laden sind die Zoomdaten der Karte noch nicht vorbereitet. Die Kartenaufdeckung wartet jetzt darauf und wird automatisch nachgeholt. Flugpunkte und Gebietsstufen werden unabhängig davon aktualisiert und über der Kartenfläche dargestellt.
+
+**Korrektur in 1.8.2:** Die Ortsmarkierungen verwenden einen eigenen nativen MapCanvas-Pin-Pool und Datenprovider. Position, Maßstab und Wiederherstellung nach Kartenwechseln übernimmt die Kartenverwaltung. Flugpunkte aus `C_TaxiMap.GetTaxiNodesForMap` ergänzen die Referenzdaten; benachbarte doppelte Einträge werden zusammengeführt. Die bisherigen dauerhaften Gebietsbeschriftungen und der zusätzliche Text unten sind entfernt. Die vorhandene Gebietsüberschrift erhält den Stufenbereich nur beim Hover.
+
+**Neu in 1.8.3:** Flugpunkte erscheinen ausschließlich auf Gebietskarten, nicht auf Kontinent- oder Weltübersichten. Horde-Flugpunkte sind rot, Allianz-Flugpunkte blau. Neutrale Flugpunkte behalten ihre ursprüngliche Darstellung.
+
+**Neu in 1.8.4:** Menethil und andere Flugpunkte werden unabhängig von der Spielerfraktion angezeigt; Allianz bleibt blau, Horde rot. Der Schalter für gegnerische Orte betrifft nur die Reiseorte. Zum Verschieben die obere Titelleiste ziehen. Der Drag-Bereich liegt über dem Kartenrahmen und lässt Porträt, Schließen und Maximieren frei. Layoutaktualisierungen setzen die Karte während des Ziehens nicht mehr auf die alte Position zurück.
