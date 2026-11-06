@@ -14,6 +14,12 @@ function CreateFrame(...)
     function frame:IsForbidden() return self.forbidden or false end
     function frame:SetIgnoreParentAlpha() end
     function frame:SetAlpha(alpha) self.alpha=alpha end
+    function frame:SetMinMaxValues(low,high) self.minimum=low; self.maximum=high end
+    function frame:SetValue(value) self.value=value end
+    function frame:SetStatusBarTexture(value) self.texture=value end
+    function frame:SetStatusBarColor(...) self.color={...} end
+    function frame:Show() self.shown=true end
+    function frame:Hide() self.shown=false end
     local makeTexture=frame.CreateTexture
     function frame:CreateTexture(...)
         local texture=makeTexture(self,...)
@@ -133,7 +139,7 @@ class ThreatPlatesTest(unittest.TestCase):
             units.nameplate1.health=secret; units.nameplate1.max=secret; units.nameplate1.threat=secret
             Fire('UNIT_HEALTH','nameplate1')
             assert(record.percent.text=='' and record.threat.text=='')
-            assert(bar.color[1]==0.7 and bar.value==secret and bar.maximum==secret)
+            assert(bar.color[1]==0.7 and bar.value==750)
             units.nameplate1.health=500; units.nameplate1.max=1000; units.nameplate1.threat=0
             N:RefreshAll(); assert(record.percent.text=='50%')
         ''')
@@ -161,28 +167,50 @@ class ThreatPlatesTest(unittest.TestCase):
         self.lua.execute('''
             bar.value=0; bar.maximum=1
             Fire('UNIT_HEALTH','nameplate1')
-            assert(bar.value==750 and bar.minimum==0 and bar.maximum==1000)
+            assert(record.fill.value==750 and record.fill.minimum==0 and record.fill.maximum==1000)
             units.nameplate1.isPlayer=true; units.nameplate1.class='MAGE'
             units.nameplate1.health=400; Fire('UNIT_HEALTH','nameplate1')
-            assert(bar.value==400 and bar.maximum==1000)
+            assert(record.fill.value==400 and record.fill.maximum==1000)
             units.nameplate1.max=2000; Fire('UNIT_MAXHEALTH','nameplate1')
-            assert(bar.value==400 and bar.maximum==2000)
+            assert(record.fill.value==400 and record.fill.maximum==2000)
             units.nameplate1.health=0; Fire('UNIT_HEALTH','nameplate1')
-            assert(bar.value==0)
+            assert(record.fill.value==0)
         ''')
 
-    def test_raw_health_uses_native_setters_and_missing_data_is_not_fabricated(self):
+    def test_raw_health_uses_plain_display_bar_and_missing_data_is_not_fabricated(self):
         self.lua.execute('''
             units.nameplate1.health=secret; units.nameplate1.max=secret
             Fire('UNIT_HEALTH','nameplate1')
-            assert(bar.value==secret and bar.maximum==secret)
+            assert(record.fill.value==secret and record.fill.maximum==secret)
+            assert(bar.value==750)
             units.nameplate1.health=nil; units.nameplate1.max=0
             bar.value=20; bar.maximum=100
             Fire('UNIT_HEALTH','nameplate1')
             assert(bar.value==20 and bar.maximum==100)
+            assert(not record.fill:IsShown())
             currentTarget='nameplate1'; units.target={health=800,max=1200}
             Fire('PLAYER_TARGET_CHANGED')
-            assert(bar.value==800 and bar.maximum==1200)
+            assert(record.fill.value==800 and record.fill.maximum==1200)
+        ''')
+
+    def test_combat_updates_never_invoke_blizzard_health_value_callbacks(self):
+        self.lua.execute('''
+            nativeWrites=0
+            bar.SetMinMaxValues=function()
+                nativeWrites=nativeWrites+1
+                error('TextStatusBar: attempt to compare a secret number value')
+            end
+            bar.SetValue=bar.SetMinMaxValues
+            units.nameplate1.health=secret; units.nameplate1.max=secret
+            Fire('UNIT_HEALTH','nameplate1'); Advance(20)
+            assert(nativeWrites==0 and record.fill:IsShown())
+            assert(record.fill.value==secret and record.fill.maximum==secret)
+            ForeverTools:SetEnabled('threatplates',false)
+            assert(not record.fill:IsShown() and nativeWrites==0)
+            ForeverTools:SetEnabled('threatplates',true)
+            assert(record.fill:IsShown() and nativeWrites==0)
+            Fire('NAME_PLATE_UNIT_REMOVED','nameplate1')
+            assert(not record.fill:IsShown() and nativeWrites==0)
         ''')
 
     def test_recycled_plate_and_replaced_native_frame_detach_old_records(self):
@@ -261,7 +289,7 @@ class ThreatPlatesTest(unittest.TestCase):
             end
             Fire('PLAYER_TARGET_CHANGED')
             assert(record.healthFormatMode=='native-percent-absolute')
-            assert(record.percent.text=='native formatted health' and bar.value==secret)
+            assert(record.percent.text=='native formatted health' and bar.value==750)
             UnitIsUnit=function() return secret end
             plates.target=plate
             Fire('UNIT_HEALTH','target')

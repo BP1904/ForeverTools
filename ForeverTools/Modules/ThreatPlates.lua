@@ -91,6 +91,7 @@ function M:WriteColor(record,color)
     record.writing=true
     pcall(record.health.SetStatusBarColor,record.health,unpack(color))
     record.writing=false
+    if record.fill then pcall(record.fill.SetStatusBarColor,record.fill,unpack(color)) end
 end
 
 function M:Restore(record)
@@ -104,6 +105,7 @@ function M:Restore(record)
         end
     end
     if record.overlay then record.overlay:Hide() end
+    if record.fill then record.fill:Hide() end
     if Accessible(record.health) then
         if record.originalColor then self:WriteColor(record,record.originalColor) end
         if record.originalTexture and record.health.SetStatusBarTexture then
@@ -193,8 +195,8 @@ function M:HealthText(record)
 end
 
 function M:SyncHealth(record)
-    local bar,unit=record.health,record.unit
-    if not bar.SetMinMaxValues or not bar.SetValue then return end
+    local bar,unit=record.fill,record.unit
+    bar:Hide()
     local health,max=Raw(UnitHealth,unit),Raw(UnitHealthMax,unit)
     -- Missing nameplate data may already be available on the selected target.
     local function UsableMaximum(value)
@@ -208,9 +210,9 @@ function M:SyncHealth(record)
         if targeted then health,max=Raw(UnitHealth,"target"),Raw(UnitHealthMax,"target") end
     end
     if not Present(health) or not UsableMaximum(max) then return end
-    -- Secret health values may flow directly to native StatusBar setters.
-    -- Never calculate a percentage or substitute a fictitious full bar here.
-    if pcall(bar.SetMinMaxValues,bar,0,max) then pcall(bar.SetValue,bar,health) end
+    -- This is a plain display-only StatusBar. Never write ranges or values to
+    -- Blizzard's health bar: its TextStatusBar hooks compare secret values.
+    if pcall(bar.SetMinMaxValues,bar,0,max) and pcall(bar.SetValue,bar,health) then bar:Show() end
 end
 
 local function OriginalTexture(bar)
@@ -224,6 +226,14 @@ function M:CreateRecord(plate,health,cast)
     local ok,r,g,b,a=pcall(health.GetStatusBarColor,health)
     if Secret(a) then a=1 end
     if ok and not Secret(r) and not Secret(g) and not Secret(b) then record.originalColor={r,g,b,a or 1} end
+    local fill=CreateFrame("StatusBar",nil,health)
+    fill:SetAllPoints(health); fill:EnableMouse(false)
+    fill:SetFrameLevel(Safe(health.GetFrameLevel,1,health)+1)
+    fill:SetStatusBarTexture(TEXTURE)
+    local background=fill:CreateTexture(nil,"BACKGROUND")
+    background:SetAllPoints(fill); background:SetTexture(TEXTURE)
+    background:SetVertexColor(0.08,0.08,0.08,1)
+    fill:Hide(); record.fill=fill
     local overlay=CreateFrame("Frame",nil,health)
     overlay:SetAllPoints(health); overlay:EnableMouse(false)
     overlay:SetFrameLevel(Safe(health.GetFrameLevel,1,health)+4)

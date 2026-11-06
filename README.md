@@ -1,5 +1,7 @@
 # ForeverTools – ein Addon für alle unsere Funktionen
 
+**Neu in 1.16.6: Threat-Plates-Kampffehler korrigiert.** Die Lebensfüllung verwendet einen eigenen Anzeigebalken. Dadurch werden die Blizzard-TextStatusBar-Aufrufe vermieden, die in Version 1.16.5 beim Kampf Fehler mit geschützten Zahlen auslösen konnten. Nach dem Update `/reload` eingeben. Prüfung: 336 automatisierte Tests einschließlich des nachgestellten Fehlerpfads; die Bestätigung im betroffenen Spielclient steht noch aus.
+
 **Neu in 1.16.5: Lebensbalken und Journal-Button.** Threat Plates synchronisiert Lebenswert und Maximum zusätzlich direkt mit dem nativen Balken, damit ungefüllte NPC- und Spielerbalken aktualisiert werden. Das Schmiede-Symbol sitzt weiter links; der vorhandene DungeonJournal-Button wird nach dem Laden über der Minimap gehalten. Nach dem Update `/reload` eingeben. Prüfung: 335 automatisierte Tests bestanden; die Anzeige beim betroffenen Freund muss im Spiel bestätigt werden.
 
 **Neu in 1.16.2: Erfahrungsleiste und korrigierter Addonstart.** Im Schmiede-Schnellmenü auf **Erfahrungsleiste** klicken oder `/ftxp show` eingeben. Enthalten sind XP, Erholung, fertige Quest-XP, XP/h, Levelprognose und Spielzeiten. Einstellungen unter `/ad → Erfahrungsleiste`. Eine aktive EasyExperienceBar-Einzelversion wird nach Übernahme der Anzeigeeinstellungen für den Charakter deaktiviert; nach dem Hinweis nochmals `/reload` eingeben. Danach kann der Originalordner entfernt werden.

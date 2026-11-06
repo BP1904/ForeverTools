@@ -1,4 +1,6 @@
-# ForeverTools 1.16.5
+# ForeverTools 1.16.6
+
+**Kampffehler behoben:** Threat Plates schreibt Lebenswerte und Maximalwerte jetzt ausschließlich in einen eigenen reinen Anzeigebalken. Blizzards TextStatusBar-Wertfunktionen werden nicht mehr aus dem Modul aufgerufen; der gemeldete Vergleich geschützter Zahlen wird so vermieden. Der Anzeigebalken verschwindet beim Abschalten und bei der Wiederverwendung einer Plakette. Nach dem Update `/reload` eingeben.
 
 **Threat Plates:** Lebensbalken erhalten jetzt zusätzlich direkt den aktuellen Lebenswert und das Maximum der Einheit. Dadurch werden stehengebliebene leere Balken bei NPCs und Spielern aktualisiert. Fehlende Daten werden nicht durch erfundene Lebenswerte ersetzt; geschützte Werte gehen direkt an die nativen Balkenfunktionen. Nach dem Update `/reload` eingeben.
 
