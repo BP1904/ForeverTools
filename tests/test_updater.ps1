@@ -86,22 +86,27 @@ finally { [void]$ready.Reset(); $ready.Dispose(); $stop.Dispose(); $mutex.Releas
     $catalog.addons[0].files += @{path='Extra.lua'; sha256=$extraHash}
     [IO.File]::WriteAllText((Join-Path $dest 'ForeverTools\ForeverTools.toc'), 'rollback original')
     $script:failSource = Join-Path $source 'ForeverTools\Extra.lua'
-    function Copy-Item {
-        param([string]$LiteralPath, [string]$Destination, [switch]$Force)
-        if ($LiteralPath -eq $script:failSource) { throw 'Simulated write failure' }
-        Microsoft.PowerShell.Management\Copy-Item -LiteralPath $LiteralPath -Destination $Destination -Force:$Force
+    $originalCopy = ${function:Copy-AddonFile}
+    function Copy-AddonFile {
+        param([string]$Source, [string]$Destination)
+        if ($Source -eq $script:failSource) { throw 'Simulated write failure' }
+        & $originalCopy $Source $Destination
     }
     try {
         Must-Reject { Install-AddonFiles $catalog $source $dest (Join-Path $work 'backup-rollback') }
         Assert ((Get-Content (Join-Path $dest 'ForeverTools\ForeverTools.toc')) -eq 'rollback original') 'Rollback failed'
-    } finally { Remove-Item Function:\Copy-Item }
+    } finally { ${function:Copy-AddonFile} = $originalCopy }
     $catalog.addons[0].files = @($catalog.addons[0].files[0])
-    foreach ($path in @('../escape.lua', '/absolute.lua', 'x\bad.lua', 'script.ps1', 'x//bad.lua', 'CON.lua', 'dir/../bad.lua')) {
+    foreach ($path in @('../escape.lua', '/absolute.lua', 'x\bad.lua', 'script.ps1', 'x//bad.lua', 'CON.lua', 'dir/../bad.lua', 'evil.exe', 'evil.cmd', 'x.ps1.otf/../bad.ps1', 'other/LICENSE', 'other/.pkgmeta')) {
         Must-Reject { Assert-SafeFilePath $path }
     }
     foreach ($name in @('..', 'Bad/Folder', 'CON', 'C:\WoW')) { Must-Reject { Assert-SafeAddonPath $name } }
     Assert-SafeFilePath 'Update.cmd'
     Assert-SafeFilePath 'Updater/Update-ForeverTools.ps1'
+    Assert-SafeFilePath 'Features/BigWigs/BigWigs/Media/Fonts/NotoSans-Medium.otf'
+    Assert-SafeFilePath 'Features/BigWigs/BigWigs_TheVoidspire/!Options.lua'
+    Assert-SafeFilePath 'Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/LICENSE'
+    Assert-SafeFilePath 'Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/.pkgmeta'
     Must-Reject { Assert-SafeFilePath 'Updater/Other.ps1' }
     $catalog.addons += @{folder='ForeverTools'; files=@()}
     Must-Reject { Install-AddonFiles $catalog $source $dest (Join-Path $work 'backup4') }
@@ -190,10 +195,20 @@ finally { [void]$ready.Reset(); $ready.Dispose(); $stop.Dispose(); $mutex.Releas
     Write-Host 'PASS: install, backup, hash failure, unrelated files, path validation, duplicate catalog, safe request parsing'
     Write-Host 'PASS: complete offline download/extract/install/status flow'
     Write-Host 'PASS: saved button request triggers update exactly once; idle watcher stays quiet'
+    # Real release payload: synthetic tiny catalogs missed bundled fonts and !Options.lua.
+    $releaseSource = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+    $releaseCatalog = Get-Content -LiteralPath (Join-Path $releaseSource 'catalog.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+    $releaseDestination = Join-Path $work 'release-game\Interface\AddOns'
+    Install-AddonFiles $releaseCatalog $releaseSource $releaseDestination (Join-Path $work 'release-backup')
+    foreach ($file in $releaseCatalog.addons[0].files) {
+        $installed = Join-Path $releaseDestination ('ForeverTools/' + $file.path)
+        Assert ((Get-Sha256 $installed) -eq $file.sha256) ("Release file mismatch: " + $file.path)
+    }
+    Write-Host ('PASS: actual release catalog installed and verified (' + $releaseCatalog.addons[0].files.Count + ' files)')
 } finally {
     $resolved = [IO.Path]::GetFullPath($work)
     $temp = [IO.Path]::GetFullPath([IO.Path]::GetTempPath()).TrimEnd('\') + '\'
     if ($resolved.StartsWith($temp, [StringComparison]::OrdinalIgnoreCase) -and [IO.Path]::GetFileName($resolved) -match '^ForeverTools-Test-[a-f0-9]{32}$') {
-        Remove-Item -LiteralPath $resolved -Recurse -Force
+        Remove-Item -LiteralPath (Get-ExtendedPath $resolved) -Recurse -Force
     }
 }

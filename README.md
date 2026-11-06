@@ -1,5 +1,7 @@
 # ForeverTools – ein Addon für alle unsere Funktionen
 
+**Neu in 1.16.7: Update-Helfer repariert.** Die Dateiprüfung berücksichtigt nun alle enthaltenen Addondateien, einschließlich BigWigs-Schriften und `!Options.lua`. Betroffene alte Helfer müssen einmalig ersetzt und neu gestartet werden; anschließend kann wieder der Ingame-Update-Button verwendet werden. Der vollständige echte Release-Katalog wird jetzt zusätzlich im PowerShell-Test installiert und geprüft.
+
 **Neu in 1.16.6: Threat-Plates-Kampffehler korrigiert.** Die Lebensfüllung verwendet einen eigenen Anzeigebalken. Dadurch werden die Blizzard-TextStatusBar-Aufrufe vermieden, die in Version 1.16.5 beim Kampf Fehler mit geschützten Zahlen auslösen konnten. Nach dem Update `/reload` eingeben. Prüfung: 336 automatisierte Tests einschließlich des nachgestellten Fehlerpfads; die Bestätigung im betroffenen Spielclient steht noch aus.
 
 **Neu in 1.16.5: Lebensbalken und Journal-Button.** Threat Plates synchronisiert Lebenswert und Maximum zusätzlich direkt mit dem nativen Balken, damit ungefüllte NPC- und Spielerbalken aktualisiert werden. Das Schmiede-Symbol sitzt weiter links; der vorhandene DungeonJournal-Button wird nach dem Laden über der Minimap gehalten. Nach dem Update `/reload` eingeben. Prüfung: 335 automatisierte Tests bestanden; die Anzeige beim betroffenen Freund muss im Spiel bestätigt werden.

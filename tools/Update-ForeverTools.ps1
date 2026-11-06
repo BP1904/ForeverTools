@@ -11,8 +11,20 @@ param(
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
+function Get-ExtendedPath([string]$Path) {
+    if ($Path.StartsWith('\\?\')) { return $Path }
+    $full = [IO.Path]::GetFullPath($Path)
+    if ($full.StartsWith('\\')) { return '\\?\UNC\' + $full.Substring(2) }
+    return '\\?\' + $full
+}
+
+function Copy-AddonFile([string]$Source, [string]$Destination) {
+    [void][IO.Directory]::CreateDirectory((Get-ExtendedPath ([IO.Path]::GetDirectoryName($Destination))))
+    [IO.File]::Copy((Get-ExtendedPath $Source), (Get-ExtendedPath $Destination), $true)
+}
+
 function Get-Sha256([string]$Path) {
-    $stream = [IO.File]::OpenRead($Path)
+    $stream = [IO.File]::OpenRead((Get-ExtendedPath $Path))
     $hash = [Security.Cryptography.SHA256]::Create()
     try { return ([BitConverter]::ToString($hash.ComputeHash($stream))).Replace('-', '').ToLowerInvariant() }
     finally { $hash.Dispose(); $stream.Dispose() }
@@ -142,10 +154,12 @@ function Assert-SafeFilePath([string]$Name) {
     # These two bundled updater files are part of the trusted ForeverTools package.
     # They are installed as files; the running updater never executes downloaded scripts.
     if ($Name -ceq 'Update.cmd' -or $Name -ceq 'Updater/Update-ForeverTools.ps1') { return }
-    if ($Name -notmatch '^[A-Za-z0-9_./-]+$' -or $Name.Contains('\') -or
+    $bundledMetadata = $Name -ceq 'Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/LICENSE' -or
+        $Name -ceq 'Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/.pkgmeta'
+    if ($Name -notmatch '^[A-Za-z0-9_!./-]+$' -or $Name.Contains('\') -or
         $Name.StartsWith('/') -or $Name.Split('/') -contains '..' -or
         $Name.Split('/') -contains '.' -or $Name.Contains('//') -or
-        [IO.Path]::GetExtension($Name) -notin @('.lua','.toc','.ogg','.wav','.mp3','.blp','.tga','.png','.txt','.md','.xml')) {
+        (!$bundledMetadata -and [IO.Path]::GetExtension($Name) -notin @('.lua','.toc','.ogg','.wav','.mp3','.blp','.tga','.png','.txt','.md','.xml','.otf','.ttf','.html','.css','.ld'))) {
         throw "Ungueltige Addon-Datei: $Name"
     }
     foreach ($part in $Name.Split('/')) {
@@ -158,8 +172,8 @@ function Assert-SafeFilePath([string]$Name) {
 function Assert-NoLink([string]$Path) {
     $current = [IO.Path]::GetFullPath($Path)
     while ($current) {
-        if (Test-Path -LiteralPath $current) {
-            if ((Get-Item -LiteralPath $current -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
+        if (Test-Path -LiteralPath (Get-ExtendedPath $current)) {
+            if ((Get-Item -LiteralPath (Get-ExtendedPath $current) -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
                 throw "Verknuepfungen werden nicht beschrieben: $current"
             }
         }
@@ -184,14 +198,14 @@ function Install-AddonFiles([object]$Catalog, [string]$Source, [string]$Destinat
             $files[$file.path] = $true
             $relative = $addon.folder + '/' + $file.path
             $sourceFile = Join-Path $Source $relative
-            if (!(Test-Path -LiteralPath $sourceFile -PathType Leaf) -or
+            if (![IO.File]::Exists((Get-ExtendedPath $sourceFile)) -or
                 (Get-Sha256 $sourceFile) -ne $file.sha256) {
                 throw "Dateipruefung fehlgeschlagen: $relative"
             }
             $target = Join-Path $Destination $relative
             Assert-NoLink $target
-            if (Test-Path -LiteralPath $target -PathType Container) { throw "Dateiziel ist ein Ordner: $target" }
-            $plan.Add(@{source=$sourceFile; target=$target; backup=(Join-Path $Backup $relative); existed=(Test-Path -LiteralPath $target)})
+            if ([IO.Directory]::Exists((Get-ExtendedPath $target))) { throw "Dateiziel ist ein Ordner: $target" }
+            $plan.Add(@{source=$sourceFile; target=$target; backup=(Join-Path $Backup $relative); existed=[IO.File]::Exists((Get-ExtendedPath $target))})
         }
         if (!$files.ContainsKey($addon.folder + '.toc')) { throw "TOC fehlt: $($addon.folder)" }
     }
@@ -199,24 +213,22 @@ function Install-AddonFiles([object]$Catalog, [string]$Source, [string]$Destinat
     # Validate ALL downloads before touching installed files. Back up every overwritten file.
     foreach ($item in $plan) {
         if ($item.existed) {
-            [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($item.backup))
-            Copy-Item -LiteralPath $item.target -Destination $item.backup
+            Copy-AddonFile $item.target $item.backup
         }
     }
     $changed = New-Object 'System.Collections.Generic.List[object]'
     try {
         foreach ($item in $plan) {
-            [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($item.target))
             $changed.Add($item)
-            Copy-Item -LiteralPath $item.source -Destination $item.target -Force
+            Copy-AddonFile $item.source $item.target
         }
     } catch {
         $installError = $_
         $rollbackErrors = @()
         foreach ($item in $changed) {
             try {
-                if ($item.existed) { Copy-Item -LiteralPath $item.backup -Destination $item.target -Force }
-                elseif (Test-Path -LiteralPath $item.target) { Remove-Item -LiteralPath $item.target -Force }
+                if ($item.existed) { Copy-AddonFile $item.backup $item.target }
+                elseif ([IO.File]::Exists((Get-ExtendedPath $item.target))) { [IO.File]::Delete((Get-ExtendedPath $item.target)) }
             } catch { $rollbackErrors += $_.Exception.Message }
         }
         if ($rollbackErrors.Count) { throw "Installation fehlgeschlagen; Sicherung unter $Backup behalten. Wiederherstellungsfehler: $($rollbackErrors -join '; ')" }
@@ -251,8 +263,8 @@ function Sync-ForeverTools([string]$Root, [string]$Request) {
                 if ($relative.Contains('..') -or $relative.Contains('\') -or $relative.Contains(':')) { throw 'Unsicherer ZIP-Pfad.' }
                 $out = [IO.Path]::GetFullPath((Join-Path $source $relative))
                 if (!$out.StartsWith($source + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'ZIP-Pfad ausserhalb des Zielordners.' }
-                [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($out))
-                [IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $out, $false)
+                [void][IO.Directory]::CreateDirectory((Get-ExtendedPath ([IO.Path]::GetDirectoryName($out))))
+                [IO.Compression.ZipFileExtensions]::ExtractToFile($entry, (Get-ExtendedPath $out), $false)
             }
         } finally { $zip.Dispose() }
         $catalog = Get-Content -LiteralPath (Join-Path $source 'catalog.json') -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -270,7 +282,7 @@ function Sync-ForeverTools([string]$Root, [string]$Request) {
         $resolvedWork = [IO.Path]::GetFullPath($work)
         if ($success -and $resolvedWork.StartsWith($tempRoot.TrimEnd('\') + '\', [StringComparison]::OrdinalIgnoreCase) -and
             [IO.Path]::GetFileName($resolvedWork) -match '^ForeverTools-[a-f0-9]{32}$') {
-            Remove-Item -LiteralPath $resolvedWork -Recurse -Force
+            Remove-Item -LiteralPath (Get-ExtendedPath $resolvedWork) -Recurse -Force
         }
         elseif (!$success) { Write-Warning "Diagnose und vorhandene Sicherungen bleiben erhalten: $work" }
     }

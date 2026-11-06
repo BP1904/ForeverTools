@@ -1,4 +1,6 @@
-# ForeverTools 1.16.6
+# ForeverTools 1.16.7
+
+**Update-Helfer repariert:** Die Dateiprüfung akzeptiert jetzt die enthaltenen Schriftdateien, `!Options.lua` und Bibliotheksdokumente. Ältere Helfer lehnen diese Dateien ab und können sich deshalb nicht selbst aktualisieren. Einmalig den Helfer am Windows-Uhr-Symbol beenden, `Updater/Update-ForeverTools.ps1` durch die reparierte Version ersetzen und `Update.cmd` neu starten. Danach funktioniert wieder der Update-Button im Spiel. Prüfsummen- und Pfadprüfungen bleiben aktiv.
 
 **Kampffehler behoben:** Threat Plates schreibt Lebenswerte und Maximalwerte jetzt ausschließlich in einen eigenen reinen Anzeigebalken. Blizzards TextStatusBar-Wertfunktionen werden nicht mehr aus dem Modul aufgerufen; der gemeldete Vergleich geschützter Zahlen wird so vermieden. Der Anzeigebalken verschwindet beim Abschalten und bei der Wiederverwendung einer Plakette. Nach dem Update `/reload` eingeben.
 
