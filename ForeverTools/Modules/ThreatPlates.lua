@@ -1,5 +1,5 @@
 -- Independent implementation of the supplied Threat Plates 13.3.0-beta6 core display.
--- Keeps Blizzard's unit frames, health updates, cast timing and click targets in place.
+-- Keeps Blizzard's unit frames, cast timing and click targets in place.
 local _, FT = ...
 local M={
     title="Threat Plates: Namensplaketten",
@@ -192,6 +192,27 @@ function M:HealthText(record)
     record.healthFormatMode="unavailable"
 end
 
+function M:SyncHealth(record)
+    local bar,unit=record.health,record.unit
+    if not bar.SetMinMaxValues or not bar.SetValue then return end
+    local health,max=Raw(UnitHealth,unit),Raw(UnitHealthMax,unit)
+    -- Missing nameplate data may already be available on the selected target.
+    local function UsableMaximum(value)
+        return Secret(value) or (type(value)=="number" and value>0)
+    end
+    if not Present(health) or not UsableMaximum(max) then
+        local targeted=Safe(UnitIsUnit,false,unit,"target")
+        if not targeted and C_NamePlate then
+            targeted=Safe(C_NamePlate.GetNamePlateForUnit,nil,"target")==record.plate
+        end
+        if targeted then health,max=Raw(UnitHealth,"target"),Raw(UnitHealthMax,"target") end
+    end
+    if not Present(health) or not UsableMaximum(max) then return end
+    -- Secret health values may flow directly to native StatusBar setters.
+    -- Never calculate a percentage or substitute a fictitious full bar here.
+    if pcall(bar.SetMinMaxValues,bar,0,max) then pcall(bar.SetValue,bar,health) end
+end
+
 local function OriginalTexture(bar)
     local texture=Safe(bar.GetStatusBarTexture,nil,bar)
     return texture and Safe(texture.GetTexture,nil,texture)
@@ -259,6 +280,7 @@ function M:Update(record)
     local hostile=Safe(UnitCanAttack,nil,"player",unit)
     local inInstance=Safe(IsInInstance,false)
     if hostile~=true and (not self.settings.friendly or inInstance) then self:Restore(record); return end
+    self:SyncHealth(record)
     local color,label=self:Color(unit)
     record.skinActive=true
     self:HideNativeHighlights(record)

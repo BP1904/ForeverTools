@@ -3275,15 +3275,15 @@
         },
         {
           "path": "ForeverTools.toc",
-          "sha256": "47bdd88af009e132038592add69627f1b95e239117e7f97554f99dd9af758999"
+          "sha256": "1b373879f9da5934017a65cf5f1b324a547937f99f32baa87204176f542bda89"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "47bdd88af009e132038592add69627f1b95e239117e7f97554f99dd9af758999"
+          "sha256": "1b373879f9da5934017a65cf5f1b324a547937f99f32baa87204176f542bda89"
         },
         {
           "path": "Menu.lua",
-          "sha256": "0bb42f657068972af31fa18fd7ab24ec249240564b707a426db08bf4bccc2e88"
+          "sha256": "793c9b277b8a75a90fe67f47a7ab9f53b86863f227fd000324ca0468e1c4e8e5"
         },
         {
           "path": "Modules/AntiFettFinger.lua",
@@ -3359,7 +3359,7 @@
         },
         {
           "path": "Modules/ThreatPlates.lua",
-          "sha256": "1d7fb383ee5099a3b14e047c96d561967be052a421590f173614b42383bc1eaa"
+          "sha256": "6ccf88c59ccd9fb3fb2e146b55275371e0fa7123a3aab1335c00f8748954d95b"
         },
         {
           "path": "Modules/Training.lua",
@@ -3371,7 +3371,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "a4f4e41276d0228ab3150f313b1f39fb2dcd8ccc4e6951986ca4c19b7bab93b7"
+          "sha256": "c48dbd5fa05187ccb6b018d2c894184d8790af2c492ce5639d64e68908f19702"
         },
         {
           "path": "Sounds/GTFO/alarmbeep.ogg",

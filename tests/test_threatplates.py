@@ -61,6 +61,8 @@ function MakeBar()
     function bar:SetStatusBarColor(...) self.color={...} end
     function bar:GetStatusBarColor() return unpack(self.color) end
     function bar:SetStatusBarTexture(texture) self.texture=texture end
+    function bar:SetMinMaxValues(low,high) self.minimum=low; self.maximum=high end
+    function bar:SetValue(value) self.value=value end
     function bar:GetStatusBarTexture()
         return {GetTexture=function() return self.texture end}
     end
@@ -131,7 +133,7 @@ class ThreatPlatesTest(unittest.TestCase):
             units.nameplate1.health=secret; units.nameplate1.max=secret; units.nameplate1.threat=secret
             Fire('UNIT_HEALTH','nameplate1')
             assert(record.percent.text=='' and record.threat.text=='')
-            assert(bar.color[1]==0.7 and bar.value==750)
+            assert(bar.color[1]==0.7 and bar.value==secret and bar.maximum==secret)
             units.nameplate1.health=500; units.nameplate1.max=1000; units.nameplate1.threat=0
             N:RefreshAll(); assert(record.percent.text=='50%')
         ''')
@@ -153,6 +155,34 @@ class ThreatPlatesTest(unittest.TestCase):
             units.nameplate1.isPlayer=true; units.nameplate1.class='MAGE'
             N:RefreshAll(); assert(bar.color[1]==0.25 and bar.color[3]==0.9)
             units.nameplate1.tapped=true; N:RefreshAll(); assert(bar.color[1]==0.5 and record.threat.text=='Belegt')
+        ''')
+
+    def test_empty_native_bar_is_filled_for_npc_and_player_and_tracks_damage(self):
+        self.lua.execute('''
+            bar.value=0; bar.maximum=1
+            Fire('UNIT_HEALTH','nameplate1')
+            assert(bar.value==750 and bar.minimum==0 and bar.maximum==1000)
+            units.nameplate1.isPlayer=true; units.nameplate1.class='MAGE'
+            units.nameplate1.health=400; Fire('UNIT_HEALTH','nameplate1')
+            assert(bar.value==400 and bar.maximum==1000)
+            units.nameplate1.max=2000; Fire('UNIT_MAXHEALTH','nameplate1')
+            assert(bar.value==400 and bar.maximum==2000)
+            units.nameplate1.health=0; Fire('UNIT_HEALTH','nameplate1')
+            assert(bar.value==0)
+        ''')
+
+    def test_raw_health_uses_native_setters_and_missing_data_is_not_fabricated(self):
+        self.lua.execute('''
+            units.nameplate1.health=secret; units.nameplate1.max=secret
+            Fire('UNIT_HEALTH','nameplate1')
+            assert(bar.value==secret and bar.maximum==secret)
+            units.nameplate1.health=nil; units.nameplate1.max=0
+            bar.value=20; bar.maximum=100
+            Fire('UNIT_HEALTH','nameplate1')
+            assert(bar.value==20 and bar.maximum==100)
+            currentTarget='nameplate1'; units.target={health=800,max=1200}
+            Fire('PLAYER_TARGET_CHANGED')
+            assert(bar.value==800 and bar.maximum==1200)
         ''')
 
     def test_recycled_plate_and_replaced_native_frame_detach_old_records(self):
@@ -231,7 +261,7 @@ class ThreatPlatesTest(unittest.TestCase):
             end
             Fire('PLAYER_TARGET_CHANGED')
             assert(record.healthFormatMode=='native-percent-absolute')
-            assert(record.percent.text=='native formatted health' and bar.value==750)
+            assert(record.percent.text=='native formatted health' and bar.value==secret)
             UnitIsUnit=function() return secret end
             plates.target=plate
             Fire('UNIT_HEALTH','target')

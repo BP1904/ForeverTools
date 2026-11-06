@@ -1,4 +1,10 @@
-# ForeverTools 1.16.2
+# ForeverTools 1.16.5
+
+**Threat Plates:** Lebensbalken erhalten jetzt zusätzlich direkt den aktuellen Lebenswert und das Maximum der Einheit. Dadurch werden stehengebliebene leere Balken bei NPCs und Spielern aktualisiert. Fehlende Daten werden nicht durch erfundene Lebenswerte ersetzt; geschützte Werte gehen direkt an die nativen Balkenfunktionen. Nach dem Update `/reload` eingeben.
+
+DungeonJournal: Der vorhandene Minimapschalter wird nach dem Laden auf eine Zeichenebene über der Minimap gesetzt. Das behebt die feste Ebene 8 von LibDBIcon bei höher liegenden Forever-Minimaps. Sichtbarkeitseinstellungen und Klickfunktionen bleiben erhalten.
+
+Das Schmiede-Symbol sitzt weiter links neben der Minimap, damit es den DungeonJournal-Button unten links nicht verdeckt. Nach dem Update `/reload` eingeben.
 
 **Startkorrektur für Forever:** Nicht unterstützte klassische Auktionsereignisse brechen den Addonstart nicht mehr ab. Alle Module erhalten ihre gespeicherten Einstellungen vor dem Start. Ein einzelner Modulfehler wird im Chat genannt; die übrigen Module und das Schmiede-Symbol starten weiter. Die klassische Auktionssuche bleibt auf Clients ohne passende API nicht verfügbar.
 

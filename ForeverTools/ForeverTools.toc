@@ -2,7 +2,7 @@
 ## Title: ForeverTools
 ## Notes: HÃ¤ndler, Quests, Materialien, Paladin, GTFO, Threat Plates, Decursive, Anti Fett Finger, Auto Rank, Karten, Auktionshaus, LernÃ¼bersicht Disenchantry, Attune, BigWigs und Nova Instance Tracker.
 ## Author: ForeverTools
-## Version: 1.16.2
+## Version: 1.16.5
 ## OptionalDeps: EasyExperienceBar, AntiFettFinger, AutoRank, Leatrix_Maps, WhatsTraining, Disenchantry, Attune, BigWigs, NovaInstanceTracker
 ## SavedVariables: ForeverToolsDB, ForeverToolsDisenchantryDB, ForeverToolsAttuneDB, ForeverToolsBigWigsDB, ForeverToolsBigWigsIconDB, ForeverToolsBigWigsStatsDB, ForeverToolsNovaDB
 ## SavedVariablesPerCharacter: ForeverToolsMaterialMail, ForeverToolsPaladinDB, ForeverToolsAntiFettFingerDB, ForeverToolsAutoRankDB, ForeverToolsTrainingDB, ForeverToolsAttuneLastViewed, ForeverToolsAttuneTreeExpandStatus, ForeverToolsAttuneMigrated, ForeverToolsExperienceDB

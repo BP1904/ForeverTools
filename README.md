@@ -1,5 +1,7 @@
 # ForeverTools – ein Addon für alle unsere Funktionen
 
+**Neu in 1.16.5: Lebensbalken und Journal-Button.** Threat Plates synchronisiert Lebenswert und Maximum zusätzlich direkt mit dem nativen Balken, damit ungefüllte NPC- und Spielerbalken aktualisiert werden. Das Schmiede-Symbol sitzt weiter links; der vorhandene DungeonJournal-Button wird nach dem Laden über der Minimap gehalten. Nach dem Update `/reload` eingeben. Prüfung: 335 automatisierte Tests bestanden; die Anzeige beim betroffenen Freund muss im Spiel bestätigt werden.
+
 **Neu in 1.16.2: Erfahrungsleiste und korrigierter Addonstart.** Im Schmiede-Schnellmenü auf **Erfahrungsleiste** klicken oder `/ftxp show` eingeben. Enthalten sind XP, Erholung, fertige Quest-XP, XP/h, Levelprognose und Spielzeiten. Einstellungen unter `/ad → Erfahrungsleiste`. Eine aktive EasyExperienceBar-Einzelversion wird nach Übernahme der Anzeigeeinstellungen für den Charakter deaktiviert; nach dem Hinweis nochmals `/reload` eingeben. Danach kann der Originalordner entfernt werden.
 
 Nicht unterstützte klassische Auktionsereignisse stoppen den Addonstart nicht mehr. Modulhäkchen, nachfolgende Module und Schmiede-Symbol werden wieder eingerichtet. Ein einzelner Modulfehler blockiert die übrigen Module nicht mehr. Die klassische Auktionssuche bleibt auf Clients ohne passende API nicht verfügbar. Prüfung: 331 Tests; die Startkorrektur wurde zusätzlich im Spiel bestätigt.

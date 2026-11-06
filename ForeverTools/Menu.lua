@@ -222,7 +222,8 @@ function FT:CreateLauncher()
     if not Minimap or self.launcher then return end
     local button = CreateFrame("Button", "ForeverToolsLauncher", Minimap)
     button:SetSize(30, 30)
-    button:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", -4, -4)
+    -- Leave room for DungeonJournal's default button at the lower-left rim.
+    button:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", -44, -4)
     button:SetFrameStrata("MEDIUM")
     button:SetNormalTexture("Interface\\Icons\\Trade_Engineering")
     button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
@@ -244,3 +245,27 @@ end
 SLASH_FOREVERTOOLS1 = "/ad"
 SLASH_FOREVERTOOLS2 = "/forevertools"
 SlashCmdList.FOREVERTOOLS = function() FT:ToggleMenu() end
+
+function FT:RaiseJournalButton()
+    if not Minimap or not Minimap.GetFrameLevel then return end
+    local button = _G.LibDBIcon10_ForeverDungeonJournal
+    if not button and LibStub then
+        local ok, lib = pcall(LibStub, "LibDBIcon-1.0", true)
+        if ok and lib and lib.GetMinimapButton then button = lib:GetMinimapButton("ForeverDungeonJournal") end
+    end
+    if not button then return end
+    -- LibDBIcon uses fixed level 8; the Forever minimap can be above that.
+    -- Preserve visibility settings and scripts; only correct the draw order.
+    if button.SetFixedFrameLevel then button:SetFixedFrameLevel(false) end
+    button:SetFrameLevel(Minimap:GetFrameLevel() + 10)
+    if button.SetFixedFrameLevel then button:SetFixedFrameLevel(true) end
+end
+
+local journalEvents = CreateFrame("Frame")
+journalEvents:RegisterEvent("PLAYER_LOGIN")
+journalEvents:RegisterEvent("PLAYER_ENTERING_WORLD")
+journalEvents:SetScript("OnEvent", function()
+    -- Journal creates its button in PLAYER_LOGIN; wait until all handlers ran.
+    if C_Timer and C_Timer.After then C_Timer.After(0, function() FT:RaiseJournalButton() end)
+    else FT:RaiseJournalButton() end
+end)
