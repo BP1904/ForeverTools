@@ -487,7 +487,10 @@ function M:InitializeTrading()
             if self.ownerRequest and not self.issuingOwner then self:StopTrading("Andere Abfrage eigener Auktionen gestartet.") end
         end)
     end
-    for _,event in ipairs({"AUCTION_OWNED_LIST_UPDATE","AUCTION_MULTISELL_UPDATE","AUCTION_MULTISELL_FAILURE"}) do self.frame:RegisterEvent(event) end
+    for _,event in ipairs({"AUCTION_OWNED_LIST_UPDATE","AUCTION_MULTISELL_UPDATE","AUCTION_MULTISELL_FAILURE"}) do
+        local ok=pcall(self.frame.RegisterEvent,self.frame,event)
+        if not ok then self.unsupportedEvents[event]=true end
+    end
     if StaticPopupDialogs then
         StaticPopupDialogs.FOREVERTOOLS_AUCTION_TRADE={
             text="%s",button1="Bestätigen",button2="Abbrechen",timeout=30,whileDead=false,hideOnEscape=true,

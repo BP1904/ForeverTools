@@ -1,4 +1,12 @@
-# ForeverTools 1.15.0
+# ForeverTools 1.16.2
+
+**Startkorrektur für Forever:** Nicht unterstützte klassische Auktionsereignisse brechen den Addonstart nicht mehr ab. Alle Module erhalten ihre gespeicherten Einstellungen vor dem Start. Ein einzelner Modulfehler wird im Chat genannt; die übrigen Module und das Schmiede-Symbol starten weiter. Die klassische Auktionssuche bleibt auf Clients ohne passende API nicht verfügbar.
+
+**Sichtbarkeit:** Das Schmiede-Schnellmenü enthält jetzt **Erfahrungsleiste**. Ein Klick oder `/ftxp show` blendet die Leiste mittig oberhalb der Bildschirmmitte ein, auch auf Höchststufe. Anschließend lässt sie sich verschieben. Falls die alte Einzelversion noch geladen ist, nennt eine Chatmeldung den erforderlichen weiteren `/reload`.
+
+**Neu: Erfahrungsleiste.** Einstellungen unter /ad → Erfahrungsleiste. XP, fertige Quest-XP, Erholung, XP/h, Levelprognose und Spielzeiten. Ziehen verschiebt die Leiste. Größe: /ftxp width 600, /ftxp height 30, /ftxp font 14. /ftxp reset setzt die Position zurück; /ftxp stats setzt die Sitzung zurück. Die Sitzung bleibt bei /reload erhalten und beginnt beim neuen Einloggen neu.
+
+Zur Übernahme EasyExperienceBar einmal zusammen mit ForeverTools laden. Anzeigeeinstellungen und die Charakterposition werden kopiert; die Einzelversion wird für diesen Charakter deaktiviert. Anschließend nochmals /reload. Danach kann der Ordner EasyExperienceBar entfernt werden. Weitere Charaktere für ihre Positionsübernahme vorher ebenfalls einmal gemeinsam laden. Die neue Leiste läuft vollständig ohne das Original.
 
 **BigWigs und Nova Instance Tracker sind vollständig enthalten.** Im Schmiede-Schnellmenü öffnen oder mit `/ad` verwalten. BigWigs-Einstellungen: `/ftbw` bzw. `/bw`. Nova-Instanzverlauf: `/ftnit` bzw. `/nit`; Einstellungen: `/ftnit options`. Die beiden Modulschalter speichern die Auswahl; zum Übernehmen `/reload` eingeben.
 

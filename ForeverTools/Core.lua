@@ -28,7 +28,8 @@ function FT:RegisterModule(id, definition)
 end
 
 function FT:IsEnabled(id)
-    return self.db and self.db.modules[id].enabled
+    local settings = self.db and self.db.modules and self.db.modules[id]
+    return settings and settings.enabled or false
 end
 
 function FT:SetEnabled(id, enabled)
@@ -53,7 +54,18 @@ function FT:Initialize()
             if settings[key] == nil then settings[key] = value end
         end
         module.settings = settings
-        if module.Initialize then module:Initialize() end
+    end
+    -- Prepare every module's settings first. A client/API error in one module
+    -- must not prevent later modules or the common launcher from starting.
+    for _, id in ipairs(self.order) do
+        local module = self.modules[id]
+        if module.Initialize then
+            local ok, err = pcall(module.Initialize, module)
+            if not ok then
+                module.initError = tostring(err)
+                self:Print((module.title or id) .. ": Startfehler: " .. module.initError)
+            end
+        end
     end
     if self.CreateLauncher and not self.launcher then self:CreateLauncher() end
     self:Print("geladen. Menü: Minimap-Schaltfläche, /ad oder /forevertools")

@@ -45,6 +45,9 @@ end
 
 function M:Ready()
     if not FT:IsEnabled("auctionator") then return false end
+    if self.unsupportedEvents and self.unsupportedEvents.AUCTION_ITEM_LIST_UPDATE then
+        self:Message("Die klassische Auktionssuche wird von diesem Client nicht unterstützt. Andere ForeverTools-Module bleiben verfügbar."); return false
+    end
     if InCombatLockdown and InCombatLockdown() then self:Message("Bitte nach dem Kampf erneut versuchen."); return false end
     if not self.auctionOpen then self:Message("Bitte zuerst mit einem Auktionator sprechen."); return false end
     if not QueryAuctionItems or not CanSendAuctionQuery or not GetAuctionItemInfo or not GetNumAuctionItems or not GetAuctionItemLink then
@@ -234,7 +237,11 @@ end
 function M:Initialize()
     self.settings.shopping = self.settings.shopping or {}
     local frame = CreateFrame("Frame"); self.frame = frame
-    for _, event in ipairs({"AUCTION_HOUSE_SHOW", "AUCTION_HOUSE_CLOSED", "AUCTION_ITEM_LIST_UPDATE", "PLAYER_REGEN_DISABLED", "NEW_AUCTION_UPDATE"}) do frame:RegisterEvent(event) end
+    self.unsupportedEvents = {}
+    for _, event in ipairs({"AUCTION_HOUSE_SHOW", "AUCTION_HOUSE_CLOSED", "AUCTION_ITEM_LIST_UPDATE", "PLAYER_REGEN_DISABLED", "NEW_AUCTION_UPDATE"}) do
+        local ok = pcall(frame.RegisterEvent, frame, event)
+        if not ok then self.unsupportedEvents[event] = true end
+    end
     frame:SetScript("OnEvent", function(_, event, ...)
         if self.TradingEvent and self:TradingEvent(event, ...) then return end
         if event == "AUCTION_HOUSE_SHOW" then

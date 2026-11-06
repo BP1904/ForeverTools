@@ -7,7 +7,7 @@
       "files": [
         {
           "path": "Core.lua",
-          "sha256": "564cd54114b1e67a6f45e0a8cdeafa383a54c6d18196da698d40ce8a836b1813"
+          "sha256": "06e2e40adcd1d6062dce2bc8b04626055edebfcd55fd9fd534e3f58d8ee340de"
         },
         {
           "path": "Data/CleansingSpells.lua",
@@ -3275,15 +3275,15 @@
         },
         {
           "path": "ForeverTools.toc",
-          "sha256": "b01adea04468a7e29e286e15068cfac394b948e5b00915ba0340e4a052fe6936"
+          "sha256": "47bdd88af009e132038592add69627f1b95e239117e7f97554f99dd9af758999"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "b01adea04468a7e29e286e15068cfac394b948e5b00915ba0340e4a052fe6936"
+          "sha256": "47bdd88af009e132038592add69627f1b95e239117e7f97554f99dd9af758999"
         },
         {
           "path": "Menu.lua",
-          "sha256": "281616b6699abb755c0e25833545d8a95bbc443c21d0ff5d6c1d9555aa3273b2"
+          "sha256": "0bb42f657068972af31fa18fd7ab24ec249240564b707a426db08bf4bccc2e88"
         },
         {
           "path": "Modules/AntiFettFinger.lua",
@@ -3295,11 +3295,11 @@
         },
         {
           "path": "Modules/Auctionator.lua",
-          "sha256": "a7a8335a2eef376c2ba33f59bbb686e84137d6ba2e1eb29b8d06e59f4d2b14e6"
+          "sha256": "aea105904ec6e860c4320118980496354db9aca800e14957202bf94c1231bf07"
         },
         {
           "path": "Modules/AuctionatorTrading.lua",
-          "sha256": "25553006290a11fede33b8185923f0fb85d1a649931c169d74eb17ff1e72e243"
+          "sha256": "5ddf6c2b220ece8ce1594ac71d7b93a47f1d3930af6ca2e52dd468fd4060c7d1"
         },
         {
           "path": "Modules/AuctionatorUI.lua",
@@ -3324,6 +3324,10 @@
         {
           "path": "Modules/EncounterAddons.lua",
           "sha256": "7ce7812101f747e6a3709a1be82c56bacd251bde809583bcc75eb274885a6675"
+        },
+        {
+          "path": "Modules/Experience.lua",
+          "sha256": "d3132cfee7d5ce91f5251f274f90f6724ac69e5ce11716aa934d75aed84a5c8b"
         },
         {
           "path": "Modules/GTFO.lua",
@@ -3367,7 +3371,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "1824c05f83222e48059ba83bb7d642aa76f30b7fdd2e1944bb256aee28519b99"
+          "sha256": "a4f4e41276d0228ab3150f313b1f39fb2dcd8ccc4e6951986ca4c19b7bab93b7"
         },
         {
           "path": "Sounds/GTFO/alarmbeep.ogg",

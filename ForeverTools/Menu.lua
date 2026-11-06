@@ -157,7 +157,7 @@ function FT:ToggleLauncherMenu()
     if not self.launcherMenu then
         local panel = CreateFrame("Frame", "ForeverToolsLauncherMenu", UIParent, "BasicFrameTemplateWithInset")
         self.launcherMenu = panel
-        panel:SetSize(246, 227)
+        panel:SetSize(246, 263)
         panel:SetPoint("TOPRIGHT", self.launcher, "BOTTOMLEFT", 0, 0)
         panel:SetFrameStrata("DIALOG")
         panel:SetClampedToScreen(true)
@@ -169,6 +169,7 @@ function FT:ToggleLauncherMenu()
             {id = "disenchantry", title = "Disenchantry", icon = 136244},
             {id = "bigwigs", title = "BigWigs", icon = "Interface\\Icons\\INV_Helmet_06"},
             {id = "novainstancetracker", title = "Nova Instance Tracker", icon = "Interface\\Icons\\Spell_Arcane_PortalOrgrimmar", options = "options"},
+            {id = "experience", title = "Erfahrungsleiste", icon = "Interface\\Icons\\INV_Misc_Book_09"},
         }
         for index, entry in ipairs(entries) do
             local item = entry
@@ -200,7 +201,7 @@ function FT:ToggleLauncherMenu()
         end
         local manage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
         manage:SetSize(218, 26)
-        manage:SetPoint("TOPLEFT", 14, -182)
+        manage:SetPoint("TOPLEFT", 14, -218)
         manage:SetText("Module verwalten")
         manage:SetScript("OnClick", function() self:ToggleMenu() end)
         panel.manage = manage

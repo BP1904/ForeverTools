@@ -199,7 +199,7 @@ class MaterialsTest(unittest.TestCase):
             SlashCmdList.FOREVERTOOLS()
             local checks=ForeverTools.menu.checks
             local master=ForeverTools.menu.byModule.materials.master.box
-            assert(#checks==68 and master:GetChecked())
+            assert(#checks==81 and master:GetChecked())
             master:SetChecked(false); master.scripts.OnClick(master)
             assert(not ForeverTools:IsEnabled('materials') and ForeverTools:IsEnabled('merchant'))
         ''')
