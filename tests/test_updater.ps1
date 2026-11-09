@@ -105,6 +105,8 @@ finally { [void]$ready.Reset(); $ready.Dispose(); $stop.Dispose(); $mutex.Releas
     Assert-SafeFilePath 'Updater/Update-ForeverTools.ps1'
     Assert-SafeFilePath 'Features/BigWigs/BigWigs/Media/Fonts/NotoSans-Medium.otf'
     Assert-SafeFilePath 'Features/BigWigs/BigWigs_TheVoidspire/!Options.lua'
+    Assert-SafeFilePath 'Features/Attune/Libs/LibDataBroker-1.1/README.textile'
+    Must-Reject { Assert-SafeFilePath 'Other/README.textile' }
     Assert-SafeFilePath 'Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/LICENSE'
     Assert-SafeFilePath 'Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/.pkgmeta'
     Must-Reject { Assert-SafeFilePath 'Updater/Other.ps1' }

@@ -46,6 +46,8 @@ end
 -- Persist original CVars across /reload so disabling restores the user's settings.
 -- Turning an individual option off also releases the CVar instead of forcing a value.
 function M:UpdateCVars()
+    if Combat() then self.pendingCVars=true; return end
+    self.pendingCVars=nil
     local api = C_CVar or _G
     if not api.GetCVar or not api.SetCVar then return end
     self.settings.originalCVars = self.settings.originalCVars or {}
@@ -281,6 +283,8 @@ function Pin:OnLoad()
 end
 function Pin:OnAcquired(row,category,atlas)
     self.row=row; self.category=category
+    local size=row[1]:match("^Flight") and 22 or 28
+    self:SetSize(size,size)
     self.icon:SetAtlas(atlas)
     -- Pooled pins may switch faction or become another kind of location.
     self.icon:SetDesaturated(false)
@@ -409,6 +413,8 @@ function M:StartDragging()
 end
 function M:StopDragging()
     if not self.dragging then return end
+    if Combat() then self.stopDragPending=true; return end
+    self.stopDragPending=nil
     local map=self.map
     map:StopMovingOrSizing(); self.dragging=false
     local point,relative,relativePoint,x,y=map:GetPoint()
@@ -460,6 +466,7 @@ function M:Attach()
 end
 function M:OnSettingsChanged()
     if not self.settings then return end
+    if self.stopDragPending and not Combat() then self:StopDragging() end
     if self.dragging and (not self:Active() or not self.settings.unlock) then self:StopDragging() end
     self:UpdateCVars()
     self:Attach(); self:ApplyLayout(); self:RefreshContent(); self:UpdateZoneLabel()
@@ -488,6 +495,8 @@ function M:Initialize()
     local events=CreateFrame("Frame")
     for _, event in ipairs({"ADDON_LOADED","PLAYER_ENTERING_WORLD","PLAYER_REGEN_ENABLED","MAP_EXPLORATION_UPDATED","TAXI_NODE_STATUS_CHANGED"}) do events:RegisterEvent(event) end
     events:SetScript("OnEvent",function(_,event,name)
+        -- Loading an unrelated addon does not change the map's contents or layout.
+        if event=="ADDON_LOADED" and name~="Leatrix_Maps" and name~="Blizzard_WorldMap" then return end
         if event=="ADDON_LOADED" and name=="Leatrix_Maps" then
             FT:Print("Leatrix Maps ist aktiv. Das ForeverTools-Kartenmodul pausiert, solange die Einzelversion geladen ist.")
         end

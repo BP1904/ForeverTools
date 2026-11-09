@@ -63,6 +63,7 @@ function FT:Initialize()
             local ok, err = pcall(module.Initialize, module)
             if not ok then
                 module.initError = tostring(err)
+                if self.RecordDiagnostic then self:RecordDiagnostic("INITIALIZE_ERROR",addonName,id..": "..module.initError) end
                 self:Print((module.title or id) .. ": Startfehler: " .. module.initError)
             end
         end

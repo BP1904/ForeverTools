@@ -20,6 +20,7 @@ local ALIAS = {[2937]=171, [2938]=164, [2939]=185, [2940]=333, [2941]=202,
 local MAX = 8
 
 function M:Learned()
+    if self.learned then return self.learned end
     local set = {}
     if GetProfessions and GetProfessionInfo then
         for _, index in pairs({GetProfessions()}) do
@@ -28,6 +29,7 @@ function M:Learned()
         end
     end
     if UnitClass and select(2, UnitClass("player")) == "ROGUE" then set[40] = true end
+    self.learned=set
     return set
 end
 
@@ -95,14 +97,20 @@ function M:Matches()
     local info = (C_Item and C_Item.GetItemInfo) or GetItemInfo
     local count = (C_Item and C_Item.GetItemCount) or GetItemCount
     if not info or not count or not IsPlayerSpell then return {}, false end
+    -- Shared reagents occur in many recipes; read their stock once per search.
+    local counts={}
+    local function Owned(id)
+        if counts[id]==nil then counts[id]=count(id,true) end
+        return counts[id]
+    end
     local learned, out, unloaded = self:Learned(), {}, false
     for item, recipe in pairs(FT.recipes) do
-        if learned[recipe[1]] and not IsPlayerSpell(recipe[2]) and count(item, true) == 0
+        if learned[recipe[1]] and not IsPlayerSpell(recipe[2]) and Owned(item) == 0
             and not ForeverToolsMaterialMail[item] then
             local reagents, have, total = FT.reagents[recipe[2]] or {}, 0, 0
             for i = 1, #reagents, 2 do
                 total = total + 1
-                if count(reagents[i], true) > 0 then have = have + 1 end
+                if Owned(reagents[i]) > 0 then have = have + 1 end
             end
             if total > 0 and have / total >= 0.5 then
                 local name = info(item)
@@ -231,12 +239,15 @@ function M:Initialize()
     local frame = CreateFrame("Frame")
     self.frame = frame
     for _, event in ipairs({"AUCTION_HOUSE_SHOW", "AUCTION_HOUSE_CLOSED", "ADDON_LOADED",
-        "AUCTION_HOUSE_BROWSE_RESULTS_UPDATED", "AUCTION_ITEM_LIST_UPDATE", "MAIL_INBOX_UPDATE"}) do
+        "AUCTION_HOUSE_BROWSE_RESULTS_UPDATED", "AUCTION_ITEM_LIST_UPDATE", "MAIL_INBOX_UPDATE",
+        "SKILL_LINES_CHANGED", "SPELLS_CHANGED", "PLAYER_ENTERING_WORLD"}) do
         -- Auction events differ between the legacy and modern auction UI.
         pcall(frame.RegisterEvent, frame, event)
     end
     frame:SetScript("OnEvent", function(_, event)
-        if event == "AUCTION_HOUSE_SHOW" then
+        if event == "SKILL_LINES_CHANGED" or event == "SPELLS_CHANGED" or event == "PLAYER_ENTERING_WORLD" then
+            self.learned=nil
+        elseif event == "AUCTION_HOUSE_SHOW" then
             self.auctionOpen = true
             self:CreateAuctionButton()
             self:OnSettingsChanged()

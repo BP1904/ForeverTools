@@ -3,7 +3,7 @@ local _, FT = ...
 local function Component(...)
 -------------------------------------------------------------------------
 --
---	Copyright (c) 2019-2021 by Antoine Desmarets.
+--	Copyright (c) 2019-2026 by Antoine Desmarets.
 --	Cixi Delmont/Gaya Greyhoof of Wow Forever Horde
 --
 --	FTAttune is distributed in the hope that it will be useful/entertaining
@@ -11,6 +11,23 @@ local function Component(...)
 --
 -------------------------------------------------------------------------
 
+
+-- 16001-38
+--   - Fixed an issue where an error would occur if an achievement completed while in combat
+--   - Changed the Character Progression attunes to 'Times Camped' instead of 'Gold looted' (as that stat currently doesn't work)
+--
+-- 16001-37
+--   - Added the new prerequisite chain to "The Wrath of Rath'mael" (RoL)
+--   - Added the new prerequisite chain to "The New Plague" (RoL)
+--
+-- 16001-36
+--   - Added the possibility to discard/hide some attunements
+--
+-- 16001-35
+--   - Added the Character Progression attunes.
+--   - Added the FTAttune: Next window
+--   - Added an options to hide the character progression attunes and the Next window.
+--
 -- 16001-34
 --   - Added the Bear Form quest for Skyborne elves.
 --
@@ -159,7 +176,7 @@ local AceGUI = LibStub("AceGUI-3.0")
 -- A local's scope starts on the next line, so these cannot live further down.
 local attunelocal_treeMinWidth = 130
 local attunelocal_treeMaxWidth = 370
-local attunelocal_treeDefaultWidth = 265
+local attunelocal_treeDefaultWidth = 300
 
 -- Current clients collapse a frame that is anchored to opposite edges and also
 -- given an explicit size. AceGUI does both. Fix that on FTAttune's own widgets
@@ -277,6 +294,15 @@ end
 local function FTAttune_HookTreeButton(button)
 	if button.attuneClickHooked then return end
 	button.attuneClickHooked = true
+	button:HookScript("OnEnter",function(frame)
+		local line=frame.treeline
+		if not line then return end
+		GameTooltip:SetOwner(frame,"ANCHOR_RIGHT")
+		GameTooltip:SetText(FTAttune_PlainText(line.text))
+		GameTooltip:AddLine(FTAttuneLang[line.hasChildren and "UI_CategoryHint" or "UI_ChainHint"],0.75,0.8,0.85,true)
+		GameTooltip:Show()
+	end)
+	button:HookScript("OnLeave",function() GameTooltip:Hide() end)
 	local originalOnClick = button:GetScript("OnClick")
 	button:SetScript("OnClick", function(frame, mouseButton)
 		local line = frame.treeline
@@ -404,7 +430,7 @@ function FTAttune_TreeRowMetrics()
 	local scale = FTAttune_DB and FTAttune_DB.treeScale
 	if scale == "large" then return 24, 20, 2 end
 	if scale == "larger" then return 30, 24, 4 end
-	return 18, 14, 0
+	return 22, 16, 0
 end
 
 function FTAttune_TreeFont(kind, base, extra)
@@ -492,7 +518,7 @@ local attunelocal_brokervalue = nil
 local attunelocal_brokerlabel = nil
 local attunelocal_settingsCategoryID = nil
 
-local attunelocal_version = "16001-34"
+local attunelocal_version = "16001-38"
 local attunelocal_prefix = "Attune_Channel"			-- used for addon chat communications
 local attunelocal_versionprefix = "Attune_Version"	-- used for addon version check
 local attunelocal_syncprefix = "Attune_Sync"		-- used for addon version check
@@ -583,7 +609,29 @@ local attunelocal_myFirst = "FirstName"
 local attunelocal_myLast = "LastName"
 local attunelocal_myFullName = attunelocal_myFirst .. " " .. attunelocal_myLast
 local attunelocal_charKey = attunelocal_myFullName --.. "-" .. attunelocal_realm			-- Character unique name
-local attunelocal_statusText = FTAttuneLang["Version"]:gsub("##VERSION##", attunelocal_version)		-- Default status text
+local attunelocal_statusText = FTAttuneLang["UI_Help"]
+
+-- Forever UnitName returns "First", "Last". On Blizzard clients the second
+-- return is the realm, and it is nil while the unit is on the home realm.
+local function FTAttune_CharacterKey(unit)
+	local name, extra = UnitName(unit or "player")
+	if name == nil or name == "" then return nil end
+	local forever = attunelocal_interfaceVersion >= 16000 and attunelocal_interfaceVersion < 20000
+	if forever then
+		if extra ~= nil and extra ~= "" then
+			return name .. " " .. extra, name, extra
+		end
+		return name, name, ""
+	end
+	local realm = extra
+	if realm == nil or realm == "" then
+		realm = (GetNormalizedRealmName and GetNormalizedRealmName()) or GetRealmName()
+	end
+	if realm ~= nil and realm ~= "" then
+		return name .. "-" .. realm, name, realm
+	end
+	return name, name, ""
+end
 
 local attunelocal_refreshDone = false		-- flag to indicate when the UI refresh has been done, to avoid doing it too many times and freezing UI)
 
@@ -661,19 +709,34 @@ local attune_options = {
 							FTAttune_DB.minimapbuttonpos.hide = not val
 						end,
 					width = 2.5,
-					order = 5,
+					order = 3,
 				},
-				useFullMap = {
+				showNextSteps = {
 					type = "toggle",
-					name = FTAttuneLang["FullMap_TEXT"],
-					desc = FTAttuneLang["FullMap_DESC"],
-					get = function(info) return FTAttune_DB.useFullMap end,
+					name = FTAttuneLang["NextSteps_TEXT"],
+					desc = FTAttuneLang["NextSteps_DESC"],
+					get = function(info) return FTAttune_DB.showNextSteps ~= false end,
 					set = function(info, val)
-						FTAttune_DB.useFullMap = val
-						if FTAttune_RefreshQuestMapMode then FTAttune_RefreshQuestMapMode() end
+						FTAttune_DB.showNextSteps = val
+						FTAttune_NextFrameUpdate()
 					end,
-					width = 1.65,
-					order = 6,
+					width = 2.5,
+					order = 4,
+				},
+				showCharacterProgression = {
+					type = "toggle",
+					name = FTAttuneLang["ShowCharacterProgression_TEXT"],
+					desc = FTAttuneLang["ShowCharacterProgression_DESC"],
+					get = function(info) return FTAttune_DB.showCharacterProgression ~= false end,
+					set = function(info, val)
+						FTAttune_DB.showCharacterProgression = val
+						FTAttune_ReloadAttuneTree()
+						if FTAttune_DB.iconView then FTAttune_LayoutIconView() end
+						if attunelocal_glist then FTAttune_ShowResultList() end
+						FTAttune_NextFrameUpdate()
+					end,
+					width = 2.5,
+					order = 5,
 				},
 				showAllClassQuests = {
 					type = "toggle",
@@ -683,9 +746,45 @@ local attune_options = {
 					set = function(info, val)
 						FTAttune_DB.showAllClassQuests = val
 						FTAttune_ReloadAttuneTree()
+						FTAttune_NextFrameUpdate()
 					end,
-					width = 1.65,
+					width = 2.5,
+					order = 6,
+				},
+                iconView = {
+					type = "toggle",
+					name = FTAttuneLang["IconView_TEXT"],
+					desc = FTAttuneLang["IconView_DESC"],
+					get = function(info) return FTAttune_DB.iconView end,
+					set = function(info, val)
+						FTAttune_SetIconView(val)
+					end,
+					width = 2.5,
 					order = 7,
+				},
+				archiveCompleted = {
+					type = "toggle",
+					name = FTAttuneLang["ArchiveCompleted_TEXT"],
+					desc = FTAttuneLang["ArchiveCompleted_DESC"],
+					get = function(info) return FTAttune_DB.archiveCompleted end,
+					set = function(info, val)
+						FTAttune_DB.archiveCompleted = val
+						FTAttune_ReloadAttuneTree()
+					end,
+					width = 2.5,
+					order = 8,
+				},                          
+				useFullMap = {
+					type = "toggle",
+					name = FTAttuneLang["FullMap_TEXT"],
+					desc = FTAttuneLang["FullMap_DESC"],
+					get = function(info) return FTAttune_DB.useFullMap end,
+					set = function(info, val)
+						FTAttune_DB.useFullMap = val
+						if FTAttune_RefreshQuestMapMode then FTAttune_RefreshQuestMapMode() end
+					end,
+					width = 2.5,
+					order = 8.5,
 				},
 				treeScale = {
 					type = "select",
@@ -706,30 +805,14 @@ local attune_options = {
 						end
 					end,
 					width = 1.65,
-					order = 8,
-				},                
-				iconView = {
-					type = "toggle",
-					name = FTAttuneLang["IconView_TEXT"],
-					desc = FTAttuneLang["IconView_DESC"],
-					get = function(info) return FTAttune_DB.iconView end,
-					set = function(info, val)
-						FTAttune_SetIconView(val)
-					end,
-					width = 1.65,
-					order = 8.5,
-				},
-				archiveCompleted = {
-					type = "toggle",
-					name = FTAttuneLang["ArchiveCompleted_TEXT"],
-					desc = FTAttuneLang["ArchiveCompleted_DESC"],
-					get = function(info) return FTAttune_DB.archiveCompleted end,
-					set = function(info, val)
-						FTAttune_DB.archiveCompleted = val
-						FTAttune_ReloadAttuneTree()
-					end,
-					width = 1.65,
 					order = 9,
+				},                
+
+                spacer1 = {
+					type = "description",
+					name = " ",
+					width = "full",
+					order = 9.5,
 				},
 				autosurvey = {
 					type = "toggle",
@@ -1004,6 +1087,18 @@ function FTAttune:FTStart()
 	-- Called when the addon is enabled
 	-- Class quests are already merged; index them before any completion event.
 	FTAttune_BuildStepIndex()
+
+	-- Resolve the character and create the DB before any event can fire.
+	-- A bag update during enable used to run while FTAttune_DB was still nil.
+	local full, first, last = FTAttune_CharacterKey("player")
+	attunelocal_myFirst = first or attunelocal_myFirst
+	attunelocal_myLast = last or ""
+	attunelocal_myFullName = full or attunelocal_myFirst
+	attunelocal_charKey = attunelocal_myFullName
+	if FTAttune_DB == nil then FTAttune_DB = {} end
+	if FTAttune_DB.toons == nil then FTAttune_DB.toons = {} end
+	if FTAttune_DB.toons[attunelocal_charKey] == nil then FTAttune_DB.toons[attunelocal_charKey] = {} end
+
 	C_ChatInfo.RegisterAddonMessagePrefix(attunelocal_prefix)
 	C_ChatInfo.RegisterAddonMessagePrefix(attunelocal_versionprefix)
     --	C_ChatInfo.RegisterAddonMessagePrefix(attunelocal_syncprefix)
@@ -1017,16 +1112,19 @@ function FTAttune:FTStart()
 	self:RegisterEvent("QUEST_ACCEPTED")
 	self:RegisterEvent("QUEST_REMOVED")
 	self:RegisterEvent("QUEST_TURNED_IN")
+	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("UPDATE_FACTION")
 	self:RegisterEvent("BAG_UPDATE")
 	self:RegisterEvent("GOSSIP_SHOW")
 	self:RegisterEvent("QUEST_DETAIL")
+	-- Statistics (kills, times camped, profession skill). Missing on clients without achievements.
+	pcall(self.RegisterEvent, self, "CRITERIA_UPDATE")
+	pcall(self.RegisterEvent, self, "SKILL_LINES_CHANGED")
+	pcall(self.RegisterEvent, self, "CHAT_MSG_MONEY")
+	pcall(self.RegisterEvent, self, "PLAYER_PVP_KILLS_CHANGED")
+	pcall(self.RegisterEvent, self, "PLAYER_ENTERING_WORLD")
 --	self:RegisterEvent("ACHIEVEMENT_EARNED")
 
-    attunelocal_myFirst, attunelocal_myLast = UnitName("player")
-    attunelocal_myFullName = attunelocal_myFirst .. " " .. attunelocal_myLast
-    attunelocal_charKey = attunelocal_myFullName --.. "-" .. attunelocal_realm			-- Character unique name
-    
 	--self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	if attunelocal_hasCombatLog then
 		cleu_parser:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
@@ -1079,7 +1177,20 @@ function FTAttune:FTStart()
 	if FTAttune_DB.autosurvey == nil then FTAttune_DB.autosurvey = false end
 	if FTAttune_DB.useFullMap == nil then FTAttune_DB.useFullMap = false end
 	if FTAttune_DB.showAllClassQuests == nil then FTAttune_DB.showAllClassQuests = false end
-	if FTAttune_DB.iconView == nil then FTAttune_DB.iconView = true end
+	if FTAttune_DB.showCharacterProgression == nil then
+		if FTAttune_DB.hideCharacterProgression == nil then
+			FTAttune_DB.showCharacterProgression = true
+		else
+			FTAttune_DB.showCharacterProgression = not FTAttune_DB.hideCharacterProgression
+		end
+	end
+	if not FTAttune_DB.navigationVersion then
+		FTAttune_DB.iconView = false
+		FTAttune_DB.treeWidth = math.min(370, math.max(280, tonumber(FTAttune_DB.treeWidth) or 300))
+		FTAttune_DB.navigationVersion = 1
+	end
+	if FTAttune_DB.iconView == nil then FTAttune_DB.iconView = false end
+	if FTAttune_DB.showNextSteps == nil then FTAttune_DB.showNextSteps = true end
 	if FTAttune_DB.treeScale ~= "large" and FTAttune_DB.treeScale ~= "larger" then FTAttune_DB.treeScale = "normal" end
 	if FTAttune_DB.archiveCompleted == nil then FTAttune_DB.archiveCompleted = true end
 	if FTAttune_DB.websiteUrl == nil then FTAttune_DB.websiteUrl = "https://wowhead.com/forever" end
@@ -1132,6 +1243,7 @@ function FTAttune:FTStart()
 		if t.class == nil then t.class = "UNKNOWN" end
 		if t.attuned == nil then t.attuned = {} end
 		if t.done == nil then t.done = {} end
+		if t.skip == nil then t.skip = {} end
 		for i, a in pairs(FTAttune_Data.noattunes) do
 			--mark as automatically attuned for those raids that do not require attunement
 			if t.attuned[a.ID] == nil then t.attuned[a.ID] = 100 end
@@ -1670,6 +1782,34 @@ local function FTAttune_StepIsNext(s)
 	return true
 end
 
+-- Guild chat is protected in combat. Hold the line until PLAYER_REGEN_ENABLED.
+local FTAttune_GuildAnnounceQueue = {}
+
+local function FTAttune_AnnounceGuild(msg)
+	if InCombatLockdown() then
+		for _, pending in ipairs(FTAttune_GuildAnnounceQueue) do
+			if pending == msg then return end
+		end
+		FTAttune_GuildAnnounceQueue[#FTAttune_GuildAnnounceQueue + 1] = msg
+		return
+	end
+	SendChatMessage(msg, "GUILD")
+end
+
+function FTAttune:PLAYER_REGEN_ENABLED()
+	if InCombatLockdown() or #FTAttune_GuildAnnounceQueue == 0 then return end
+	local pending = FTAttune_GuildAnnounceQueue
+	FTAttune_GuildAnnounceQueue = {}
+	for _, msg in ipairs(pending) do
+		SendChatMessage(msg, "GUILD")
+	end
+end
+
+local function FTAttune_AnnounceAttuneComplete(name)
+	if not (FTAttune_DB and FTAttune_DB.announceAttuneCompleted and attunelocal_myguild ~= "") then return end
+	FTAttune_AnnounceGuild("[FTAttune] "..FTAttuneLang["FTAttuneCompleteGuild"]:gsub("##NAME##", name))
+end
+
 -- Mark one matching step, announce it, and optionally close out the attunement.
 -- Returns true when this call newly completed the step.
 local function FTAttune_MarkStepDone(s, typeLabel, stepLabel, checkComplete)
@@ -1698,7 +1838,7 @@ local function FTAttune_MarkStepDone(s, typeLabel, stepLabel, checkComplete)
 		if toon.attuned[a.ID] >= 100 then
 			PlaySound(5275) -- AuctionWindowClose
 			if FTAttune_DB.showStepReached then print("|cffff00ff[FTAttune]|r "..FTAttuneLang["FTAttuneComplete"]:gsub("##NAME##", a.NAME)) end
-			if FTAttune_DB.announceAttuneCompleted and attunelocal_myguild ~= "" then SendChatMessage("[FTAttune] "..FTAttuneLang["FTAttuneCompleteGuild"]:gsub("##NAME##", a.NAME), "GUILD") end
+			FTAttune_AnnounceAttuneComplete(a.NAME)
 		end
 	end
 	FTAttune_SendPushInfo("OVER")
@@ -1706,6 +1846,8 @@ local function FTAttune_MarkStepDone(s, typeLabel, stepLabel, checkComplete)
 end
 
 local function FTAttune_ProcessKill(npc_id)
+	-- Creature-killed statistics move even when this npc is not an attune target.
+	FTAttune_QueueStatScan()
 	if npc_id == nil or npc_id == -1 then return end
 	local steps = FTAttune_Data.stepsByKill and FTAttune_Data.stepsByKill[tostring(npc_id)]
 	if steps == nil then return end
@@ -1750,7 +1892,10 @@ end
 function FTAttune:PLAYER_LEVEL_UP(event, arg1)
 
 	local levels = FTAttune_Data.stepsByType and FTAttune_Data.stepsByType["Level"]
-	if levels == nil then return end
+	if levels == nil then
+		FTAttune_NextFrameUpdate()
+		return
+	end
 
 	local refreshNeeded = false
 	for _, s in ipairs(levels) do
@@ -1763,7 +1908,30 @@ function FTAttune:PLAYER_LEVEL_UP(event, arg1)
 	end
 
 	if refreshNeeded then FTAttune_ForceAttuneTabRefresh() end -- refresh view if needed
+	FTAttune_NextFrameUpdate()
 
+end
+
+-- Kills, looted gold, and profession skill move the character trials.
+function FTAttune:CRITERIA_UPDATE()
+	FTAttune_QueueStatScan()
+end
+
+function FTAttune:SKILL_LINES_CHANGED()
+	FTAttune_QueueStatScan()
+end
+
+function FTAttune:CHAT_MSG_MONEY()
+	FTAttune_QueueStatScan()
+end
+
+function FTAttune:PLAYER_PVP_KILLS_CHANGED()
+	FTAttune_QueueStatScan()
+end
+
+function FTAttune:PLAYER_ENTERING_WORLD()
+	FTAttune_QueueStatScan()
+	FTAttune_NextFrameUpdate()
 end
 
 
@@ -1903,6 +2071,7 @@ end
 -------------------------------------------------------------------------
 
 function FTAttune:QUEST_TURNED_IN(event, arg1)
+	FTAttune_QueueStatScan()
 	local questID = tonumber(arg1)
 	if questID == nil then return end
 	local steps = FTAttune_Data.stepsByTurnIn and FTAttune_Data.stepsByTurnIn[questID]
@@ -1959,6 +2128,7 @@ local attuneItemScanQueued = false
 local function FTAttune_ScanItemSteps()
 	local items = FTAttune_Data.stepsByItem
 	if items == nil then return end
+	if FTAttune_DB == nil or FTAttune_DB.toons == nil then return end
 	local toon = FTAttune_DB.toons[attunelocal_charKey]
 	if toon == nil or toon.done == nil or toon.items == nil then return end
 
@@ -2029,8 +2199,11 @@ function FTAttune:UPDATE_FACTION(event)
 	local reps = FTAttune_Data.stepsByType and FTAttune_Data.stepsByType["Rep"]
 	if reps == nil then return end
 
+	if FTAttune_DB == nil or FTAttune_DB.toons == nil then return end
 	local refreshNeeded = false
 	local toon = FTAttune_DB.toons[attunelocal_charKey]
+	if toon == nil then return end
+	if toon.reps == nil then toon.reps = {} end
 	for _, s in ipairs(reps) do
 		if showPatchStep(s) then
 			local name, _, _, _, _, earnedValue = FTAttune_GetFactionInfoByID(s.LOCATION)
@@ -2072,6 +2245,301 @@ function FTAttune_UpdateLogs()
 		attune_options.args.tab2.args.logs.name = slogs
 	end
 
+end
+
+-------------------------------------------------------------------------
+-- Character trials: statistics (kills, times camped, profession skill)
+-------------------------------------------------------------------------
+
+-- GetStatistic returns a display string ("1,234" or "--").
+function FTAttune_ReadStatisticRaw(statId)
+	if statId == nil or statId == "" or statId == "0" then return nil end
+	if GetStatistic == nil then return nil end
+	local ok, raw = pcall(GetStatistic, tonumber(statId) or statId)
+	if not ok or raw == nil then return nil end
+	raw = tostring(raw)
+	if raw == "--" or raw == "" then return nil end
+	return raw
+end
+
+function FTAttune_ReadStatistic(statId)
+	local raw = FTAttune_ReadStatisticRaw(statId)
+	if raw == nil then return 0 end
+	local digits = raw:gsub("%D", "")
+	if digits == "" then return 0 end
+	return tonumber(digits) or 0
+end
+
+function FTAttune_StatGoal(step)
+	if step == nil then return 0 end
+	if step.TYPE == "Prof" then return tonumber(step.NEED) or 2 end
+	return tonumber(step.COUNT) or 0
+end
+
+function FTAttune_StatValue(step)
+	if step == nil then return 0 end
+	if step.TYPE == "Prof" then
+		local skill = tonumber(step.COUNT) or 0
+		local have = 0
+		local profs = FTAttune_Data.primaryProfessions
+		if profs then
+			for i = 1, #profs do
+				if FTAttune_ReadStatistic(profs[i][1]) >= skill then
+					have = have + 1
+				end
+			end
+		end
+		return have
+	end
+	return FTAttune_ReadStatistic(step.ID_WOWHEAD)
+end
+
+function FTAttune_CurrentAttuneId()
+	local last = FTAttune_GetLastViewed()
+	if last ~= nil and last ~= "" then
+		local _, _, sel = strsplit("\001", last)
+		if sel ~= nil and sel ~= "" then return sel end
+	end
+	if attunelocal_treeframe then
+		local status = attunelocal_treeframe.status or attunelocal_treeframe.localstatus
+		local selected = status and status.selected
+		if selected then
+			local _, _, sel = strsplit("\001", selected)
+			if sel ~= nil and sel ~= "" then return sel end
+		end
+	end
+end
+
+function FTAttune_ViewingCharacterAttune()
+	if attunelocal_frame == nil or not attunelocal_frame:IsShown() then return false end
+	local sel = FTAttune_CurrentAttuneId()
+	if sel == nil then return false end
+	local a = FTAttune_Data.attuneById and FTAttune_Data.attuneById[sel]
+	return a ~= nil and a.GROUP == FTAttuneLang["CHARACTER"]
+end
+
+-- Rewrite the open trial's counts without rebuilding the chain.
+function FTAttune_RefreshOpenStatLabels()
+	local sel = FTAttune_CurrentAttuneId()
+	if sel == nil then return end
+	local chain = FTAttune_Data.stepsByAttune and FTAttune_Data.stepsByAttune[sel]
+	if chain == nil then return end
+	for _, s in pairs(chain) do
+		if s.TYPE == "Stat" or s.TYPE == "Prof" then
+			local title = _G["FTAttune_Title_" .. s.ID]
+			if title then
+				local goal = FTAttune_StatGoal(s)
+				local value = FTAttune_StatValue(s)
+				if goal > 0 and value > goal then value = goal end
+				title:SetText(value .. "/" .. goal)
+			end
+		end
+	end
+end
+
+function FTAttune_CharacterStepAllowed(toon, attuneId)
+	local a = FTAttune_Data.attuneById and FTAttune_Data.attuneById[attuneId]
+	if a == nil then return false end
+	if a.DEPRECATED ~= nil and not FTAttune_DB.showDeprecatedAttunes then return false end
+	local faction = UnitFactionGroup("player")
+	if not (a.FACTION == faction or a.FACTION == "Both") then return false end
+	return FTAttune_MayRecordAttuneProgress(toon, a.ID)
+end
+
+-- Rebuild the tree and icon list after the current draw finishes.
+-- The graph records completion during its own redraw, which is too late for the list just built.
+function FTAttune_QueueCharacterTreeRefresh()
+	if FTAttune_CharacterTreeRefreshQueued then return end
+	FTAttune_CharacterTreeRefreshQueued = true
+	C_Timer.After(0, function()
+		FTAttune_CharacterTreeRefreshQueued = false
+		if attunelocal_initial then return end
+		if not (attunelocal_frame and attunelocal_frame:IsShown() and attunelocal_treeIsShown) then
+			if FTAttune_DB and attunelocal_charKey then FTAttune_LoadTree() end
+			return
+		end
+		FTAttune_ReloadAttuneTree()
+		if FTAttune_DB and FTAttune_DB.iconView and attunelocal_treeframe then
+			FTAttune_ShowIconView(attunelocal_treeframe)
+		end
+	end)
+end
+
+-- Close or reopen the Character end node from the requirement steps.
+-- Returns true when a trial newly finishes or reopens, so the tree can move it.
+function FTAttune_SyncCharacterEnds(toon)
+	if toon == nil or toon.done == nil then return false end
+	local ends = FTAttune_Data.stepsByType and FTAttune_Data.stepsByType["End"]
+	if ends == nil then return false end
+	if toon.attuned == nil then toon.attuned = {} end
+	local changed = false
+	for _, e in pairs(ends) do
+		local a = FTAttune_Data.attuneById and FTAttune_Data.attuneById[e.ID_ATTUNE]
+		if a and a.GROUP == FTAttuneLang["CHARACTER"] and showPatchStep(e) then
+			local allDone = e.FOLLOWS ~= nil and e.FOLLOWS ~= "0"
+			if allDone then
+				for _, flw in pairs(FTAttune_split(e.FOLLOWS, "&")) do
+					if not toon.done[e.ID_ATTUNE .. "-" .. flw] then
+						allDone = false
+						break
+					end
+				end
+			end
+			local key = e.ID_ATTUNE .. "-" .. e.ID
+			local wasComplete = (toon.attuned[e.ID_ATTUNE] or 0) >= 100 or toon.done[key] ~= nil
+			if allDone then
+				toon.done[key] = 1
+				toon.attuned[e.ID_ATTUNE] = 100
+				if not wasComplete then
+					changed = true
+					if not attunelocal_initial and attunelocal_frame and attunelocal_frame:IsShown() then
+						PlaySound(5275) -- AuctionWindowClose
+						if FTAttune_DB.showStepReached then print("|cffff00ff[FTAttune]|r "..FTAttuneLang["FTAttuneComplete"]:gsub("##NAME##", a.NAME)) end
+						FTAttune_AnnounceAttuneComplete(a.NAME)
+					end
+				end
+			else
+				if toon.done[key] then toon.done[key] = nil end
+				FTAttune_RecountAttune(e.ID_ATTUNE)
+				if wasComplete then changed = true end
+			end
+		end
+	end
+	return changed
+end
+
+function FTAttune_ShowStatTooltip(step, fnode)
+	local goal = FTAttune_StatGoal(step)
+	local value = FTAttune_StatValue(step)
+	local shown = value
+	if goal > 0 and shown > goal then shown = goal end
+	if attunelocal_frame then
+		attunelocal_frame:SetStatusText(shown .. "/" .. goal .. " " .. (step.STEP or ""))
+	end
+	GameTooltip:SetOwner(fnode, "ANCHOR_NONE")
+	GameTooltip:SetPoint("TOPLEFT", fnode, "TOPRIGHT", 10, 0)
+	GameTooltip:SetText(step.STEP or "")
+	GameTooltip:AddLine((FTAttuneLang["Current progress"] or "Current progress") .. ": " .. value .. "/" .. goal, 0.5, 0.5, 0.5, 1)
+	if step.TYPE == "Prof" then
+		local skillGoal = tonumber(step.COUNT) or 0
+		local any = false
+		local profs = FTAttune_Data.primaryProfessions
+		if profs then
+			for i = 1, #profs do
+				local skill = FTAttune_ReadStatistic(profs[i][1])
+				if skill > 0 then
+					any = true
+					local name = FTAttuneLang[profs[i][2]] or profs[i][2]
+					if skill >= skillGoal then
+						GameTooltip:AddLine(name .. ": " .. skill .. "/" .. skillGoal, 0.373, 0.729, 0.275, 1)
+					else
+						GameTooltip:AddLine(name .. ": " .. skill .. "/" .. skillGoal, 0.851, 0.608, 0.0, 1)
+					end
+				end
+			end
+		end
+		if not any and FTAttuneLang["NoProfessionYet"] then
+			GameTooltip:AddLine(FTAttuneLang["NoProfessionYet"], 0.5, 0.5, 0.5, 1, true)
+		end
+	end
+end
+
+-- silent: record progress without the completion sound (login and redraw).
+function FTAttune_ScanStatSteps(silent)
+	if FTAttune_StatScanRunning then return end
+	if FTAttune_DB == nil or FTAttune_DB.toons == nil or attunelocal_charKey == nil then return end
+	local toon = FTAttune_DB.toons[attunelocal_charKey]
+	if toon == nil then return end
+	if toon.done == nil then toon.done = {} end
+	if toon.stats == nil then toon.stats = {} end
+	local byType = FTAttune_Data.stepsByType
+	if byType == nil then return end
+
+	FTAttune_StatScanRunning = true
+	local structural = false
+	local progressChanged = false
+
+	local function consider(list)
+		if list == nil then return end
+		for _, s in pairs(list) do
+			if showPatchStep(s) and (s.TYPE == "Stat" or s.TYPE == "Prof") and FTAttune_CharacterStepAllowed(toon, s.ID_ATTUNE) then
+				local key = s.ID_ATTUNE .. "-" .. s.ID
+				local value = FTAttune_StatValue(s)
+				local goal = FTAttune_StatGoal(s)
+				if toon.stats[key] ~= value then
+					toon.stats[key] = value
+					progressChanged = true
+				end
+				if goal > 0 and value >= goal then
+					if toon.done[key] == nil then
+						if silent then
+							toon.done[key] = 1
+							structural = true
+						elseif FTAttune_MarkStepDone(s, s.STEP or "", value .. "/" .. goal, true) then
+							structural = true
+						end
+					end
+				elseif toon.done[key] then
+					toon.done[key] = nil
+					structural = true
+				end
+			end
+		end
+	end
+
+	consider(byType["Stat"])
+	consider(byType["Prof"])
+	local listChanged = FTAttune_SyncCharacterEnds(toon)
+	FTAttune_StatScanRunning = false
+
+	-- Silent redraws record the finish after the tree was built. Refresh the list once that draw returns.
+	if (listChanged or structural) and not attunelocal_initial then
+		FTAttune_QueueCharacterTreeRefresh()
+	end
+
+	if (structural or progressChanged) and not silent then
+		FTAttune_NextFrameUpdate()
+	end
+
+	if silent then return end
+	if not (attunelocal_frame and attunelocal_frame:IsShown()) then return end
+	if structural then
+		FTAttune_ForceAttuneTabRefresh()
+	elseif progressChanged and FTAttune_ViewingCharacterAttune() then
+		FTAttune_RefreshOpenStatLabels()
+	end
+end
+
+function FTAttune_QueueStatScan()
+	-- The statistic often updates a moment after the kill, turn-in, or loot.
+	if not FTAttune_StatScanQueued then
+		FTAttune_StatScanQueued = true
+		C_Timer.After(0.4, function()
+			FTAttune_StatScanQueued = false
+			FTAttune_ScanStatSteps(false)
+		end)
+	end
+	if FTAttune_StatScanFollowUp then return end
+	FTAttune_StatScanFollowUp = true
+	C_Timer.After(1.25, function()
+		FTAttune_StatScanFollowUp = false
+		FTAttune_ScanStatSteps(false)
+	end)
+end
+
+-- While a Character trial is on screen, reread statistics even if the kill event was missed.
+function FTAttune_EnsureStatPoll()
+	if FTAttune_StatPollActive then return end
+	FTAttune_StatPollActive = true
+	local function tick()
+		if not FTAttune_ViewingCharacterAttune() then
+			FTAttune_StatPollActive = false
+			return
+		end
+		FTAttune_ScanStatSteps(false)
+		C_Timer.After(1, tick)
+	end
+	C_Timer.After(1, tick)
 end
 
 -------------------------------------------------------------------------
@@ -2191,6 +2659,7 @@ function FTAttune_CheckProgress()
 
 	-- some specific steps mean the whole attunement is complete. Close off the whole tree if those are done
 	-- including a second pass to mark as done all non-trackable steps (interact/kill/past items) that belong to earlier (completed) quests
+	FTAttune_ScanStatSteps(true)
 	FTAttune_SendPushInfo("TOON")
 	FTAttune_CheckComplete(true)
 	FTAttune_SendPushInfo("OVER")
@@ -2379,6 +2848,9 @@ function FTAttune_CheckIsNext(who)
 			end
 		end
 	end
+	if who == attunelocal_charKey then
+		FTAttune_NextFrameUpdate()
+	end
 end
 
 -------------------------------------------------------------------------
@@ -2386,8 +2858,8 @@ end
 -------------------------------------------------------------------------
 
 function FTAttune_UpdateTreeGroup(aid)
-	-- Completed attunes move into Archived, so the list has to be rebuilt.
-	if FTAttune_DB.archiveCompleted then
+	-- Completed attunes move into Archived, and discarded ones sit under Will not do.
+	if FTAttune_DB.archiveCompleted or FTAttune_IsSkipped(aid) then
 		FTAttune_ReloadAttuneTree()
 		return
 	end
@@ -2489,6 +2961,79 @@ local function FTAttune_ClassQuestVisible(a)
 	return classFile ~= nil and a.CLASS == classFile
 end
 
+-- Character Progression attunes stay in the list when "Show Character Progression attunes" is on.
+local function FTAttune_CharacterProgressionVisible(a)
+	if a.GROUP ~= FTAttuneLang["CHARACTER"] then return true end
+	return not (FTAttune_DB and FTAttune_DB.showCharacterProgression == false)
+end
+
+-- This character has set the attunement aside. It stays in the list, under Will not do.
+function FTAttune_WillNotDoLabel()
+	return FTAttuneLang["WillNotDo"] or "Will not do"
+end
+
+function FTAttune_IsSkipped(attuneId)
+	if attuneId == nil or FTAttune_DB == nil or attunelocal_charKey == nil then return false end
+	local t = FTAttune_DB.toons and FTAttune_DB.toons[attunelocal_charKey]
+	return t ~= nil and t.skip ~= nil and t.skip[attuneId] == true
+end
+
+function FTAttune_TreeHasGroup(expacNode, groupValue)
+	if expacNode == nil or groupValue == nil then return false end
+	for _, g in ipairs(expacNode.children or {}) do
+		if g.value == groupValue then return true end
+	end
+	return false
+end
+
+function FTAttune_ExpandAttuneGroup(expac, group)
+	if expac == nil or group == nil or group == "" then return end
+	local key = expac .. "\001" .. group
+	if FTAttuneTreeExpandStatus then
+		FTAttuneTreeExpandStatus[expac] = 1
+		FTAttuneTreeExpandStatus[key] = 1
+	end
+	local tree = attunelocal_treeframe
+	local status = tree and (tree.status or tree.localstatus)
+	if status then
+		if status.groups == nil then status.groups = {} end
+		status.groups[expac] = true
+		status.groups[key] = true
+	end
+end
+
+function FTAttune_SetAttuneSkipped(attuneId, skipped)
+	if attuneId == nil or FTAttune_DB == nil or attunelocal_charKey == nil then return end
+	local t = FTAttune_DB.toons and FTAttune_DB.toons[attunelocal_charKey]
+	if t == nil then return end
+	if t.skip == nil then t.skip = {} end
+	if skipped then
+		t.skip[attuneId] = true
+	else
+		t.skip[attuneId] = nil
+	end
+	local a = FTAttune_Data.attuneById and FTAttune_Data.attuneById[attuneId]
+	if a then
+		local done = t.attuned and (t.attuned[attuneId] or 0) >= 100
+		local group = FTAttune_WillNotDoLabel()
+		if not skipped then
+			if done and FTAttune_DB.archiveCompleted then
+				group = FTAttuneLang["Archived"]
+			else
+				group = a.GROUP
+			end
+		end
+		FTAttune_ExpandAttuneGroup(a.EXPAC, group)
+	end
+	FTAttune_ReloadAttuneTree()
+	local tree = attunelocal_treeframe
+	if tree and attunelocal_treeIsShown and not (FTAttune_DB and FTAttune_DB.iconView) then
+		tree:RefreshTree(true)
+	end
+	FTAttune_UpdateSkipCheck(attuneId)
+	FTAttune_NextFrameUpdate()
+end
+
 -- Selected attunement, stored on this character inside the account-wide saved data.
 function FTAttune_GetLastViewed()
 	local t = FTAttune_DB and attunelocal_charKey and FTAttune_DB.toons and FTAttune_DB.toons[attunelocal_charKey]
@@ -2523,6 +3068,8 @@ function FTAttune_EnsureDefaultView()
 		if (a.DEPRECATED == nil or FTAttune_DB.showDeprecatedAttunes)
 			and (a.FACTION == attunelocal_faction or a.FACTION == "Both")
 			and FTAttune_ClassQuestVisible(a)
+			and FTAttune_CharacterProgressionVisible(a)
+			and not FTAttune_IsSkipped(a.ID)
 			and FTAttune_MayRecordAttuneProgress(toon, a.ID)
 			and withSteps[a.ID]
 		then
@@ -2545,6 +3092,8 @@ local function FTAttune_CommitGroup(expacNode, groupNode, groupAllDone)
 end
 
 function FTAttune_LoadTree()
+	local treeToon = FTAttune_DB and attunelocal_charKey and FTAttune_DB.toons[attunelocal_charKey]
+	if treeToon then FTAttune_ApplyCompletedEndSteps(treeToon) end
 	attunelocal_tree = {}
 	local expac = ""
 	local group = ""
@@ -2552,6 +3101,7 @@ function FTAttune_LoadTree()
 	local groupNode = {}
 	local groupAllDone = true
 	local archivedNodes = {}
+	local skippedNodes = {}
 	local attunesWithSteps = {}
 	for _, s in pairs(FTAttune_Data.steps) do
 		if showPatchStep(s) then
@@ -2560,7 +3110,7 @@ function FTAttune_LoadTree()
 	end
 
 	for i, a in pairs(FTAttune_Data.attunes) do
-		if (a.DEPRECATED == nil or FTAttune_DB.showDeprecatedAttunes) and FTAttune_ClassQuestVisible(a) then 
+		if (a.DEPRECATED == nil or FTAttune_DB.showDeprecatedAttunes) and FTAttune_ClassQuestVisible(a) and FTAttune_CharacterProgressionVisible(a) then 
 
 			--Group Level
 			if group ~= a.GROUP or expac ~= a.EXPAC then 
@@ -2600,19 +3150,22 @@ function FTAttune_LoadTree()
 				local text = FTAttune_DisplayName(a)
 				local icon = a.ICON
 				local done = false
-				if not attunesWithSteps[a.ID] then
+				local skipped = FTAttune_IsSkipped(a.ID)
+				local hasSteps = attunesWithSteps[a.ID]
+				local mayRecord = FTAttune_MayRecordAttuneProgress(FTAttune_DB.toons[attunelocal_charKey], a.ID)
+				if not hasSteps then
 					text = "|cff808080"..text.."|r"
+				elseif mayRecord and FTAttune_DB.toons[attunelocal_charKey].attuned ~= nil
+					and FTAttune_DB.toons[attunelocal_charKey].attuned[a.ID] >= 100 then
+					text = "|cff00ff00"..text.."|r"
+					icon = "Interface\\AddOns\\ForeverTools\\Features\\Attune\\Images\\success"
+					done = true
+				elseif skipped then
+					text = "|cff808080"..text.."|r"
+				end
+				-- Discarded attunes leave the group, so they do not keep it open.
+				if not skipped and (not hasSteps or not mayRecord or not done) then
 					groupAllDone = false
-				elseif not FTAttune_MayRecordAttuneProgress(FTAttune_DB.toons[attunelocal_charKey], a.ID) then
-					groupAllDone = false
-				elseif FTAttune_DB.toons[attunelocal_charKey].attuned ~= nil then
-					if FTAttune_DB.toons[attunelocal_charKey].attuned[a.ID] >= 100 then
-						text = "|cff00ff00"..text.."|r"
-						icon = "Interface\\AddOns\\ForeverTools\\Features\\Attune\\Images\\success"
-						done = true
-					else 
-						groupAllDone = false
-					end
 				end
 
 
@@ -2623,11 +3176,14 @@ function FTAttune_LoadTree()
 					sourceIcon = a.ICON,
 					tip = FTAttune_DisplayName(a),
 					short = a.SHORT,
-					dim = not attunesWithSteps[a.ID],
+					dim = not hasSteps,
 					done = done,
+					skipped = skipped,
 				}
-				-- Completed attunes leave their category and collect at the bottom.
-				if FTAttune_DB.archiveCompleted and done then
+				-- Discarded attunes collect under Will not do, after Completed.
+				if skipped then
+					table.insert(skippedNodes, attuneNode)
+				elseif FTAttune_DB.archiveCompleted and done then
 					table.insert(archivedNodes, attuneNode)
 				else
 					table.insert(groupNode.children, attuneNode)
@@ -2642,6 +3198,14 @@ function FTAttune_LoadTree()
 			value = FTAttuneLang["Archived"],
 			text = "|cff00ff00"..FTAttuneLang["Archived"].."|r",
 			children = archivedNodes,
+		})
+	end
+	if #skippedNodes > 0 and expacNode.children then
+		local willNotDo = FTAttune_WillNotDoLabel()
+		table.insert(expacNode.children, {
+			value = willNotDo,
+			text = "|cff808080"..willNotDo.."|r",
+			children = skippedNodes,
 		})
 	end
 	table.insert(attunelocal_tree, expacNode)
@@ -2686,18 +3250,27 @@ function FTAttune_ReloadAttuneTree()
 	if status and lastViewed then
 		status.selected = lastViewed
 	end
-	if FTAttune_DB.archiveCompleted and status and status.groups then
+	if status and status.groups then
 		local archived = FTAttuneLang["Archived"]
+		local willNotDo = FTAttune_WillNotDoLabel()
 		for _, expacNode in ipairs(attunelocal_tree) do
 			if expacNode.value then
-				local key = expacNode.value .. "\001" .. archived
-				if FTAttuneTreeExpandStatus == nil or FTAttuneTreeExpandStatus[key] ~= 0 then
-					status.groups[key] = true
+				if FTAttune_DB.archiveCompleted and FTAttune_TreeHasGroup(expacNode, archived) then
+					local key = expacNode.value .. "\001" .. archived
+					if FTAttuneTreeExpandStatus == nil or FTAttuneTreeExpandStatus[key] ~= 0 then
+						status.groups[key] = true
+					end
+				end
+				if FTAttune_TreeHasGroup(expacNode, willNotDo) then
+					local key = expacNode.value .. "\001" .. willNotDo
+					if FTAttuneTreeExpandStatus == nil or FTAttuneTreeExpandStatus[key] ~= 0 then
+						status.groups[key] = true
+					end
 				end
 			end
 		end
 	end
-	tree:SetTree(attunelocal_tree)
+	FTAttune_ApplyNavigationFilter()
 end
 
 
@@ -2720,6 +3293,59 @@ end
 function FTAttune_PlainText(text)
 	if not text then return "" end
 	return (text:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""))
+end
+
+-- Search copies only the grouping containers; canonical paths and leaf data stay intact.
+function FTAttune_FilterNavigationTree(tree, query)
+	local function Plain(value)
+		-- Windows' byte-oriented lower() can corrupt UTF-8 umlauts.
+		local text=FTAttune_PlainText(tostring(value or "")):gsub("Ä","ä"):gsub("Ö","ö"):gsub("Ü","ü"):gsub("ẞ","ß")
+		return (text:gsub("[A-Z]",string.lower))
+	end
+	query=Plain(query):match("^%s*(.-)%s*$")
+	local filtered,count,total={},0,0
+	for _,expansion in ipairs(tree or {}) do
+		local groups={}
+		for _,group in ipairs(expansion.children or {}) do
+			local leaves={}
+			for _,leaf in ipairs(group.children or {}) do
+				total=total+1
+				local text=Plain(leaf.tip).." "..Plain(leaf.text).." "..Plain(leaf.short).." "..Plain(group.text).." "..Plain(expansion.text)
+				if query=="" or text:find(query,1,true) then leaves[#leaves+1]=leaf; count=count+1 end
+			end
+			if #leaves>0 then groups[#groups+1]={value=group.value,text=group.text,children=leaves} end
+		end
+		if #groups>0 then filtered[#filtered+1]={value=expansion.value,text=expansion.text,children=groups} end
+	end
+	return query=="" and tree or filtered,count,total,query
+end
+
+function FTAttune_ApplyNavigationFilter()
+	local tree=attunelocal_treeframe
+	if not tree or not attunelocal_treeIsShown then return end
+	local filtered,count,total,query=FTAttune_FilterNavigationTree(attunelocal_tree,attunelocal_navQuery)
+	local status=tree.status or tree.localstatus
+	if status and status.groups then
+		if query~="" then
+			if not tree.attuneSearchGroups then
+				FTAttune_SaveTreeExpandStatus()
+				tree.attuneSearchGroups={}
+				for key,value in pairs(status.groups) do tree.attuneSearchGroups[key]=value end
+			end
+			for _,expansion in ipairs(filtered) do
+				status.groups[expansion.value]=true
+				for _,group in ipairs(expansion.children) do status.groups[expansion.value.."\001"..group.value]=true end
+			end
+		elseif tree.attuneSearchGroups then
+			status.groups=tree.attuneSearchGroups; tree.attuneSearchGroups=nil
+		end
+	end
+	tree:SetTree(filtered)
+	local header=tree.attuneViewToggle
+	if header and header.count then
+		header.count:SetText(count==0 and FTAttuneLang["UI_NoMatches"]
+			or FTAttuneLang["UI_ChainCount"]:format(count,total))
+	end
 end
 
 function FTAttune_IconViewUpdateScroll(view)
@@ -2777,6 +3403,9 @@ function FTAttune_IconViewButton(view)
 		GameTooltip:SetText(self.tip or "")
 		if self.done then
 			GameTooltip:AddLine(FTAttuneLang["Attuned"], 0, 1, 0)
+		end
+		if self.skipped then
+			GameTooltip:AddLine(FTAttuneLang["WillNotDo"] or "Will not do", 0.6, 0.6, 0.6)
 		end
 		GameTooltip:Show()
 	end)
@@ -2845,7 +3474,8 @@ function FTAttune_LayoutIconView()
 	local iconIndex = 0
 	local headerIndex = 0
 	local selectedButton = nil
-	local showExpac = #attunelocal_tree > 1
+	local navigation=(attunelocal_treeframe and attunelocal_treeframe.tree) or attunelocal_tree
+	local showExpac = #navigation > 1
 
 	local function placeHeader(label)
 		headerIndex = headerIndex + 1
@@ -2877,7 +3507,7 @@ function FTAttune_LayoutIconView()
 		y = y + ATTUNE_ICON_HEADER + ATTUNE_ICON_HEADER_GAP
 	end
 
-	for _, expacNode in ipairs(attunelocal_tree) do
+	for _, expacNode in ipairs(navigation) do
 		if showExpac and expacNode.children and #expacNode.children > 0 then
 			placeHeader(FTAttune_PlainText(expacNode.text))
 		end
@@ -2916,6 +3546,7 @@ function FTAttune_LayoutIconView()
 						button.id = leaf.value
 						button.tip = leaf.tip or FTAttune_PlainText(leaf.text)
 						button.done = leaf.done
+						button.skipped = leaf.skipped
 						button.icon:SetTexture(leaf.sourceIcon or leaf.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
 						local badge = 16
 						if size < 32 then badge = math.max(12, math.floor(size * 0.5)) end
@@ -2924,6 +3555,8 @@ function FTAttune_LayoutIconView()
 						local alpha = leaf.done and 0.15 or 1
 						if leaf.dim then
 							button.icon:SetVertexColor(0.45, 0.45, 0.45, alpha)
+						elseif leaf.skipped and not leaf.done then
+							button.icon:SetVertexColor(0.55, 0.55, 0.55, 1)
 						else
 							button.icon:SetVertexColor(1, 1, 1, alpha)
 						end
@@ -3070,42 +3703,11 @@ function FTAttune_SetIconView(enabled)
 end
 
 function FTAttune_CreateViewToggleButton(parent, mode)
-	local button = CreateFrame("Button", nil, parent)
-	button:SetSize(18, 16)
+	local button = CreateFrame("Button", nil, parent, "UIPanelButtonTemplate")
+	button:SetSize(72, 24)
+	button:SetText(FTAttuneLang[mode=="icon" and "UI_Icons" or "UI_List"])
 	button.iconMode = mode == "icon"
 	button.tip = FTAttuneLang[button.iconMode and "IconView_TIP" or "TreeView_TIP"]
-	local edge = button:CreateTexture(nil, "BACKGROUND")
-	edge:SetColorTexture(0.4, 0.4, 0.4, 1)
-	edge:SetAllPoints()
-	button.edge = edge
-	local fill = button:CreateTexture(nil, "BACKGROUND")
-	fill:SetColorTexture(0.05, 0.05, 0.05, 0.95)
-	fill:SetPoint("TOPLEFT", 1, -1)
-	fill:SetPoint("BOTTOMRIGHT", -1, 1)
-	button.marks = {}
-	if mode == "list" then
-		for i = 0, 2 do
-			local line = button:CreateTexture(nil, "ARTWORK")
-			line:SetColorTexture(1, 1, 1, 1)
-			line:SetSize(10, 2)
-			line:SetPoint("CENTER", button, "CENTER", 0, 4 - i * 4)
-			button.marks[#button.marks + 1] = line
-		end
-	else
-		for row = 0, 1 do
-			for col = 0, 1 do
-				local sq = button:CreateTexture(nil, "ARTWORK")
-				sq:SetColorTexture(1, 1, 1, 1)
-				sq:SetSize(4, 4)
-				sq:SetPoint("CENTER", button, "CENTER", -3 + col * 6, 3 - row * 6)
-				button.marks[#button.marks + 1] = sq
-			end
-		end
-	end
-	local highlight = button:CreateTexture(nil, "HIGHLIGHT")
-	highlight:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
-	highlight:SetBlendMode("ADD")
-	highlight:SetAllPoints()
 	button:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		GameTooltip:SetText(self.tip or "")
@@ -3134,12 +3736,12 @@ function FTAttune_EnsureViewToggle(widget)
 		-- Parent is the window so the buttons are not inside either frame.
 		local parent = attunelocal_frame and attunelocal_frame.frame or widget.frame
 		header = CreateFrame("Frame", nil, parent)
-		header:SetSize(40, 16)
+		header:SetSize(760, 24)
 		if attunelocal_frame and attunelocal_frame.content then
 			-- Clear the portrait, which hangs into the left of this band.
-			header:SetPoint("BOTTOMLEFT", attunelocal_frame.content, "TOPLEFT", 48, 4)
+			header:SetPoint("BOTTOMLEFT", attunelocal_frame.content, "TOPLEFT", 48, 8)
 		else
-			header:SetPoint("BOTTOMLEFT", widget.frame, "TOPLEFT", 48, 4)
+			header:SetPoint("BOTTOMLEFT", widget.frame, "TOPLEFT", 48, 8)
 		end
 		header:SetFrameLevel((parent:GetFrameLevel() or 0) + 30)
 		header:EnableMouse(true)
@@ -3151,9 +3753,37 @@ function FTAttune_EnsureViewToggle(widget)
 			if wheel then wheel(tree.treeframe, delta) end
 		end)
 		header.listButton = FTAttune_CreateViewToggleButton(header, "list")
-		header.listButton:SetPoint("RIGHT", header, "CENTER", -1, 0)
+		header.listButton:SetPoint("LEFT", header, "LEFT", 0, 0)
 		header.iconButton = FTAttune_CreateViewToggleButton(header, "icon")
-		header.iconButton:SetPoint("LEFT", header, "CENTER", 1, 0)
+		header.iconButton:SetPoint("LEFT", header, "LEFT", 76, 0)
+		header.search=CreateFrame("EditBox",nil,header,"InputBoxTemplate")
+		header.search:SetSize(210,24); header.search:SetPoint("LEFT",header,"LEFT",166,0)
+		header.search:SetAutoFocus(false); header.search:SetMaxLetters(80)
+		header.search.placeholder=header.search:CreateFontString(nil,"OVERLAY","GameFontDisableSmall")
+		header.search.placeholder:SetPoint("LEFT",4,0)
+		header.search.placeholder:SetText(FTAttuneLang["UI_Search"])
+		header.search:SetScript("OnTextChanged",function(box)
+			attunelocal_navQuery=box:GetText() or ""
+			box.placeholder:SetShown(attunelocal_navQuery=="")
+			header.searchSerial=(header.searchSerial or 0)+1
+			local serial=header.searchSerial
+			C_Timer.After(0.15,function()
+				if serial==header.searchSerial and header:IsShown() then FTAttune_ApplyNavigationFilter() end
+			end)
+		end)
+		header.search:SetScript("OnEscapePressed",function(box) box:ClearFocus() end)
+		header.search:SetScript("OnEnterPressed",function(box) box:ClearFocus(); FTAttune_ApplyNavigationFilter() end)
+		header.search:SetText(attunelocal_navQuery or "")
+		local clear=CreateFrame("Button",nil,header,"UIPanelButtonTemplate")
+		clear:SetSize(62,24); clear:SetPoint("LEFT",header,"LEFT",384,0)
+		clear:SetText(FTAttuneLang["UI_ClearSearch"])
+		clear:SetScript("OnClick",function() header.search:SetText(""); header.search:ClearFocus(); FTAttune_ApplyNavigationFilter() end)
+		header.count=header:CreateFontString(nil,"OVERLAY","GameFontHighlightSmall")
+		header.count:SetPoint("LEFT",header,"LEFT",460,0); header.count:SetWidth(174); header.count:SetJustifyH("LEFT")
+		local settings=CreateFrame("Button",nil,header,"UIPanelButtonTemplate")
+		settings:SetSize(112,24); settings:SetPoint("LEFT",header,"LEFT",642,0)
+		settings:SetText(FTAttuneLang["UI_Settings"])
+		settings:SetScript("OnClick",function() LibStub("AceConfigDialog-3.0"):Open("FTAttune") end)
 		attunelocal_viewToggle = header
 	end
 	widget.attuneViewToggle = header
@@ -3201,6 +3831,7 @@ function FTAttune_InstallIconView(widget)
 	local origRelease = widget.OnRelease
 	widget.OnRelease = function(self)
 		if self.attuneViewToggle then self.attuneViewToggle:Hide() end
+		self.attuneSearchGroups=nil
 		if origRelease then origRelease(self) end
 	end
 end
@@ -3223,6 +3854,7 @@ end
 
 function FTAttune:PLAYER_LOGOUT()
 	FTAttune_SaveTreeExpandStatus()
+	FTAttune_NextFrameSave(FTAttuneNextFrame)
 end
 
 
@@ -3377,7 +4009,7 @@ local function FTAttune_ApplyBronzeChrome(host)
 		-- from these two corners only; an extra SetHeight collapses the pane.
 		local content = attunelocal_frame.content
 		content:ClearAllPoints()
-		content:SetPoint("TOPLEFT", host, "TOPLEFT", 16, -58)
+		content:SetPoint("TOPLEFT", host, "TOPLEFT", 16, -90)
 		content:SetPoint("BOTTOMRIGHT", host, "BOTTOMRIGHT", -17, 40)
 	end
 	local portraitPiece = chrome.PortraitContainer or chrome.portrait
@@ -3485,7 +4117,7 @@ function FTAttune_Frame()
 	local closebutton, statusbg, _, _, _, _, _ = attunelocal_frame.content.obj.frame:GetChildren()
 	statusbg:ClearAllPoints()
 	statusbg:SetPoint("BOTTOMLEFT", 15, 15)     -- taken from AceGUIContainer-Frame.lua
-	statusbg:SetPoint("BOTTOMRIGHT", -280, 15)  -- taken from AceGUIContainer-Frame.lua, modified from -132
+	statusbg:SetPoint("BOTTOMRIGHT", -410, 15)
 
 	closebutton:SetWidth(80)
 	closebutton:SetScript("OnClick", function()
@@ -3499,11 +4131,11 @@ function FTAttune_Frame()
 
 	-- SURVEY BUTTON
 	local surveybutton = CreateFrame("Button", nil, attunelocal_frame.content.obj.frame, "UIPanelButtonTemplate")
-	surveybutton:SetPoint("BOTTOMRIGHT", -193, 17)
+	surveybutton:SetPoint("BOTTOMRIGHT", -270, 17)
 	surveybutton:SetFrameStrata("DIALOG")
 	surveybutton:SetHeight(20)
-	surveybutton:SetWidth(80)
-	surveybutton:SetText(FTAttuneLang["Survey"])
+	surveybutton:SetWidth(120)
+	surveybutton:SetText(FTAttuneLang["UI_Sync"])
 	--if attunelocal_myguild == "" then surveybutton:Disable() end
 	surveybutton:SetScript("OnEnter", function() attunelocal_frame:SetStatusText(FTAttuneLang["Survey_DESC"]) end)
 	surveybutton:SetScript("OnLeave", function() attunelocal_frame:SetStatusText(attunelocal_statusText) end)
@@ -3649,8 +4281,8 @@ function FTAttune_Frame()
 	guildbutton:SetPoint("BOTTOMRIGHT", -110, 17)
 	guildbutton:SetFrameStrata("DIALOG")
 	guildbutton:SetHeight(20)
-	guildbutton:SetWidth(80)
-	guildbutton:SetText(FTAttuneLang["Results"])
+	guildbutton:SetWidth(155)
+	guildbutton:SetText(FTAttuneLang["UI_Characters"])
 	--if attunelocal_myguild == "" then guildbutton:Disable() end
 	guildbutton:SetScript("OnEnter", function() attunelocal_frame:SetStatusText(FTAttuneLang["Toggle_DESC"]) end)
 	guildbutton:SetScript("OnLeave", function() attunelocal_frame:SetStatusText(attunelocal_statusText) end)
@@ -3840,8 +4472,30 @@ local function FTAttune_ShowWorkInProgress(show)
 	end
 end
 
+function FTAttune_ChainSummary(attuneId, toon)
+	local total,completed,nextStep=0,0,nil
+	local done=toon and toon.done or {}
+	for _,step in ipairs((FTAttune_Data.stepsByAttune or {})[attuneId] or {}) do
+		if showPatchStep(step) and step.TYPE~="Spacer" and step.TYPE~="End" then
+			total=total+1
+			if done[attuneId.."-"..step.ID]==1 then completed=completed+1
+			elseif FTAttune_NextStepIsCurrent(step,done) then
+				local before=not nextStep or (nextStep.SIDE and not step.SIDE)
+				if nextStep and (not step.SIDE)==(not nextStep.SIDE) then
+					local stage,nextStage=tonumber(step.STAGE) or 0,tonumber(nextStep.STAGE) or 0
+					before=stage<nextStage or (stage==nextStage and (tonumber(step.ID) or 0)<(tonumber(nextStep.ID) or 0))
+				end
+				if before then nextStep=step end
+			end
+		end
+	end
+	local progress=toon and toon.attuned and tonumber(toon.attuned[attuneId]) or 0
+	return math.max(0,math.min(100,progress)),completed,total,nextStep
+end
+
 function FTAttune_Select(attuneId, quiet)
 	if not quiet then PlaySound(856) end --igMainMenuOptionCheckBoxOn
+	FTAttune_UpdateSkipCheck(attuneId)
 	local keepPan = quiet and (attunelocal_graphPanX or 0) or 0
 	local keepScroll
 	if quiet and attunelocal_scroll and attunelocal_scroll.scrollframe then
@@ -3875,7 +4529,7 @@ function FTAttune_Select(attuneId, quiet)
 					local label = FTAttune_AceCreate("Label")
 					label:SetText(FTAttune_DisplayName(a))
 					label:SetImage(a.ICON)
-					label:SetFont(GameFontNormal:GetFont(), 24, "")
+					label:SetFont(GameFontNormal:GetFont(), 20, "")
 					label:SetImageSize(32,32)
 					label:SetFullWidth(true)
 					titlebutton:AddChild(label)
@@ -3883,12 +4537,19 @@ function FTAttune_Select(attuneId, quiet)
 
 				attunelocal_scroll:AddChild(titlebutton)
 
-				-- spacer
-				local label = FTAttune_AceCreate("Label")
-				label:SetText(" ")
-				label:SetFullWidth(true)
-				label:SetFont(GameFontHighlight:GetFont(), 20, "")
-				attunelocal_scroll:AddChild(label)
+				local progress,completed,total,nextStep=FTAttune_ChainSummary(attuneId,att)
+				local summary=FTAttune_AceCreate("Label")
+				summary:SetFullWidth(true)
+				summary:SetFont(GameFontHighlight:GetFont(),13,"")
+				summary:SetText(total==0 and FTAttuneLang["UI_NoSteps"] or FTAttuneLang["UI_Progress"]:format(progress,completed,total))
+				attunelocal_scroll:AddChild(summary)
+				if nextStep then
+					local nextLabel=FTAttune_AceCreate("Label")
+					nextLabel:SetFullWidth(true)
+					nextLabel:SetFont(GameFontNormal:GetFont(),12,"")
+					nextLabel:SetText(FTAttuneLang["UI_NextStep"]..": "..FTAttune_NextStepLabel(nextStep))
+					attunelocal_scroll:AddChild(nextLabel)
+				end
 
 				-- desc
 				local label = FTAttune_AceCreate("Label")
@@ -3904,7 +4565,7 @@ function FTAttune_Select(attuneId, quiet)
 	local label = FTAttune_AceCreate("Label")
 	label:SetText(" ")
 	label:SetFullWidth(true)
-	label:SetFont(GameFontHighlight:GetFont(), 20, "")
+	label:SetFont(GameFontHighlight:GetFont(), 8, "")
 	attunelocal_scroll:AddChild(label)
 
 	-- Header height in scroll-content pixels. Applied later divided by zoom, because
@@ -3946,6 +4607,13 @@ function FTAttune_Select(attuneId, quiet)
 	attunelocal_graphRoot:SetScale(FTAttune_DB.zoom)
 	FTAttune_ApplyGraphPan()
 	attunelocal_graphRoot:Show()
+
+	-- Character trials read statistics, so the open chain matches the panel before nodes are colored.
+	FTAttune_ScanStatSteps(true)
+	local openAttune = FTAttune_Data.attuneById and FTAttune_Data.attuneById[attuneId]
+	if openAttune and openAttune.GROUP == FTAttuneLang["CHARACTER"] then
+		FTAttune_EnsureStatPoll()
+	end
 
 	-- Count steps per stage (main chain only; SIDE reminders are placed beside End)
 	local stageSteps = {}
@@ -4374,11 +5042,11 @@ end
 
 function FTAttune_CreateZoomSlider()
 	FTAttune_ReleaseZoomSlider()
-	local parent = attunelocal_scroll and attunelocal_scroll.frame or (attunelocal_right and attunelocal_right.frame)
+	local parent = attunelocal_frame and attunelocal_frame.frame
 	if not parent then return end
 
 	local slider = FTAttune_AceCreate("Slider")
-	slider:SetWidth(160)
+	slider:SetWidth(146)
 	slider:SetHeight(44)
 	slider:SetLabel(FTAttuneLang["Zoom"])
 	slider:SetIsPercent(true)
@@ -4391,13 +5059,117 @@ function FTAttune_CreateZoomSlider()
 	local f = slider.frame
 	f:SetParent(parent)
 	f:ClearAllPoints()
-	-- Outer scroll frame does not move with content; pin flush to its right edge
-	f:SetPoint("TOPRIGHT", parent, "TOPRIGHT", -26, -2)
+	-- Keep zoom in the toolbar so it never covers the chain heading or progress.
+	f:SetPoint("BOTTOMRIGHT", attunelocal_frame.content, "TOPRIGHT", -4, 4)
 	f:SetFrameStrata(parent:GetFrameStrata())
 	f:SetFrameLevel((parent:GetFrameLevel() or 0) + 50)
 	f:Show()
 
 	attunelocal_zoomSlider = slider
+end
+
+-------------------------------------------------------------------------
+-- Fixed "Will not do" checkbox (bottom-right of the attune panel, does not scroll)
+-------------------------------------------------------------------------
+
+function FTAttune_ReleaseSkipCheck()
+	if FTAttuneSkipCheck then
+		FTAttuneSkipCheck:Hide()
+		FTAttuneSkipCheck:SetParent(UIParent)
+	end
+	if attunelocal_scroll then
+		attunelocal_scroll.attuneSkipCheck = nil
+	end
+end
+
+function FTAttune_CreateSkipCheck()
+	local parent = attunelocal_scroll and attunelocal_scroll.frame or (attunelocal_right and attunelocal_right.frame)
+	if not parent or not attunelocal_scroll then return end
+
+	local holder = FTAttuneSkipCheck
+	if holder == nil then
+		holder = CreateFrame("Button", nil, parent)
+		holder:SetHeight(24)
+		holder:RegisterForClicks("LeftButtonUp")
+
+		local box = holder:CreateTexture(nil, "ARTWORK")
+		box:SetTexture(130755) -- Interface\\Buttons\\UI-CheckBox-Up
+		box:SetSize(24, 24)
+		box:SetPoint("RIGHT", holder, "RIGHT", 0, 0)
+
+		local check = holder:CreateTexture(nil, "OVERLAY")
+		check:SetTexture(130751) -- Interface\\Buttons\\UI-CheckBox-Check
+		check:SetAllPoints(box)
+		check:Hide()
+
+		local highlight = holder:CreateTexture(nil, "HIGHLIGHT")
+		highlight:SetTexture(130753) -- Interface\\Buttons\\UI-CheckBox-Highlight
+		highlight:SetBlendMode("ADD")
+		highlight:SetAllPoints(box)
+
+		local text = holder:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+		text:SetJustifyH("RIGHT")
+		text:SetPoint("RIGHT", box, "LEFT", -2, 0)
+		holder.text = text
+		holder.check = check
+
+		holder:SetScript("OnClick", function(self)
+			if self.attuneId == nil then return end
+			local on = not self.checked
+			PlaySound(on and 856 or 857)
+			FTAttune_SetAttuneSkipped(self.attuneId, on)
+		end)
+		holder:SetScript("OnEnter", function(self)
+			GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+			GameTooltip:SetText(FTAttune_WillNotDoLabel())
+			local tip = FTAttuneLang["WillNotDo_TIP"]
+			if tip and tip ~= "" then
+				GameTooltip:AddLine(tip, 1, 1, 1, true)
+			end
+			GameTooltip:Show()
+		end)
+		holder:SetScript("OnLeave", function()
+			GameTooltip:Hide()
+		end)
+		holder:EnableMouseWheel(true)
+		holder:SetScript("OnMouseWheel", function(_, delta)
+			local sf = attunelocal_scroll and attunelocal_scroll.scrollframe
+			if not sf then return end
+			local wheel = sf:GetScript("OnMouseWheel")
+			if wheel then wheel(sf, delta) end
+		end)
+		FTAttuneSkipCheck = holder
+	end
+
+	local label = FTAttune_WillNotDoLabel()
+	holder.text:SetText(label)
+	local textW = holder.text:GetStringWidth() or 80
+	if textW < 20 then textW = math.max(80, 8 * (label:len() or 10)) end
+	holder:SetWidth(textW + 28)
+	holder:SetParent(parent)
+	holder:ClearAllPoints()
+	-- Same right inset as the zoom slider, so the box clears the scrollbar.
+	holder:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", -26, 4)
+	holder:SetFrameStrata(parent:GetFrameStrata())
+	local level = parent:GetFrameLevel() or 0
+	local sf = attunelocal_scroll.scrollframe
+	if sf and sf.GetFrameLevel then
+		level = math.max(level, sf:GetFrameLevel() or 0)
+	end
+	holder:SetFrameLevel(level + 50)
+	holder:Show()
+	attunelocal_scroll.attuneSkipCheck = holder
+	FTAttune_UpdateSkipCheck(holder.attuneId)
+end
+
+function FTAttune_UpdateSkipCheck(attuneId)
+	local holder = attunelocal_scroll and attunelocal_scroll.attuneSkipCheck
+	if holder == nil then return end
+	holder.attuneId = attuneId
+	local on = FTAttune_IsSkipped(attuneId) and true or false
+	holder.checked = on
+	if on then holder.check:Show() else holder.check:Hide() end
+	holder:Show()
 end
 
 -------------------------------------------------------------------------
@@ -5247,7 +6019,8 @@ function FTAttune_CreateNode(step, parent, posX, posY)
 				GameTooltip:SetText(other)
 			end
 
-
+		elseif step.TYPE == "Stat" or step.TYPE == "Prof" then
+			FTAttune_ShowStatTooltip(step, fnode)
 
 		-- change transparency if clickable sub-attune
 		elseif step.TYPE == "FTAttune" then
@@ -5449,6 +6222,11 @@ function FTAttune_CreateNode(step, parent, posX, posY)
 
 			elseif step.TYPE == "Quest" or step.TYPE == "Pick Up" or step.TYPE == "Turn In" then
 				ftitle:SetText(FTAttuneLang["Q1_"..step.ID_WOWHEAD])
+			elseif step.TYPE == "Stat" or step.TYPE == "Prof" then
+				local goal = FTAttune_StatGoal(step)
+				local value = FTAttune_StatValue(step)
+				if goal > 0 and value > goal then value = goal end
+				ftitle:SetText(value .. "/" .. goal)
 			else
 				ftitle:SetText(step.STEP)
 			end
@@ -5467,6 +6245,7 @@ function FTAttune_CreateNode(step, parent, posX, posY)
 			elseif step.TYPE == "Level" then type = "|cffffd100"..FTAttuneLang["Required level"].."|r"
 			elseif step.TYPE == "FTAttune" then type = "|c60808080"..FTAttuneLang["Attunement or key"].."|r"
 			elseif step.TYPE == "Rep" then type = "|cffffd100"..FTAttuneLang["Reputation"].."|r"
+			elseif step.TYPE == "Stat" or step.TYPE == "Prof" then type = "|cffffd100"..(step.STEP or "").."|r"
 			elseif step.LOCATION ~= "" then type = type .. "|c60808080 ".. FTAttuneLang["in"].." "..FTAttuneLang[step.LOCATION].."|r"
 			end
 
@@ -5691,6 +6470,7 @@ function FTAttune_RefreshAttunePanel()
 end
 
 function FTAttune_ForceAttuneTabRefresh()
+	FTAttune_NextFrameUpdate()
 	if attunelocal_initial then
 		attunelocal_panelDirty = true
 		return
@@ -5732,7 +6512,7 @@ function FTAttune_ResultColumnsWidth()
 	local expac = ""
 	local faction = UnitFactionGroup("player")
 	for _, a in pairs(FTAttune_Data.attunes) do
-		if (a.DEPRECATED == nil or FTAttune_DB.showDeprecatedAttunes) and not FTAttune_IsClassQuest(a) then
+		if (a.DEPRECATED == nil or FTAttune_DB.showDeprecatedAttunes) and not FTAttune_IsClassQuest(a) and FTAttune_CharacterProgressionVisible(a) then
 			if (FTAttuneTreeExpandStatus[a.EXPAC] == nil or FTAttuneTreeExpandStatus[a.EXPAC] == 1)
 			and (FTAttuneTreeExpandStatus[a.EXPAC.."\001"..a.GROUP] == nil or FTAttuneTreeExpandStatus[a.EXPAC.."\001"..a.GROUP] == 1) then
 				local key = a.EXPAC.."-"..a.GROUP
@@ -6286,6 +7066,7 @@ function FTAttune_ToggleView(noToggle)
 	if noToggle == nil then noToggle = false end
 
 	FTAttune_ReleaseZoomSlider()
+	FTAttune_ReleaseSkipCheck()
 	FTAttune_HideDungeonArt()
 	FTAttune_ShowWorkInProgress(false)
 	FTAttune_CloseResultTable()
@@ -6301,7 +7082,7 @@ function FTAttune_ToggleView(noToggle)
 
 	if attunelocal_treeIsShown or noToggle then
 
-		_G["GuildButton"]:SetText(FTAttuneLang["Attunes"])
+		_G["GuildButton"]:SetText(FTAttuneLang["UI_Chains"])
 
 		-- SHOW RESULT FRAME
 		PlaySound(856)  --igMainMenuOptionCheckBoxOn
@@ -6557,7 +7338,7 @@ function FTAttune_ToggleView(noToggle)
 
 			local expac = ""
 			for i, a in pairs(FTAttune_Data.attunes) do
-				if (a.DEPRECATED == nil or FTAttune_DB.showDeprecatedAttunes) and not FTAttune_IsClassQuest(a) then 
+				if (a.DEPRECATED == nil or FTAttune_DB.showDeprecatedAttunes) and not FTAttune_IsClassQuest(a) and FTAttune_CharacterProgressionVisible(a) then 
 
 					if (FTAttuneTreeExpandStatus[a.EXPAC] == nil 
 					or FTAttuneTreeExpandStatus[a.EXPAC] == 1) 
@@ -6740,7 +7521,10 @@ function FTAttune_ToggleView(noToggle)
 	
 			-- This script needed to allow the scrollframe resize whenever content changes or vertical size is moved
 			attunelocal_gscroll.frame:SetScript("OnUpdate", function()
-				attunelocal_gscroll:SetHeight(attunelocal_frame.frame:GetHeight() - 255)
+				local height = attunelocal_frame.frame:GetHeight() - 255
+				if attunelocal_gscroll.frame:GetHeight() ~= height then
+					attunelocal_gscroll:SetHeight(height)
+				end
 			end)
 
 			attunelocal_glist = FTAttune_AceCreate("SimpleGroup")
@@ -6761,7 +7545,7 @@ function FTAttune_ToggleView(noToggle)
 
 	else
 
-		_G["GuildButton"]:SetText(FTAttuneLang["Results"])
+		_G["GuildButton"]:SetText(FTAttuneLang["UI_Characters"])
 
 		-- SHOW TREE FRAME
 		attunelocal_treeIsShown = true
@@ -6792,10 +7576,20 @@ function FTAttune_ToggleView(noToggle)
 		if FTAttune_DB.archiveCompleted then
 			local archived = FTAttuneLang["Archived"]
 			for _, expacNode in ipairs(attunelocal_tree) do
-				if expacNode.value then
+				if expacNode.value and FTAttune_TreeHasGroup(expacNode, archived) then
 					local key = expacNode.value .. "\001" .. archived
 					if FTAttuneTreeExpandStatus[key] == nil then FTAttuneTreeExpandStatus[key] = 1 end
 					if FTAttuneTreeExpandStatus[key] == 1 then attunelocal_treeframe:SelectByPath(expacNode.value, archived) end
+				end
+			end
+		end
+		do
+			local willNotDo = FTAttune_WillNotDoLabel()
+			for _, expacNode in ipairs(attunelocal_tree) do
+				if expacNode.value and FTAttune_TreeHasGroup(expacNode, willNotDo) then
+					local key = expacNode.value .. "\001" .. willNotDo
+					if FTAttuneTreeExpandStatus[key] == nil then FTAttuneTreeExpandStatus[key] = 1 end
+					if FTAttuneTreeExpandStatus[key] == 1 then attunelocal_treeframe:SelectByPath(expacNode.value, willNotDo) end
 				end
 			end
 		end
@@ -6835,10 +7629,12 @@ function FTAttune_ToggleView(noToggle)
 		attunelocal_right:AddChild(attunelocal_scroll)
 
 		FTAttune_CreateZoomSlider()
+		FTAttune_CreateSkipCheck()
 
 		--select default attune (or last viewed) for this character
 		local lastViewed = FTAttune_GetLastViewed()
 		if lastViewed then attunelocal_treeframe:SelectByPath(lastViewed) end
+		FTAttune_ApplyNavigationFilter()
 
 	end
 
@@ -7098,7 +7894,7 @@ function FTAttune_ShowResultList(title)
 						-- Go through each FTAttune and create the corresponding % label for this toon
 						local expac = ""
 						for i, a in pairs(FTAttune_Data.attunes) do
-							if (a.DEPRECATED == nil or FTAttune_DB.showDeprecatedAttunes) and not FTAttune_IsClassQuest(a) then 
+							if (a.DEPRECATED == nil or FTAttune_DB.showDeprecatedAttunes) and not FTAttune_IsClassQuest(a) and FTAttune_CharacterProgressionVisible(a) then 
 
 								if (FTAttuneTreeExpandStatus[a.EXPAC] == nil 
 									or FTAttuneTreeExpandStatus[a.EXPAC] == 1) 
@@ -7830,8 +8626,8 @@ function FTAttune_SendSyncRequest()
 		if attunelocal_syncStatus ~= -1 then 
 			if FTAttune_DB.showOtherChat then print("|cffff00ff[FTAttune]|r "..FTAttuneLang["Cannot sync while another sync is in progress"]) end
 		else 
-            local targetFirst, targetLast = UnitName("target")
-			attunelocal_syncTarget = targetFirst .. " " .. targetLast -- .. "-" .. GetRealmName()
+            attunelocal_syncTarget = FTAttune_CharacterKey("target")
+			if attunelocal_syncTarget == nil then return end
 
 			StaticPopupDialogs["SYNC_CONFIRM"] = {
 				text = FTAttuneLang["Sending Sync Request"]:gsub("##PLAYER##", attunelocal_syncTarget) .. "\n\n" .. FTAttuneLang["Could be slow"],
@@ -9051,8 +9847,10 @@ end]=]
 local attunelocal_rewardFrame
 local ATTUNE_REWARD_WIDTH = 300
 
+-- Reward and quest-detail helpers share one local. The main chunk is at Lua's 200-local limit.
+local rewardUi = {}
 
-local function FTAttune_RewardQuestIDs(idWowhead)
+function rewardUi.FTAttune_RewardQuestIDs(idWowhead)
 	local ids = {}
 	local raw = tostring(idWowhead or "")
 	if string.find(raw, "|", 1, true) then
@@ -9067,7 +9865,7 @@ local function FTAttune_RewardQuestIDs(idWowhead)
 	return ids
 end
 
-local function FTAttune_AddReward(list, seen, itemID, name, texture, count, quality, choice)
+function rewardUi.FTAttune_AddReward(list, seen, itemID, name, texture, count, quality, choice)
 	itemID = tonumber(itemID)
 	if not itemID or itemID <= 0 then return end
 	if seen[itemID] then return end
@@ -9083,7 +9881,7 @@ local function FTAttune_AddReward(list, seen, itemID, name, texture, count, qual
 	})
 end
 
-local function FTAttune_ReadIndexedRewards(countFn, infoFn, questID, list, seen, choice)
+function rewardUi.FTAttune_ReadIndexedRewards(countFn, infoFn, questID, list, seen, choice)
 	if type(countFn) ~= "function" or type(infoFn) ~= "function" then return end
 	local ok, num = pcall(countFn, questID)
 	if not ok or type(num) ~= "number" or num <= 0 then return end
@@ -9093,15 +9891,15 @@ local function FTAttune_ReadIndexedRewards(countFn, infoFn, questID, list, seen,
 		if okInfo then
 			if type(name) == "table" then
 				local info = name
-				FTAttune_AddReward(list, seen, info.itemID or info.itemId, info.name or info.itemName, info.texture or info.icon, info.quantity or info.amount or info.numItems, info.quality, choice)
+				rewardUi.FTAttune_AddReward(list, seen, info.itemID or info.itemId, info.name or info.itemName, info.texture or info.icon, info.quantity or info.amount or info.numItems, info.quality, choice)
 			else
-				FTAttune_AddReward(list, seen, itemID, name, texture, count, quality, choice)
+				rewardUi.FTAttune_AddReward(list, seen, itemID, name, texture, count, quality, choice)
 			end
 		end
 	end
 end
 
-local function FTAttune_StoredItem(itemID)
+function rewardUi.FTAttune_StoredItem(itemID)
 	local info = FTAttune_Data.rewardItems and itemID and FTAttune_Data.rewardItems[itemID]
 	if type(info) ~= "table" then return end
 	local name = info[1]
@@ -9187,7 +9985,7 @@ end
 -- Full item link when the client has it. Otherwise the stored name, so the
 -- tooltip does not sit on "Retrieving item information" for an item the
 -- server never answers.
-local function FTAttune_ShowItemTooltip(owner, itemID, request)
+function rewardUi.FTAttune_ShowItemTooltip(owner, itemID, request)
 	if not owner or not itemID or not owner:IsShown() then return end
 	if owner.IsMouseOver and not owner:IsMouseOver() then return end
 	GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
@@ -9198,7 +9996,7 @@ local function FTAttune_ShowItemTooltip(owner, itemID, request)
 		return
 	end
 
-	local storedName, _, storedQuality = FTAttune_StoredItem(itemID)
+	local storedName, _, storedQuality = rewardUi.FTAttune_StoredItem(itemID)
 	local name = (type(itemName) == "string" and itemName ~= "") and itemName or storedName
 	local quality = itemQuality or storedQuality
 	if name then
@@ -9246,30 +10044,30 @@ function spellReward.ShowTooltip(owner, spellID, request)
 	end
 end
 
-local function FTAttune_RefreshRewardTooltip(rows)
+function rewardUi.FTAttune_RefreshRewardTooltip(rows)
 	for _, row in ipairs(rows or {}) do
 		if row:IsShown() and row.IsMouseOver and row:IsMouseOver() then
 			if row.spellID then
 				spellReward.ShowTooltip(row, row.spellID, false)
 				return
 			elseif row.itemID then
-				FTAttune_ShowItemTooltip(row, row.itemID, false)
+				rewardUi.FTAttune_ShowItemTooltip(row, row.itemID, false)
 				return
 			end
 		end
 	end
 end
 
-local function FTAttune_AppendStoredRewards(questID, fixed, choices, seenFixed, seenChoice)
+function rewardUi.FTAttune_AppendStoredRewards(questID, fixed, choices, seenFixed, seenChoice)
 	local row = FTAttune_Data.questRewards and FTAttune_Data.questRewards[questID]
 	if not row then return end
 	for _, item in ipairs(row.fixed or {}) do
-		local storedName, storedIcon, storedQuality = FTAttune_StoredItem(item[1])
-		FTAttune_AddReward(fixed, seenFixed, item[1], storedName, storedIcon, item[2], storedQuality, false)
+		local storedName, storedIcon, storedQuality = rewardUi.FTAttune_StoredItem(item[1])
+		rewardUi.FTAttune_AddReward(fixed, seenFixed, item[1], storedName, storedIcon, item[2], storedQuality, false)
 	end
 	for _, item in ipairs(row.choice or {}) do
-		local storedName, storedIcon, storedQuality = FTAttune_StoredItem(item[1])
-		FTAttune_AddReward(choices, seenChoice, item[1], storedName, storedIcon, item[2], storedQuality, true)
+		local storedName, storedIcon, storedQuality = rewardUi.FTAttune_StoredItem(item[1])
+		rewardUi.FTAttune_AddReward(choices, seenChoice, item[1], storedName, storedIcon, item[2], storedQuality, true)
 	end
 end
 
@@ -9336,13 +10134,13 @@ function spellReward.AppendLive(questID, spells, seen)
 	end
 end
 
-local function FTAttune_CollectQuestRewards(questIDs)
+function rewardUi.FTAttune_CollectQuestRewards(questIDs)
 	local fixed, choices, spells = {}, {}, {}
 	local seenFixed, seenChoice, seenSpells = {}, {}, {}
 	for _, questID in ipairs(questIDs or {}) do
 		if C_QuestLog then
-			FTAttune_ReadIndexedRewards(C_QuestLog.GetNumQuestRewards, C_QuestLog.GetQuestRewardInfo, questID, fixed, seenFixed, false)
-			FTAttune_ReadIndexedRewards(C_QuestLog.GetNumQuestChoices or C_QuestLog.GetNumQuestLogChoices, C_QuestLog.GetQuestChoiceInfo or C_QuestLog.GetQuestLogChoiceInfo, questID, choices, seenChoice, true)
+			rewardUi.FTAttune_ReadIndexedRewards(C_QuestLog.GetNumQuestRewards, C_QuestLog.GetQuestRewardInfo, questID, fixed, seenFixed, false)
+			rewardUi.FTAttune_ReadIndexedRewards(C_QuestLog.GetNumQuestChoices or C_QuestLog.GetNumQuestLogChoices, C_QuestLog.GetQuestChoiceInfo or C_QuestLog.GetQuestLogChoiceInfo, questID, choices, seenChoice, true)
 		end
 		local useQuestLog = not (C_QuestLog and C_QuestLog.GetNumQuestRewards)
 		if not useQuestLog and GetQuestLogIndexByID and GetQuestLogSelection then
@@ -9350,20 +10148,20 @@ local function FTAttune_CollectQuestRewards(questIDs)
 			useQuestLog = index and index > 0 and index == GetQuestLogSelection()
 		end
 		if useQuestLog then
-			FTAttune_ReadIndexedRewards(GetNumQuestLogRewards, GetQuestLogRewardInfo, questID, fixed, seenFixed, false)
-			FTAttune_ReadIndexedRewards(GetNumQuestLogChoices, GetQuestLogChoiceInfo, questID, choices, seenChoice, true)
+			rewardUi.FTAttune_ReadIndexedRewards(GetNumQuestLogRewards, GetQuestLogRewardInfo, questID, fixed, seenFixed, false)
+			rewardUi.FTAttune_ReadIndexedRewards(GetNumQuestLogChoices, GetQuestLogChoiceInfo, questID, choices, seenChoice, true)
 		end
 		-- Always merge static rows; seen* skips duplicates. Live Forever data often
 		-- returns only choice rewards and omits fixed ones (e.g. Changing Tastes).
 		spellReward.AppendLive(questID, spells, seenSpells)
-		FTAttune_AppendStoredRewards(questID, fixed, choices, seenFixed, seenChoice)
+		rewardUi.FTAttune_AppendStoredRewards(questID, fixed, choices, seenFixed, seenChoice)
 		spellReward.AppendStored(questID, spells, seenSpells)
 	end
 	return fixed, choices, spells
 end
 
 -- XP from the quest log only (no static table). Returns nil when unavailable.
-local function FTAttune_QuestLogIndexForID(questID)
+function rewardUi.FTAttune_QuestLogIndexForID(questID)
 	if C_QuestLog and C_QuestLog.GetLogIndexForQuestID then
 		return C_QuestLog.GetLogIndexForQuestID(questID)
 	end
@@ -9373,23 +10171,23 @@ local function FTAttune_QuestLogIndexForID(questID)
 	return nil
 end
 
-local function FTAttune_IsQuestInLog(questID)
+function rewardUi.FTAttune_IsQuestInLog(questID)
 	if C_QuestLog and C_QuestLog.IsOnQuest then
 		return C_QuestLog.IsOnQuest(questID)
 	end
-	local index = FTAttune_QuestLogIndexForID(questID)
+	local index = rewardUi.FTAttune_QuestLogIndexForID(questID)
 	return index and index > 0
 end
 
-local function FTAttune_QuestLogRewardXPForID(questID)
+function rewardUi.FTAttune_QuestLogRewardXPForID(questID)
 	questID = tonumber(questID)
 	if not questID or type(GetQuestLogRewardXP) ~= "function" then return nil end
-	if not FTAttune_IsQuestInLog(questID) then return nil end
+	if not rewardUi.FTAttune_IsQuestInLog(questID) then return nil end
 
 	local ok, xp = pcall(GetQuestLogRewardXP, questID)
 	if ok and type(xp) == "number" and xp > 0 then return xp end
 
-	local index = FTAttune_QuestLogIndexForID(questID)
+	local index = rewardUi.FTAttune_QuestLogIndexForID(questID)
 	if not index or index <= 0 or not SelectQuestLogEntry then return nil end
 
 	local prev = GetQuestLogSelection and GetQuestLogSelection()
@@ -9402,10 +10200,10 @@ local function FTAttune_QuestLogRewardXPForID(questID)
 	return nil
 end
 
-local function FTAttune_GetQuestLogRewardXP(questIDs)
+function rewardUi.FTAttune_GetQuestLogRewardXP(questIDs)
 	local total, found = 0, false
 	for _, questID in ipairs(questIDs or {}) do
-		local xp = FTAttune_QuestLogRewardXPForID(questID)
+		local xp = rewardUi.FTAttune_QuestLogRewardXPForID(questID)
 		if xp then
 			total = total + xp
 			found = true
@@ -9415,7 +10213,7 @@ local function FTAttune_GetQuestLogRewardXP(questIDs)
 	return nil
 end
 
-local function FTAttune_FormatXPAmount(xp)
+function rewardUi.FTAttune_FormatXPAmount(xp)
 	if BreakUpLargeNumbers then return BreakUpLargeNumbers(xp) end
 	return tostring(xp)
 end
@@ -9423,7 +10221,7 @@ end
 local ATTUNE_SPELL_FRAME = "Interface\\AddOns\\ForeverTools\\Features\\Attune\\Images\\spellframe"
 
 -- Gold ring with a black center. Additive draw keeps the spell icon visible.
-local function FTAttune_SetSpellFrame(row, show)
+function rewardUi.FTAttune_SetSpellFrame(row, show)
 	if not show then
 		if row.spellFrame then row.spellFrame:Hide() end
 		return
@@ -9438,7 +10236,7 @@ local function FTAttune_SetSpellFrame(row, show)
 	row.spellFrame:Show()
 end
 
-local function FTAttune_CreateRewardRow(parent)
+function rewardUi.FTAttune_CreateRewardRow(parent)
 	local row = CreateFrame("Button", nil, parent)
 	row:SetHeight(36)
 	row.icon = row:CreateTexture(nil, "ARTWORK")
@@ -9458,7 +10256,7 @@ local function FTAttune_CreateRewardRow(parent)
 		if self.spellID then
 			spellReward.ShowTooltip(self, self.spellID, true)
 		else
-			FTAttune_ShowItemTooltip(self, self.itemID, true)
+			rewardUi.FTAttune_ShowItemTooltip(self, self.itemID, true)
 		end
 	end)
 	row:SetScript("OnLeave", function()
@@ -9467,7 +10265,7 @@ local function FTAttune_CreateRewardRow(parent)
 	return row
 end
 
-local function FTAttune_HideRewardRows(frame)
+function rewardUi.FTAttune_HideRewardRows(frame)
 	for _, row in ipairs(frame.rows) do
 		row.itemID = nil
 		row.spellID = nil
@@ -9476,7 +10274,7 @@ local function FTAttune_HideRewardRows(frame)
 	for _, header in ipairs(frame.headers) do header:Hide() end
 end
 
-local function FTAttune_RewardHeader(frame, index, text, y)
+function rewardUi.FTAttune_RewardHeader(frame, index, text, y)
 	local header = frame.headers[index]
 	if not header then
 		header = frame.content:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
@@ -9490,12 +10288,12 @@ local function FTAttune_RewardHeader(frame, index, text, y)
 	header:Show()
 end
 
-local function FTAttune_PaintRewardItem(frame, entry, y)
+function rewardUi.FTAttune_PaintRewardItem(frame, entry, y)
 	local index = frame.rowUsed + 1
 	frame.rowUsed = index
 	local row = frame.rows[index]
 	if not row then
-		row = FTAttune_CreateRewardRow(frame.content)
+		row = rewardUi.FTAttune_CreateRewardRow(frame.content)
 		frame.rows[index] = row
 	end
 	row:ClearAllPoints()
@@ -9504,7 +10302,7 @@ local function FTAttune_PaintRewardItem(frame, entry, y)
 
 	row.itemID = entry.itemID
 	row.spellID = nil
-	FTAttune_SetSpellFrame(row, false)
+	rewardUi.FTAttune_SetSpellFrame(row, false)
 	local name = entry.name
 	local quality = entry.quality
 	local texture = entry.texture
@@ -9541,7 +10339,7 @@ function spellReward.Paint(frame, entry, y)
 	frame.rowUsed = index
 	local row = frame.rows[index]
 	if not row then
-		row = FTAttune_CreateRewardRow(frame.content)
+		row = rewardUi.FTAttune_CreateRewardRow(frame.content)
 		frame.rows[index] = row
 	end
 	row:ClearAllPoints()
@@ -9550,7 +10348,7 @@ function spellReward.Paint(frame, entry, y)
 
 	row.itemID = nil
 	row.spellID = entry.spellID
-	FTAttune_SetSpellFrame(row, true)
+	rewardUi.FTAttune_SetSpellFrame(row, true)
 	local name, texture = spellReward.Resolve(entry.spellID)
 	if not name or name == "" then name = entry.name end
 	if not texture then texture = entry.texture end
@@ -9566,14 +10364,14 @@ function spellReward.Paint(frame, entry, y)
 	row:Show()
 end
 
-local function FTAttune_FillQuestRewards(frame, final, resetScroll)
+function rewardUi.FTAttune_FillQuestRewards(frame, final, resetScroll)
 	if not frame or not frame:IsShown() then return end
 	local width = frame.scroll:GetWidth()
 	if not width or width < 40 then width = ATTUNE_REWARD_WIDTH - 52 end
 	frame.content:SetWidth(width)
 
-	local fixed, choices, spells = FTAttune_CollectQuestRewards(frame.questIDs)
-	FTAttune_HideRewardRows(frame)
+	local fixed, choices, spells = rewardUi.FTAttune_CollectQuestRewards(frame.questIDs)
+	rewardUi.FTAttune_HideRewardRows(frame)
 	frame.rowUsed = 0
 
 	if #fixed == 0 and #choices == 0 and #spells == 0 then
@@ -9590,23 +10388,23 @@ local function FTAttune_FillQuestRewards(frame, final, resetScroll)
 	local y = 2
 	local headerIndex = 0
 	for _, entry in ipairs(fixed) do
-		FTAttune_PaintRewardItem(frame, entry, y)
+		rewardUi.FTAttune_PaintRewardItem(frame, entry, y)
 		y = y + 40
 	end
 	if #choices > 0 then
 		if #fixed > 0 then y = y + 6 end
 		headerIndex = headerIndex + 1
-		FTAttune_RewardHeader(frame, headerIndex, FTAttuneLang["Choose one reward"], y)
+		rewardUi.FTAttune_RewardHeader(frame, headerIndex, FTAttuneLang["Choose one reward"], y)
 		y = y + 18
 		for _, entry in ipairs(choices) do
-			FTAttune_PaintRewardItem(frame, entry, y)
+			rewardUi.FTAttune_PaintRewardItem(frame, entry, y)
 			y = y + 40
 		end
 	end
 	if #spells > 0 then
 		if #fixed > 0 or #choices > 0 then y = y + 6 end
 		headerIndex = headerIndex + 1
-		FTAttune_RewardHeader(frame, headerIndex, spellReward.Header(), y)
+		rewardUi.FTAttune_RewardHeader(frame, headerIndex, spellReward.Header(), y)
 		y = y + 18
 		for _, entry in ipairs(spells) do
 			spellReward.Paint(frame, entry, y)
@@ -9618,7 +10416,7 @@ local function FTAttune_FillQuestRewards(frame, final, resetScroll)
 	if resetScroll then frame.scroll:SetVerticalScroll(0) end
 end
 
-local function FTAttune_FitRewardFrame(side)
+function rewardUi.FTAttune_FitRewardFrame(side)
 	local parent = side:GetParent()
 	if not parent or not parent:IsShown() then return end
 	local right = parent:GetRight()
@@ -9635,7 +10433,7 @@ local function FTAttune_FitRewardFrame(side)
 	end
 end
 
-local function FTAttune_EnsureRewardFrame()
+function rewardUi.FTAttune_EnsureRewardFrame()
 	if attunelocal_rewardFrame then return attunelocal_rewardFrame end
 	local parent = attunelocal_frame and attunelocal_frame.frame
 	if not parent then return nil end
@@ -9729,8 +10527,8 @@ local function FTAttune_EnsureRewardFrame()
 			end
 			if not wanted then return end
 		end
-		FTAttune_FillQuestRewards(f, true)
-		FTAttune_RefreshRewardTooltip(f.rows)
+		rewardUi.FTAttune_FillQuestRewards(f, true)
+		rewardUi.FTAttune_RefreshRewardTooltip(f.rows)
 	end)
 	f.listener = listener
 	f:SetScript("OnShow", function(self)
@@ -9761,10 +10559,10 @@ end
 
 function FTAttune_ShowQuestRewards(step)
 	if not step or not attunelocal_frame or not attunelocal_frame.frame then return end
-	local f = FTAttune_EnsureRewardFrame()
+	local f = rewardUi.FTAttune_EnsureRewardFrame()
 	if not f then return end
 
-	f.questIDs = FTAttune_RewardQuestIDs(step.ID_WOWHEAD)
+	f.questIDs = rewardUi.FTAttune_RewardQuestIDs(step.ID_WOWHEAD)
 	f.qstring = "quest=" .. step.ID_WOWHEAD
 	f.token = (f.token or 0) + 1
 	local title = FTAttuneLang["Q1_" .. step.ID_WOWHEAD]
@@ -9778,7 +10576,7 @@ function FTAttune_ShowQuestRewards(step)
 	end
 	f.urlBtn:SetText(FTAttuneLang["Show link"])
 	f:Show()
-	FTAttune_FitRewardFrame(f)
+	rewardUi.FTAttune_FitRewardFrame(f)
 
 	if C_QuestLog and C_QuestLog.RequestLoadQuestByID then
 		for _, questID in ipairs(f.questIDs) do
@@ -9786,12 +10584,12 @@ function FTAttune_ShowQuestRewards(step)
 		end
 	end
 
-	FTAttune_FillQuestRewards(f, false, true)
+	rewardUi.FTAttune_FillQuestRewards(f, false, true)
 	local token = f.token
 	if C_Timer and C_Timer.After then
 		C_Timer.After(0.4, function()
 			if f:IsShown() and f.token == token then
-				FTAttune_FillQuestRewards(f, true, false)
+				rewardUi.FTAttune_FillQuestRewards(f, true, false)
 			end
 		end)
 	end
@@ -9838,11 +10636,11 @@ end
 
 local attunelocal_questDetail
 
-local function FTAttune_QuestDetailKey(step)
+function rewardUi.FTAttune_QuestDetailKey(step)
 	return tostring(step.ID_ATTUNE) .. "-" .. tostring(step.ID) .. "-" .. tostring(step.ID_WOWHEAD)
 end
 
-local function FTAttune_DetailGiver(step)
+function rewardUi.FTAttune_DetailGiver(step)
 	local questId = FTAttune_QuestIdFromStep(step)
 	local loc = questId and FTAttune_Data.questGivers and FTAttune_Data.questGivers[questId]
 	if not loc then return nil, nil, nil, nil end
@@ -9854,7 +10652,7 @@ local function FTAttune_DetailGiver(step)
 end
 
 -- Shift-click shares this pin the same way the world map pin does: chat link plus clipboard.
-local function FTAttune_ShareDetailPin(uiMapID, x, y)
+function rewardUi.FTAttune_ShareDetailPin(uiMapID, x, y)
 	if not uiMapID or not x or not y or not (C_Map and C_Map.SetUserWaypoint and C_Map.GetUserWaypointHyperlink and UiMapPoint) then return end
 	if C_Map.CanSetUserWaypointOnMap and not C_Map.CanSetUserWaypointOnMap(uiMapID) then return end
 
@@ -9894,7 +10692,7 @@ end
 
 -- Explored ground is a second set of tiles on top of the base map. The world map
 -- draws these from C_MapExplorationInfo; without them the embed stays the blank base.
-local function FTAttune_FillExploredOverlays(clip, uiMapID, tileW, tileH, left, top, scale)
+function rewardUi.FTAttune_FillExploredOverlays(clip, uiMapID, tileW, tileH, left, top, scale)
 	clip.explored = clip.explored or {}
 	local n = 0
 	local exploredMapTextures = C_MapExplorationInfo and C_MapExplorationInfo.GetExploredMapTextures and C_MapExplorationInfo.GetExploredMapTextures(uiMapID)
@@ -9946,7 +10744,7 @@ local function FTAttune_FillExploredOverlays(clip, uiMapID, tileW, tileH, left, 
 	for i = n + 1, #clip.explored do clip.explored[i]:Hide() end
 end
 
-local function FTAttune_FillDetailMap(clip, uiMapID, x, y)
+function rewardUi.FTAttune_FillDetailMap(clip, uiMapID, x, y)
 	clip.tiles = clip.tiles or {}
 	for _, tex in ipairs(clip.tiles) do tex:Hide() end
 	if clip.explored then
@@ -10004,14 +10802,14 @@ local function FTAttune_FillDetailMap(clip, uiMapID, x, y)
 		end
 	end
 	for k = n + 1, #clip.tiles do clip.tiles[k]:Hide() end
-	FTAttune_FillExploredOverlays(clip, uiMapID, tileW, tileH, left, top, scale)
+	rewardUi.FTAttune_FillExploredOverlays(clip, uiMapID, tileW, tileH, left, top, scale)
 	clip.pin.uiMapID, clip.pin.pinX, clip.pin.pinY = uiMapID, x, y
 	clip.pin:Show()
 	clip.pin:ClearAllPoints()
 	clip.pin:SetPoint("CENTER", clip, "CENTER", 0, 0)
 end
 
-local function FTAttune_DetailRewardRow(parent)
+function rewardUi.FTAttune_DetailRewardRow(parent)
 	local row = CreateFrame("Button", nil, parent)
 	row:SetHeight(36)
 	row.icon = row:CreateTexture(nil, "ARTWORK")
@@ -10034,7 +10832,7 @@ local function FTAttune_DetailRewardRow(parent)
 		if self.spellID then
 			spellReward.ShowTooltip(self, self.spellID, true)
 		else
-			FTAttune_ShowItemTooltip(self, self.itemID, true)
+			rewardUi.FTAttune_ShowItemTooltip(self, self.itemID, true)
 		end
 	end)
 	row:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -10064,7 +10862,7 @@ function spellReward.ShowDetail(panel, entry, y, shown)
 	shown = shown + 1
 	local row = panel.rows[shown]
 	if not row then
-		row = FTAttune_DetailRewardRow(panel.rewardChild)
+		row = rewardUi.FTAttune_DetailRewardRow(panel.rewardChild)
 		panel.rows[shown] = row
 	end
 	row:ClearAllPoints()
@@ -10072,7 +10870,7 @@ function spellReward.ShowDetail(panel, entry, y, shown)
 	row:SetPoint("RIGHT", panel.rewardChild, "RIGHT", -6, 0)
 	row.itemID = nil
 	row.spellID = entry.spellID
-	FTAttune_SetSpellFrame(row, true)
+	rewardUi.FTAttune_SetSpellFrame(row, true)
 	local name, texture = spellReward.Resolve(entry.spellID)
 	if not name or name == "" then name = entry.name end
 	if not texture then texture = entry.texture end
@@ -10097,8 +10895,8 @@ function spellReward.ShowDetail(panel, entry, y, shown)
 	return y + 42, shown
 end
 
-local function FTAttune_QuestRewardsKnown(panel)
-	local ids = panel and panel.step and FTAttune_RewardQuestIDs(panel.step.ID_WOWHEAD) or {}
+function rewardUi.FTAttune_QuestRewardsKnown(panel)
+	local ids = panel and panel.step and rewardUi.FTAttune_RewardQuestIDs(panel.step.ID_WOWHEAD) or {}
 	for _, questID in ipairs(ids) do
 		if panel.questLoaded and panel.questLoaded[questID] then return true end
 		if FTAttune_Data.questRewards and FTAttune_Data.questRewards[questID] ~= nil then return true end
@@ -10107,7 +10905,7 @@ local function FTAttune_QuestRewardsKnown(panel)
 	return false
 end
 
-local function FTAttune_LayoutQuestDetail(panel)
+function rewardUi.FTAttune_LayoutQuestDetail(panel)
 	if not panel or not panel:IsShown() or not panel.step then return end
 	local width = panel:GetWidth()
 	local height = panel:GetHeight()
@@ -10152,22 +10950,22 @@ local function FTAttune_LayoutQuestDetail(panel)
 	if not questName or questName == "" then questName = FTAttuneLang["Quest rewards"] end
 	panel.title:SetText(questName)
 
-	local questIDs = FTAttune_RewardQuestIDs(panel.step.ID_WOWHEAD)
-	local fixed, choices, spells = FTAttune_CollectQuestRewards(questIDs)
+	local questIDs = rewardUi.FTAttune_RewardQuestIDs(panel.step.ID_WOWHEAD)
+	local fixed, choices, spells = rewardUi.FTAttune_CollectQuestRewards(questIDs)
 	spells = spells or {}
 	local items = {}
 	for _, entry in ipairs(fixed) do items[#items + 1] = entry end
 	for _, entry in ipairs(choices) do items[#items + 1] = entry end
 
 	local y = 6
-	local xp = FTAttune_GetQuestLogRewardXP(questIDs)
+	local xp = rewardUi.FTAttune_GetQuestLogRewardXP(questIDs)
 	if panel.xpText then
 		if xp then
 			local fmt = FTAttuneLang["Experience reward"]
 			if type(fmt) ~= "string" or fmt == "" or not string.find(fmt, "%%s", 1, true) then
 				fmt = "+%s XP"
 			end
-			panel.xpText:SetText(fmt:format(FTAttune_FormatXPAmount(xp)))
+			panel.xpText:SetText(fmt:format(rewardUi.FTAttune_FormatXPAmount(xp)))
 			panel.xpText:ClearAllPoints()
 			panel.xpText:SetPoint("TOPLEFT", 6, -y)
 			panel.xpText:SetPoint("RIGHT", panel.rewardChild, "RIGHT", -6, 0)
@@ -10186,7 +10984,7 @@ local function FTAttune_LayoutQuestDetail(panel)
 	spellReward.HideDetailHeaders(panel)
 	if #items == 0 and #spells == 0 then
 		panel.empty:Show()
-		local known = FTAttune_QuestRewardsKnown(panel)
+		local known = rewardUi.FTAttune_QuestRewardsKnown(panel)
 		local msg
 		if not panel.rewardsFinal and not known then
 			msg = FTAttuneLang["Loading rewards"]
@@ -10209,7 +11007,7 @@ local function FTAttune_LayoutQuestDetail(panel)
 			if itemName and itemName ~= "" then
 				name, quality, texture = itemName, itemQuality, itemTexture or texture
 			else
-				local storedName, storedIcon, storedQuality = FTAttune_StoredItem(entry.itemID)
+				local storedName, storedIcon, storedQuality = rewardUi.FTAttune_StoredItem(entry.itemID)
 				if storedName then name = storedName end
 				if storedIcon and not texture then texture = storedIcon end
 				if storedQuality and not quality then quality = storedQuality end
@@ -10232,7 +11030,7 @@ local function FTAttune_LayoutQuestDetail(panel)
 			shown = shown + 1
 			local row = panel.rows[shown]
 			if not row then
-				row = FTAttune_DetailRewardRow(panel.rewardChild)
+				row = rewardUi.FTAttune_DetailRewardRow(panel.rewardChild)
 				panel.rows[shown] = row
 			end
 			row:ClearAllPoints()
@@ -10240,7 +11038,7 @@ local function FTAttune_LayoutQuestDetail(panel)
 	row:SetPoint("RIGHT", panel.rewardChild, "RIGHT", -6, 0)
 	row.itemID = entry.itemID
 	row.spellID = nil
-	FTAttune_SetSpellFrame(row, false)
+	rewardUi.FTAttune_SetSpellFrame(row, false)
 	row.icon:SetTexture(texture or "Interface\\Icons\\INV_Misc_QuestionMark")
 			local text = name
 			if entry.count and entry.count > 1 then text = text .. " x" .. entry.count end
@@ -10312,7 +11110,7 @@ local function FTAttune_LayoutQuestDetail(panel)
 	end
 
 	if not (FTAttune_DB and FTAttune_DB.useFullMap) then
-		local uiMapID, x, y, giver = FTAttune_DetailGiver(panel.step)
+		local uiMapID, x, y, giver = rewardUi.FTAttune_DetailGiver(panel.step)
 		if giver and giver ~= "" then
 			panel.giver:SetText(FTAttuneLang["Starts at"] .. " " .. giver)
 			panel.giver:Show()
@@ -10320,11 +11118,11 @@ local function FTAttune_LayoutQuestDetail(panel)
 			panel.giver:Hide()
 		end
 		panel.map.art.zoom = panel.map.zoom or 1
-		FTAttune_FillDetailMap(panel.map.art, uiMapID, x, y)
+		rewardUi.FTAttune_FillDetailMap(panel.map.art, uiMapID, x, y)
 	end
 end
 
-local function FTAttune_EnsureQuestDetail()
+function rewardUi.FTAttune_EnsureQuestDetail()
 	if attunelocal_questDetail then return attunelocal_questDetail end
 	local panel = CreateFrame("Frame", "FTAttuneQuestDetail", UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
 	panel:EnableMouse(true)
@@ -10426,7 +11224,7 @@ local function FTAttune_EnsureQuestDetail()
 	end
 	map.pin:SetScript("OnClick", function(self)
 		if IsModifiedClick("CHATLINK") then
-			FTAttune_ShareDetailPin(self.uiMapID, self.pinX, self.pinY)
+			rewardUi.FTAttune_ShareDetailPin(self.uiMapID, self.pinX, self.pinY)
 		end
 	end)
 	map.pin:SetScript("OnEnter", function(self)
@@ -10463,7 +11261,7 @@ local function FTAttune_EnsureQuestDetail()
 		if zoom > 8 then zoom = 8 end
 		map.zoom = zoom
 		if map.art then map.art.zoom = zoom end
-		if panel:IsShown() then FTAttune_LayoutQuestDetail(panel) end
+		if panel:IsShown() then rewardUi.FTAttune_LayoutQuestDetail(panel) end
 	end
 	local zoomOut = CreateFrame("Button", nil, map, "UIPanelButtonTemplate")
 	zoomOut:SetSize(22, 20)
@@ -10494,8 +11292,8 @@ local function FTAttune_EnsureQuestDetail()
 				end
 			end
 			if not wanted then return end
-			FTAttune_LayoutQuestDetail(panel)
-			FTAttune_RefreshRewardTooltip(panel.rows)
+			rewardUi.FTAttune_LayoutQuestDetail(panel)
+			rewardUi.FTAttune_RefreshRewardTooltip(panel.rows)
 			return
 		end
 		if event == "UNIT_QUEST_LOG_CHANGED" and arg1 ~= "player" then
@@ -10505,7 +11303,7 @@ local function FTAttune_EnsureQuestDetail()
 			panel.questLoaded = panel.questLoaded or {}
 			panel.questLoaded[arg1] = true
 		end
-		if panel:IsShown() then FTAttune_LayoutQuestDetail(panel) end
+		if panel:IsShown() then rewardUi.FTAttune_LayoutQuestDetail(panel) end
 	end)
 	panel:SetScript("OnShow", function(self)
 		listener:RegisterEvent("QUEST_DATA_LOAD_RESULT")
@@ -10530,7 +11328,7 @@ local function FTAttune_EnsureQuestDetail()
 	panel:SetScript("OnSizeChanged", function(self)
 		if self:IsShown() and not self.layingOut then
 			self.layingOut = true
-			FTAttune_LayoutQuestDetail(self)
+			rewardUi.FTAttune_LayoutQuestDetail(self)
 			self.layingOut = false
 		end
 	end)
@@ -10561,8 +11359,8 @@ end
 function FTAttune_ShowQuestDetail(step)
 	if not step or not attunelocal_treeframe or not attunelocal_treeframe.treeframe then return end
 	local tree = attunelocal_treeframe.treeframe
-	local panel = FTAttune_EnsureQuestDetail()
-	local key = FTAttune_QuestDetailKey(step)
+	local panel = rewardUi.FTAttune_EnsureQuestDetail()
+	local key = rewardUi.FTAttune_QuestDetailKey(step)
 	if panel:IsShown() and panel.key == key then
 		FTAttune_HideQuestDetail()
 		return
@@ -10584,13 +11382,13 @@ function FTAttune_ShowQuestDetail(step)
 	end
 	if attunelocal_treeframe.scrollbar then attunelocal_treeframe.scrollbar:Hide() end
 	panel:Show()
-	FTAttune_LayoutQuestDetail(panel)
+	rewardUi.FTAttune_LayoutQuestDetail(panel)
 	if FTAttune_DB and FTAttune_DB.useFullMap then
 		FTAttune_ShowQuestGiverMap(step)
 	end
 
 	if C_QuestLog and C_QuestLog.RequestLoadQuestByID then
-		for _, questID in ipairs(FTAttune_RewardQuestIDs(step.ID_WOWHEAD)) do
+		for _, questID in ipairs(rewardUi.FTAttune_RewardQuestIDs(step.ID_WOWHEAD)) do
 			pcall(C_QuestLog.RequestLoadQuestByID, questID)
 		end
 	end
@@ -10599,7 +11397,7 @@ function FTAttune_ShowQuestDetail(step)
 		C_Timer.After(0.4, function()
 			if panel:IsShown() and panel.key == token then
 				panel.rewardsFinal = true
-				FTAttune_LayoutQuestDetail(panel)
+				rewardUi.FTAttune_LayoutQuestDetail(panel)
 			end
 		end)
 	end
@@ -10608,11 +11406,670 @@ end
 function FTAttune_RefreshQuestMapMode()
 	local panel = attunelocal_questDetail
 	if not panel or not panel:IsShown() or not panel.step then return end
-	FTAttune_LayoutQuestDetail(panel)
+	rewardUi.FTAttune_LayoutQuestDetail(panel)
 	if FTAttune_DB and FTAttune_DB.useFullMap then
 		FTAttune_ShowQuestGiverMap(panel.step)
 	else
 		FTAttune_CloseQuestGiverMap()
+	end
+end
+
+-------------------------------------------------------------------------
+-- Next-step window. One current step per attunement, closest level first.
+-- FTAttuneNextFrame is global: the main chunk is already at Lua's 200-local limit.
+-------------------------------------------------------------------------
+
+function FTAttune_NextStepLabel(step)
+	if step == nil then return "" end
+	local label
+	if step.TYPE == "Item" then
+		local countNeeded = tonumber(step.COUNT) or 1
+		label = FTAttuneLang["I_" .. step.ID_WOWHEAD]
+		if countNeeded > 1 then
+			label = FTAttune_OwnedItemCount(step.ID_WOWHEAD) .. "/" .. countNeeded .. " " .. (label or "")
+		end
+	elseif step.TYPE == "Kill" or step.TYPE == "Interact" then
+		label = FTAttuneLang["N1_" .. step.ID_WOWHEAD]
+	elseif step.TYPE == "Quest" or step.TYPE == "Pick Up" or step.TYPE == "Turn In" then
+		label = FTAttuneLang["Q1_" .. step.ID_WOWHEAD]
+	elseif step.TYPE == "Stat" or step.TYPE == "Prof" then
+		local goal = FTAttune_StatGoal(step)
+		local value = FTAttune_StatValue(step)
+		if goal > 0 and value > goal then value = goal end
+		label = (step.STEP or "") .. " " .. value .. "/" .. goal
+	else
+		label = step.STEP
+	end
+	if label == nil or label == "" then
+		label = step.STEP or FTAttuneLang[step.TYPE] or step.TYPE or ""
+	end
+	return label
+end
+
+function FTAttune_NextStepIsCurrent(step, done)
+	if done[step.ID_ATTUNE .. "-" .. step.ID] then return false end
+	local follows = step.FOLLOWS
+	if follows == nil or follows == "0" or follows == 0 then return true end
+	follows = tostring(follows)
+	local followOR = string.find(follows, "|", 1, true) ~= nil
+	local ids = FTAttune_split(follows, followOR and "|" or "&")
+	if followOR then
+		for _, id in pairs(ids) do
+			if done[step.ID_ATTUNE .. "-" .. id] then return true end
+		end
+		return false
+	end
+	for _, id in pairs(ids) do
+		if not done[step.ID_ATTUNE .. "-" .. id] then return false end
+	end
+	return true
+end
+
+function FTAttune_NextLevelBounds(a)
+	local levels = a and a.LEVELS
+	if type(levels) == "string" then
+		local lo, hi = levels:match("(%d+)%s*%-%s*(%d+)")
+		if lo then return tonumber(lo), tonumber(hi) end
+		local one = levels:match("(%d+)")
+		if one then
+			local n = tonumber(one)
+			return n, n
+		end
+	end
+	local chain = FTAttune_Data.stepsByAttune and a and FTAttune_Data.stepsByAttune[a.ID]
+	if chain then
+		for _, step in ipairs(chain) do
+			if step.TYPE == "Level" then
+				local n = tonumber(step.ID_WOWHEAD)
+				if n then return n, n end
+			end
+		end
+	end
+	return 1000, 1000
+end
+
+function FTAttune_NextFrameCollect()
+	local list = {}
+	if FTAttune_DB == nil or attunelocal_charKey == nil or FTAttune_Data == nil or FTAttune_Data.attunes == nil then return list end
+	local toon = FTAttune_DB.toons and FTAttune_DB.toons[attunelocal_charKey]
+	if toon == nil or toon.done == nil then return list end
+
+	local faction = attunelocal_faction
+	if faction == nil or faction == "" then faction = UnitFactionGroup("player") end
+	local player = UnitLevel("player") or 1
+	local ord = 0
+
+	for _, a in ipairs(FTAttune_Data.attunes) do
+		if (a.DEPRECATED == nil or FTAttune_DB.showDeprecatedAttunes)
+			and (a.FACTION == faction or a.FACTION == "Both")
+			and FTAttune_ClassQuestVisible(a)
+			and FTAttune_CharacterProgressionVisible(a)
+			and not FTAttune_IsSkipped(a.ID)
+			and FTAttune_MayRecordAttuneProgress(toon, a.ID)
+			and (toon.attuned == nil or (toon.attuned[a.ID] or 0) < 100)
+		then
+			local chain = FTAttune_Data.stepsByAttune and FTAttune_Data.stepsByAttune[a.ID]
+			if chain then
+				local main, side = {}, {}
+				for _, step in ipairs(chain) do
+					if showPatchStep(step) and step.TYPE ~= "End" and step.TYPE ~= "Spacer" and FTAttune_NextStepIsCurrent(step, toon.done) then
+						if step.SIDE then
+							side[#side + 1] = step
+						else
+							main[#main + 1] = step
+						end
+					end
+				end
+				local found = (#main > 0) and main or side
+				if #found > 0 then
+					table.sort(found, function(s1, s2)
+						local a1 = tonumber(s1.STAGE) or tonumber(s1.ID) or 0
+						local a2 = tonumber(s2.STAGE) or tonumber(s2.ID) or 0
+						if a1 ~= a2 then return a1 < a2 end
+						return (tonumber(s1.ID) or 0) < (tonumber(s2.ID) or 0)
+					end)
+					local lo, hi = FTAttune_NextLevelBounds(a)
+					local dist
+					if player < lo then
+						dist = lo - player
+					elseif player > hi then
+						dist = (player - hi) + 0.5
+					else
+						dist = 0
+					end
+					ord = ord + 1
+					local tag = a.SHORT
+					if tag == nil or tag == "" or tonumber(tag) then tag = a.NAME or "" end
+					local name = FTAttune_NextStepLabel(found[1])
+					local text
+					local stepText = "|cffffffff" .. name .. "|r"
+					if tag == name then
+						text = stepText
+					else
+						text = "|cffffd100" .. tag .. "|r  " .. stepText
+					end
+					if a.LEVELS and a.LEVELS ~= "" then
+						text = "|cffaaaaaa" .. a.LEVELS .. "|r  " .. text
+					end
+					if #found > 1 then
+						text = text .. " |cffaaaaaa(+" .. (#found - 1) .. ")|r"
+					end
+					list[#list + 1] = {
+						dist = dist,
+						mid = (lo + hi) / 2,
+						lo = lo,
+						hi = hi,
+						name = a.NAME or "",
+						ord = ord,
+						text = text,
+						attune = a,
+						steps = found,
+					}
+				end
+			end
+		end
+	end
+
+	table.sort(list, function(left, right)
+		if left.dist ~= right.dist then return left.dist < right.dist end
+		local ld = math.abs(left.mid - player)
+		local rd = math.abs(right.mid - player)
+		if ld ~= rd then return ld < rd end
+		if left.lo ~= right.lo then return left.lo < right.lo end
+		if left.name ~= right.name then return left.name < right.name end
+		return left.ord < right.ord
+	end)
+
+	-- Too far above: one "next attune at level" line.
+	-- Too far below: hidden, counted in a "Missed" line at the top.
+	local shown = {}
+	local later = {}
+	local missed = {}
+	for _, entry in ipairs(list) do
+		if entry.lo < 1000 and entry.lo > player + 10 then
+			later[#later + 1] = entry
+		elseif entry.hi < 1000 and player - entry.hi > 3 then
+			missed[#missed + 1] = entry.text
+		else
+			shown[#shown + 1] = entry
+		end
+	end
+	if #missed > 0 then
+		local msg
+		if #missed == 1 then
+			msg = FTAttuneLang["NextSteps_MISSED_ONE"] or "Missed 1 attune"
+		else
+			msg = (FTAttuneLang["NextSteps_MISSED"] or "Missed ##COUNT## attunes"):gsub("##COUNT##", tostring(#missed))
+		end
+		table.insert(shown, 1, {
+			text = "|cffaaaaaa" .. msg .. "|r",
+			note = true,
+			tipTitle = msg,
+			tips = missed,
+		})
+	end
+	local nextLevel = nil
+	for _, entry in ipairs(later) do
+		if nextLevel == nil or entry.lo < nextLevel then
+			nextLevel = entry.lo
+		end
+	end
+	if nextLevel ~= nil then
+		local tips = {}
+		for _, entry in ipairs(later) do
+			if entry.lo == nextLevel then
+				tips[#tips + 1] = entry.text
+			end
+		end
+		local msg = (FTAttuneLang["NextSteps_LATER"] or "Next attune at level ##LEVEL##"):gsub("##LEVEL##", tostring(nextLevel))
+		shown[#shown + 1] = {
+			text = "|cffaaaaaa" .. msg .. "|r",
+			note = true,
+			tipTitle = msg,
+			tips = tips,
+		}
+	end
+	return shown
+end
+
+function FTAttune_NextFrameSave(frame)
+	if frame == nil or not frame.placed or FTAttune_DB == nil then return end
+	local point, _, rel, x, y = frame:GetPoint(1)
+	if point == nil or x == nil or y == nil then return end
+	local height = frame:GetHeight()
+	if frame.minimized and frame.fullHeight then
+		height = frame.fullHeight
+	end
+	FTAttune_DB.nextFrame = {
+		point = point,
+		rel = rel or point,
+		x = x,
+		y = y,
+		width = frame:GetWidth(),
+		height = height,
+		minimized = frame.minimized and true or false,
+	}
+end
+
+function FTAttune_NextFrameWheel(_, delta)
+	local frame = FTAttuneNextFrame
+	if frame == nil or frame.scroll == nil then return end
+	local scroll = frame.scroll
+	local child = scroll:GetScrollChild()
+	local maxScroll = 0
+	if child then
+		maxScroll = child:GetHeight() - scroll:GetHeight()
+		if maxScroll < 0 then maxScroll = 0 end
+	end
+	local pos = scroll:GetVerticalScroll() - delta * (frame.rowH or 16)
+	if pos < 0 then pos = 0 end
+	if pos > maxScroll then pos = maxScroll end
+	scroll:SetVerticalScroll(pos)
+end
+
+function FTAttune_NextFrameTip(row)
+	local entry = row.entry
+	if entry == nil then return end
+	local anchor = "ANCHOR_RIGHT"
+	local cx = FTAttuneNextFrame and FTAttuneNextFrame:GetCenter()
+	local width = UIParent and UIParent:GetWidth()
+	if cx and width and cx > width / 2 then anchor = "ANCHOR_LEFT" end
+	if entry.tips then
+		GameTooltip:SetOwner(row, anchor)
+		GameTooltip:SetText(entry.tipTitle or "")
+		for i, line in ipairs(entry.tips) do
+			if i > 40 then
+				GameTooltip:AddLine("...")
+				break
+			end
+			GameTooltip:AddLine(line, 1, 1, 1)
+		end
+		GameTooltip:Show()
+		return
+	end
+	if entry.attune == nil then return end
+	local a = entry.attune
+	GameTooltip:SetOwner(row, anchor)
+	GameTooltip:SetText(a.NAME or "")
+	if a.LEVELS and a.LEVELS ~= "" then
+		GameTooltip:AddLine(a.LEVELS, 0.75, 0.75, 0.75)
+	end
+	local steps = entry.steps or {}
+	for i, step in ipairs(steps) do
+		if i > 10 then
+			GameTooltip:AddLine("...", 0.7, 0.7, 0.7)
+			break
+		end
+		GameTooltip:AddLine(FTAttune_NextStepLabel(step), 1, 1, 1)
+		if #steps == 1 and step.LOCATION and step.LOCATION ~= "" and step.TYPE ~= "Rep" and step.TYPE ~= "Level" and step.TYPE ~= "Stat" and step.TYPE ~= "Prof" then
+			local kind = FTAttuneLang[step.TYPE] or ""
+			GameTooltip:AddLine(kind .. " " .. (FTAttuneLang["in"] or "in") .. " " .. step.LOCATION, 0.6, 0.6, 0.6)
+		end
+	end
+	GameTooltip:AddLine(FTAttuneLang["Click to navigate to that attunement"], 0.2, 1, 0.2)
+	GameTooltip:Show()
+end
+
+function FTAttune_NextOpenAttune(entry)
+	if entry == nil or entry.attune == nil then return end
+	local a = entry.attune
+	if attunelocal_initial or attunelocal_frame == nil then
+		FTAttune_SlashCommandHandler("")
+	else
+		if not attunelocal_frame:IsShown() then
+			attunelocal_frame:Show()
+		end
+		if not attunelocal_treeIsShown then
+			FTAttune_ToggleView()
+		end
+	end
+	if attunelocal_treeframe and attunelocal_treeframe.SelectByPath then
+		attunelocal_treeframe:SelectByPath(a.EXPAC, a.GROUP, a.ID)
+	end
+end
+
+function FTAttune_NextFrameLayout()
+	local frame = FTAttuneNextFrame
+	if frame == nil or frame.scroll == nil then return end
+	if frame.minimized then
+		frame.empty:Hide()
+		return
+	end
+	local scroll = frame.scroll
+	local content = frame.content
+	local entries = frame.entries or {}
+	local rowH = frame.rowH or 16
+	local width = scroll:GetWidth()
+	if width < 20 then width = (frame:GetWidth() or 250) - 12 end
+
+	content:SetWidth(width)
+	content:SetHeight(math.max(#entries * rowH, 1))
+
+	for i, entry in ipairs(entries) do
+		local row = frame.rows[i]
+		if row == nil then
+			row = CreateFrame("Button", nil, content)
+			row:SetHeight(rowH)
+			row:RegisterForClicks("LeftButtonUp")
+			row:EnableMouseWheel(true)
+			row.text = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+			row.text:SetPoint("LEFT", row, "LEFT", 2, 0)
+			row.text:SetPoint("RIGHT", row, "RIGHT", -2, 0)
+			row.text:SetJustifyH("LEFT")
+			row.text:SetWordWrap(false)
+			row.text:SetFontObject(GameFontHighlightSmall)
+			local hl = row:CreateTexture(nil, "HIGHLIGHT")
+			hl:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+			hl:SetBlendMode("ADD")
+			hl:SetAllPoints()
+			row:SetScript("OnClick", function(self)
+				FTAttune_NextOpenAttune(self.entry)
+			end)
+			row:SetScript("OnEnter", function(self)
+				FTAttune_NextFrameTip(self)
+			end)
+			row:SetScript("OnLeave", function()
+				GameTooltip:Hide()
+			end)
+			row:SetScript("OnMouseWheel", FTAttune_NextFrameWheel)
+			frame.rows[i] = row
+		end
+		row.entry = entry
+		row:EnableMouse(not entry.note or entry.tips ~= nil)
+		row:ClearAllPoints()
+		row:SetPoint("TOPLEFT", content, "TOPLEFT", 0, -((i - 1) * rowH))
+		row:SetPoint("TOPRIGHT", content, "TOPRIGHT", 0, -((i - 1) * rowH))
+		row.text:SetText(entry.text or "")
+		row:Show()
+	end
+	for i = #entries + 1, #frame.rows do
+		frame.rows[i]:Hide()
+	end
+
+	if #entries == 0 then
+		frame.empty:Show()
+	else
+		frame.empty:Hide()
+	end
+
+	local maxScroll = content:GetHeight() - scroll:GetHeight()
+	if maxScroll < 0 then maxScroll = 0 end
+	if scroll:GetVerticalScroll() > maxScroll then
+		scroll:SetVerticalScroll(maxScroll)
+	end
+end
+
+function FTAttune_NextFrameSetMinimized(frame, collapsed)
+	if frame == nil or frame.minimized == collapsed then return end
+	if collapsed and not frame.minimized then
+		local h = frame:GetHeight()
+		if h > 20 then frame.fullHeight = h end
+	end
+	frame.minimized = collapsed and true or false
+	frame.sizingMin = true
+	if frame.minimized then
+		if frame.SetResizeBounds then
+			frame:SetResizeBounds(160, 20, 480, 20)
+		else
+			frame:SetMinResize(160, 20)
+			frame:SetMaxResize(480, 20)
+		end
+		frame:SetHeight(20)
+		if frame.scroll then frame.scroll:Hide() end
+		if frame.empty then frame.empty:Hide() end
+		if frame.grip then frame.grip:Hide() end
+		if frame.minBtn and frame.minBtn.text then
+			frame.minBtn.text:SetText("|cffffd100+|r")
+		end
+	else
+		if frame.SetResizeBounds then
+			frame:SetResizeBounds(160, 48, 480, 640)
+		else
+			frame:SetMinResize(160, 48)
+			frame:SetMaxResize(480, 640)
+		end
+		frame:SetHeight(frame.fullHeight or 180)
+		if frame.scroll then frame.scroll:Show() end
+		if frame.grip then frame.grip:Show() end
+		if frame.minBtn and frame.minBtn.text then
+			frame.minBtn.text:SetText("|cffffd100_|r")
+		end
+		FTAttune_NextFrameLayout()
+	end
+	frame.sizingMin = false
+	if frame.placed then FTAttune_NextFrameSave(frame) end
+end
+
+function FTAttune_NextFrameDragStart()
+	if FTAttuneNextFrame then FTAttuneNextFrame:StartMoving() end
+end
+
+function FTAttune_NextFrameDragStop()
+	if FTAttuneNextFrame == nil then return end
+	FTAttuneNextFrame:StopMovingOrSizing()
+	FTAttune_NextFrameSave(FTAttuneNextFrame)
+end
+
+function FTAttune_NextFrameEnsure()
+	if FTAttuneNextFrame then return FTAttuneNextFrame end
+
+	local frame = CreateFrame("Frame", "FTAttune_NextFrame", UIParent)
+	frame:SetFrameStrata("MEDIUM")
+	frame:SetClampedToScreen(true)
+	frame:SetMovable(true)
+	frame:EnableMouse(true)
+	frame:EnableMouseWheel(true)
+	frame:SetResizable(true)
+	frame:RegisterForDrag("LeftButton")
+	frame.rowH = 16
+	frame.rows = {}
+	frame.entries = {}
+
+	local bg = frame:CreateTexture(nil, "BACKGROUND")
+	bg:SetAllPoints()
+	bg:SetColorTexture(0, 0, 0, 0.28)
+
+	local bar = frame:CreateTexture(nil, "BACKGROUND")
+	bar:SetPoint("TOPLEFT")
+	bar:SetPoint("TOPRIGHT")
+	bar:SetHeight(20)
+	bar:SetColorTexture(0, 0, 0, 0.45)
+
+	local top = frame:CreateTexture(nil, "BORDER")
+	top:SetColorTexture(1, 0.82, 0, 0.4)
+	top:SetPoint("TOPLEFT")
+	top:SetPoint("TOPRIGHT")
+	top:SetHeight(1)
+	local bottom = frame:CreateTexture(nil, "BORDER")
+	bottom:SetColorTexture(1, 0.82, 0, 0.4)
+	bottom:SetPoint("BOTTOMLEFT")
+	bottom:SetPoint("BOTTOMRIGHT")
+	bottom:SetHeight(1)
+	local left = frame:CreateTexture(nil, "BORDER")
+	left:SetColorTexture(1, 0.82, 0, 0.4)
+	left:SetPoint("TOPLEFT")
+	left:SetPoint("BOTTOMLEFT")
+	left:SetWidth(1)
+	local right = frame:CreateTexture(nil, "BORDER")
+	right:SetColorTexture(1, 0.82, 0, 0.4)
+	right:SetPoint("TOPRIGHT")
+	right:SetPoint("BOTTOMRIGHT")
+	right:SetWidth(1)
+
+	local title = CreateFrame("Button", nil, frame)
+	title:SetPoint("TOPLEFT", 6, -1)
+	title:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -36, -19)
+	title:RegisterForDrag("LeftButton")
+	title:EnableMouseWheel(true)
+	title:SetScript("OnDragStart", FTAttune_NextFrameDragStart)
+	title:SetScript("OnDragStop", FTAttune_NextFrameDragStop)
+	title:SetScript("OnMouseWheel", FTAttune_NextFrameWheel)
+	title:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+		GameTooltip:SetText(FTAttuneLang["NextSteps_DRAG"] or "Drag to move")
+		GameTooltip:Show()
+	end)
+	title:SetScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
+	title.text = title:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	title.text:SetPoint("LEFT", 2, 0)
+	title.text:SetJustifyH("LEFT")
+	title.text:SetText(FTAttuneLang["NextSteps_TITLE"] or "FTAttune: Next")
+
+	local close = CreateFrame("Button", nil, frame)
+	close:SetSize(16, 16)
+	close:SetPoint("TOPRIGHT", -3, -2)
+	close:SetScript("OnClick", function()
+		FTAttune_DB.showNextSteps = false
+		frame:Hide()
+	end)
+	close.text = close:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+	close.text:SetPoint("CENTER", 0, 1)
+	close.text:SetText("|cffffd100x|r")
+
+	local minBtn = CreateFrame("Button", nil, frame)
+	minBtn:SetSize(16, 16)
+	minBtn:SetPoint("TOPRIGHT", close, "TOPLEFT", -1, 0)
+	minBtn:SetScript("OnClick", function()
+		FTAttune_NextFrameSetMinimized(frame, not frame.minimized)
+	end)
+	minBtn:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+		if frame.minimized then
+			GameTooltip:SetText(FTAttuneLang["NextSteps_RESTORE"] or "Restore")
+		else
+			GameTooltip:SetText(FTAttuneLang["NextSteps_MIN"] or "Minimize")
+		end
+		GameTooltip:Show()
+	end)
+	minBtn:SetScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
+	minBtn.text = minBtn:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+	minBtn.text:SetPoint("CENTER", 0, 1)
+	minBtn.text:SetText("|cffffd100_|r")
+	frame.minBtn = minBtn
+
+	local scroll = CreateFrame("ScrollFrame", nil, frame)
+	scroll:SetPoint("TOPLEFT", 6, -22)
+	scroll:SetPoint("BOTTOMRIGHT", -6, 12)
+	scroll:EnableMouse(true)
+	scroll:EnableMouseWheel(true)
+	scroll:RegisterForDrag("LeftButton")
+	scroll:SetScript("OnDragStart", FTAttune_NextFrameDragStart)
+	scroll:SetScript("OnDragStop", FTAttune_NextFrameDragStop)
+	scroll:SetScript("OnMouseWheel", FTAttune_NextFrameWheel)
+	if scroll.SetClipsChildren then scroll:SetClipsChildren(true) end
+
+	local content = CreateFrame("Frame", nil, scroll)
+	content:SetSize(200, 16)
+	content:EnableMouseWheel(true)
+	content:SetScript("OnMouseWheel", FTAttune_NextFrameWheel)
+	scroll:SetScrollChild(content)
+
+	local empty = frame:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
+	empty:SetPoint("TOPLEFT", frame, "TOPLEFT", 10, -28)
+	empty:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -10, 16)
+	empty:SetJustifyH("CENTER")
+	empty:SetJustifyV("MIDDLE")
+	empty:SetText(FTAttuneLang["NextSteps_EMPTY"] or "Nothing to do right now")
+	empty:Hide()
+
+	local grip = CreateFrame("Button", nil, frame)
+	grip:SetSize(16, 16)
+	grip:SetPoint("BOTTOMRIGHT", -1, 1)
+	grip:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
+	grip:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
+	grip:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+	grip:SetScript("OnMouseDown", function(_, button)
+		if button == "LeftButton" then frame:StartSizing("BOTTOMRIGHT") end
+	end)
+	grip:SetScript("OnMouseUp", function()
+		frame:StopMovingOrSizing()
+		FTAttune_NextFrameSave(frame)
+		FTAttune_NextFrameLayout()
+	end)
+
+	frame:SetScript("OnDragStart", FTAttune_NextFrameDragStart)
+	frame:SetScript("OnDragStop", FTAttune_NextFrameDragStop)
+	frame:SetScript("OnMouseWheel", FTAttune_NextFrameWheel)
+	frame:SetScript("OnSizeChanged", function(self)
+		if self.sizingMin or self.minimized then return end
+		if self.placed and self.entries then
+			self.fullHeight = self:GetHeight()
+			FTAttune_NextFrameLayout()
+			FTAttune_NextFrameSave(self)
+		end
+	end)
+
+	frame.scroll = scroll
+	frame.content = content
+	frame.empty = empty
+	frame.grip = grip
+
+	local pos = FTAttune_DB and FTAttune_DB.nextFrame
+	local width, height = 250, 180
+	frame:ClearAllPoints()
+	if type(pos) == "table" and type(pos.point) == "string" and type(pos.x) == "number" and type(pos.y) == "number" then
+		if type(pos.width) == "number" then width = pos.width end
+		if type(pos.height) == "number" then height = pos.height end
+		if width < 160 then width = 160 elseif width > 480 then width = 480 end
+		if height < 48 then height = 48 elseif height > 640 then height = 640 end
+		frame:SetPoint(pos.point, UIParent, pos.rel or pos.point, pos.x, pos.y)
+	else
+		frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -40, -220)
+	end
+	frame:SetSize(width, height)
+	if frame.SetResizeBounds then
+		frame:SetResizeBounds(160, 48, 480, 640)
+	else
+		frame:SetMinResize(160, 48)
+		frame:SetMaxResize(480, 640)
+	end
+
+	title:SetFrameLevel(frame:GetFrameLevel() + 4)
+	close:SetFrameLevel(frame:GetFrameLevel() + 5)
+	minBtn:SetFrameLevel(frame:GetFrameLevel() + 5)
+	grip:SetFrameLevel(frame:GetFrameLevel() + 6)
+
+	frame.fullHeight = height
+	frame.placed = true
+	if type(pos) == "table" and pos.minimized then
+		FTAttune_NextFrameSetMinimized(frame, true)
+	end
+	FTAttuneNextFrame = frame
+	return frame
+end
+
+function FTAttune_NextFrameRefresh()
+	if FTAttune_DB == nil or FTAttune_DB.showNextSteps == false then
+		if FTAttuneNextFrame then FTAttuneNextFrame:Hide() end
+		return
+	end
+	if attunelocal_charKey == nil or FTAttune_Data == nil or FTAttune_Data.attunes == nil then return end
+	local frame = FTAttune_NextFrameEnsure()
+	frame.entries = FTAttune_NextFrameCollect()
+	frame:Show()
+	FTAttune_NextFrameLayout()
+end
+
+function FTAttune_NextFrameUpdate()
+	if FTAttune_DB == nil then return end
+	if FTAttune_DB.showNextSteps == false then
+		if FTAttuneNextFrame then FTAttuneNextFrame:Hide() end
+		return
+	end
+	if FTAttuneNextFramePending then return end
+	FTAttuneNextFramePending = true
+	local function run()
+		FTAttuneNextFramePending = false
+		FTAttune_NextFrameRefresh()
+	end
+	if C_Timer and C_Timer.After then
+		C_Timer.After(0, run)
+	else
+		run()
 	end
 end
 
@@ -10637,13 +12094,17 @@ function FTAttune:OnEnable()
     else
         for _, event in ipairs({"CHAT_MSG_ADDON", "PLAYER_LOGOUT", "PLAYER_LEVEL_UP",
             "QUEST_ACCEPTED", "QUEST_REMOVED", "QUEST_TURNED_IN", "UPDATE_FACTION",
-            "BAG_UPDATE", "GOSSIP_SHOW", "QUEST_DETAIL"}) do self:RegisterEvent(event) end
+            "BAG_UPDATE", "GOSSIP_SHOW", "QUEST_DETAIL", "PLAYER_REGEN_ENABLED"}) do self:RegisterEvent(event) end
+        for _, event in ipairs({"CRITERIA_UPDATE", "SKILL_LINES_CHANGED", "CHAT_MSG_MONEY",
+            "PLAYER_PVP_KILLS_CHANGED", "PLAYER_ENTERING_WORLD"}) do pcall(self.RegisterEvent, self, event) end
         if attunelocal_hasCombatLog then cleu_parser:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
         else cleu_parser:RegisterEvent("PARTY_KILL"); cleu_parser:RegisterEvent("UNIT_DIED") end
         self:RegisterComm(attunelocal_syncprefix)
         FTAttune_CheckProgress()
         self:BAG_UPDATE(nil)
+        FTAttune_QueueStatScan()
         FTAttune_ForceAttuneTabRefresh()
+        FTAttune_NextFrameUpdate()
         if not FTAttune_DB.minimapbuttonpos.hide then attunelocal_minimapicon:Show("FTAttune_Broker") end
     end
 end
@@ -10651,9 +12112,18 @@ function FTAttune:OnDisable()
     cleu_parser:UnregisterAllEvents()
     if self.ftStarted then FTAttune_SaveTreeExpandStatus() end
     attuneItemScanQueued = false
+    FTAttuneNextFramePending = false
+    FTAttune_StatScanQueued = false
+    FTAttune_StatScanFollowUp = false
+    FTAttune_StatPollActive = false
+    FTAttune_CharacterTreeRefreshQueued = false
     if attunelocal_iconView then attunelocal_iconView.pending = false end
     attunelocal_syncStatus = -1
     FTAttune_CloseQuestGiverMap()
+    if FTAttuneNextFrame then
+        FTAttune_NextFrameSave(FTAttuneNextFrame)
+        FTAttuneNextFrame:Hide()
+    end
     for _, widget in pairs({main=attunelocal_frame, export=attunelocal_export_frame,
         survey=attunelocal_survey_frame, sync=attunelocal_syncProgressWidget,
         reward=attunelocal_rewardFrame, detail=attunelocal_questDetail}) do

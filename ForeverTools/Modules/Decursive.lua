@@ -178,7 +178,7 @@ end
 function M:CreateDisplay()
     if self.display or Combat() then return end
     local frame=CreateFrame("Frame","ForeverToolsDecursive",UIParent)
-    self.display=frame; self.buttons={}
+    self.display=frame; self.buttons={}; self.unitIndex={}
     frame:SetSize(300,138); frame:SetClampedToScreen(true); frame:SetMovable(true)
     local function Add(unit,index,raid)
         local b=CreateFrame("Button",nil,frame,"SecureActionButtonTemplate")
@@ -205,6 +205,7 @@ function M:CreateDisplay()
                 or ("[group:raid] hide; [@"..unit..",exists] show; hide")
             RegisterStateDriver(b,"visibility",condition)
         end
+        self.unitIndex[unit]=#self.buttons+1
         self.buttons[#self.buttons+1]=b
     end
     Add("player",1,false)
@@ -274,7 +275,14 @@ end
 function M:Refresh(changedUnit)
     if not FT:IsEnabled("decursive") or not self.display or not self.display:IsShown() then return end
     local raid=Read(IsInRaid,false)
-    for _,b in ipairs(self.buttons) do
+    local first,last=1,#self.buttons
+    if changedUnit then
+        first=self.unitIndex[changedUnit]
+        if not first then return end
+        last=first
+    end
+    for index=first,last do
+        local b=self.buttons[index]
         if (not changedUnit or changedUnit==b.unit) and b.raid==raid and Read(UnitExists,false,b.unit) then
             local name=Read(UnitName,b.unit,b.unit)
             local label=type(name)=="string" and name:sub(1,4) or b.unit

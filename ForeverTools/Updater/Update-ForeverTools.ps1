@@ -154,7 +154,8 @@ function Assert-SafeFilePath([string]$Name) {
     # These two bundled updater files are part of the trusted ForeverTools package.
     # They are installed as files; the running updater never executes downloaded scripts.
     if ($Name -ceq 'Update.cmd' -or $Name -ceq 'Updater/Update-ForeverTools.ps1') { return }
-    $bundledMetadata = $Name -ceq 'Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/LICENSE' -or
+    $bundledMetadata = $Name -ceq 'Features/Attune/Libs/LibDataBroker-1.1/README.textile' -or
+        $Name -ceq 'Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/LICENSE' -or
         $Name -ceq 'Features/NovaInstanceTracker/NovaInstanceTracker/Lib/LibSerialize-1.0.0/.pkgmeta'
     if ($Name -notmatch '^[A-Za-z0-9_!./-]+$' -or $Name.Contains('\') -or
         $Name.StartsWith('/') -or $Name.Split('/') -contains '..' -or

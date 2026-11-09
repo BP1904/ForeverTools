@@ -72,11 +72,13 @@ function CreateFrame(kind,name,parent,template)
     function f:SetParent(p) assert(not combat); self.parent=p end
     function f:SetAttribute(k,v) assert(not combat or secure); self.attributes[k]=v end
     function f:GetAttribute(k) return self.attributes[k] end
+    function f:SetFrameRef(k,v) assert(not combat); self.refs=self.refs or {}; self.refs[k]=v end
+    function f:GetFrameRef(k) return self.refs and self.refs[k] end
     function f:IsProtected() return self.protected end
     function f:IsVisible() return self.shown and (not self.parent or not self.parent.IsVisible or self.parent:IsVisible()) end
     function f:Show() self:SetShown(true) end
     function f:Hide()
-        assert(not combat or not self.protected)
+        assert(not combat or not self.protected or secure)
         local shown=self.shown; self.shown=false
         if shown and self.scripts.OnHide then self.scripts.OnHide(self) end
     end
@@ -118,6 +120,38 @@ end
 
 
 class DisenchantryTest(unittest.TestCase):
+    def test_drag_stops_and_ui_rebuild_are_deferred_in_combat(self):
+        lua=self.runtime(); self.start(lua)
+        lua.execute('''
+            local app=ns.App
+            stops=0
+            app.mainFrame.StopMovingOrSizing=function() assert(not combat); stops=stops+1 end
+            app.compactFrame.StopMovingOrSizing=function() assert(not combat); stops=stops+1 end
+            combat=true
+            app.mainFrame.TitleBar.scripts.OnDragStart()
+            app.mainFrame.TitleBar.scripts.OnDragStop()
+            app.compactFrame.scripts.OnDragStop(app.compactFrame)
+            local update=app.UpdateModeSurface
+            app.UpdateModeSurface=function() assert(not combat); return update() end
+            app.RefreshUI()
+            assert(stops==0 and app.pendingDragStops and app.needsRefreshAfterCombat)
+            combat=false; Fire('PLAYER_REGEN_ENABLED')
+            assert(stops==2 and not app.pendingDragStops)
+        ''')
+    def test_compact_close_runs_securely_during_combat(self):
+        lua=self.runtime(); self.start(lua)
+        lua.execute('''
+            local bar=ns.App.compactFrame
+            bar:Show(); combat=true
+            assert(not pcall(bar.Hide,bar))
+            secure=true
+            local close=bar.CloseButton
+            local run=assert(loadstring(close:GetAttribute('_onclick')))
+            setfenv(run,setmetatable({self=close},{__index=_G})); run()
+            secure=false
+            assert(not bar:IsShown())
+        ''')
+
     def runtime(self,extra='',with_minimap=False):
         lua=LuaRuntime(unpack_returned_tuples=True)
         lua.execute(MOCK+DE_MOCK+extra)

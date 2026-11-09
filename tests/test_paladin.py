@@ -40,13 +40,27 @@ C_ChatInfo={RegisterAddonMessagePrefix=function(p) assert(p=='PLPWR') end,
 local baseCreate=CreateFrame
 function CreateFrame(kind,name,parent,template)
     local f=baseCreate(kind,name)
-    f.protected=template and string.find(template,'SecureActionButtonTemplate',1,true)
+    f.parent=parent
+    f.protected=template and (string.find(template,'SecureActionButtonTemplate',1,true)
+        or string.find(template,'SecureHandler',1,true))
+    -- A secure child also protects its enclosing addon frames, not UIParent.
+    if f.protected then
+        local ancestor=parent
+        while ancestor and ancestor~=UIParent do ancestor.protected=true;ancestor=ancestor.parent end
+    end
     function f:SetSize(w,h) self.width=w; self.height=h end
     function f:SetPoint(point,parent,relativePoint,x,y)
         self.position={point,parent,relativePoint,x,y}
     end
     function f:GetPoint() return unpack(self.position) end
-    f.attributes={}; f.CloseButton={SetScript=function() end}
+    f.attributes={}; f.CloseButton={SetScript=function() end,Hide=function() end}
+    function f:GetName() return name end
+    function f:CallMethod(method,...)
+        local previous=secureContext; secureContext=false
+        local result=self[method](self,...)
+        secureContext=previous
+        return result
+    end
     function f:SetAttribute(key,value)
         assert(not combat,'protected mutation during combat')
         self.attributes[key]=value
@@ -83,7 +97,10 @@ function CreateFrame(kind,name,parent,template)
     function f:SetVerticalScroll(value) self.scrollOffset=value end
     local oldShow=f.SetShown
     function f:SetShown(shown)
-        assert(not combat or secureContext,'protected visibility during combat')
+        local protected=self.protected
+        local ancestor=self.parent
+        while ancestor and ancestor~=UIParent do protected=protected or ancestor.protected;ancestor=ancestor.parent end
+        assert(not protected or not combat or secureContext,'protected visibility during combat')
         oldShow(self,shown)
     end
     return f
@@ -92,6 +109,53 @@ end
 
 
 class PaladinTest(unittest.TestCase):
+    def test_releasing_window_drag_in_combat_defers_protected_stop(self):
+        self.lua.execute('''
+            P:ToggleWindow(); stops=0
+            for _,panel in ipairs({P.window,P.detailWindow}) do
+                panel.StopMovingOrSizing=function() assert(not combat); stops=stops+1 end
+            end
+            combat=true
+            P.window.scripts.OnDragStop(); P.detailWindow.scripts.OnDragStop()
+            assert(stops==0 and P.window.ftStopDragPending and P.detailWindow.ftStopDragPending)
+            combat=false; Fire('PLAYER_REGEN_ENABLED')
+            assert(stops==2 and not P.window.ftStopDragPending and not P.detailWindow.ftStopDragPending)
+        ''')
+    def test_close_buttons_hide_protected_windows_in_combat_without_changing_casts(self):
+        for details_only in (False,True):
+            with self.subTest(details_only=details_only):
+                self.setUp()
+                self.lua.execute('''
+                    P:ToggleWindow(); P.db.detailsOpen=true; P:Refresh()
+                    assert(P.window:IsShown() and P.detailWindow:IsShown())
+                    cast=P.classCasts[1]:GetAttribute('spell1')
+                    combat=true
+                    function SecureClose(button)
+                        secureContext=true
+                        local run=assert(loadstring(button:GetAttribute('_onclick')))
+                        setfenv(run,setmetatable({self=button},{__index=_G})); run()
+                        secureContext=false
+                    end
+                ''')
+                if details_only:
+                    self.lua.execute('''
+                        SecureClose(P.detailWindow.CloseButton)
+                        assert(P.window:IsShown() and not P.detailWindow:IsShown())
+                        assert(P.db.open and not P.db.detailsOpen)
+                    ''')
+                else:
+                    self.lua.execute('''
+                        SecureClose(P.closeButton)
+                        assert(not P.window:IsShown() and not P.detailWindow:IsShown())
+                        assert(not P.db.open and not P.db.detailsOpen)
+                    ''')
+                self.lua.execute('''
+                    assert(P.classCasts[1]:GetAttribute('spell1')==cast)
+                    assert(P.bar.frame:IsShown())
+                    combat=false; Fire('PLAYER_REGEN_ENABLED')
+                    assert(not P.detailWindow:IsShown())
+                ''')
+
     def setUp(self):
         self.lua = LuaRuntime(unpack_returned_tuples=True)
         self.lua.execute(MOCK + MATERIAL_MOCK + PALADIN_MOCK)
@@ -114,7 +178,7 @@ class PaladinTest(unittest.TestCase):
             assert(P.classCasts[1]:GetAttribute('spell1')=='Spell19740')
             assert(P.classCasts[1]:GetAttribute('spell2')=='Spell19740')
             assert(P.classCasts[1]:GetAttribute('unit')=='Ben Forever')
-            SlashCmdList.FOREVERTOOLS(); assert(#ForeverTools.menu.checks==81)
+            SlashCmdList.FOREVERTOOLS(); assert(ForeverTools.menu.byModule.paladin.master.box:GetChecked())
         ''')
 
     def test_greater_left_normal_right_and_player_override(self):

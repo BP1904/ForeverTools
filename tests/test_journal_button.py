@@ -4,6 +4,14 @@ from test_forevertools import ROOT, MOCK, LuaRuntime
 
 
 class JournalButtonTest(unittest.TestCase):
+    def test_level_changes_wait_until_combat_ends(self):
+        self.runtime().execute('''
+            LibDBIcon10_ForeverDungeonJournal=button
+            combat=true; Fire('PLAYER_ENTERING_WORLD')
+            assert(button.level==8 and namespace.journalButtonPending)
+            combat=false; Fire('PLAYER_REGEN_ENABLED')
+            assert(button.level==40 and not namespace.journalButtonPending)
+        ''')
     def runtime(self):
         lua = LuaRuntime(unpack_returned_tuples=True)
         lua.execute(MOCK + '''

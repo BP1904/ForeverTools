@@ -35,6 +35,11 @@ function App.ToggleDisenchantMaterials()
 end
 function App.RefreshUI()
     if not App.mainFrame then return end
+    if InCombatLockdown() then
+        App.needsRefreshAfterCombat=true
+        App.UpdateStatusText()
+        return
+    end
     local display = App.settingsControls and App.settingsControls.disenchantDisplay
     if display then for key, check in pairs(display) do check:SetChecked(not App.db[key]) end end
     local materialsLabel = App.L[App.db.hideDisenchantMaterials and "SHOW_MATERIALS" or "HIDE_MATERIALS"]

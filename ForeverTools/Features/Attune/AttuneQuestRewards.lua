@@ -866,6 +866,11 @@ FTAttune_Data.questRewards = {
 	-- Class quest reward audit.
 	[2281] = {},
 	[2282] = { fixed = {{7907, 1}} },
+	[356] = {},
+	[99156] = { choice = {{286742, 1}, {286743, 1}, {286744, 1}} },
+	[447] = { fixed = {{3448, 20}} },
+	[450] = {},
+	[451] = { choice = {{3451, 1}, {3582, 1}, {276723, 1}}, fixed = {{2458, 1}, {2459, 1}} },
 }
 
 -- name, icon file, quality. Used when the client has not cached the item.
@@ -1019,7 +1024,15 @@ FTAttune_Data.rewardItems = {
 	[280805] = {"Serrated Raptor Claw", "inv_weapon_shortblade_16", 3},
 	-- Cozy Sleeping Bag
 	[1652] = {"Sturdy Lunchbox", "inv_box_01", 1},
+	[2458] = {"Elixir of Minor Fortitude", "inv_potion_42", 1},
 	[2459] = {"Swiftness Potion", "inv_potion_95", 1},
+	[3448] = {"Senggin Root", "inv_misc_herb_07", 1},
+	[3451] = {"Nightglow Concoction", "inv_potion_19", 2},
+	[3582] = {"Acidproof Cloak", "inv_misc_cape_01", 2},
+	[276723] = {"Wise Gauntlets", "inv_gauntlets_13", 2},
+	[286742] = {"Riptear's Cleaver", "inv_throwingaxe_02", 2},
+	[286743] = {"Riptear's Spare Arm", "spell_shadow_fingerofdeath", 2},
+	[286744] = {"Thrice-Stitched Flesh", "inv_misc_cape_07", 2},
 	[2901] = {"Mining Pick", "inv_pick_02", 1},
 	[3334] = {"Farmer's Shovel", "inv_misc_shovel_01", 1},
 	[3388] = {"Lesser Troll's Blood Elixir", "inv_potion_79", 1},

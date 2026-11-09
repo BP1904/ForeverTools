@@ -81,7 +81,20 @@ class TrainingExtrasTest(unittest.TestCase):
         ''')
 
     def test_lazy_book_frames_keep_native_handlers_and_link_to_correct_view(self):
-        self.runtime().execute('''
+        self.runtime('''
+            local create=CreateFrame
+            function CreateFrame(...)
+                local frame=create(...); frame.attributes={}
+                function frame:SetAttribute(key,value) self.attributes[key]=value end
+                function frame:GetAttribute(key) return self.attributes[key] end
+                function frame:Hide() self:SetShown(false) end
+                return frame
+            end
+            function RegisterStateDriver(frame,key,condition)
+                assert(not combat and key=='bookcombat' and condition=='[combat] combat; peace')
+                frame.combatDriver=true
+            end
+        ''').execute('''
             local function Book()
                 local book=CreateFrame()
                 book:SetScript('OnShow',function() nativeShows=(nativeShows or 0)+1 end)
@@ -100,7 +113,19 @@ class TrainingExtrasTest(unittest.TestCase):
             link.scripts.OnClick(); assert(M.mode=='class')
             M.settings.bookButtons=false; M:OnSettingsChanged(); assert(not link:IsShown())
             M.settings.bookButtons=true; M:OnSettingsChanged(); assert(link:IsShown())
-            combat=true; Fire('PLAYER_REGEN_DISABLED'); assert(not link:IsShown())
+            local shown=link.SetShown
+            function link:SetShown(value)
+                assert(not combat or secureBook,'insecure book visibility in combat')
+                shown(self,value)
+            end
+            combat=true
+            assert(link.combatDriver)
+            secureBook=true
+            local driver=assert(loadstring('return function(self,newstate) '..link:GetAttribute('_onstate-bookcombat')..' end'))()
+            driver(link,'combat'); secureBook=false
+            Fire('PLAYER_REGEN_DISABLED')
+            PlayerSpellsFrame.SpellBookFrame.scripts.OnHide()
+            assert(not link:IsShown())
             combat=false; Fire('PLAYER_REGEN_ENABLED'); assert(link:IsShown())
             ForeverTools:SetEnabled('training',false); assert(not link:IsShown())
         ''')

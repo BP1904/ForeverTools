@@ -92,6 +92,7 @@ class MaterialsTest(unittest.TestCase):
             assert(GameTooltip.lines[3][3]==1)
             assert(string.find(GameTooltip.lines[3][1], '×1', 1, true))
             GetProfessions=function() return 1 end
+            Fire('SKILL_LINES_CHANGED')
             GameTooltip.lines={}; postcall(GameTooltip, {id=785})
             assert(#GameTooltip.lines==12)
             assert(string.find(GameTooltip.lines[11][1], 'weitere'))
@@ -199,7 +200,9 @@ class MaterialsTest(unittest.TestCase):
             SlashCmdList.FOREVERTOOLS()
             local checks=ForeverTools.menu.checks
             local master=ForeverTools.menu.byModule.materials.master.box
-            assert(#checks==81 and master:GetChecked())
+            local expected=0
+            for _,module in pairs(ForeverTools.modules) do expected=expected+1+#(module.options or {}) end
+            assert(#checks==expected and master:GetChecked())
             master:SetChecked(false); master.scripts.OnClick(master)
             assert(not ForeverTools:IsEnabled('materials') and ForeverTools:IsEnabled('merchant'))
         ''')

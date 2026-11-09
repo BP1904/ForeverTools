@@ -88,6 +88,9 @@ function A:BuildPlan()
     for key in pairs(boundKeys) do blocked[key]=true end
     for key in pairs(ROW) do blocked[key]=nil end
     for key in pairs(allowedMovement) do blocked[key]=nil end
+    -- Escape must keep closing windows, even while other shortcuts are locked.
+    blocked.ESCAPE=nil
+    allowedMovement.ESCAPE="TOGGLEGAMEMENU"
     local plan={}
     for key in pairs(blocked) do plan[#plan+1]={key=key} end
     for key,command in pairs(allowedMovement) do plan[#plan+1]={key=key,command=command} end
@@ -103,7 +106,19 @@ local APPLY = [[
             local key=self:GetAttribute("key-"..i)
             local command=self:GetAttribute("command-"..i)
             if command then
-                self:SetBinding(true,key,command)
+                local closer
+                if key == "ESCAPE" then
+                    for j=1,(self:GetAttribute("escape-count") or 0) do
+                        local candidate=self:GetFrameRef("escape-close"..j)
+                        local window=candidate and candidate:GetFrameRef("window")
+                        if window and window:IsShown() then closer=candidate end
+                    end
+                end
+                if closer then
+                    self:SetBindingClick(true,key,closer:GetName(),"LeftButton")
+                else
+                    self:SetBinding(true,key,command)
+                end
             else
                 self:SetBindingClick(true,key,"AntiFettFingerBlockedKey","LeftButton")
             end
@@ -118,6 +133,17 @@ function A:RefreshStatus()
     local enabled=self.controller:GetAttribute("enabled") and true or false
     self.db.enabled=enabled
     self:NotifyState()
+end
+
+function A:RegisterEscapeCloser(button)
+    if Combat() or not self.controller then return end
+    self.escapeClosers=self.escapeClosers or {}
+    for _,existing in ipairs(self.escapeClosers) do if existing==button then return end end
+    local index=#self.escapeClosers+1
+    self.escapeClosers[index]=button
+    self.controller:SetFrameRef("escape-close"..index,button)
+    self.controller:SetAttribute("escape-count",index)
+    button:SetFrameRef("keys",self.controller)
 end
 
 function A:IsEnabled()

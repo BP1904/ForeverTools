@@ -65,6 +65,8 @@ class AttuneTest(unittest.TestCase):
         return lua
 
     def initialize(self,lua):
+        # UI rendering is outside these engine tests; enable Next with a frame below.
+        lua.execute('ForeverToolsAttuneDB=ForeverToolsAttuneDB or {}; ForeverToolsAttuneDB.showNextSteps=false')
         lua.execute('app:OnInitialize(); Fire("ADDON_LOADED","ForeverTools")')
 
     def test_complete_source_compiles_and_xml_references_exist(self):
@@ -156,6 +158,17 @@ class AttuneTest(unittest.TestCase):
         lua.execute('''
             RunTimers()
             assert(app.ftStarted and not module.failed)
+            local nextFrame={shown=false,entries={}}
+            function nextFrame:Show() self.shown=true end
+            function nextFrame:Hide() self.shown=false end
+            env.FTAttuneNextFrame=nextFrame
+            function env.FTAttune_NextFrameEnsure() return nextFrame end
+            function env.FTAttune_NextFrameLayout() end
+            function env.FTAttune_NextFrameSave(frame) assert(frame==nextFrame); nextSaved=true end
+            ForeverToolsAttuneDB.showNextSteps=true
+            env.FTAttune_NextFrameUpdate(); RunTimers()
+            assert(nextFrame.shown and #nextFrame.entries>0)
+            assert(FTAttuneNextFrame==nil and AttuneNextFrame==nil)
             local toon=ForeverToolsAttuneDB.toons['Tester Forever']
             assert(toon.done['20-20']==1 and not toon.done['20-45'])
             app:QUEST_TURNED_IN('QUEST_TURNED_IN',7848)
@@ -165,11 +178,16 @@ class AttuneTest(unittest.TestCase):
             assert(app.events.QUEST_TURNED_IN)
             for _,frame in ipairs(env.frames) do assert(not frame.events.COMBAT_LOG_EVENT_UNFILTERED) end
             app:BAG_UPDATE('BAG_UPDATE')
+            env.FTAttune_NextFrameUpdate(); env.FTAttune_QueueStatScan()
             namespace:SetEnabled('attune',false)
+            assert(not nextFrame.shown and nextSaved)
+            assert(not env.FTAttuneNextFramePending and not env.FTAttune_StatScanQueued)
+            RunTimers(); assert(not nextFrame.shown)
             namespace:SetEnabled('attune',true)
             app:BAG_UPDATE('BAG_UPDATE')
             RunTimers()
             assert(app.enabled and not module.failed and toon.attuned['20']==100)
+            assert(nextFrame.shown and app.events.PLAYER_REGEN_ENABLED and app.events.CRITERIA_UPDATE)
             assert(Attune_DB==nil and attunelocal_panelDirty==nil and guildName==nil)
         ''')
 

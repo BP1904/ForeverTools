@@ -343,12 +343,12 @@ class QuestMarkersTest(unittest.TestCase):
             assert(cvars.nameplateMaxDistance=='100')
         ''')
 
-    def test_newly_available_tooltip_is_retried_after_one_tenth_second(self):
+    def test_newly_available_tooltip_is_retried_after_half_second(self):
         self.lua.execute('''
             C_TooltipInfo.GetUnit=function() return nil end
             Q:Refresh(); assert(record.text.text=='')
             C_TooltipInfo.GetUnit=function() return {lines=lines} end
-            Q.frame.scripts.OnUpdate(Q.frame,0.1)
+            Q.frame.scripts.OnUpdate(Q.frame,0.5)
             assert(record.text.text==icon..'1/15')
         ''')
 

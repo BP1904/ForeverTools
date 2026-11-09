@@ -357,7 +357,10 @@ function M:Initialize()
         elseif not FT:IsEnabled("threatplates") then return
         elseif event=="NAME_PLATE_UNIT_ADDED" then self:Attach(unit)
         elseif event=="PLAYER_ENTERING_WORLD" then self:Discover()
-        elseif unit and self.byUnit[unit] then self:Update(self.byUnit[unit])
+        elseif event:sub(1,5)=="UNIT_" then
+            local record=unit and self.byUnit[unit]
+            if record then self:Update(record)
+            elseif unit=="player" and event=="UNIT_AURA" then self:RefreshAll() end
         else self:RefreshAll() end
     end)
     local elapsed=0

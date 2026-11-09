@@ -116,7 +116,7 @@ function M:AuraSpell(index)
 end
 
 function M:Roster()
-    local list, byName = {}, {}
+    local list, byName, byUnit = {}, {}, {}
     local function Add(unit)
         if not Read(UnitExists, false, unit) then return end
         local name = Name(unit)
@@ -127,7 +127,7 @@ function M:Roster()
                 local row = {unit=unit, name=name, class=index,
                     guid=Read(UnitGUID, name, unit), tank=Read(UnitGroupRolesAssigned, "", unit)=="TANK"
                         or Read(GetPartyAssignment, false, "MAINTANK", unit)}
-                list[#list+1] = row; byName[name] = row
+                list[#list+1] = row; byName[name] = row; byUnit[unit] = row
             end
         end
     end
@@ -141,7 +141,7 @@ function M:Roster()
         if a.class ~= b.class then return a.class < b.class end
         return a.name < b.name
     end)
-    self.roster, self.byName = list, byName
+    self.roster, self.byName, self.byUnit = list, byName, byUnit
     self.paladins = {}
     for _, row in ipairs(list) do
         if row.class == 5 then self.paladins[#self.paladins+1] = row.name end
@@ -155,6 +155,28 @@ function M:Assignment(row, owner)
     return ValidBlessing(p.players[row.name]) or ValidBlessing(p.classes[row.class]) or 0
 end
 
+-- Reuse aura slots only within one display update; never across casts or events.
+function M:ReadHelpfulAura(unit, index)
+    local snapshot = self.timerAuras
+    local slots = snapshot and snapshot[unit]
+    if slots and slots[index] then return slots[index].ok, slots[index].aura end
+    local ok, aura
+    if C_UnitAuras and C_UnitAuras.GetAuraDataByIndex then
+        ok, aura = pcall(C_UnitAuras.GetAuraDataByIndex, unit, index, "HELPFUL")
+    elseif UnitBuff then
+        ok, aura = pcall(function()
+            local name, _, _, _, duration, expires = UnitBuff(unit, index)
+            if not name then return end
+            return {name=name, duration=duration, expirationTime=expires}
+        end)
+    end
+    if snapshot then
+        if not slots then slots = {}; snapshot[unit] = slots end
+        slots[index] = {ok=ok, aura=aura}
+    end
+    return ok, aura
+end
+
 -- Unknown/secret auras retain only previously measured timers; never invent a full duration.
 function M:Remaining(row, wanted)
     if not wanted then return 0 end
@@ -163,16 +185,7 @@ function M:Remaining(row, wanted)
     local cached = self.auraCache[cacheKey]
     local hidden, found, expiration = false, false, nil
     for i=1,255 do
-        local ok, aura
-        if C_UnitAuras and C_UnitAuras.GetAuraDataByIndex then
-            ok, aura = pcall(C_UnitAuras.GetAuraDataByIndex, row.unit, i, "HELPFUL")
-        elseif UnitBuff then
-            ok, aura = pcall(function()
-                local name, _, _, _, duration, expires = UnitBuff(row.unit, i)
-                if not name then return end
-                return {name=name, duration=duration, expirationTime=expires}
-            end)
-        else hidden=true; break end
+        local ok, aura = self:ReadHelpfulAura(row.unit, i)
         if not ok or Secret(aura) then hidden=true; break end
         if not aura then break end
         local readable, matched, exp = pcall(function()
@@ -712,7 +725,8 @@ function M:ClearGridAssignments()
 end
 
 function M:CreateAssignmentGrid()
-    local panel=CreateFrame("Frame","ForeverToolsPaladin",UIParent,"BackdropTemplate")
+    local panel=CreateFrame("Frame","ForeverToolsPaladin",UIParent,"BackdropTemplate,SecureHandlerShowHideTemplate")
+    panel:Hide()
     panel:SetSize(912,205); panel:SetPoint("CENTER"); panel:SetClampedToScreen(true)
     panel:SetMovable(true); panel:EnableMouse(true); panel:RegisterForDrag("LeftButton")
     panel:SetBackdrop({bgFile="Interface\\Tooltips\\UI-Tooltip-Background",
@@ -720,11 +734,10 @@ function M:CreateAssignmentGrid()
         insets={left=3,right=3,top=3,bottom=3}})
     panel:SetBackdropColor(0,0,0,0.9); panel:SetBackdropBorderColor(0.45,0.45,0.35,1)
     panel:SetScript("OnDragStart",function() if not Combat() then panel:StartMoving() end end)
-    panel:SetScript("OnDragStop",panel.StopMovingOrSizing)
+    panel:SetScript("OnDragStop",function()
+        if Combat() then panel.ftStopDragPending=true else panel:StopMovingOrSizing() end
+    end)
     Label(panel,"|cffffd200ForeverTools – Paladin-Zuweisungen|r",342,-7,500)
-    local close=CreateFrame("Button",nil,panel,"UIPanelCloseButton")
-    close:SetSize(22,22); close:SetPoint("TOPRIGHT",3,3)
-    close:SetScript("OnClick",function() self:ToggleWindow() end)
     self.window=panel
     self.gridHeaders={}; self.gridRows={}; self.gridOffset=0
     local function Texture(parent,path,x,y,w,h)
@@ -872,15 +885,57 @@ function M:RefreshAssignmentGrid()
     for i=#self.paladins+1,#self.gridRows do self.gridRows[i].frame:Hide() end
 end
 
+function M:InstallCloseButtons()
+    local function CloseButton(name,parent,window,other,detailsOnly)
+        local button=CreateFrame("Button",name,parent,"UIPanelCloseButton,SecureHandlerClickTemplate")
+        button:RegisterForClicks("AnyUp")
+        button:SetFrameRef("window",window)
+        if other then button:SetFrameRef("other",other) end
+        button:SetAttribute("_onclick",[[
+            self:GetFrameRef("window"):Hide()
+            local other=self:GetFrameRef("other")
+            if other then other:Hide() end
+            local keys=self:GetFrameRef("keys")
+            if keys and keys:GetAttribute("active") then
+                keys:RunAttribute("apply")
+            end
+            self:CallMethod("AfterClose")
+        ]])
+        button.AfterClose=function()
+            self.db.detailsOpen=false
+            if not detailsOnly then self.db.open=false end
+            self.dirty=true
+        end
+        return button
+    end
+    self.detailWindow.CloseButton:Hide()
+    self.detailWindow.CloseButton=CloseButton(nil,self.detailWindow,self.detailWindow,nil,true)
+    self.detailWindow.CloseButton:SetPoint("TOPRIGHT",0,0)
+    self.closeButton=CloseButton(nil,self.window,self.window,self.detailWindow)
+    self.closeButton:SetSize(22,22); self.closeButton:SetPoint("TOPRIGHT",3,3)
+    local escape=CloseButton("ForeverToolsPaladinEscape",UIParent,self.window,self.detailWindow)
+    escape:SetSize(1,1); escape:SetPoint("TOPLEFT",UIParent,"TOPLEFT",0,0); escape:EnableMouse(false)
+    self.escapeClose=escape
+    self.window:SetFrameRef("close",escape)
+    self.window:SetAttribute("_onshow",[[
+        self:SetBindingClick(true,"ESCAPE",self:GetFrameRef("close"):GetName(),"LeftButton")
+    ]])
+    self.window:SetAttribute("_onhide",[[self:ClearBindings()]])
+    if AntiFettFinger and AntiFettFinger.RegisterEscapeCloser then
+        AntiFettFinger:RegisterEscapeCloser(escape)
+        self.closeButton:SetFrameRef("keys",AntiFettFinger.controller)
+    end
+end
+
 function M:CreateWindow()
     if Combat() then return end
     local panel=CreateFrame("Frame","ForeverToolsPaladinDetails",UIParent,"BasicFrameTemplateWithInset")
     panel:SetSize(790,660); panel:SetPoint("CENTER"); panel:SetClampedToScreen(true)
     panel:SetMovable(true); panel:EnableMouse(true); panel:RegisterForDrag("LeftButton")
     panel:SetScript("OnDragStart",function() if not Combat() then panel:StartMoving() end end)
-    panel:SetScript("OnDragStop",panel.StopMovingOrSizing)
-    -- The parent contains protected buttons: its close button and Escape must also defer in combat.
-    panel.CloseButton:SetScript("OnClick",function() self.db.detailsOpen=false; self:Refresh() end)
+    panel:SetScript("OnDragStop",function()
+        if Combat() then panel.ftStopDragPending=true else panel:StopMovingOrSizing() end
+    end)
     panel.TitleText:SetText("ForeverTools – Paladin-Segen")
     self.detailWindow=panel
     self.ownerButton=Button(panel,"",16,-34,300,function()
@@ -950,11 +1005,15 @@ function M:CreateWindow()
     for _,button in ipairs(self.classCasts) do Track(button) end
     for _,row in ipairs(self.rows) do Track(row.buff); Track(row.salv) end
     self:CreateAssignmentGrid()
+    self:InstallCloseButtons()
 end
 
 function M:Refresh()
     if Combat() then self.dirty=true; return end
     self.dirty=false
+    for _,panel in pairs({self.window,self.detailWindow}) do
+        if panel.ftStopDragPending then panel:StopMovingOrSizing(); panel.ftStopDragPending=nil end
+    end
     self:Roster()
     if FT:IsEnabled("paladin") then self:CreateBar() end
     self:RefreshBar()
@@ -1063,6 +1122,13 @@ function M:PaintGroup(button,members,salvation)
 end
 
 function M:UpdateTimers()
+    self.timerAuras = {}
+    local ok, err = pcall(self.PaintTimers, self)
+    self.timerAuras = nil
+    if not ok then error(err) end
+end
+
+function M:PaintTimers()
     if self.bar and self.bar.frame:IsShown() then
         for i,b in ipairs(self.bar.classes) do
             local members={}
@@ -1163,7 +1229,12 @@ function M:Initialize()
     if C_ChatInfo and C_ChatInfo.RegisterAddonMessagePrefix then C_ChatInfo.RegisterAddonMessagePrefix("PLPWR") end
     frame:SetScript("OnEvent",function(_,event,...)
         if event=="CHAT_MSG_ADDON" then self:Receive(...); return end
-        if event=="UNIT_AURA" then self:UpdateTimers(); return end
+        if event=="UNIT_AURA" then
+            local unit=...
+            if not Secret(unit) and FT:IsEnabled("paladin")
+                and (unit=="player" or self.byUnit[unit]) then self:UpdateTimers() end
+            return
+        end
         if event=="SPELLS_CHANGED" or event=="PLAYER_LOGIN" or event=="PLAYER_ENTERING_WORLD" then
             self.player=Name("player") or self.player; self:ScanSpells()
         end

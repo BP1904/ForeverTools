@@ -1,5 +1,13 @@
 # ForeverTools – ein Addon für alle unsere Funktionen
 
+**Neu in 1.16.9: Weniger Hintergrundarbeit.** Alle 21 ForeverTools-Module auf weitere Verbesserungen geprüft. Questmarkierungen prüfen alle 0,5 Sekunden; neue Plaketten und Questereignisse reagieren sofort. Die schnellen Threat-Plates-Updates bleiben erhalten. Bankaufnahme, Material-Tooltips, Berufsscans, Auktionsscans und Karten vermeiden doppelte Arbeit. Nach dem Update `/reload` eingeben. Einzelheiten: [Verbesserungen-2026-11-09.md](Verbesserungen-2026-11-09.md).
+
+**Bank unterwegs:** Ein **Bank**-Button im kombinierten Blizzard-Rucksack öffnet den gespeicherten Bankinhalt mit Symbolen, Stapelmengen und Suche. Nach `/reload` einmal die Bank besuchen, danach ist die Ansicht auch unterwegs über den Button oder `/ftbank` verfügbar. Der letzte Stand wird pro Charakter gespeichert.
+
+**Berufsplaner:** `/ftberufe` zeigt Herstellungsmengen aus Taschen und gespeicherter Bank, fehlende Rezepte mit Quelle sowie einen Skillvorschlag. Zum Start Bank und jeden Herstellberuf öffnen, dann „Neu scannen“. Maus über einem Rezept zeigt Materialien und Fehlmengen. Im Skillplan werden gemeinsame Materialien verrechnet; „bestenfalls“ ist wegen zufälliger Skillpunkte keine Garantie. Bedienung und Grenzen stehen in `ForeverTools/README.md`.
+
+**Neu in 1.16.8: Attune aktualisiert.** Die integrierte Forever-Version steigt von 16001-34 auf 16001-38: Charakterfortschritt, „Attune: Next“, ausblendbare Ketten und ergänzte RoL-Voraussetzungen. Der neue Fenster- und Ereignisablauf wird beim Modulwechsel berücksichtigt. Nach dem Update `/reload` eingeben.
+
 **Neu in 1.16.7: Update-Helfer repariert.** Die Dateiprüfung berücksichtigt nun alle enthaltenen Addondateien, einschließlich BigWigs-Schriften und `!Options.lua`. Betroffene alte Helfer müssen einmalig ersetzt und neu gestartet werden; anschließend kann wieder der Ingame-Update-Button verwendet werden. Der vollständige echte Release-Katalog wird jetzt zusätzlich im PowerShell-Test installiert und geprüft.
 
 **Neu in 1.16.6: Threat-Plates-Kampffehler korrigiert.** Die Lebensfüllung verwendet einen eigenen Anzeigebalken. Dadurch werden die Blizzard-TextStatusBar-Aufrufe vermieden, die in Version 1.16.5 beim Kampf Fehler mit geschützten Zahlen auslösen konnten. Nach dem Update `/reload` eingeben. Prüfung: 336 automatisierte Tests einschließlich des nachgestellten Fehlerpfads; die Bestätigung im betroffenen Spielclient steht noch aus.

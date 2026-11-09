@@ -160,6 +160,22 @@ end
 
 
 class MapsTest(unittest.TestCase):
+    def test_combat_defers_cvars_and_finishing_a_drag(self):
+        self.runtime().execute('''
+            local stop=WorldMapFrame.StopMovingOrSizing
+            stops=0
+            WorldMapFrame.StopMovingOrSizing=function(frame)
+                assert(not combat,'protected stop during combat')
+                stops=stops+1; if stop then stop(frame) end
+            end
+            M:StartDragging(); assert(M.dragging)
+            local set=C_CVar.SetCVar
+            C_CVar.SetCVar=function(...) assert(not combat); return set(...) end
+            combat=true; M:StopDragging(); M:UpdateCVars()
+            assert(stops==0 and M.stopDragPending and M.pendingCVars)
+            combat=false; Fire('PLAYER_REGEN_ENABLED')
+            assert(stops==1 and not M.stopDragPending and not M.pendingCVars)
+        ''')
     def runtime(self, before='MakeMap()'):
         lua = LuaRuntime(unpack_returned_tuples=True)
         lua.execute(MOCK + MAP_MOCK)

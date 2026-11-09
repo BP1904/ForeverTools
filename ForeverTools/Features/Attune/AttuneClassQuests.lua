@@ -2498,9 +2498,10 @@ local classQuestGivers = {
 	[8564] = {1941, 38.2, 20.8, "Magistrix Erona"}, -- Magistrix Erona, Eversong Woods
 }
 
+-- Class quests, then Character, then dungeons. Character is already in front of dungeons.
 local insertAt = 1
 for i, a in ipairs(FTAttune_Data.attunes) do
-	if a.GROUP == FTAttuneLang["DUNGEONS"] then
+	if a.GROUP == FTAttuneLang["CHARACTER"] or a.GROUP == FTAttuneLang["DUNGEONS"] then
 		insertAt = i
 		break
 	end

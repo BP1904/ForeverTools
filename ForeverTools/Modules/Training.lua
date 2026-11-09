@@ -280,9 +280,9 @@ function M:ToggleIgnored(id)
     self.db.ignored[id]=not self.db.ignored[id] or nil
     self:Refresh()
 end
-function M:Refresh()
+function M:Refresh(alreadyBuilt)
     if not FT:IsEnabled("training") or not self.panel or not self.panel:IsShown() then return end
-    self:Build()
+    if not alreadyBuilt then self:Build() end
     self.offset=math.min(self.offset or 0,math.max(0,#self.rows-8))
     local p=self.panel
     local prices=self.incompletePrice and "Gesamtpreis beim Lehrer prüfen"
@@ -420,11 +420,13 @@ function M:Initialize()
         end
         if self.refreshPending then
             self.refreshPending=nil
+            local built=false
             if self.levelNotice then
                 self.levelNotice=nil; self:Build()
+                built=true
                 if self.settings.notify and self.available>0 then FT:Print(self.available .. " offene Lehrerränge. Übersicht: /ftlernen oder /ad → Was kann ich lernen?") end
             end
-            self:Refresh()
+            self:Refresh(built)
         end
     end)
     SLASH_FOREVERTOOLSTRAINING1="/ftlernen"

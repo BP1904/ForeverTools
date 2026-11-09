@@ -2,14 +2,16 @@
 ## Title: ForeverTools
 ## Notes: HÃ¤ndler, Quests, Materialien, Paladin, GTFO, Threat Plates, Decursive, Anti Fett Finger, Auto Rank, Karten, Auktionshaus, LernÃ¼bersicht Disenchantry, Attune, BigWigs und Nova Instance Tracker.
 ## Author: ForeverTools
-## Version: 1.16.7
+## Version: 1.16.9
 ## OptionalDeps: EasyExperienceBar, AntiFettFinger, AutoRank, Leatrix_Maps, WhatsTraining, Disenchantry, Attune, BigWigs, NovaInstanceTracker
 ## SavedVariables: ForeverToolsDB, ForeverToolsDisenchantryDB, ForeverToolsAttuneDB, ForeverToolsBigWigsDB, ForeverToolsBigWigsIconDB, ForeverToolsBigWigsStatsDB, ForeverToolsNovaDB
-## SavedVariablesPerCharacter: ForeverToolsMaterialMail, ForeverToolsPaladinDB, ForeverToolsAntiFettFingerDB, ForeverToolsAutoRankDB, ForeverToolsTrainingDB, ForeverToolsAttuneLastViewed, ForeverToolsAttuneTreeExpandStatus, ForeverToolsAttuneMigrated, ForeverToolsExperienceDB
+## SavedVariablesPerCharacter: ForeverToolsMaterialMail, ForeverToolsPaladinDB, ForeverToolsAntiFettFingerDB, ForeverToolsAutoRankDB, ForeverToolsTrainingDB, ForeverToolsAttuneLastViewed, ForeverToolsAttuneTreeExpandStatus, ForeverToolsAttuneMigrated, ForeverToolsExperienceDB, ForeverToolsProfessionDB, ForeverToolsBankDB
 
 Features\AntiFettFinger.lua
 Features\AutoRank.lua
 Core.lua
+Diagnostics.lua
+RefreshmentMacro.lua
 Embedded.lua
 UpdateStatus.lua
 Updates.lua
@@ -19,6 +21,7 @@ Modules\QuestMarkers.lua
 Data\MaterialUses.lua
 Data\Recipes.lua
 Modules\Materials.lua
+Modules\BankView.lua
 Data\PaladinSpells.lua
 Modules\Paladin.lua
 Data\GTFOClassic.lua
@@ -26,6 +29,7 @@ Modules\GTFO.lua
 Modules\ThreatPlates.lua
 Data\CleansingSpells.lua
 Modules\Decursive.lua
+Modules\BuffCheck.lua
 Modules\AntiFettFinger.lua
 Modules\AutoRank.lua
 Features\Maps.xml
@@ -38,6 +42,7 @@ Data\Training\Bootstrap.lua
 Data\Training\Manifest.xml
 Modules\Training.lua
 Modules\TrainingExtras.lua
+Modules\ProfessionPlanner.lua
 Features\Disenchantry\Bootstrap.lua
 Features\Disenchantry\Manifest.xml
 Modules\Disenchantry.lua

@@ -40,16 +40,17 @@ class BundleTest(unittest.TestCase):
                 lua.execute('assert(loadstring(...))("ForeverTools", namespace)', code)
         lua.execute('Fire("ADDON_LOADED", "ForeverTools")')
 
-    def test_full_production_toc_loads_all_eighteen_modules(self):
+    def test_full_production_toc_loads_all_twenty_one_modules(self):
         lua = self.runtime(full=True)
         self.load_bundle(lua, full=True)
         lua.execute('''
-            assert(#ForeverTools.order == 18)
+            assert(#ForeverTools.order == 21)
             for id, module in pairs(ForeverTools.modules) do
                 assert(not module.initError, id .. ': ' .. tostring(module.initError))
             end
             ForeverTools:ToggleMenu()
-            assert(#ForeverTools.menu.sections == 18)
+            assert(#ForeverTools.menu.sections == 21)
+            assert(ForeverTools.modules.buffcheck.display)
             assert(ForeverTools.modules.antifettfinger:IsAvailable())
             assert(ForeverTools.modules.autorank:IsAvailable())
         ''')

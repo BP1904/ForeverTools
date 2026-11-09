@@ -36,6 +36,10 @@ function CreateFrame(_, name)
     function f:UnregisterEvent(e) self.events[e] = nil end
     function f:SetScript(e, callback) self.scripts[e] = callback end
     function f:SetSize() end
+    function f:SetAllPoints() end
+    function f:SetBackdrop() end
+    function f:SetBackdropColor() end
+    function f:SetBackdropBorderColor() end
     function f:SetFrameStrata() end
     function f:SetNormalTexture() end
     function f:SetTexture() end
@@ -43,6 +47,7 @@ function CreateFrame(_, name)
     function f:SetHeight() end
     function f:SetWidth() end
     function f:SetPoint() end
+    function f:ClearAllPoints() end
     function f:SetClampedToScreen() end
     function f:SetMovable() end
     function f:EnableMouse() end
@@ -66,7 +71,8 @@ function CreateFrame(_, name)
     function f:CreateFontString() return CreateFrame() end
     function f:CreateTexture() return CreateFrame() end
     f.TitleText = {SetText = function() end}
-    f.Text = {SetText = function() end, SetWidth = function() end, SetJustifyH = function() end}
+    f.Text = {SetText = function() end, SetWidth = function() end, SetJustifyH = function() end,
+        SetTextColor = function() end}
     if name then _G[name] = f end
     frames[#frames+1] = f
     return f

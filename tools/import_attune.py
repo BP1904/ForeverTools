@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def build(source):
     source = Path(source)
+    toc = (source / 'Attune.toc').read_text(encoding='utf-8-sig')
+    version = re.search(r'^## Version:\s*(\S+)', toc, re.M).group(1)
+    if not version.startswith('16001-'):
+        raise ValueError('Expected Attune Forever (16001)')
     target = ROOT / 'ForeverTools/Features/Attune'
     target.mkdir(parents=True, exist_ok=True)
     for folder in ('Libs', 'Images'):
@@ -39,7 +43,7 @@ def build(source):
         if path == 'Attune.lua':
             code = code.replace('SetTitle("  FTAttune")', 'SetTitle("  ForeverTools – Attune")')
             code = code.replace('FTAttune_SetChromeTitle(attunelocal_bronzeChrome, "FTAttune")', 'FTAttune_SetChromeTitle(attunelocal_bronzeChrome, "ForeverTools – Attune")')
-            code = code.replace('tostring(GetAddOnMetadata(addonName, "Version"))', '"16001-34"')
+            code = code.replace('tostring(GetAddOnMetadata(addonName, "Version"))', '"' + version + '"')
             code = code.replace('function FTAttune:OnInitialize()', 'function FTAttune:FTRegisterOptions()')
             code = code.replace('function FTAttune:OnEnable()', 'function FTAttune:FTStart()')
             code = code.replace('SlashCmdList["FTAttune"] = FTAttune_SlashCommandHandler', '')
@@ -67,13 +71,17 @@ function FTAttune:OnEnable()
     else
         for _, event in ipairs({"CHAT_MSG_ADDON", "PLAYER_LOGOUT", "PLAYER_LEVEL_UP",
             "QUEST_ACCEPTED", "QUEST_REMOVED", "QUEST_TURNED_IN", "UPDATE_FACTION",
-            "BAG_UPDATE", "GOSSIP_SHOW", "QUEST_DETAIL"}) do self:RegisterEvent(event) end
+            "BAG_UPDATE", "GOSSIP_SHOW", "QUEST_DETAIL", "PLAYER_REGEN_ENABLED"}) do self:RegisterEvent(event) end
+        for _, event in ipairs({"CRITERIA_UPDATE", "SKILL_LINES_CHANGED", "CHAT_MSG_MONEY",
+            "PLAYER_PVP_KILLS_CHANGED", "PLAYER_ENTERING_WORLD"}) do pcall(self.RegisterEvent, self, event) end
         if attunelocal_hasCombatLog then cleu_parser:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
         else cleu_parser:RegisterEvent("PARTY_KILL"); cleu_parser:RegisterEvent("UNIT_DIED") end
         self:RegisterComm(attunelocal_syncprefix)
         FTAttune_CheckProgress()
         self:BAG_UPDATE(nil)
+        FTAttune_QueueStatScan()
         FTAttune_ForceAttuneTabRefresh()
+        FTAttune_NextFrameUpdate()
         if not FTAttune_DB.minimapbuttonpos.hide then attunelocal_minimapicon:Show("FTAttune_Broker") end
     end
 end
@@ -81,9 +89,18 @@ function FTAttune:OnDisable()
     cleu_parser:UnregisterAllEvents()
     if self.ftStarted then FTAttune_SaveTreeExpandStatus() end
     attuneItemScanQueued = false
+    FTAttuneNextFramePending = false
+    FTAttune_StatScanQueued = false
+    FTAttune_StatScanFollowUp = false
+    FTAttune_StatPollActive = false
+    FTAttune_CharacterTreeRefreshQueued = false
     if attunelocal_iconView then attunelocal_iconView.pending = false end
     attunelocal_syncStatus = -1
     FTAttune_CloseQuestGiverMap()
+    if FTAttuneNextFrame then
+        FTAttune_NextFrameSave(FTAttuneNextFrame)
+        FTAttuneNextFrame:Hide()
+    end
     for _, widget in pairs({main=attunelocal_frame, export=attunelocal_export_frame,
         survey=attunelocal_survey_frame, sync=attunelocal_syncProgressWidget,
         reward=attunelocal_rewardFrame, detail=attunelocal_questDetail}) do
@@ -106,10 +123,10 @@ end
         manifest.append(f'  <Script file="{path}"/>')
     manifest.append('</Ui>')
     (target/'Manifest.xml').write_text('\n'.join(manifest)+'\n', encoding='utf-8')
-    (target/'NOTICE.txt').write_text('Attune Forever 16001-34, CixiDelmont / Antoine Desmarets.\n'
+    (target/'NOTICE.txt').write_text(f'Attune Forever {version}, CixiDelmont / Antoine Desmarets.\n'
         'Copyright (c) 2019-2021 by Antoine Desmarets. All Rights Reserved.\n'
-        'Source: user-installed Attune, adapted locally at the user request.\n'
-        'https://www.curseforge.com/wow/addons/attune/files/9263982\n'
+        'Source: original Attune Forever, adapted locally at the user request.\n'
+        'https://www.curseforge.com/wow/addons/attune\n'
         'No redistribution license is granted by this integration. Bundled libraries retain their notices.\n'
         'Changes: isolated environment, frame/locale/widget identifiers and asset paths;\n'
         'ForeverTools settings, lifecycle, timer guards, migration and launcher.\n', encoding='utf-8')

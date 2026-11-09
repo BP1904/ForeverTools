@@ -168,6 +168,7 @@ function M:Layout()
 end
 
 function M:NativeBar(hide)
+    if not hide and not self.native then return end
     -- Do not hide StatusTrackingBarManager: it also contains reputation/honor bars.
     local modern
     local kinds = Enum and Enum.StatusTrackingBarType
@@ -181,13 +182,13 @@ function M:NativeBar(hide)
             self.native = self.native or {}
             if hide then
                 if self.native[frame] == nil then self.native[frame] = frame:GetAlpha() end
-                frame:SetAlpha(0)
+                if frame:GetAlpha()~=0 then frame:SetAlpha(0) end
             end
         end
     end
     if not hide then
         for frame, alpha in pairs(self.native or {}) do if frame:GetAlpha() == 0 then frame:SetAlpha(alpha) end end
-        self.native = {}
+        self.native = nil
     end
 end
 

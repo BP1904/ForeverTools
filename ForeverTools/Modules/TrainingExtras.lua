@@ -134,6 +134,9 @@ function M:SetTrainerWaypoint(target)
 end
 
 function M:UpdateBookButtons()
+    -- Anchoring to the native spell/profession book can protect these buttons too.
+    -- Combat visibility belongs to the secure state driver, never the event callback.
+    if Combat() then return end
     self.bookLinks=self.bookLinks or {}
     local enabled=FT:IsEnabled("training") and self.settings.bookButtons
     local owners={}
@@ -142,11 +145,15 @@ function M:UpdateBookButtons()
     for _,owner in pairs({ProfessionsFrame,TradeSkillFrame,CraftFrame}) do owners[owner]="recipes" end
     for owner,mode in pairs(owners) do
         if not self.bookLinks[owner] and enabled and not Combat() then
-            local button=CreateFrame("Button",nil,UIParent,"UIPanelButtonTemplate")
+            local button=CreateFrame("Button",nil,UIParent,"UIPanelButtonTemplate,SecureHandlerStateTemplate")
             self.bookLinks[owner]=button
             button:SetSize(200,24); button:SetClampedToScreen(true)
             button:SetText(mode=="recipes" and "Was kann ich herstellen?" or "Was kann ich lernen?")
             button:SetPoint("TOPRIGHT",owner,"BOTTOMRIGHT",-8,-4)
+            if RegisterStateDriver then
+                button:SetAttribute("_onstate-bookcombat",[[if newstate=="combat" then self:Hide() end]])
+                RegisterStateDriver(button,"bookcombat","[combat] combat; peace")
+            end
             button:SetScript("OnClick",function()
                 if FT:IsEnabled("training") and self.settings.bookButtons and not Combat() then
                     self.mode=mode; self.offset=0; self:Open()
@@ -154,7 +161,7 @@ function M:UpdateBookButtons()
             end)
             if owner.HookScript then
                 owner:HookScript("OnShow",function() self:UpdateBookButtons() end)
-                owner:HookScript("OnHide",function() button:SetShown(false) end)
+                owner:HookScript("OnHide",function() if not Combat() then button:SetShown(false) end end)
             end
         end
     end

@@ -7,7 +7,7 @@
       "files": [
         {
           "path": "Core.lua",
-          "sha256": "06e2e40adcd1d6062dce2bc8b04626055edebfcd55fd9fd534e3f58d8ee340de"
+          "sha256": "d0e2733941276f60b9adc1f19b96f4982bbdfce28719016649fbd56828f6f226"
         },
         {
           "path": "Data/CleansingSpells.lua",
@@ -158,32 +158,36 @@
           "sha256": "2d741ccc00805662b820be22da013f518c3b87a514e64b69a50bf3ade18df93a"
         },
         {
+          "path": "Diagnostics.lua",
+          "sha256": "6fde04e5b42f5d0f23331128422afd78f30a4a4e3cd5ace13b08580b8e1d7f2e"
+        },
+        {
           "path": "Embedded.lua",
           "sha256": "a1ab2cef69c0a6bbf9ef9affc574298f06377ca13785ff261e6bd5ba78f47f2c"
         },
         {
           "path": "Features/AntiFettFinger.lua",
-          "sha256": "1b1c883c4cfc143c74977bcf9592da31421914c1d7fefc44877adc3f6d6186b5"
+          "sha256": "d42d3514219dbc9a35b21dc3974bbefb44719b86e0421617200c3353587b58a1"
         },
         {
           "path": "Features/Attune/Attune.lua",
-          "sha256": "91100727a6b6a374f1a9535ebbb9d65a83ce55fdc95290e857a457432e09f2ac"
+          "sha256": "d2ac54bb2812396e56fcd79ca9fc7ac1e8536ffcb2926b37c9eecb93da44f612"
         },
         {
           "path": "Features/Attune/AttuneClassQuests.lua",
-          "sha256": "5751ce319fe32bc2be14a66b11c2c8184d0cdfb146b1f0f06ab4ee7ad296b692"
+          "sha256": "3babf767a2b3b0c432b5876e0736b5087256fbfeb0e9c4eb12634b26c5e137fa"
         },
         {
           "path": "Features/Attune/AttuneData.lua",
-          "sha256": "519cbab7d9991ca4bbd349a47944f49759e3b76e7337e154e3f1ecc659c88392"
+          "sha256": "267c57290cd7c4a97dfd1769814322cf1c480704a5f97b244627799cbd100d38"
         },
         {
           "path": "Features/Attune/AttuneQuestGivers.lua",
-          "sha256": "33540c86402917528362da3bc8a4e80d9ffa6a1f1975ab3c3ef4a0c675738716"
+          "sha256": "1308cebb056d876142cecb908d2d5f8548037994046fe2851dd33c6fe0314502"
         },
         {
           "path": "Features/Attune/AttuneQuestRewards.lua",
-          "sha256": "fe7615e67aa7942b423ee57793f09d62e45fb52ffe5e7bc9e7a21a9eb16788da"
+          "sha256": "40c601784fc712885061a86a90aca2dad5a8335cf9668df64baec08efb00037d"
         },
         {
           "path": "Features/Attune/Bootstrap.lua",
@@ -499,7 +503,7 @@
         },
         {
           "path": "Features/Attune/Libs/AceGUI-3.0/AceGUI-3.0.lua",
-          "sha256": "db24d1193ec97955bc7c1c47f22009042fdc4c680eecc2a28852bd95a6bb741a"
+          "sha256": "bcfcef55d727f8434606bdba2375929123422e051c27fd1bfcbd95e7ab723ed7"
         },
         {
           "path": "Features/Attune/Libs/AceGUI-3.0/AceGUI-3.0.xml",
@@ -515,7 +519,7 @@
         },
         {
           "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-Frame.lua",
-          "sha256": "faf59b0a44fe489e9d789a5e5fa810dd7a47ea32fc9e3bf1453408a9fc133181"
+          "sha256": "fb3f9f3b3414bd3b27e1281c2b8836749e38906458df6b69e9f385fbe041df91"
         },
         {
           "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-InlineGroup.lua",
@@ -527,7 +531,7 @@
         },
         {
           "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-SimpleGroup.lua",
-          "sha256": "4694e8b2047da47ee34f395d6d7ca0c2124c9835576df6a07f8fd93166388c14"
+          "sha256": "d65968489c0fa5749d2e35be69c60d0dd7969189aa14a9031f0654715625d214"
         },
         {
           "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-TabGroup.lua",
@@ -535,7 +539,7 @@
         },
         {
           "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-TreeGroup.lua",
-          "sha256": "311b097199d201b93bc56e7d26788a1205a87cd500cc4b80a369e466a1a4d0ec"
+          "sha256": "faf9f1eb9bec0af6d3493c8e264fbf6aef244c364ed72c85069578d69115682d"
         },
         {
           "path": "Features/Attune/Libs/AceGUI-3.0/widgets/AceGUIContainer-Window.lua",
@@ -603,11 +607,11 @@
         },
         {
           "path": "Features/Attune/Libs/CallbackHandler-1.0/CallbackHandler-1.0.lua",
-          "sha256": "d8a175f5823a999d8a188ee5e8e1133c393fd8c25b71931ab929d4691eff750b"
+          "sha256": "e37ca6e5cd4e39c69d600468c8fe2a425b8a4d50023d9903fa3dc7aeeae1561f"
         },
         {
           "path": "Features/Attune/Libs/CallbackHandler-1.0/CallbackHandler-1.0.xml",
-          "sha256": "5fc06440452a82be9554fc9650fa7de0b6df786c6d188d05d7d0ec4aa3e002fd"
+          "sha256": "893bd83f5eb818a93a5c8bec4ed37edf2493a9fa655acbcb0cdde02bea5448e5"
         },
         {
           "path": "Features/Attune/Libs/ChatThrottleLib/ChatThrottleLib.lua",
@@ -619,19 +623,23 @@
         },
         {
           "path": "Features/Attune/Libs/LibDataBroker-1.1/LibDataBroker-1.1.lua",
-          "sha256": "d79b3eada649684543bbbc3c511c2515e16d644f198fa991a201ee64d045b0f2"
+          "sha256": "f3d4758f2060215492c9764b1d7dc2a336826d4cd253cd54ff9ff7c6d78f04e2"
+        },
+        {
+          "path": "Features/Attune/Libs/LibDataBroker-1.1/README.textile",
+          "sha256": "1824b7091f7535e822d3fc0138013e0370eb894efcf7cc2ef1babb81f7997fcf"
         },
         {
           "path": "Features/Attune/Libs/LibDBIcon-1.0/lib.xml",
-          "sha256": "3c959d5954f2680f063baa3a7903cd347e8f4f9755cd9be639fa45a50238f85a"
+          "sha256": "f9f8ad1829bee7f9aabb610e3a2e6e930119e4b7ea5e4acdff9524567a440356"
         },
         {
           "path": "Features/Attune/Libs/LibDBIcon-1.0/LibDBIcon-1.0.lua",
-          "sha256": "bd9249c720b511f1ca23f45ac1117c079b054060d764550efe04875d8d9e26bc"
+          "sha256": "85c426947fa50319071b64c7cb845326c44316341713a3847dc8149c1e36716b"
         },
         {
           "path": "Features/Attune/Libs/LibStub/LibStub.lua",
-          "sha256": "d34235c85f869505fdd9ef321d2420f69db7d2eb873d2b3bbf57584a314060fa"
+          "sha256": "26401bc42c26d1d1b6f7ad9410aa464edcbe4d32d74ebadeeecd8c0110236f7d"
         },
         {
           "path": "Features/Attune/Libs/LibStub/LibStub.toc",
@@ -639,35 +647,35 @@
         },
         {
           "path": "Features/Attune/Locales/deDE.lua",
-          "sha256": "33340ff738b040ad8a98d23de317910d6b1c97f8e40e459317c61947735ce65e"
+          "sha256": "1220101a8649fd9653351bce1ef64ee11b23ca47d5968acc72f39fc7d35b0245"
         },
         {
           "path": "Features/Attune/Locales/enUS.lua",
-          "sha256": "691930f63eebe7b34efaf254da39d5ccf855a41926093723e30c0ccb20a176e3"
+          "sha256": "0d8e5b027dfa11ec2ca8e3b0f53d5819f2354421b8e86b3e48805006884d51f4"
         },
         {
           "path": "Features/Attune/Locales/esES.lua",
-          "sha256": "9da4661c3f21aa99b4676cfe30fed0dd02e09baa7aa5453afe0cd7819f33cf76"
+          "sha256": "63ea1d6251741f3afeae2b84cf919e1c8da3ed8fc23d7dd579d3ed67722dc7ab"
         },
         {
           "path": "Features/Attune/Locales/frFR.lua",
-          "sha256": "27030c21562d29fa0db3cd2932de675dad1fb93b46001b6528617dc60202abc1"
+          "sha256": "326426f2990975e4ea8dd340ca9f37e33cbabdac76da4b5afb74e7ac55e0ea90"
         },
         {
           "path": "Features/Attune/Locales/koKR.lua",
-          "sha256": "46007aee8336b32372af5d9a5c0b20614e62de12d315557799ee5190fba90312"
+          "sha256": "3351adc594917bb9fb4377dc9f9316b344f8a394d2df17a6cef935e996066541"
         },
         {
           "path": "Features/Attune/Locales/ruRU.lua",
-          "sha256": "7886259f9d7145eccbb848a3ca52d8bc8b19348eeab772bdf6d5822d18926a1c"
+          "sha256": "fbc249e8e3d3aa576be0b4de4218082d158214db708e706bfd92af1e344c1828"
         },
         {
           "path": "Features/Attune/Locales/zhCN.lua",
-          "sha256": "fe8ae72712469825ebcbfe5c817863715de4c639e978470ae877a705f2180f92"
+          "sha256": "42245847cbc29352817abae5fb401ae9c1bea8fd91daa7fa5dc200b435f1e09c"
         },
         {
           "path": "Features/Attune/Locales/zhTW.lua",
-          "sha256": "3338a4196fc10dab141e67e6a06a01a0f0c2b027863883a8c001a22f8339a847"
+          "sha256": "363434f17f5b6fc7f169bce30b199cc61af79d8a27c7e8dc18216bd13770ed59"
         },
         {
           "path": "Features/Attune/Manifest.xml",
@@ -675,7 +683,7 @@
         },
         {
           "path": "Features/Attune/NOTICE.txt",
-          "sha256": "08258b1beb894f18cef2cc0c25b01768a56a3c920b8436a0151cd0e45e4c23d5"
+          "sha256": "8598417bb0e0b1b329702aabf9b976e3bb1b6cc741af2fbcb054ea07cca5aa83"
         },
         {
           "path": "Features/AutoRank.lua",
@@ -2427,7 +2435,7 @@
         },
         {
           "path": "Features/Disenchantry/UI/Compact.lua",
-          "sha256": "fb5ef00b73dce1c6766144e015d7f47c1546eb5247dbe545026a9578706ab7b2"
+          "sha256": "c4ee3aa0f05615b0ffadd95cd5ed3a721a77e927df83f65ddea29cf27319fbeb"
         },
         {
           "path": "Features/Disenchantry/UI/Diagnostics.lua",
@@ -2451,11 +2459,11 @@
         },
         {
           "path": "Features/Disenchantry/UI/Widgets.lua",
-          "sha256": "c741a0e84c376fc8804536f50da8ac4dd55cfc1188c42c1448bbad6f28dc5c78"
+          "sha256": "4c3286cc233c1c58c7ff53c5633a82f0e80949c1a0c4907688c3d3e34d8d093d"
         },
         {
           "path": "Features/Disenchantry/UI/Windows.lua",
-          "sha256": "6e73cb5eeca4de0967f6c199f11aeb306158212dcf629b7ef3acb04ca6acfd12"
+          "sha256": "002ac0aadd32fd664c384649988b03704e4913c58b317fcdf416295e887b9fdb"
         },
         {
           "path": "Features/Maps.xml",
@@ -3275,19 +3283,19 @@
         },
         {
           "path": "ForeverTools.toc",
-          "sha256": "adf64961b5d3930af746bb33179a3d20f58cbe708f3d566c17486b35983e697f"
+          "sha256": "5dbdabe419e66a3f2b83e82f6dfc6406d3dc94c43610ab7f41fa5d952e8f614a"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "adf64961b5d3930af746bb33179a3d20f58cbe708f3d566c17486b35983e697f"
+          "sha256": "5dbdabe419e66a3f2b83e82f6dfc6406d3dc94c43610ab7f41fa5d952e8f614a"
         },
         {
           "path": "Menu.lua",
-          "sha256": "793c9b277b8a75a90fe67f47a7ab9f53b86863f227fd000324ca0468e1c4e8e5"
+          "sha256": "86a1e05bd26beb86247cc38420924a33aba77f9558e7c711a5a6a1484926348d"
         },
         {
           "path": "Modules/AntiFettFinger.lua",
-          "sha256": "05c8c86f20322b2fb1c23ca4adf413e0437ef417320ff127fc102c9d0113887d"
+          "sha256": "ecfda3b3b5c7abc7ad4d19aafc3fc032166b2caa84ede869634223f4ed43272f"
         },
         {
           "path": "Modules/Attune.lua",
@@ -3295,7 +3303,7 @@
         },
         {
           "path": "Modules/Auctionator.lua",
-          "sha256": "aea105904ec6e860c4320118980496354db9aca800e14957202bf94c1231bf07"
+          "sha256": "87fd006f64c93480354dc00e2d153dbb5fe40e9c14186fad3e9e6c237fbbaa7b"
         },
         {
           "path": "Modules/AuctionatorTrading.lua",
@@ -3310,12 +3318,20 @@
           "sha256": "61b0b8452f4304b4bab8aeeff3c503a87f00cf19e11a53fa4130ff7088779138"
         },
         {
+          "path": "Modules/BankView.lua",
+          "sha256": "a529a4c69251e62a13abc3740a617501bc0cb5a19c2b42f4ff95a99c421e46af"
+        },
+        {
+          "path": "Modules/BuffCheck.lua",
+          "sha256": "6d7d17cb791e94a6c86872ea73974e359450607f84fa750e007765be6010e37c"
+        },
+        {
           "path": "Modules/Decursive.lua",
-          "sha256": "29385b5ce6a8cda0bb2e3eea2b7239c4782767438033638414ae82c825aa12da"
+          "sha256": "d1a4a463e59d4099e8c58d8df9626cfe3abdd8a238d4e1e6aa347fd7e34f5257"
         },
         {
           "path": "Modules/Disenchantry.lua",
-          "sha256": "030ac04678197618920ecbd5f5a063daa24a9397813c00bc1cd15969b2f14dd5"
+          "sha256": "6f83e5b3298b989a86628082c33d5b5544e6bee4c531f7b5a8d6e683d1abe5eb"
         },
         {
           "path": "Modules/DisenchantryMinimap.lua",
@@ -3327,19 +3343,19 @@
         },
         {
           "path": "Modules/Experience.lua",
-          "sha256": "d3132cfee7d5ce91f5251f274f90f6724ac69e5ce11716aa934d75aed84a5c8b"
+          "sha256": "567be25837c06b86c576a46c4cbe5b4cace8cd991425b712b32a460fd975e4ca"
         },
         {
           "path": "Modules/GTFO.lua",
-          "sha256": "29c45286b0ca57e0e22fba53740d2206b20e9d8fe4bc37d48056d844d5b98057"
+          "sha256": "3633b6db8a6a71687510ee0f3d2f59c0bc921a87492f18e03b7b60f088e9ab9a"
         },
         {
           "path": "Modules/Maps.lua",
-          "sha256": "cadc1e474fe944c6921e90aab9981675a4954f63e4297e6fabf3513c322811c5"
+          "sha256": "66675cdfeed72d312266008f12f90fba2cd861c0a7ef629f41cefa05002cf1e8"
         },
         {
           "path": "Modules/Materials.lua",
-          "sha256": "dd603bda02b18186cbce60476dbaacafdca5de2c8e72650a602a1fc8b5dcb361"
+          "sha256": "02323bb5276a82ed322bb529d445db52022fa358b9d4b8d31fde8692c426eb4f"
         },
         {
           "path": "Modules/Merchant.lua",
@@ -3347,11 +3363,15 @@
         },
         {
           "path": "Modules/Paladin.lua",
-          "sha256": "ad802149d3e4c4ac5ff389f67b8f4252e00d335584be2049fe0aa6ecd8c763b4"
+          "sha256": "d28215beadf2ab0534844dd4a9cde4f5b7878b5932614d4ce95fe0f3a926c15f"
+        },
+        {
+          "path": "Modules/ProfessionPlanner.lua",
+          "sha256": "54ff1a1c54f2d484d18c4f8347c31cc0e0152d2bf03a8a5e7662f95aac6a6874"
         },
         {
           "path": "Modules/QuestMarkers.lua",
-          "sha256": "fd96d4b434ce8416bc62828987e548c976bf272164f52b3fffeb5ea5c3898112"
+          "sha256": "f3b84741cec72f8c4946ab2ebcc45c5395685a758aa59dd326feb2d9b23195d4"
         },
         {
           "path": "Modules/Quests.lua",
@@ -3359,19 +3379,23 @@
         },
         {
           "path": "Modules/ThreatPlates.lua",
-          "sha256": "b2c53f7abf944808eed767568782851d13c386bb92ecaa34a0a50dc6f33c1f8a"
+          "sha256": "7de34615a1786fe5d995e8fa13b2c28750be2f823cd953a8dacb2f63f5e6efc8"
         },
         {
           "path": "Modules/Training.lua",
-          "sha256": "1a785ab6a43342a89a39683652b3687d27614019dcee66062259f82bd9b8f857"
+          "sha256": "be9ddefc3d147c18f091868a2f5b709d52922b7760394e258ac0ecc801c28f11"
         },
         {
           "path": "Modules/TrainingExtras.lua",
-          "sha256": "59631329b0e1a7703a7f45f152bd308f3f186f70b11671b453e0abed909e325f"
+          "sha256": "77df52b2be4abcca9f270c007f5ce45d386c22f88b1b275cc022dbfe1ba6c580"
         },
         {
           "path": "README.md",
-          "sha256": "371f8156d366931cb84173e83f9b8cd3208a14d0d49e407090e07634d8638a41"
+          "sha256": "6f26e1b64d591caa8498161014df121a9c5d3638f410058c6c8a6f4e9b218f7a"
+        },
+        {
+          "path": "RefreshmentMacro.lua",
+          "sha256": "f64420c89748fcf04870c75f5e37558794c136799f2e034df8a5897de530d349"
         },
         {
           "path": "Sounds/GTFO/alarmbeep.ogg",
@@ -3399,7 +3423,7 @@
         },
         {
           "path": "Updater/Update-ForeverTools.ps1",
-          "sha256": "22e78d2d9296d6edb822df763ef9ed23c80b954c3ea51259cb4105a2f9ab8449"
+          "sha256": "12a74caaa0c9ec47397e498de9e02f3f3eb33b10c0a9b1aee5eecdf17a20534e"
         },
         {
           "path": "Updates.lua",

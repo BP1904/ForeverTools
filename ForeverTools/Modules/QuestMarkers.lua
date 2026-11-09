@@ -326,7 +326,7 @@ function M:Update(unit)
     if ok then record.text:SetText(text) end
 end
 
-function M:Attach(unit)
+function M:Attach(unit, deferUpdate)
     if not FT:IsEnabled("questmarkers") or type(unit) ~= "string" then return end
     local plate = C_NamePlate and Safe(C_NamePlate.GetNamePlateForUnit, unit)
     if not Accessible(plate) then return end
@@ -352,16 +352,19 @@ function M:Attach(unit)
     if record.unit and record.unit ~= unit then self.byUnit[record.unit] = nil end
     local previous = self.byUnit[unit]
     if previous and previous ~= record then previous.text:SetText(""); previous.unit = nil end
-    record.text:ClearAllPoints()
     local name = native.name or native.Name
+    local textAnchor, anchorPoint, offset = anchor, "TOP", 20
     if name and name.GetObjectType and Safe(name.IsForbidden, name) ~= true then
-        record.text:SetPoint("BOTTOM", name, "TOP", 0, 3)
-    else
-        record.text:SetPoint("BOTTOM", anchor, "TOP", 0, 20)
+        textAnchor, offset = name, 3
+    end
+    if record.textAnchor ~= textAnchor or record.textOffset ~= offset then
+        record.text:ClearAllPoints()
+        record.text:SetPoint("BOTTOM", textAnchor, anchorPoint, 0, offset)
+        record.textAnchor, record.textOffset = textAnchor, offset
     end
     record.unit = unit
     self.byUnit[unit] = record
-    self:Update(unit)
+    if not deferUpdate then self:Update(unit) end
 end
 
 function M:Refresh()
@@ -373,7 +376,7 @@ function M:Refresh()
             local unit = Safe(function() return plate.namePlateUnitToken end)
                 or Safe(function() return plate.UnitFrame.unit end)
                 or Safe(function() return plate.UnitFrame.unitToken end)
-            if type(unit) == "string" then self:Attach(unit) end
+            if type(unit) == "string" then self:Attach(unit, true) end
         end
     end
     for unit in pairs(self.byUnit) do self:Update(unit) end
@@ -446,7 +449,8 @@ function M:Initialize()
                 elseif CONTROLLED_KEYS[key] then self:ApplyVisibility() end
             end
         elseif event == "PLAYER_REGEN_ENABLED" then
-            if self.visibilityPending then self:ApplyVisibility(); self:ScheduleVisibility(1); self:Refresh() end
+            if self.visibilityPending then self:ApplyVisibility(); self:ScheduleVisibility(1) end
+            self:Refresh()
         elseif event == "NAME_PLATE_UNIT_REMOVED" then
             local record = self.byUnit[unit]
             if record then record.text:SetText(""); record.unit = nil; self.byUnit[unit] = nil end
@@ -468,7 +472,7 @@ function M:Initialize()
             self:ApplyVisibility()
         end
         elapsed = elapsed + delta
-        if elapsed < 0.1 then return end
+        if elapsed < 0.5 then return end
         elapsed = 0
         self:Refresh()
     end)

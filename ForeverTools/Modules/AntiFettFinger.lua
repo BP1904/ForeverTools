@@ -1,7 +1,7 @@
 local _, FT = ...
 local M={
     title="Anti Fett Finger",
-    description="Im Kampf nur 1 bis ´ und Bewegung. Änderungen im Kampf gelten nach Kampfende.",
+    description="Im Kampf bleiben 1 bis ´, Bewegung und Escape zum Schließen frei. Änderungen der Sperre gelten nach Kampfende.",
 }
 FT:RegisterModule("antifettfinger",M)
 

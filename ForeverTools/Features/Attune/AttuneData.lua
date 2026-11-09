@@ -192,7 +192,9 @@ FTAttune_Data.steps = 	{
 	{ID_ATTUNE="60",ID="60",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Eastern Plaguelands"],ID_WOWHEAD="9123",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="30",STAGE="20"}, -- quest: The Dread Citadel - Naxxramas
 	{ID_ATTUNE="60",ID="90",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_trinket_naxxramas06",FOLLOWS="40|50|60",STAGE="30"},
 
-	{ID_ATTUNE="100",ID="10",TYPE="Interact",STEP="",LOCATION=FTAttuneLang["Silithus"],ID_WOWHEAD="15180",ICON="Interface\\Icons\\spell_nature_wispsplode",FOLLOWS="0",STAGE="10"}, -- npc: Baristolth of the Shifting Sands
+	
+    {ID_ATTUNE="100",ID="5",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 60",LOCATION="",ID_WOWHEAD="60",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="5"},
+    {ID_ATTUNE="100",ID="10",TYPE="Interact",STEP="",LOCATION=FTAttuneLang["Silithus"],ID_WOWHEAD="15180",ICON="Interface\\Icons\\spell_nature_wispsplode",FOLLOWS="0",STAGE="10"}, -- npc: Baristolth of the Shifting Sands
 	{ID_ATTUNE="100",ID="20",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Silithus"],ID_WOWHEAD="8286",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: What Tomorrow Brings
 	{ID_ATTUNE="100",ID="30",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Silithus"],ID_WOWHEAD="8288",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="20",STAGE="30"}, -- quest: Only One May Rise
 	{ID_ATTUNE="100",ID="40",TYPE="Kill",STEP="",LOCATION=FTAttuneLang["Blackwing Lair"],ID_WOWHEAD="12017",ICON="Interface\\Icons\\inv_misc_head_dragon_black",FOLLOWS="30",STAGE="40"}, -- npc: Broodlord Lashlayer
@@ -689,18 +691,37 @@ FTAttune_Data.steps = 	{
 
 
 --vForever dungeon attune 186 (Horde Ruins of Lordaeron)
-	-- Main columns L→R (higher ID = left): 95216 | 92422 | 92421 | 92401
+	-- Main columns L→R (higher ID = left):
+	--   447 > 450 > 451 > 95216 The New Plague
+	--   356 > 99156 > 92422 The Wrath of Rath'mael
+	--   92421 Light's Justice
+	--   92401 A Frightened Request
 	-- SIDE (beside End): 95204 Crest of Lordaeron, 97288 Unending Torment (Inside)
 	{ID_ATTUNE="186",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 15",LOCATION="",ID_WOWHEAD="15",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
 	-- STAGE 20
-	{ID_ATTUNE="186",ID="620",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ruins of Lordaeron"],ID_WOWHEAD="95216",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: The New Plague
-	{ID_ATTUNE="186",ID="420",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ruins of Lordaeron"],ID_WOWHEAD="92422",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: The Wrath of Rath'mael
+	{ID_ATTUNE="186",ID="610",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Silverpine Forest"],ID_WOWHEAD="447",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: A Recipe For Death
+	{ID_ATTUNE="186",ID="410",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="356",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: Rear Guard Patrol
 	{ID_ATTUNE="186",ID="320",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ruins of Lordaeron"],ID_WOWHEAD="92421",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: Light's Justice
 	{ID_ATTUNE="186",ID="220",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ruins of Lordaeron"],ID_WOWHEAD="92401",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: A Frightened Request
+	-- STAGE 30
+	{ID_ATTUNE="186",ID="615",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Silverpine Forest"],ID_WOWHEAD="450",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="610",STAGE="30"}, -- quest: A Recipe For Death
+	{ID_ATTUNE="186",ID="510",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="99156",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="410",STAGE="30"}, -- quest: Rear Guard Patrol
+	{ID_ATTUNE="186",ID="330",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="320",STAGE="30"},
+	{ID_ATTUNE="186",ID="230",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="220",STAGE="30"},
+	-- STAGE 40
+	{ID_ATTUNE="186",ID="616",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Silverpine Forest"],ID_WOWHEAD="451",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="615",STAGE="40"}, -- quest: A Recipe For Death
+	{ID_ATTUNE="186",ID="420",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ruins of Lordaeron"],ID_WOWHEAD="92422",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="510",STAGE="40"}, -- quest: The Wrath of Rath'mael
+	{ID_ATTUNE="186",ID="340",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="330",STAGE="40"},
+	{ID_ATTUNE="186",ID="240",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="230",STAGE="40"},
+	-- STAGE 50
+	{ID_ATTUNE="186",ID="620",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ruins of Lordaeron"],ID_WOWHEAD="95216",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="616",STAGE="50"}, -- quest: The New Plague
+	{ID_ATTUNE="186",ID="445",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="420",STAGE="50"},
+	{ID_ATTUNE="186",ID="345",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="340",STAGE="50"},
+	{ID_ATTUNE="186",ID="245",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="240",STAGE="50"},
 	-- SIDE reminders (inside dungeon) — left of End
-	{ID_ATTUNE="186",ID="520",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ruins of Lordaeron"],ID_WOWHEAD="95204",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="0",STAGE="30",SIDE=true}, -- quest: Crest of Lordaeron (Inside)
-	{ID_ATTUNE="186",ID="120",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ruins of Lordaeron"],ID_WOWHEAD="97288",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="0",STAGE="30",SIDE=true}, -- quest: Unending Torment (Inside)
-	{ID_ATTUNE="186",ID="630",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_misc_book_09",FOLLOWS="620&420&320&220&520&120",STAGE="30"},
+	{ID_ATTUNE="186",ID="520",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ruins of Lordaeron"],ID_WOWHEAD="95204",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="0",STAGE="60",SIDE=true}, -- quest: Crest of Lordaeron (Inside)
+	{ID_ATTUNE="186",ID="120",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ruins of Lordaeron"],ID_WOWHEAD="97288",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="0",STAGE="60",SIDE=true}, -- quest: Unending Torment (Inside)
+	{ID_ATTUNE="186",ID="630",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_misc_book_09",FOLLOWS="620&445&345&245&520&120",STAGE="60"},
 
 
 
@@ -2605,7 +2626,100 @@ FTAttune_Data.steps = 	{
 	{ID_ATTUNE="95",ID="130",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Arathi Highlands"],ID_WOWHEAD="79976",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="120",STAGE="130"}, -- quest: This Must Be The Place (Hastily Rolled-Up Satchel)
 	{ID_ATTUNE="95",ID="140",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_misc_bag_bigbagofenchantments",FOLLOWS="130",STAGE="140"},
 }
-	
+
+-- Character trials. Each requirement reads a statistic (GetStatistic):
+-- 1198 creatures killed, 64222 times camped, 98 quests completed,
+-- 588 total honorable kills, 932 five-player dungeons entered, and profession skill.
+-- The chain is placed right to left, so a higher step id sits further left.
+-- Top row: level, kills, quests, honorable kills, dungeons, times camped.
+-- Bottom row: cooking, fishing, first aid, two professions.
+do
+	local steps = FTAttune_Data.steps
+	local attunes = FTAttune_Data.attunes
+	local expac = FTAttuneLang["World of Warcraft"]
+	local group = FTAttuneLang["CHARACTER"]
+	local icon = {
+		level = "Interface\\Icons\\spell_holy_innerfire",
+		kills = "Interface\\Icons\\ability_warrior_savageblow",
+		camped = "Interface\\Icons\\inv_camelot_camping_welcomingcampfire",
+		quests = "Interface\\Icons\\inv_scroll_03",
+		honor = "Interface\\Icons\\inv_bannerpvp_02",
+		dungeons = "Interface\\Icons\\inv_misc_key_03",
+		cooking = "Interface\\Icons\\inv_misc_food_15",
+		fishing = "Interface\\Icons\\trade_fishing",
+		aid = "Interface\\Icons\\spell_holy_sealofsacrifice",
+		prof = "Interface\\Icons\\inv_misc_book_09",
+	}
+
+	-- Sit ahead of dungeons. Class quests insert in front of this group when they load.
+	local insertAt = #attunes + 1
+	for i, a in ipairs(attunes) do
+		if a.GROUP == FTAttuneLang["DUNGEONS"] then
+			insertAt = i
+			break
+		end
+	end
+
+	local function addAttune(id, nameKey, descKey, iconPath, level)
+		table.insert(attunes, insertAt, {
+			ID = id,
+			NAME = FTAttuneLang[nameKey],
+			SHORT = tostring(level),
+			EXPAC = expac,
+			GROUP = group,
+			FACTION = "Both",
+			ICON = iconPath,
+			DESC = FTAttuneLang[descKey],
+			LEVELS = tostring(level),
+		})
+		insertAt = insertAt + 1
+	end
+
+	addAttune("500", "Initiate", "Initiate_Desc", "Interface\\Icons\\achievement_level_20", 20)
+	addAttune("510", "Intermediate", "Intermediate_Desc", "Interface\\Icons\\achievement_level_40", 40)
+	addAttune("520", "Veteran", "Veteran_Desc", "Interface\\Icons\\achievement_level_60", 60)
+
+
+    -- https://wowwiki-archive.fandom.com/wiki/Complete_list_of_Achievement_ID%27s for the achievement IDs
+
+	local function addTier(id, level, kills, camped, skill, quests, honor, dungeons)
+		local profLabel = (FTAttuneLang["ProfessionsAt"] or "2 professions at ##SKILL##"):gsub("##SKILL##", tostring(skill))
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="30", TYPE="Level", STEP=FTAttuneLang["Reach level"].." "..level, LOCATION="", ID_WOWHEAD=tostring(level), ICON=icon.level, FOLLOWS="0", STAGE="10"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="20", TYPE="Stat", STEP=FTAttuneLang["Creatures killed"], LOCATION="", ID_WOWHEAD="1198", COUNT=kills, ICON=icon.kills, FOLLOWS="0", STAGE="10"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="18", TYPE="Stat", STEP=FTAttuneLang["Quests completed"], LOCATION="", ID_WOWHEAD="98", COUNT=quests, ICON=icon.quests, FOLLOWS="0", STAGE="20"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="15", TYPE="Stat", STEP=FTAttuneLang["Honorable kills"], LOCATION="", ID_WOWHEAD="588", COUNT=honor, ICON=icon.honor, FOLLOWS="0", STAGE="20"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="12", TYPE="Stat", STEP=FTAttuneLang["5-player dungeons"], LOCATION="", ID_WOWHEAD="932", COUNT=dungeons, ICON=icon.dungeons, FOLLOWS="0", STAGE="30"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="10", TYPE="Stat", STEP=FTAttuneLang["Times camped"], LOCATION="", ID_WOWHEAD="64222", COUNT=camped, ICON=icon.camped, FOLLOWS="0", STAGE="30"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="70", TYPE="Prof", STEP=profLabel, LOCATION="", ID_WOWHEAD="0", COUNT=skill, NEED=2, ICON=icon.prof, FOLLOWS="0", STAGE="40"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="40", TYPE="Stat", STEP=FTAttuneLang["Cooking skill"], LOCATION="", ID_WOWHEAD="1524", COUNT=skill, ICON=icon.cooking, FOLLOWS="0", STAGE="40"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="60", TYPE="Stat", STEP=FTAttuneLang["Fishing skill"], LOCATION="", ID_WOWHEAD="1519", COUNT=skill, ICON=icon.fishing, FOLLOWS="0", STAGE="50"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="50", TYPE="Stat", STEP=FTAttuneLang["First Aid skill"], LOCATION="", ID_WOWHEAD="281", COUNT=skill, ICON=icon.aid, FOLLOWS="0", STAGE="50"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="80", TYPE="End", STEP="Attuned", LOCATION="", ID_WOWHEAD="0", ICON=icon.level, FOLLOWS="30&20&18&15&12&10&70&60&50&40", STAGE="60"}
+	end
+
+
+	-- ID, level, kills, times camped, skill, quests, honor kills, dungeons
+	addTier("500", 20, 750, 10, 100, 100, 5, 5)
+	addTier("510", 40, 3000, 25, 200, 300, 50, 15)
+	addTier("520", 60, 7500, 60, 300, 600, 500, 50)
+end
+
+-- Highest skill of each primary profession. Any two at the tier's skill count.
+-- Jewelcrafting and Inscription are included so they count where those professions exist.
+FTAttune_Data.primaryProfessions = {
+	{"1527", "Alchemy"},
+	{"1532", "Blacksmithing"},
+	{"1535", "Enchanting"},
+	{"1544", "Engineering"},
+	{"1538", "Herbalism"},
+	{"1539", "Inscription"},
+	{"1540", "Jewelcrafting"},
+	{"1536", "Leatherworking"},
+	{"1537", "Mining"},
+	{"1541", "Skinning"},
+	{"1542", "Tailoring"},
+}
+
 -- [id] = title, minlevel, groupsize, desc
 FTAttune_Data.quests = {
 	[7848]={55,5},			[7847]={46,1},			[4903]={55,5},			[4941]={55,1},			[4974]={55,10},			[6566]={55,1},			[6567]={55,1},
@@ -2688,6 +2802,7 @@ FTAttune_Data.quests = {
 	[7044]={41,5},			[7046]={41,5},			[7064]={45,5},			[7065]={45,5},			[7066]={39,1},
 	[7067]={39,5},			[7068]={39,1},			[7070]={39,1},			[7441]={54,5},			[7461]={56,5},
 	[7462]={56,1},			[7481]={54,5},			[7482]={54,5},			[7488]={54,5},			[7489]={54,5},			[7492]={54,1},			[7494]={54,1},
+	[356]={6,1},			[447]={9,1},			[450]={9,1},			[451]={9,1},			[99156]={6,1},
 	[92401]={15,1},			[92415]={15,1},			[92421]={15,5},			[92422]={15,5},			[95189]={16,1},
 	[95195]={16,1},			[95204]={16,1},			[95216]={16,5},			[95250]={16,5},			[96393]={9,5},
 	[96394]={10,5},			[96395]={10,5},			[96403]={10,5},			[97288]={16,1},

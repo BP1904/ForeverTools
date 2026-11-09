@@ -153,6 +153,12 @@ local function Visible()
     return App and (App.mainFrame and App.mainFrame:IsShown() or App.compactFrame and App.compactFrame:IsShown())
 end
 function M:OnEvent(event,...)
+    if event=="PLAYER_REGEN_ENABLED" and App and App.pendingDragStops then
+        local pending=App.pendingDragStops; App.pendingDragStops=nil
+        for window,callback in pairs(pending) do
+            if type(callback)=="function" then callback(window) else window:StopMovingOrSizing() end
+        end
+    end
     if event=="PLAYER_REGEN_ENABLED" and self.pendingDisable then self:DisableCleanup() end
     if not ns.IsEnabled() then return end
     if event=="AUCTION_HOUSE_CLOSED" then ns.Prices.ClearCache() end

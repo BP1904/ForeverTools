@@ -85,6 +85,7 @@ function M:Tick()
     if not scan then return end
     if GetTime() - scan.started > 45 then self:Cancel("Scan wegen Zeitüberschreitung abgebrochen."); return end
     if not scan.index then return end
+    local stamp=time()
     for i = scan.index, math.min(scan.index + 199, scan.count) do
         local name, _, count, _, _, _, _, _, _, buyout = GetAuctionItemInfo("list", i)
         local link = GetAuctionItemLink("list", i)
@@ -95,7 +96,7 @@ function M:Tick()
             local unit = buyout / count
             local old = scan.prices[key]
             if not old or unit < old.unit then
-                scan.prices[key] = {unit = unit, name = name, stamp = time()}
+                scan.prices[key] = {unit = unit, name = name, stamp = stamp}
             end
         end
     end
@@ -259,7 +260,9 @@ function M:Initialize()
         elseif event == "NEW_AUCTION_UPDATE" then self:SaleSuggestion()
         else self:OnResults() end
     end)
-    frame:SetScript("OnUpdate", function() self:Tick() end)
+    frame:SetScript("OnUpdate", function()
+        if self.scan or self.job or self.posting or self.ownerRequest then self:Tick() end
+    end)
     if hooksecurefunc and QueryAuctionItems then
         hooksecurefunc("QueryAuctionItems", function()
             if not self.issuing then self:Cancel("Andere Suche gestartet.") end

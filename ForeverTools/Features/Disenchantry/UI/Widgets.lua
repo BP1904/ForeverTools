@@ -172,8 +172,12 @@ function App.CreateStyledWindow(name, width, height, extra)
     drag:EnableMouse(true)
     drag:RegisterForDrag("LeftButton")
     drag:SetScript("OnMouseDown", function() App.RaiseAddonWindows(window) end)
-    drag:SetScript("OnDragStart", function() window:StartMoving() end)
-    drag:SetScript("OnDragStop", function() window:StopMovingOrSizing() end)
+    drag:SetScript("OnDragStart", function() if not InCombatLockdown() then window:StartMoving() end end)
+    drag:SetScript("OnDragStop", function()
+        if InCombatLockdown() then
+            App.pendingDragStops=App.pendingDragStops or {}; App.pendingDragStops[window]=true
+        else window:StopMovingOrSizing() end
+    end)
     window.TitleBar = drag
     local fill = drag:CreateTexture(nil, "ARTWORK")
     fill:SetAllPoints(drag)

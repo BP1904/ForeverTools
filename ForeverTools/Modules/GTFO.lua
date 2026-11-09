@@ -249,7 +249,10 @@ function M:Initialize()
     for _,event in ipairs({"PLAYER_LOGIN","PLAYER_ENTERING_WORLD","UNIT_AURA","MIRROR_TIMER_START",
         "MIRROR_TIMER_STOP","PLAYER_REGEN_ENABLED","GROUP_ROSTER_UPDATE","PLAYER_ROLES_ASSIGNED",
         "ADDON_RESTRICTION_STATE_CHANGED"}) do
-        pcall(frame.RegisterEvent,frame,event)
+        if event=="UNIT_AURA" and frame.RegisterUnitEvent then
+            local ok=pcall(frame.RegisterUnitEvent,frame,event,"player")
+            if not ok then pcall(frame.RegisterEvent,frame,event) end
+        else pcall(frame.RegisterEvent,frame,event) end
     end
     if self.combatLogSupported then frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED") end
     frame:SetScript("OnEvent",function(_,event,...)

@@ -41,7 +41,10 @@ function App.UpdateCompactFrame()
     bar:SetSize(math.max(460 + extra, fit, materials), model.preview and 82 or 58)
 end
 local function savePosition(bar)
-    if InCombatLockdown() then return end
+    if InCombatLockdown() then
+        App.pendingDragStops=App.pendingDragStops or {}; App.pendingDragStops[bar]=savePosition
+        return
+    end
     bar:StopMovingOrSizing()
     local anchor, _, relative, horizontal, vertical = bar:GetPoint()
     App.db.compactPoint = {point=anchor, relPoint=relative, x=horizontal, y=vertical}
@@ -57,7 +60,8 @@ local function inspect(icon)
     GameTooltip:Show()
 end
 function App.CreateCompactFrame()
-    local bar = UI.Surface(UIParent, "window", {name="ForeverToolsDisenchantry_CompactFrame", width=460, height=58})
+    local bar = UI.Surface(UIParent, "window", {name="ForeverToolsDisenchantry_CompactFrame", width=460, height=58,
+        template="SecureHandlerShowHideTemplate"})
     App.compactFrame = bar
     local position = App.db.compactPoint or {x=0, y=-220}
     UI.Anchor(bar, {{position.point or "CENTER", UIParent, position.relPoint or "CENTER", position.x or 0, position.y or 0}})
@@ -66,12 +70,25 @@ function App.CreateCompactFrame()
     bar:SetScript("OnDragStart", function() if not InCombatLockdown() then bar:StartMoving() end end)
     bar:SetScript("OnDragStop", savePosition)
     bar:Hide()
-    local close = CreateFrame("Button", nil, bar, "UIPanelCloseButton")
+    local close = CreateFrame("Button", "ForeverToolsDisenchantryCompactClose", bar, "UIPanelCloseButton,SecureHandlerClickTemplate")
     UI.Anchor(close, {{"TOPRIGHT", 2, 2}})
     close:SetScale(0.7)
-    close:SetScript("OnClick", function()
-        if InCombatLockdown() and bar:IsProtected() then App.Print(App.L.NOT_IN_COMBAT) else bar:Hide() end
-    end)
+    close:RegisterForClicks("AnyUp")
+    close:SetFrameRef("window",bar)
+    close:SetAttribute("_onclick",[[
+        self:GetFrameRef("window"):Hide()
+        local keys=self:GetFrameRef("keys")
+        if keys and keys:GetAttribute("active") then keys:RunAttribute("apply") end
+    ]])
+    bar.CloseButton=close
+    bar:SetFrameRef("close",close)
+    bar:SetAttribute("_onshow",[[self:SetBindingClick(true,"ESCAPE",self:GetFrameRef("close"):GetName(),"LeftButton")]])
+    bar:SetAttribute("_onhide",[[
+        self:ClearBindings()
+        local menu=self:GetFrameRef("modeMenu")
+        if menu then menu:Hide() end
+    ]])
+    if AntiFettFinger and AntiFettFinger.RegisterEscapeCloser then AntiFettFinger:RegisterEscapeCloser(close) end
     local icon
     icon, App.compactIcon = UI.Icon(bar, 30, {{"TOPLEFT", 42, -10}})
     icon:EnableMouse(true)
@@ -112,6 +129,7 @@ function App.CreateCompactFrame()
             if menu:IsShown() then menu:Raise() end
         end})
     App.CreateCompactModeMenu()
+    bar:SetFrameRef("modeMenu",App.compactModeMenu)
     UI.Anchor(App.compactModeMenu, {{"BOTTOMRIGHT", App.compactModeSelector, "TOPRIGHT", 0, 6}})
     App.compactNameText = UI.Text(bar, "", "GameFontNormal",
         {{"TOPLEFT", icon, "TOPRIGHT", 8, -2}, {"RIGHT", bar, "RIGHT", -254, 0}})
@@ -121,9 +139,9 @@ function App.CreateCompactFrame()
     App.compactQueueText:SetTextColor(0.75, 0.75, 0.75)
     App.compactResultsStrip = ns.DisenchantResults.CreateStrip(bar)
     UI.Anchor(App.compactResultsStrip, {{"TOPLEFT", bar, "TOPLEFT", 42, -50}})
-    bar:SetScript("OnHide", function()
+    bar:HookScript("OnHide", function()
         ns.Queue.EndSession()
-        App.compactModeMenu:Hide()
+        if not InCombatLockdown() then App.compactModeMenu:Hide() end
     end)
     App.UpdateModeSurface()
 end

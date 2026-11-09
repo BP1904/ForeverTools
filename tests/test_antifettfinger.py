@@ -58,6 +58,11 @@ function CreateFrame(kind,name,parent,template)
     function f:GetAttribute(key) return self.attributes[key] end
     function f:SetFrameRef(key,value) assert(not combat); self.refs[key]=value end
     function f:GetFrameRef(key) return self.refs[key] end
+    function f:CallMethod(method,...)
+        local previous=secure; secure=false
+        self[method](self,...)
+        secure=previous
+    end
     function f:HookScript(key,fn) self.hooks[key]=fn end
     function f:Execute(body) assert(not combat); ExecuteSnippet(self,body) end
     function f:RunAttribute(key) assert(secure); ExecuteSnippet(self,self.attributes[key]) end
@@ -164,9 +169,10 @@ class AntiFettFingerTest(unittest.TestCase):
             State(true)
             local overrides=A.controller.bindings
             for _,key in ipairs({'1','2','3','4','5','6','7','8','9','0','-','='}) do assert(not overrides[key]) end
-            for _,key in ipairs({'B','TAB','ESCAPE','F1','CTRL-K','SHIFT-1','ENTER'}) do
+            for _,key in ipairs({'B','TAB','F1','CTRL-K','SHIFT-1','ENTER'}) do
                 assert(overrides[key].target=='AntiFettFingerBlockedKey')
             end
+            assert(overrides.ESCAPE.command=='TOGGLEGAMEMENU')
             assert(not AntiFettFingerBlockedKey:GetAttribute('type'))
             assert(A.controller:GetAttribute('active'))
         ''')
@@ -181,6 +187,52 @@ class AntiFettFingerTest(unittest.TestCase):
             assert(overrides.NUMLOCK.command=='TOGGLEAUTORUN')
             assert(overrides['SHIFT-W'].command=='MOVEFORWARD')
             assert(overrides['ALT-CTRL-SHIFT-W'].command=='MOVEFORWARD')
+        ''')
+
+    def test_escape_routes_to_shown_protected_menu_and_restores_normal_command(self):
+        self.lua.execute('''
+            local window=CreateFrame('Frame')
+            local close=CreateFrame('Button','TestSecureClose')
+            close:SetFrameRef('window',window)
+            A:RegisterEscapeCloser(close)
+            State(true)
+            assert(A.controller.bindings.ESCAPE.target=='TestSecureClose')
+            State(false); window:Hide(); State(true)
+            assert(A.controller.bindings.ESCAPE.command=='TOGGLEGAMEMENU')
+            State(false); assert(not next(A.controller.bindings))
+        ''')
+
+    def test_standalone_copy_also_preserves_escape(self):
+        lua=LuaRuntime(unpack_returned_tuples=True)
+        lua.execute(MOCK+SECURE_MOCK)
+        source=(ROOT/'AntiFettFinger/AntiFettFinger.lua').read_text(encoding='utf-8')
+        lua.execute('assert(loadstring(...))("AntiFettFinger",{})',source)
+        lua.execute('''
+            Fire('ADDON_LOADED','AntiFettFinger'); State(true)
+            assert(AntiFettFinger.controller.bindings.ESCAPE.command=='TOGGLEGAMEMENU')
+            assert(AntiFettFinger.controller.bindings.B.target=='AntiFettFingerBlockedKey')
+        ''')
+
+    def test_real_paladin_escape_handler_closes_and_reapplies_remaining_key_lock(self):
+        self.lua.execute('''
+            ft={paladinData={}}
+            function ft:RegisterModule(_,module) P=module end
+        ''')
+        source=(ROOT/'ForeverTools/Modules/Paladin.lua').read_text(encoding='utf-8')
+        self.lua.execute('assert(loadstring(...))("ForeverTools",ft)',source)
+        self.lua.execute('''
+            P.db={open=true,detailsOpen=true}
+            P.window=CreateFrame('Frame','TestPaladinGrid')
+            P.detailWindow=CreateFrame('Frame','TestPaladinDetails')
+            P.detailWindow.CloseButton=CreateFrame('Button')
+            P:InstallCloseButtons()
+            State(true)
+            assert(A.controller.bindings.ESCAPE.target=='ForeverToolsPaladinEscape')
+            ExecuteSnippet(P.escapeClose,P.escapeClose:GetAttribute('_onclick'))
+            assert(not P.window:IsShown() and not P.detailWindow:IsShown())
+            assert(not P.db.open and not P.db.detailsOpen)
+            assert(A.controller.bindings.ESCAPE.command=='TOGGLEGAMEMENU')
+            assert(A.controller.bindings.B.target=='AntiFettFingerBlockedKey')
         ''')
 
     def test_mouse_is_not_intercepted_and_commands_defer_in_combat(self):
