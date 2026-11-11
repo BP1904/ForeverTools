@@ -41,6 +41,7 @@ function CreateFrame(kind,name,parent,template)
     function f:GetPoint() return unpack(self.position) end
     function f:ClearAllPoints() assert(not combat); self.position=nil end
     function f:Hide() self.shown=false end
+    function f:Show() self.shown=true end
     function f:RegisterForClicks(...) self.clicks={...} end
     function f:RegisterForDrag(...) self.drags={...} end
     function f:SetAttribute(key,value)
@@ -231,6 +232,33 @@ class AntiFettFingerTest(unittest.TestCase):
             ExecuteSnippet(P.escapeClose,P.escapeClose:GetAttribute('_onclick'))
             assert(not P.window:IsShown() and not P.detailWindow:IsShown())
             assert(not P.db.open and not P.db.detailsOpen)
+            assert(A.controller.bindings.ESCAPE.command=='TOGGLEGAMEMENU')
+            assert(A.controller.bindings.B.target=='AntiFettFingerBlockedKey')
+        ''')
+
+    def test_paladin_combat_toggle_routes_escape_without_releasing_other_keys(self):
+        self.lua.execute('''
+            ft={paladinData={}}
+            function ft:RegisterModule(_,module) P=module end
+        ''')
+        source=(ROOT/'ForeverTools/Modules/Paladin.lua').read_text(encoding='utf-8')
+        self.lua.execute('assert(loadstring(...))("ForeverTools",ft)',source)
+        self.lua.execute('''
+            P.db={open=false,detailsOpen=false}
+            P.window=CreateFrame('Frame','TestCombatGrid')
+            P.detailWindow=CreateFrame('Frame','TestCombatDetails')
+            P.detailWindow.CloseButton=CreateFrame('Button')
+            P:InstallCloseButtons(); P.window:Hide(); P.detailWindow:Hide()
+            local toggle=CreateFrame('Button','TestPaladinToggle')
+            P:ConfigureWindowToggle(toggle,false); toggle:SetAttribute('available',true)
+            State(true)
+            assert(A.controller.bindings.ESCAPE.command=='TOGGLEGAMEMENU')
+            ExecuteSnippet(toggle,toggle:GetAttribute('_onclick'))
+            assert(P.window:IsShown() and P.db.open)
+            assert(A.controller.bindings.ESCAPE.target=='ForeverToolsPaladinEscape')
+            assert(A.controller.bindings.B.target=='AntiFettFingerBlockedKey')
+            ExecuteSnippet(P.escapeClose,P.escapeClose:GetAttribute('_onclick'))
+            assert(not P.window:IsShown() and not P.db.open)
             assert(A.controller.bindings.ESCAPE.command=='TOGGLEGAMEMENU')
             assert(A.controller.bindings.B.target=='AntiFettFingerBlockedKey')
         ''')

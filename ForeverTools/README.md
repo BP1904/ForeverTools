@@ -1,4 +1,10 @@
-# ForeverTools 1.16.9
+# ForeverTools 1.16.12
+
+**Minimap-Button:** Das Schmiede-Symbol sitzt direkt am linken Minimap-Rand und hat einen runden Rahmen wie der Dungeon-Journal-Button. Linksklick öffnet die Schnellzugriffe, Rechtsklick die Modulverwaltung. Nach Installation `/reload` eingeben.
+
+**Attune 16001-39:** Sounds lassen sich abschalten, ganze Kategorien ausblenden und die Todesminen als VC oder DM anzeigen. Dungeon-Questketten wurden korrigiert und Portugiesisch ergänzt. Die angepasste Suche und Navigation bleiben erhalten. Nach Installation `/reload` eingeben.
+
+**Paladinfenster im Kampf:** Das Zahnrad oben rechts an der kleinen Paladinleiste öffnet und schließt die Zuweisungen auch während eines Kampfes. „Optionen“ schaltet die Detailansicht ebenfalls im Kampf um; X und Escape schließen weiter. Die Fenster werden vor Kampfbeginn unsichtbar vorbereitet. Zuweisungen, Verschieben und geschützte Buffziele werden im Kampf nicht neu eingerichtet. `/ftpp` funktioniert außerhalb des Kampfes; im Kampf verweist es auf das Zahnrad und merkt keine spätere Umschaltung vor. Nach Installation einmal außerhalb des Kampfes `/reload` eingeben.
 
 **Weniger Hintergrundarbeit:** Questmarkierungen prüfen sichtbare Einheiten jetzt alle 0,5 Sekunden; neue Plaketten, Questereignisse und das Kampfende aktualisieren weiterhin sofort. Threat Plates behält seine schnellen Ereignisupdates und das 0,2-Sekunden-Intervall. Bankaufnahme, Material-Tooltips, klassische Berufsscans, Auktionsscans und Karten vermeiden zusätzliche doppelte Arbeit. Nach Installation `/reload` eingeben. FPS-Gewinne wurden noch nicht im Spiel gemessen.
 
@@ -251,7 +257,7 @@ Links- oder Rechtsklick sowie Mausrad auf einer Segenszelle wechseln die Zuweisu
 
 Die Synchronisierung verwendet den `PLPWR`-Nachrichtenaufbau der gelieferten Forever-Version (`SELF`, `ASELF`, `ASSIGN`, `PASSIGN`, `MASSIGN`, `NASSIGN`, `AASSIGN`, `CLEAR`, `FREEASSIGN`, `REQ`). Fremde Zuweisungen werden nur von aktuellen Gruppenmitgliedern mit passenden Rechten übernommen. Vor- und Nachnamen bleiben erhalten. Versand wird zeitlich begrenzt. Die Kompatibilität ist mit simulierten Nachrichten getestet, noch nicht mit einem zweiten Spieler im laufenden Client.
 
-**Im Kampf:** Vorbereitete Spieler und Zauber bleiben fest. Neue Ziele, Zuweisungen, Öffnen/Schließen und Abschalten des Fensters werden bis zum Kampfende aufgeschoben. Bereits vorbereitete Zauberschaltflächen können bis dahin weiter angeklickt werden. Jeder Zauber erfordert einen eigenen Klick. Das Modul wirkt keine Zauber selbständig.
+**Im Kampf:** Das Zahnrad an der kleinen Paladinleiste öffnet/schließt das Zuweisungsfenster sofort, auch wenn es seit dem Login noch nicht geöffnet wurde. „Optionen“ schaltet die Detailansicht um; X und Escape schließen weiter. `/ftpp` verweist im Kampf auf das Zahnrad. Vorbereitete Spieler und Zauber bleiben fest. Neue Ziele, Zuweisungen und das Abschalten des Moduls werden bis zum Kampfende aufgeschoben. Bereits vorbereitete Zauberschaltflächen können weiter angeklickt werden. Jeder Zauber erfordert einen eigenen Klick. Das Modul wirkt keine Zauber selbständig.
 
 Der Nachbau übernimmt nicht sämtliche Zusatzfunktionen der Vorlage: deren Skins, Ace-Profile, Gruppenberichte, Tastenkürzel, Reagenzienzählung und Cooldownübersicht sind nicht Bestandteil dieser Umsetzung. Das eigenständige PallyPower wird nicht verändert oder abgeschaltet. Für die Nutzung des Nachbaus allein kannst du es in WoWs Addon-Auswahl deaktivieren; gleichzeitiger Betrieb kann doppelte Oberflächen und Synchronisierungsnachrichten erzeugen.
 

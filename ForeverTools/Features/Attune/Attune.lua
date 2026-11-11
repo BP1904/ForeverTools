@@ -11,7 +11,14 @@ local function Component(...)
 --
 -------------------------------------------------------------------------
 
-
+-- 16001-39
+--   - Added an option to turn off FTAttune sounds.
+--   - Added an option to show/hide full categories
+--   - Added an option to toggle Deadmines between VC and DM
+--   - Removed a SoD quest from Blafathom Deeps
+--   - Added a missing chain to The Stockades
+--   - Added Portuguese translation (Kudos to kenpark on Curseforge <3
+--
 -- 16001-38
 --   - Fixed an issue where an error would occur if an achievement completed while in combat
 --   - Changed the Character Progression attunes to 'Times Camped' instead of 'Gold looted' (as that stat currently doesn't work)
@@ -518,7 +525,7 @@ local attunelocal_brokervalue = nil
 local attunelocal_brokerlabel = nil
 local attunelocal_settingsCategoryID = nil
 
-local attunelocal_version = "16001-38"
+local attunelocal_version = "16001-39"
 local attunelocal_prefix = "Attune_Channel"			-- used for addon chat communications
 local attunelocal_versionprefix = "Attune_Version"	-- used for addon version check
 local attunelocal_syncprefix = "Attune_Sync"		-- used for addon version check
@@ -688,7 +695,7 @@ local attune_options = {
     args = {
         tab1 = {
             type = "group",
-            name = FTAttuneLang["Settings"],
+            name = FTAttuneLang["GeneralSettings"],
 			width = "full",
 			order = 1,
 			args = {
@@ -727,13 +734,9 @@ local attune_options = {
 					type = "toggle",
 					name = FTAttuneLang["ShowCharacterProgression_TEXT"],
 					desc = FTAttuneLang["ShowCharacterProgression_DESC"],
-					get = function(info) return FTAttune_DB.showCharacterProgression ~= false end,
+					get = function(info) return FTAttune_CategoryShown("CHARACTER") end,
 					set = function(info, val)
-						FTAttune_DB.showCharacterProgression = val
-						FTAttune_ReloadAttuneTree()
-						if FTAttune_DB.iconView then FTAttune_LayoutIconView() end
-						if attunelocal_glist then FTAttune_ShowResultList() end
-						FTAttune_NextFrameUpdate()
+						FTAttune_SetCategoryShown("CHARACTER", val)
 					end,
 					width = 2.5,
 					order = 5,
@@ -786,6 +789,29 @@ local attune_options = {
 					width = 2.5,
 					order = 8.5,
 				},
+				playSounds = {
+					type = "toggle",
+					name = FTAttuneLang["PlaySounds_TEXT"],
+					desc = FTAttuneLang["PlaySounds_DESC"],
+					get = function(info) return FTAttune_DB.playSounds ~= false end,
+					set = function(info, val) FTAttune_DB.playSounds = val end,
+					width = 2.5,
+					order = 8.6,
+				},
+				deadminesAsDM = {
+					type = "toggle",
+					name = FTAttuneLang["DeadminesAsDM_TEXT"],
+					desc = FTAttuneLang["DeadminesAsDM_DESC"],
+					get = function(info) return FTAttune_DB.deadminesAsDM end,
+					set = function(info, val)
+						FTAttune_DB.deadminesAsDM = val
+						FTAttune_ReloadAttuneTree()
+						if FTAttune_DB.iconView then FTAttune_LayoutIconView() end
+						FTAttune_NextFrameUpdate()
+					end,
+					width = 2.5,
+					order = 8.7,
+				},
 				treeScale = {
 					type = "select",
 					name = FTAttuneLang["TreeScale_TEXT"],
@@ -808,11 +834,114 @@ local attune_options = {
 					order = 9,
 				},                
 
-                spacer1 = {
+				-- showListAlt = {
+				-- 	type = "toggle",
+				-- 	name = FTAttuneLang["ShowAltsInstead_TEXT"],
+				-- 	desc = FTAttuneLang["ShowAltsInstead_DESC"],
+				-- 	get = function(info) return FTAttune_DB.showListAlt end,
+				-- 	set = function(info, val) FTAttune_DB.showListAlt = val end,
+				-- 	width = 2.5,
+				-- 	order = 26,
+				-- },
+				-- showDeprecatedAttunes = {
+				-- 	type = "toggle",
+				-- 	name = FTAttuneLang["showDeprecatedAttunes_TEXT"],
+				-- 	desc = FTAttuneLang["showDeprecatedAttunes_DESC"],
+				-- 	get = function(info) return FTAttune_DB.showDeprecatedAttunes end,
+				-- 	set = function(info, val) FTAttune_DB.showDeprecatedAttunes = val; 	FTAttune_LoadTree(); 	FTAttune_ForceAttuneTabRefresh() end,
+				-- 	width = 2.5,
+				-- 	order = 27,
+				-- },
+				spacer5 = {
 					type = "description",
 					name = " ",
 					width = "full",
-					order = 9.5,
+					order = 27,
+				},
+
+				websiteUrl = {
+					type = "input",
+					name = "Database Website URL",
+					desc = "URL of a World of Warcraft database website",
+					get = function(info) return FTAttune_DB.websiteUrl end,
+					set = function(info, val) FTAttune_DB.websiteUrl = val end,
+					width = "full",
+					order = 28,
+				},
+
+
+				spacer6 = {
+					type = "description",
+					name = " \n ",
+					width = "full",
+					order = 40,
+				},
+
+				credits = {
+					type = "description",
+					name = FTAttuneLang["Credits"],
+					width = "full",
+					fontSize = "medium",
+					order = 45,
+				},
+  --[[				showWidget = {
+					type = "toggle",
+					name = "Show Reputation Widget",
+					desc = "Displays a reputation tracking window, allowing you to check your attunement reputation gains and progress.",
+					get = function(info) return FTAttune_DB.repWidget.showWidget end,
+					set = function(info, val) FTAttune_DB.repWidget.showWidget = val;
+						if attunelocal_repWidget ~= nil then
+							if val then attunelocal_repWidget:Show()
+							else attunelocal_repWidget:Hide()
+							end
+						end
+					end,
+					width = 1.7,
+					order = 41,
+				},
+				lockWidget = {
+					type = "toggle",
+					name = "Lock Reputation Widget",
+					desc = "Lock the reputation widget in place, preventing its movement and hiding usage information.",
+					get = function(info) return FTAttune_DB.repWidget.lockWidget end,
+					set = function(info, val) FTAttune_DB.repWidget.lockWidget = val
+						if attunelocal_repWidget ~= nil then
+							print("in")
+							if val then
+								attunelocal_repWidget:SetMovable(false)
+								print("NOT movable")
+							else
+								attunelocal_repWidget:SetMovable(true)
+								print("movable")
+							end
+						end
+					end,
+					width = 1.7,
+					order = 42,
+				},
+  ]]
+			},
+		},
+
+		categories = {
+			type = "group",
+			name = FTAttuneLang["Categories"],
+			width = "full",
+			order = 50,
+			args = {},
+		},
+
+		surveySettings = {
+			type = "group",
+			name = FTAttuneLang["SurveySettings"],
+			width = "full",
+			order = 75,
+			args = {
+				spacer1 = {
+					type = "description",
+					name = " ",
+					width = "full",
+					order = 2,
 				},
 				autosurvey = {
 					type = "toggle",
@@ -822,7 +951,7 @@ local attune_options = {
 					set = function(info, val) FTAttune_DB.autosurvey = val end,
 					width = 2.5,
 					order = 10,
-				},                
+				},
 				showSurveyed = {
 					type = "toggle",
 					name = FTAttuneLang["ShowSurveyed_TEXT"],
@@ -876,13 +1005,13 @@ local attune_options = {
 					set = function(info, val) FTAttune_DB.toons[attunelocal_charKey].announceAchieveCompleted = val end,
 					width = 2.6,
 					order = 20,
-				},				
+				},
 				achieveMinPoints = {
 					type = "select",
 					name = "",
 					desc = "",
-					values = {	
-						[10] = "10 Points", 
+					values = {
+						[10] = "10 Points",
 						[20] = "20 Points",
 						[25] = "25 Points",
 						[30] = "30 Points",
@@ -918,44 +1047,11 @@ local attune_options = {
 					width = 0.5,
 					order = 24,
 				},
-				-- showListAlt = {
-				-- 	type = "toggle",
-				-- 	name = FTAttuneLang["ShowAltsInstead_TEXT"],
-				-- 	desc = FTAttuneLang["ShowAltsInstead_DESC"],
-				-- 	get = function(info) return FTAttune_DB.showListAlt end,
-				-- 	set = function(info, val) FTAttune_DB.showListAlt = val end,
-				-- 	width = 2.5,
-				-- 	order = 26,
-				-- },
-				-- showDeprecatedAttunes = {
-				-- 	type = "toggle",
-				-- 	name = FTAttuneLang["showDeprecatedAttunes_TEXT"],
-				-- 	desc = FTAttuneLang["showDeprecatedAttunes_DESC"],
-				-- 	get = function(info) return FTAttune_DB.showDeprecatedAttunes end,
-				-- 	set = function(info, val) FTAttune_DB.showDeprecatedAttunes = val; 	FTAttune_LoadTree(); 	FTAttune_ForceAttuneTabRefresh() end,
-				-- 	width = 2.5,
-				-- 	order = 27,
-				-- },
-				websiteUrl = {
-					type = "input",
-					name = "Database Website URL",
-					desc = "URL of a World of Warcraft database website",
-					get = function(info) return FTAttune_DB.websiteUrl end,
-					set = function(info, val) FTAttune_DB.websiteUrl = val end,
-					width = "full",
-					order = 28,
-				},
-				spacer3 = {
+				spacerDelete = {
 					type = "description",
 					name = " ",
 					width = "full",
 					order = 30,
-				},
-				spacer4 = {
-					type = "description",
-					name = " ",
-					width = "full",
-					order = 40,
 				},
 				deleteAll = {
 					type = "execute",
@@ -995,59 +1091,6 @@ local attune_options = {
 					width = 1.6,
 					order = 33,
 				},
-
-	--[[
-				spacer5 = {
-					type = "description",
-					name = " ",
-					width = "full",
-					order = 40,
-				},
-	]]
-
-				credits = {
-					type = "description",
-					name = FTAttuneLang["Credits"],
-					width = "full",
-					fontSize = "medium",
-					order = 45,
-				},
-  --[[				showWidget = {
-					type = "toggle",
-					name = "Show Reputation Widget",
-					desc = "Displays a reputation tracking window, allowing you to check your attunement reputation gains and progress.",
-					get = function(info) return FTAttune_DB.repWidget.showWidget end,
-					set = function(info, val) FTAttune_DB.repWidget.showWidget = val;
-						if attunelocal_repWidget ~= nil then
-							if val then attunelocal_repWidget:Show()
-							else attunelocal_repWidget:Hide()
-							end
-						end
-					end,
-					width = 1.7,
-					order = 41,
-				},
-				lockWidget = {
-					type = "toggle",
-					name = "Lock Reputation Widget",
-					desc = "Lock the reputation widget in place, preventing its movement and hiding usage information.",
-					get = function(info) return FTAttune_DB.repWidget.lockWidget end,
-					set = function(info, val) FTAttune_DB.repWidget.lockWidget = val
-						if attunelocal_repWidget ~= nil then
-							print("in")
-							if val then
-								attunelocal_repWidget:SetMovable(false)
-								print("NOT movable")
-							else
-								attunelocal_repWidget:SetMovable(true)
-								print("movable")
-							end
-						end
-					end,
-					width = 1.7,
-					order = 42,
-				},
-  ]]
 			},
 		},
 
@@ -1073,6 +1116,7 @@ local attune_options = {
 -------------------------------------------------------------------------
 
 function FTAttune:FTRegisterOptions()
+	FTAttune_InstallCategoryOptions()
 	LibStub("AceConfig-3.0"):RegisterOptionsTable("FTAttune", attune_options, nil)
 	-- Second return is the Settings category ID (numeric on modern clients).
 	local _, categoryID = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("FTAttune")
@@ -1176,6 +1220,8 @@ function FTAttune:FTStart()
 	if FTAttune_DB.minimapbuttonpos.hide == nil then FTAttune_DB.minimapbuttonpos.hide = true end
 	if FTAttune_DB.autosurvey == nil then FTAttune_DB.autosurvey = false end
 	if FTAttune_DB.useFullMap == nil then FTAttune_DB.useFullMap = false end
+	if FTAttune_DB.playSounds == nil then FTAttune_DB.playSounds = true end
+	if FTAttune_DB.deadminesAsDM == nil then FTAttune_DB.deadminesAsDM = false end
 	if FTAttune_DB.showAllClassQuests == nil then FTAttune_DB.showAllClassQuests = false end
 	if FTAttune_DB.showCharacterProgression == nil then
 		if FTAttune_DB.hideCharacterProgression == nil then
@@ -1190,6 +1236,11 @@ function FTAttune:FTStart()
 		FTAttune_DB.navigationVersion = 1
 	end
 	if FTAttune_DB.iconView == nil then FTAttune_DB.iconView = false end
+	if FTAttune_DB.hiddenGroups == nil then FTAttune_DB.hiddenGroups = {} end
+	-- Older builds stored this as its own toggle. A missing checkbox stays on.
+	if FTAttune_DB.showCharacterProgression == false then
+		FTAttune_DB.hiddenGroups["CHARACTER"] = true
+	end
 	if FTAttune_DB.showNextSteps == nil then FTAttune_DB.showNextSteps = true end
 	if FTAttune_DB.treeScale ~= "large" and FTAttune_DB.treeScale ~= "larger" then FTAttune_DB.treeScale = "normal" end
 	if FTAttune_DB.archiveCompleted == nil then FTAttune_DB.archiveCompleted = true end
@@ -1310,6 +1361,8 @@ function FTAttune:FTStart()
 	end
 	-- End step done means fully attuned (Kill/Interact may lag behind in the done map)
 	FTAttune_ApplyCompletedEndSteps(t)
+	-- Horde Hall of Thanes starts under Will not do, once real progress is known.
+	FTAttune_ApplyDefaultSkips(t, attunelocal_faction)
 	-- No saved selection yet: open on the first attunement this character has not finished.
 	FTAttune_EnsureDefaultView()
 
@@ -1317,7 +1370,8 @@ function FTAttune:FTStart()
 
 	-- sending a couple version checks to make sure people update to the latest version
 	guildName, guildRankName, guildRankIndex = GetGuildInfo("player");
-	if guildName ~= nil then
+	if type(guildName) == "string" and guildName ~= "" then
+		attunelocal_myguild = guildName
 		C_Timer.After(11, function()
 			if attunelocal_myguild ~= "" then FTAttune:SendCommMessage(attunelocal_versionprefix, attunelocal_version, "GUILD", ""); end
 		end)
@@ -1782,32 +1836,120 @@ local function FTAttune_StepIsNext(s)
 	return true
 end
 
--- Guild chat is protected in combat. Hold the line until PLAYER_REGEN_ENABLED.
+-- Midnight blocks addon chat for the whole encounter, not just while
+-- InCombatLockdown() is true. A line sent in that window is discarded.
 local FTAttune_GuildAnnounceQueue = {}
+local FTAttune_GuildAnnounceFlushing = false
+local FTAttune_GuildSendFailures = 0
+
+local function FTAttune_RememberGuild()
+	if not GetGuildInfo then return end
+	local guildName = GetGuildInfo("player")
+	if type(guildName) == "string" and guildName ~= "" then
+		attunelocal_myguild = guildName
+	end
+end
+
+local function FTAttune_InGuild()
+	FTAttune_RememberGuild()
+	if attunelocal_myguild ~= "" then return true end
+	if IsInGuild then
+		local ok, inGuild = pcall(IsInGuild)
+		if ok and inGuild then return true end
+	end
+	return false
+end
+
+local function FTAttune_ChatLocked()
+	if InCombatLockdown and InCombatLockdown() then return true end
+	local info = C_ChatInfo
+	if info and info.InChatMessagingLockdown and info.InChatMessagingLockdown() then return true end
+	return false
+end
+
+local function FTAttune_TrySendGuild(msg)
+	local info = C_ChatInfo
+	local send = (info and info.SendChatMessage) or SendChatMessage
+	return pcall(send, msg, "GUILD")
+end
+
+local FTAttune_FlushGuildAnnouncements
+
+local function FTAttune_ScheduleGuildFlush(delay)
+	if FTAttune_GuildAnnounceFlushing then return end
+	FTAttune_GuildAnnounceFlushing = true
+	C_Timer.After(delay or 0, FTAttune_FlushGuildAnnouncements)
+end
+
+FTAttune_FlushGuildAnnouncements = function()
+	FTAttune_GuildAnnounceFlushing = false
+	if #FTAttune_GuildAnnounceQueue == 0 then return end
+	if FTAttune_ChatLocked() then
+		FTAttune_ScheduleGuildFlush(1)
+		return
+	end
+	local pending = FTAttune_GuildAnnounceQueue
+	FTAttune_GuildAnnounceQueue = {}
+	local failed = false
+	for _, msg in ipairs(pending) do
+		if failed or FTAttune_ChatLocked() or not FTAttune_TrySendGuild(msg) then
+			FTAttune_GuildAnnounceQueue[#FTAttune_GuildAnnounceQueue + 1] = msg
+			failed = true
+		end
+	end
+	if not failed then
+		FTAttune_GuildSendFailures = 0
+		return
+	end
+	FTAttune_GuildSendFailures = FTAttune_GuildSendFailures + 1
+	if FTAttune_GuildSendFailures >= 5 then
+		FTAttune_GuildAnnounceQueue = {}
+		FTAttune_GuildSendFailures = 0
+		return
+	end
+	FTAttune_ScheduleGuildFlush(1)
+end
 
 local function FTAttune_AnnounceGuild(msg)
-	if InCombatLockdown() then
+	if FTAttune_ChatLocked() or not FTAttune_TrySendGuild(msg) then
 		for _, pending in ipairs(FTAttune_GuildAnnounceQueue) do
 			if pending == msg then return end
 		end
 		FTAttune_GuildAnnounceQueue[#FTAttune_GuildAnnounceQueue + 1] = msg
-		return
+		FTAttune_ScheduleGuildFlush(0.5)
 	end
-	SendChatMessage(msg, "GUILD")
 end
 
 function FTAttune:PLAYER_REGEN_ENABLED()
-	if InCombatLockdown() or #FTAttune_GuildAnnounceQueue == 0 then return end
-	local pending = FTAttune_GuildAnnounceQueue
-	FTAttune_GuildAnnounceQueue = {}
-	for _, msg in ipairs(pending) do
-		SendChatMessage(msg, "GUILD")
-	end
+	if #FTAttune_GuildAnnounceQueue == 0 then return end
+	-- Combat lockdown is still on during this event. Retry once it lifts,
+	-- and keep retrying while chat-messaging lockdown is still up.
+	FTAttune_GuildAnnounceFlushing = false
+	FTAttune_ScheduleGuildFlush(0)
 end
 
 local function FTAttune_AnnounceAttuneComplete(name)
-	if not (FTAttune_DB and FTAttune_DB.announceAttuneCompleted and attunelocal_myguild ~= "") then return end
-	FTAttune_AnnounceGuild("[FTAttune] "..FTAttuneLang["FTAttuneCompleteGuild"]:gsub("##NAME##", name))
+	if not (FTAttune_DB and FTAttune_DB.announceAttuneCompleted and name) then return end
+	if not FTAttune_InGuild() then return end
+	local template = FTAttuneLang["FTAttuneCompleteGuild"]
+	if not template then return end
+	FTAttune_AnnounceGuild("[FTAttune] "..template:gsub("##NAME##", name))
+end
+
+-- Plays an FTAttune cue when Play sounds is on.
+local function FTAttune_PlaySound(sound)
+	if not sound or not PlaySound then return end
+	if FTAttune_DB and FTAttune_DB.playSounds == false then return end
+	PlaySound(sound)
+end
+
+local function FTAttune_CelebrateAttuneComplete(name)
+	if not name or name == "" then return end
+	FTAttune_PlaySound(5275) -- AuctionWindowClose
+	if FTAttune_DB and FTAttune_DB.showStepReached and FTAttuneLang["FTAttuneComplete"] then
+		print("|cffff00ff[FTAttune]|r "..FTAttuneLang["FTAttuneComplete"]:gsub("##NAME##", name))
+	end
+	FTAttune_AnnounceAttuneComplete(name)
 end
 
 -- Mark one matching step, announce it, and optionally close out the attunement.
@@ -1827,19 +1969,15 @@ local function FTAttune_MarkStepDone(s, typeLabel, stepLabel, checkComplete)
 	end
 
 	toon.done[key] = 1
-	PlaySound(1210) --putdownring
+	FTAttune_PlaySound(1210) --putdownring
 	if FTAttune_DB.showStepReached then
 		print("|cffff00ff[FTAttune]|r "..FTAttuneLang["CompletedStep"]:gsub("##TYPE##", typeLabel):gsub("##STEP##", stepLabel):gsub("##NAME##", a.NAME))
 	end
 	FTAttune_SendPushInfo("TOON")
 	FTAttune_SendPushInfo(key)
+	-- CheckComplete posts the guild line when this step is the one that hits 100%.
 	if checkComplete then
 		FTAttune_CheckComplete(false)
-		if toon.attuned[a.ID] >= 100 then
-			PlaySound(5275) -- AuctionWindowClose
-			if FTAttune_DB.showStepReached then print("|cffff00ff[FTAttune]|r "..FTAttuneLang["FTAttuneComplete"]:gsub("##NAME##", a.NAME)) end
-			FTAttune_AnnounceAttuneComplete(a.NAME)
-		end
 	end
 	FTAttune_SendPushInfo("OVER")
 	return true
@@ -1901,7 +2039,7 @@ function FTAttune:PLAYER_LEVEL_UP(event, arg1)
 	for _, s in ipairs(levels) do
 		if showPatchStep(s) and arg1 >= tonumber(s.ID_WOWHEAD) then
 			-- Level messages keep the raw type word used before this lookup.
-			if FTAttune_MarkStepDone(s, s.TYPE, s.STEP, false) then
+			if FTAttune_MarkStepDone(s, s.TYPE, s.STEP, true) then
 				refreshNeeded = true
 			end
 		end
@@ -1930,6 +2068,10 @@ function FTAttune:PLAYER_PVP_KILLS_CHANGED()
 end
 
 function FTAttune:PLAYER_ENTERING_WORLD()
+	FTAttune_RememberGuild()
+	if C_Timer and C_Timer.After then
+		C_Timer.After(2, FTAttune_RememberGuild)
+	end
 	FTAttune_QueueStatScan()
 	FTAttune_NextFrameUpdate()
 end
@@ -2022,7 +2164,7 @@ function FTAttune:QUEST_ACCEPTED(event, arg1, arg2)
 	if steps then
 		for _, s in ipairs(steps) do
 			if showPatchStep(s) then
-				if FTAttune_MarkStepDone(s, FTAttuneLang[s.TYPE], FTAttuneLang["Q1_"..s.ID_WOWHEAD], false) then
+				if FTAttune_MarkStepDone(s, FTAttuneLang[s.TYPE], FTAttuneLang["Q1_"..s.ID_WOWHEAD], true) then
 					refreshNeeded = true
 				end
 			end
@@ -2276,15 +2418,39 @@ function FTAttune_StatGoal(step)
 	return tonumber(step.COUNT) or 0
 end
 
+-- Profession rank from the profession window, not the statistics tab.
+-- Forever's GetProfessions order differs from other clients, so match the skill line.
+function FTAttune_ProfessionRank(skillLine)
+	skillLine = tonumber(skillLine)
+	if skillLine == nil or type(GetProfessions) ~= "function" or type(GetProfessionInfo) ~= "function" then
+		return 0
+	end
+	local s1, s2, s3, s4, s5, s6 = GetProfessions()
+	local slots = { s1, s2, s3, s4, s5, s6 }
+	for i = 1, 6 do
+		local index = slots[i]
+		if type(index) == "number" then
+			local ok, _, _, rank, _, _, _, line = pcall(GetProfessionInfo, index)
+			if ok and line == skillLine then
+				return tonumber(rank) or 0
+			end
+		end
+	end
+	return 0
+end
+
 function FTAttune_StatValue(step)
 	if step == nil then return 0 end
+	if step.SKILL_LINE then
+		return FTAttune_ProfessionRank(step.SKILL_LINE)
+	end
 	if step.TYPE == "Prof" then
 		local skill = tonumber(step.COUNT) or 0
 		local have = 0
 		local profs = FTAttune_Data.primaryProfessions
 		if profs then
 			for i = 1, #profs do
-				if FTAttune_ReadStatistic(profs[i][1]) >= skill then
+				if FTAttune_ProfessionRank(profs[i][1]) >= skill then
 					have = have + 1
 				end
 			end
@@ -2367,7 +2533,7 @@ end
 
 -- Close or reopen the Character end node from the requirement steps.
 -- Returns true when a trial newly finishes or reopens, so the tree can move it.
-function FTAttune_SyncCharacterEnds(toon)
+function FTAttune_SyncCharacterEnds(toon, silent)
 	if toon == nil or toon.done == nil then return false end
 	local ends = FTAttune_Data.stepsByType and FTAttune_Data.stepsByType["End"]
 	if ends == nil then return false end
@@ -2392,10 +2558,9 @@ function FTAttune_SyncCharacterEnds(toon)
 				toon.attuned[e.ID_ATTUNE] = 100
 				if not wasComplete then
 					changed = true
-					if not attunelocal_initial and attunelocal_frame and attunelocal_frame:IsShown() then
-						PlaySound(5275) -- AuctionWindowClose
-						if FTAttune_DB.showStepReached then print("|cffff00ff[FTAttune]|r "..FTAttuneLang["FTAttuneComplete"]:gsub("##NAME##", a.NAME)) end
-						FTAttune_AnnounceAttuneComplete(a.NAME)
+					-- Login records the finish quietly. A live close still announces with the window shut.
+					if not silent then
+						FTAttune_CelebrateAttuneComplete(a.NAME)
 					end
 				end
 			else
@@ -2426,7 +2591,7 @@ function FTAttune_ShowStatTooltip(step, fnode)
 		local profs = FTAttune_Data.primaryProfessions
 		if profs then
 			for i = 1, #profs do
-				local skill = FTAttune_ReadStatistic(profs[i][1])
+				local skill = FTAttune_ProfessionRank(profs[i][1])
 				if skill > 0 then
 					any = true
 					local name = FTAttuneLang[profs[i][2]] or profs[i][2]
@@ -2489,7 +2654,7 @@ function FTAttune_ScanStatSteps(silent)
 
 	consider(byType["Stat"])
 	consider(byType["Prof"])
-	local listChanged = FTAttune_SyncCharacterEnds(toon)
+	local listChanged = FTAttune_SyncCharacterEnds(toon, silent)
 	FTAttune_StatScanRunning = false
 
 	-- Silent redraws record the finish after the tree was built. Refresh the list once that draw returns.
@@ -2661,7 +2826,7 @@ function FTAttune_CheckProgress()
 	-- including a second pass to mark as done all non-trackable steps (interact/kill/past items) that belong to earlier (completed) quests
 	FTAttune_ScanStatSteps(true)
 	FTAttune_SendPushInfo("TOON")
-	FTAttune_CheckComplete(true)
+	FTAttune_CheckComplete(true, true)
 	FTAttune_SendPushInfo("OVER")
 
 	-- a third pass to mark as done all attunements used in further attunements
@@ -2721,25 +2886,29 @@ end
 -- Check full FTAttune completion
 -------------------------------------------------------------------------
 
-function FTAttune_CheckComplete(newComplete)
+function FTAttune_CheckComplete(newComplete, quiet)
 	local att = FTAttune_DB.toons[attunelocal_charKey]
+	local finished = {}
+	local function noteFinished(id)
+		finished[#finished + 1] = id
+	end
 
 	FTAttune_AutoCompleteSpacers(attunelocal_charKey)
 
 	-- WoW
-	if att.done["20-45"] and att.attuned["20"] ~= 100 	then att.done["20-50"] = 1; 	FTAttune_SendPushInfo("20-50"); 	att.attuned["20"] = 100; FTAttune_UpdateTreeGroup("20"); newComplete = true;  end	-- MC
-	if att.done["30-268"] and att.attuned["30"] ~= 100	then att.done["30-270"] = 1; FTAttune_SendPushInfo("30-270"); 	att.attuned["30"] = 100; FTAttune_UpdateTreeGroup("30"); newComplete = true;  end	-- Ony Horde
-	if att.done["40-265"] and att.attuned["40"] ~= 100	then att.done["40-270"] = 1; FTAttune_SendPushInfo("40-270"); 	att.attuned["40"] = 100; FTAttune_UpdateTreeGroup("40"); newComplete = true;  end	-- Ony Alliance
-	if att.done["50-65"] and att.attuned["50"] ~= 100 	then att.done["50-70"] = 1; 	FTAttune_SendPushInfo("50-70"); 	att.attuned["50"] = 100; FTAttune_UpdateTreeGroup("50"); newComplete = true;  end	-- BWL
-	if att.done["60-40"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; FTAttune_UpdateTreeGroup("60"); newComplete = true;  end	-- Naxx
-	if att.done["60-50"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; FTAttune_UpdateTreeGroup("60"); newComplete = true;  end	-- Naxx
-	if att.done["60-60"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; FTAttune_UpdateTreeGroup("60"); newComplete = true;  end	-- Naxx
-	if att.done["80-200"] and att.attuned["80"] ~= 100 	then att.done["80-210"] = 1; FTAttune_SendPushInfo("80-210"); 	att.attuned["80"] = 100;	 FTAttune_UpdateTreeGroup("80"); newComplete = true;  end	-- MC Quintessence
-	if att.done["100-960"] and att.attuned["100"] ~= 100 	then att.done["100-970"] = 1;FTAttune_SendPushInfo("100-970"); 	att.attuned["100"] = 100; FTAttune_UpdateTreeGroup("100"); newComplete = true;  end	-- scarab
+	if att.done["20-45"] and att.attuned["20"] ~= 100 	then att.done["20-50"] = 1; 	FTAttune_SendPushInfo("20-50"); 	att.attuned["20"] = 100; noteFinished("20"); FTAttune_UpdateTreeGroup("20"); newComplete = true;  end	-- MC
+	if att.done["30-268"] and att.attuned["30"] ~= 100	then att.done["30-270"] = 1; FTAttune_SendPushInfo("30-270"); 	att.attuned["30"] = 100; noteFinished("30"); FTAttune_UpdateTreeGroup("30"); newComplete = true;  end	-- Ony Horde
+	if att.done["40-265"] and att.attuned["40"] ~= 100	then att.done["40-270"] = 1; FTAttune_SendPushInfo("40-270"); 	att.attuned["40"] = 100; noteFinished("40"); FTAttune_UpdateTreeGroup("40"); newComplete = true;  end	-- Ony Alliance
+	if att.done["50-65"] and att.attuned["50"] ~= 100 	then att.done["50-70"] = 1; 	FTAttune_SendPushInfo("50-70"); 	att.attuned["50"] = 100; noteFinished("50"); FTAttune_UpdateTreeGroup("50"); newComplete = true;  end	-- BWL
+	if att.done["60-40"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; noteFinished("60"); FTAttune_UpdateTreeGroup("60"); newComplete = true;  end	-- Naxx
+	if att.done["60-50"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; noteFinished("60"); FTAttune_UpdateTreeGroup("60"); newComplete = true;  end	-- Naxx
+	if att.done["60-60"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; noteFinished("60"); FTAttune_UpdateTreeGroup("60"); newComplete = true;  end	-- Naxx
+	if att.done["80-200"] and att.attuned["80"] ~= 100 	then att.done["80-210"] = 1; FTAttune_SendPushInfo("80-210"); 	att.attuned["80"] = 100; noteFinished("80"); FTAttune_UpdateTreeGroup("80"); newComplete = true;  end	-- MC Quintessence
+	if att.done["100-960"] and att.attuned["100"] ~= 100 	then att.done["100-970"] = 1;FTAttune_SendPushInfo("100-970"); 	att.attuned["100"] = 100; noteFinished("100"); FTAttune_UpdateTreeGroup("100"); newComplete = true;  end	-- scarab
 
-	if att.done["120-65"] and att.attuned["120"] ~= 100 	then att.done["120-70"] = 1; FTAttune_SendPushInfo("120-70"); 	att.attuned["120"] = 100; FTAttune_UpdateTreeGroup("120"); newComplete = true;  end	-- brd key
-	if att.done["140-130"] and att.attuned["140"] ~= 100 	then att.done["140-140"] = 1; FTAttune_SendPushInfo("140-140"); 	att.attuned["140"] = 100; FTAttune_UpdateTreeGroup("140"); newComplete = true;  end	-- scholo Horde
-	if att.done["150-130"] and att.attuned["150"] ~= 100 	then att.done["150-140"] = 1; FTAttune_SendPushInfo("150-140"); 	att.attuned["150"] = 100; FTAttune_UpdateTreeGroup("150"); newComplete = true;  end	-- scholo Alliance
+	if att.done["120-65"] and att.attuned["120"] ~= 100 	then att.done["120-70"] = 1; FTAttune_SendPushInfo("120-70"); 	att.attuned["120"] = 100; noteFinished("120"); FTAttune_UpdateTreeGroup("120"); newComplete = true;  end	-- brd key
+	if att.done["140-130"] and att.attuned["140"] ~= 100 	then att.done["140-140"] = 1; FTAttune_SendPushInfo("140-140"); 	att.attuned["140"] = 100; noteFinished("140"); FTAttune_UpdateTreeGroup("140"); newComplete = true;  end	-- scholo Horde
+	if att.done["150-130"] and att.attuned["150"] ~= 100 	then att.done["150-140"] = 1; FTAttune_SendPushInfo("150-140"); 	att.attuned["150"] = 100; noteFinished("150"); FTAttune_UpdateTreeGroup("150"); newComplete = true;  end	-- scholo Alliance
 
 
 	-- Generic: mark End done when all its FOLLOWS are complete
@@ -2766,9 +2935,17 @@ function FTAttune_CheckComplete(newComplete)
 				att.done[s.ID_ATTUNE .. "-" .. s.ID] = 1
 				FTAttune_SendPushInfo(s.ID_ATTUNE .. "-" .. s.ID)
 				att.attuned[s.ID_ATTUNE] = 100
+				noteFinished(s.ID_ATTUNE)
 				FTAttune_UpdateTreeGroup(s.ID_ATTUNE)
 				newComplete = true
 			end
+		end
+	end
+
+	if not quiet then
+		for _, id in ipairs(finished) do
+			local a = FTAttune_Data.attuneById and FTAttune_Data.attuneById[id]
+			if a then FTAttune_CelebrateAttuneComplete(a.NAME) end
 		end
 	end
 
@@ -2944,6 +3121,17 @@ local function FTAttune_DisplayName(a)
 	return a.NAME
 end
 
+-- Off: Deadmines is VC and Dire Maul is DM. On: Deadmines is DM and Dire Maul uses its name.
+function FTAttune_ShortName(a)
+	if not a then return "" end
+	if FTAttune_DB and FTAttune_DB.deadminesAsDM then
+		local id = tostring(a.ID)
+		if id == "170" then return "DM" end
+		if id == "340" or id == "341" then return FTAttuneLang["Dire Maul"] or "Dire Maul" end
+	end
+	return a.SHORT
+end
+
 -------------------------------------------------------------------------
 -- Load the data into the TreeGroup object (nodes/leaves)
 -------------------------------------------------------------------------
@@ -2961,10 +3149,218 @@ local function FTAttune_ClassQuestVisible(a)
 	return classFile ~= nil and a.CLASS == classFile
 end
 
--- Character Progression attunes stay in the list when "Show Character Progression attunes" is on.
+-- Locale keys for category checkboxes. A group name that is not in this list
+-- still gets a checkbox, stored under the name itself.
+FTAttune_CategoryKeyList = {
+	"CLASS_DRUID",
+	"CLASS_HUNTER",
+	"CLASS_MAGE",
+	"CLASS_PALADIN",
+	"CLASS_PRIEST",
+	"CLASS_ROGUE",
+	"CLASS_SHAMAN",
+	"CLASS_WARLOCK",
+	"CLASS_WARRIOR",
+	"CHARACTER",
+	"DUNGEONS",
+	"KEYS",
+	"RAIDS",
+	"MISC",
+	"HEROICS",
+}
+
+-- First-seen group order in the attune list. That is the order of the checkboxes.
+function FTAttune_DiscoverCategoryKeys()
+	if FTAttune_GroupKeyByText ~= nil and FTAttune_CategoryKeys ~= nil then return end
+	local textToKey = {}
+	for _, key in ipairs(FTAttune_CategoryKeyList) do
+		local text = FTAttuneLang[key]
+		if text and text ~= "" then
+			textToKey[text] = key
+		end
+	end
+	local seen = {}
+	local keys = {}
+	local classesFolded = false
+	local attunes = FTAttune_Data and FTAttune_Data.attunes
+	if attunes then
+		for _, a in ipairs(attunes) do
+			local text = a.GROUP
+			if text and text ~= "" and not seen[text] then
+				seen[text] = true
+				local key = textToKey[text]
+				if key == nil then
+					key = text
+					textToKey[text] = key
+				end
+				-- Druid, Hunter, and the other class headers share one checkbox.
+				if key:sub(1, 6) == "CLASS_" then
+					if not classesFolded then
+						keys[#keys + 1] = "CLASSES"
+						classesFolded = true
+					end
+				else
+					keys[#keys + 1] = key
+				end
+			end
+		end
+	end
+	if not classesFolded then
+		keys[#keys + 1] = "CLASSES"
+	end
+	keys[#keys + 1] = "ARCHIVED"
+	keys[#keys + 1] = "WILLNOTDO"
+	FTAttune_GroupKeyByText = textToKey
+	FTAttune_CategoryKeys = keys
+end
+
+function FTAttune_GroupKey(groupText)
+	if groupText == nil or groupText == "" then return nil end
+	if FTAttune_GroupKeyByText == nil then FTAttune_DiscoverCategoryKeys() end
+	if FTAttune_GroupKeyByText == nil then return nil end
+	return FTAttune_GroupKeyByText[groupText]
+end
+
+-- A missing entry is shown. Unchecking a box stores true under that key.
+function FTAttune_CategoryShown(key)
+	if key == nil or FTAttune_DB == nil or FTAttune_DB.hiddenGroups == nil then return true end
+	return not FTAttune_DB.hiddenGroups[key]
+end
+
+-- Category headers are stored in capitals. The options list shows the first letter as a capital.
+function FTAttune_SentenceCase(text)
+	if type(text) ~= "string" or text == "" then return text or "" end
+	local function lowerCp(cp)
+		if cp >= 65 and cp <= 90 then return cp + 32 end
+		if (cp >= 0xC0 and cp <= 0xD6) or (cp >= 0xD8 and cp <= 0xDE) then return cp + 0x20 end
+		if cp >= 0x410 and cp <= 0x42F then return cp + 0x20 end
+		if cp == 0x401 then return 0x451 end
+		return cp
+	end
+	local function upperCp(cp)
+		if cp >= 97 and cp <= 122 then return cp - 32 end
+		if (cp >= 0xE0 and cp <= 0xF6) or (cp >= 0xF8 and cp <= 0xFE) then return cp - 0x20 end
+		if cp >= 0x430 and cp <= 0x44F then return cp - 0x20 end
+		if cp == 0x451 then return 0x401 end
+		return cp
+	end
+	local function charCp(cp)
+		if cp < 0x80 then
+			return string.char(cp)
+		elseif cp < 0x800 then
+			return string.char(0xC0 + math.floor(cp / 0x40), 0x80 + cp % 0x40)
+		end
+		return string.char(0xE0 + math.floor(cp / 0x1000), 0x80 + math.floor(cp / 0x40) % 0x40, 0x80 + cp % 0x40)
+	end
+	local out = {}
+	local capped = false
+	local i, n = 1, #text
+	while i <= n do
+		local b = text:byte(i)
+		local cp, len
+		if b < 0x80 then
+			cp, len = b, 1
+		elseif b < 0xE0 then
+			cp, len = (b - 0xC0) * 0x40 + text:byte(i + 1) - 0x80, 2
+		else
+			cp, len = (b - 0xE0) * 0x1000 + (text:byte(i + 1) - 0x80) * 0x40 + text:byte(i + 2) - 0x80, 3
+		end
+		local lower = lowerCp(cp)
+		if not capped and upperCp(lower) ~= lower then
+			lower = upperCp(lower)
+			capped = true
+		end
+		out[#out + 1] = charCp(lower)
+		i = i + len
+	end
+	return table.concat(out)
+end
+
+function FTAttune_CategoryLabel(key)
+	local name
+	if key == "CLASSES" then
+		name = FTAttuneLang["CLASSES"] or "Classes"
+	elseif key == "ARCHIVED" then
+		name = FTAttuneLang["Archived"] or "Completed"
+	elseif key == "WILLNOTDO" then
+		name = FTAttuneLang["WillNotDo"] or "Will not do"
+	else
+		name = FTAttuneLang[key] or key
+	end
+	return FTAttune_SentenceCase(name)
+end
+
+function FTAttune_GroupVisible(a)
+	if a == nil then return true end
+	local key = FTAttune_GroupKey(a.GROUP)
+	if (a.CLASS ~= nil and a.CLASS ~= "") or (type(key) == "string" and key:sub(1, 6) == "CLASS_") then
+		return FTAttune_CategoryShown("CLASSES")
+	end
+	return FTAttune_CategoryShown(key)
+end
+
+function FTAttune_InstallCategoryOptions()
+	FTAttune_DiscoverCategoryKeys()
+	local args = {
+		desc = {
+			type = "description",
+			name = " ",
+			width = "full",
+			order = 1,
+		},
+		intro = {
+			type = "description",
+			name = FTAttuneLang["Categories_DESC"] or "",
+			width = "full",
+			order = 2,
+		},
+	}
+	for i, key in ipairs(FTAttune_CategoryKeys or {}) do
+		local categoryKey = key
+		args["cat_" .. categoryKey] = {
+			type = "toggle",
+			name = FTAttune_CategoryLabel(categoryKey),
+			desc = FTAttuneLang["ShowCategory_DESC"],
+			get = function() return FTAttune_CategoryShown(categoryKey) end,
+			set = function(_, val) FTAttune_SetCategoryShown(categoryKey, val) end,
+			width = "full",
+			order = 10 + i,
+		}
+	end
+	attune_options.args.categories.args = args
+end
+
+function FTAttune_SetCategoryShown(key, shown)
+	if key == nil or FTAttune_DB == nil then return end
+	if FTAttune_DB.hiddenGroups == nil then FTAttune_DB.hiddenGroups = {} end
+	if shown then
+		FTAttune_DB.hiddenGroups[key] = nil
+	else
+		FTAttune_DB.hiddenGroups[key] = true
+	end
+	if key == "CHARACTER" then
+		FTAttune_DB.showCharacterProgression = shown and true or false
+	end
+	local previous = FTAttune_GetLastViewed()
+	FTAttune_ReloadAttuneTree()
+	local path = FTAttune_GetLastViewed()
+	if path ~= previous then
+		local tree = attunelocal_treeframe
+		if tree and path and attunelocal_treeIsShown then
+			tree:SelectByPath(path)
+		elseif path and attunelocal_scroll then
+			local _, _, id = strsplit("\001", path)
+			if id and id ~= "" then FTAttune_Select(id, true) end
+		end
+	end
+	if FTAttune_DB.iconView then FTAttune_LayoutIconView() end
+	if attunelocal_glist then FTAttune_ShowResultList() end
+	FTAttune_NextFrameUpdate()
+end
+
+-- Kept for the call sites that already filter the list, the Next window, and Results.
 local function FTAttune_CharacterProgressionVisible(a)
-	if a.GROUP ~= FTAttuneLang["CHARACTER"] then return true end
-	return not (FTAttune_DB and FTAttune_DB.showCharacterProgression == false)
+	return FTAttune_GroupVisible(a)
 end
 
 -- This character has set the attunement aside. It stays in the list, under Will not do.
@@ -2976,6 +3372,34 @@ function FTAttune_IsSkipped(attuneId)
 	if attuneId == nil or FTAttune_DB == nil or attunelocal_charKey == nil then return false end
 	local t = FTAttune_DB.toons and FTAttune_DB.toons[attunelocal_charKey]
 	return t ~= nil and t.skip ~= nil and t.skip[attuneId] == true
+end
+
+-- True when this character has finished the attune, or done a step besides the level gate.
+function FTAttune_AttuneAlreadyStarted(toon, attuneId)
+	if toon == nil then return false end
+	if toon.attuned and (toon.attuned[attuneId] or 0) >= 100 then return true end
+	local chain = FTAttune_Data.stepsByAttune and FTAttune_Data.stepsByAttune[attuneId]
+	if chain == nil or toon.done == nil then return false end
+	for _, s in ipairs(chain) do
+		if s.TYPE ~= "Level" and s.TYPE ~= "Spacer" and toon.done[attuneId .. "-" .. s.ID] then
+			return true
+		end
+	end
+	return false
+end
+
+-- DEFAULTSKIP attunes (Horde Hall of Thanes) start under Will not do.
+-- A stored false means this character turned the box off, so it stays off.
+function FTAttune_ApplyDefaultSkips(toon, faction)
+	if toon == nil or faction == nil or faction == "" or FTAttune_Data == nil or FTAttune_Data.attunes == nil then return end
+	if toon.skip == nil then toon.skip = {} end
+	for _, a in pairs(FTAttune_Data.attunes) do
+		if a.DEFAULTSKIP and (a.FACTION == faction or a.FACTION == "Both") and toon.skip[a.ID] == nil then
+			if not FTAttune_AttuneAlreadyStarted(toon, a.ID) then
+				toon.skip[a.ID] = true
+			end
+		end
+	end
 end
 
 function FTAttune_TreeHasGroup(expacNode, groupValue)
@@ -3007,12 +3431,15 @@ function FTAttune_SetAttuneSkipped(attuneId, skipped)
 	local t = FTAttune_DB.toons and FTAttune_DB.toons[attunelocal_charKey]
 	if t == nil then return end
 	if t.skip == nil then t.skip = {} end
+	local a = FTAttune_Data.attuneById and FTAttune_Data.attuneById[attuneId]
 	if skipped then
 		t.skip[attuneId] = true
+	elseif a and a.DEFAULTSKIP then
+		-- false keeps a default-skipped attune in the list. nil would be set again next login.
+		t.skip[attuneId] = false
 	else
 		t.skip[attuneId] = nil
 	end
-	local a = FTAttune_Data.attuneById and FTAttune_Data.attuneById[attuneId]
 	if a then
 		local done = t.attuned and (t.attuned[attuneId] or 0) >= 100
 		local group = FTAttune_WillNotDoLabel()
@@ -3175,16 +3602,21 @@ function FTAttune_LoadTree()
 					icon = icon,
 					sourceIcon = a.ICON,
 					tip = FTAttune_DisplayName(a),
-					short = a.SHORT,
+					short = FTAttune_ShortName(a),
 					dim = not hasSteps,
 					done = done,
 					skipped = skipped,
 				}
 				-- Discarded attunes collect under Will not do, after Completed.
+				-- A hidden category drops those attunes from the list.
 				if skipped then
-					table.insert(skippedNodes, attuneNode)
+					if FTAttune_CategoryShown("WILLNOTDO") then
+						table.insert(skippedNodes, attuneNode)
+					end
 				elseif FTAttune_DB.archiveCompleted and done then
-					table.insert(archivedNodes, attuneNode)
+					if FTAttune_CategoryShown("ARCHIVED") then
+						table.insert(archivedNodes, attuneNode)
+					end
 				else
 					table.insert(groupNode.children, attuneNode)
 				end
@@ -3237,7 +3669,13 @@ function FTAttune_SyncLastViewedPath()
 	local _, _, sel = strsplit("\001", lastViewed)
 	if sel == nil or sel == "" then return end
 	local path = FTAttune_PathForAttune(sel)
-	if path then FTAttune_SetLastViewed(path) end
+	if path then
+		FTAttune_SetLastViewed(path)
+		return
+	end
+	-- The open attune is not in the tree. Its category is hidden.
+	FTAttune_SetLastViewed(nil)
+	FTAttune_EnsureDefaultView()
 end
 
 function FTAttune_ReloadAttuneTree()
@@ -4494,7 +4932,7 @@ function FTAttune_ChainSummary(attuneId, toon)
 end
 
 function FTAttune_Select(attuneId, quiet)
-	if not quiet then PlaySound(856) end --igMainMenuOptionCheckBoxOn
+	if not quiet then FTAttune_PlaySound(856) end --igMainMenuOptionCheckBoxOn
 	FTAttune_UpdateSkipCheck(attuneId)
 	local keepPan = quiet and (attunelocal_graphPanX or 0) or 0
 	local keepScroll
@@ -5116,7 +5554,7 @@ function FTAttune_CreateSkipCheck()
 		holder:SetScript("OnClick", function(self)
 			if self.attuneId == nil then return end
 			local on = not self.checked
-			PlaySound(on and 856 or 857)
+			FTAttune_PlaySound(on and 856 or 857)
 			FTAttune_SetAttuneSkipped(self.attuneId, on)
 		end)
 		holder:SetScript("OnEnter", function(self)
@@ -7085,7 +7523,7 @@ function FTAttune_ToggleView(noToggle)
 		_G["GuildButton"]:SetText(FTAttuneLang["UI_Chains"])
 
 		-- SHOW RESULT FRAME
-		PlaySound(856)  --igMainMenuOptionCheckBoxOn
+		FTAttune_PlaySound(856)  --igMainMenuOptionCheckBoxOn
 		attunelocal_treeIsShown = false
 		FTAttune_UpdateWindowPortrait()
 
@@ -8302,7 +8740,7 @@ function FTAttune_SendRequestResults(surveyRequestor)
 			meta.o = 0 --not officer
 		end
 	end
-	attunelocal_myguild = guildName
+	if guildName ~= "" then attunelocal_myguild = guildName end
 
 	local att = FTAttune_DB.toons[attunelocal_charKey]
 	if att.status == nil then att.status = "None" end
@@ -8365,7 +8803,7 @@ function FTAttune_SendPushInfo(step)
 				meta.o = 0 --not officer
 			end
 		end
-		attunelocal_myguild = guildName
+		if guildName ~= "" then attunelocal_myguild = guildName end
 
 		local att = FTAttune_DB.toons[attunelocal_charKey]
 		if att.status == nil then att.status = "None" end
@@ -8804,7 +9242,7 @@ function FTAttune:OnCommReceived(prefix, message, distribution, sender)
 				attunelocal_syncAmountReceived = 0
 	
 				if FTAttune_DB.showOtherChat then print("|cffff00ff[FTAttune]|r "..FTAttuneLang["Received request from"]:gsub("##PLAYER##", attunelocal_syncTarget)) end
-				PlaySound(6675) -- BellTollTribal
+				FTAttune_PlaySound(6675) -- BellTollTribal
 				StaticPopupDialogs["SYNC_ATTUNE"] = {
 					text = FTAttuneLang["Sync Request From"]:gsub("##PLAYER##", attunelocal_syncTarget).."\n\n"..FTAttuneLang["Could be slow"],
 					button1 = FTAttuneLang["Accept"],
@@ -10685,8 +11123,8 @@ function rewardUi.FTAttune_ShareDetailPin(uiMapID, x, y)
 		C_Map.ClearUserWaypoint()
 	end
 
-	if PlaySound and SOUNDKIT and SOUNDKIT.UI_MAP_WAYPOINT_CHAT_SHARE then
-		PlaySound(SOUNDKIT.UI_MAP_WAYPOINT_CHAT_SHARE)
+	if SOUNDKIT and SOUNDKIT.UI_MAP_WAYPOINT_CHAT_SHARE then
+		FTAttune_PlaySound(SOUNDKIT.UI_MAP_WAYPOINT_CHAT_SHARE)
 	end
 end
 
@@ -11538,7 +11976,7 @@ function FTAttune_NextFrameCollect()
 						dist = 0
 					end
 					ord = ord + 1
-					local tag = a.SHORT
+					local tag = FTAttune_ShortName(a)
 					if tag == nil or tag == "" or tonumber(tag) then tag = a.NAME or "" end
 					local name = FTAttune_NextStepLabel(found[1])
 					local text

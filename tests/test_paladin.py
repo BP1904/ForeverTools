@@ -35,6 +35,12 @@ C_UnitAuras={GetAuraDataByIndex=function(u,i)
     return (auras[u] or {})[i]
 end}
 sent={}
+function ClickPaladinToggle(button)
+    local previous=secureContext; secureContext=true
+    local run=assert(loadstring(button:GetAttribute('_onclick')))
+    setfenv(run,setmetatable({self=button},{__index=_G})); run()
+    secureContext=previous
+end
 C_ChatInfo={RegisterAddonMessagePrefix=function(p) assert(p=='PLPWR') end,
     SendAddonMessage=function(p,m,c) sent[#sent+1]={prefix=p,message=m,channel=c} end}
 local baseCreate=CreateFrame
@@ -109,6 +115,62 @@ end
 
 
 class PaladinTest(unittest.TestCase):
+    def test_first_combat_click_opens_prepared_windows_and_keeps_cast_attributes(self):
+        self.lua.execute('''
+            Fire('PLAYER_LOGIN')
+            assert(P.window and not P.window:IsShown() and not P.detailWindow:IsShown())
+            local count=#frames
+            local unit=P.smart:GetAttribute('unit')
+            local spell=P.classCasts[1]:GetAttribute('spell1')
+            combat=true
+            ClickPaladinToggle(P.bar.settings)
+            assert(P.window:IsShown() and P.db.open and not P.detailWindow:IsShown())
+            ClickPaladinToggle(P.gridOptions)
+            assert(P.detailWindow:IsShown() and P.db.detailsOpen)
+            ClickPaladinToggle(P.gridOptions)
+            assert(not P.detailWindow:IsShown() and not P.db.detailsOpen and P.window:IsShown())
+            ClickPaladinToggle(P.gridOptions)
+            ClickPaladinToggle(P.bar.settings)
+            assert(not P.window:IsShown() and not P.detailWindow:IsShown())
+            assert(not P.db.open and not P.db.detailsOpen and #frames==count)
+            assert(P.smart:GetAttribute('unit')==unit and P.classCasts[1]:GetAttribute('spell1')==spell)
+            combat=false; Fire('PLAYER_REGEN_ENABLED')
+            assert(not P.window:IsShown() and not P.detailWindow:IsShown())
+        ''')
+
+    def test_combat_open_survives_combat_end_and_close_button_allows_reopen(self):
+        self.lua.execute('''
+            Fire('PLAYER_LOGIN'); combat=true
+            ClickPaladinToggle(P.bar.settings); ClickPaladinToggle(P.gridOptions)
+            ClickPaladinToggle(P.closeButton)
+            assert(not P.window:IsShown() and not P.db.open and not P.db.detailsOpen)
+            ClickPaladinToggle(P.bar.settings)
+            combat=false; Fire('PLAYER_REGEN_ENABLED')
+            assert(P.window:IsShown() and P.db.open and not P.detailWindow:IsShown())
+        ''')
+
+    def test_combat_slash_does_not_queue_a_later_toggle(self):
+        self.lua.execute('''
+            Fire('PLAYER_LOGIN'); combat=true
+            SlashCmdList.FOREVERTOOLSPALADIN()
+            assert(not P.db.open and not P.window:IsShown())
+            combat=false; Fire('PLAYER_REGEN_ENABLED')
+            assert(not P.window:IsShown())
+        ''')
+
+    def test_secure_toggle_respects_disabled_module_and_solo_visibility(self):
+        self.lua.execute('''
+            Fire('PLAYER_LOGIN'); P.settings.showSolo=false
+            GetNumGroupMembers=function() return 0 end
+            GetNumSubgroupMembers=function() return 0 end
+            P:Refresh(); combat=true; ClickPaladinToggle(P.bar.settings)
+            assert(not P.window:IsShown() and not P.db.open)
+            combat=false; P.settings.showSolo=true; P:OnSettingsChanged()
+            ForeverTools:SetEnabled('paladin',false)
+            combat=true; ClickPaladinToggle(P.bar.settings)
+            assert(not P.window:IsShown() and not P.db.open)
+        ''')
+
     def test_releasing_window_drag_in_combat_defers_protected_stop(self):
         self.lua.execute('''
             P:ToggleWindow(); stops=0
@@ -309,7 +371,7 @@ class PaladinTest(unittest.TestCase):
     def test_compact_bar_appears_at_login_without_opening_editor(self):
         self.lua.execute('''
             Fire('PLAYER_LOGIN')
-            assert(P.bar.frame:IsShown() and not P.window)
+            assert(P.bar.frame:IsShown() and P.window and not P.window:IsShown())
             assert(P.bar.frame.width==100 and P.bar.frame.height<250)
             SlashCmdList.FOREVERTOOLS(); SlashCmdList.FOREVERTOOLS()
             assert(P.bar.frame:IsShown())
@@ -343,7 +405,7 @@ class PaladinTest(unittest.TestCase):
             assert(P.bar.fury:GetAttribute('spell2')=='Spell25780')
             assert(not P.bar.smart:IsShown())
             assert(P.bar.fury:GetAttribute('unit')=='player')
-            assert(not P.bar.salvation:IsShown() and not P.window)
+            assert(not P.bar.salvation:IsShown() and not P.window:IsShown())
             assert(string.find(P.bar.classes[7].count.text,'1',1,true))
             auras.party2={{name='Spell19742',expirationTime=3600}}
             Fire('UNIT_AURA','party2')
@@ -358,7 +420,7 @@ class PaladinTest(unittest.TestCase):
             combat=true; Fire('GROUP_ROSTER_UPDATE'); Advance(3)
             P.bar.smart.scripts.PreClick(P.bar.smart)
             assert(P.bar.frame:IsShown() and P.bar.smart:GetAttribute('unit')==target)
-            P.bar.settings.scripts.OnClick(); assert(P.db.open and not P.window)
+            ClickPaladinToggle(P.bar.settings); assert(P.db.open and P.window:IsShown())
             ForeverTools:SetEnabled('paladin',false); assert(P.bar.frame:IsShown())
             combat=false; Fire('PLAYER_REGEN_ENABLED'); assert(not P.bar.frame:IsShown())
             ForeverTools:SetEnabled('paladin',true); assert(P.bar.frame:IsShown())
@@ -631,11 +693,11 @@ class PaladinTest(unittest.TestCase):
             assert(other.cells[1].enabled)
             other.cells[1].scripts.OnClick(nil,'LeftButton')
             assert(P:Profile('Dora Forever').classes[1]==1)
-            P.gridOptions.scripts.OnClick(); assert(P.detailWindow:IsShown())
-            P.gridOptions.scripts.OnClick(); assert(not P.detailWindow:IsShown())
+            ClickPaladinToggle(P.gridOptions); assert(P.detailWindow:IsShown())
+            ClickPaladinToggle(P.gridOptions); assert(not P.detailWindow:IsShown())
             combat=true; other.cells[1].scripts.OnClick(nil,'LeftButton')
             assert(P:Profile('Dora Forever').classes[1]==1)
-            P.gridOptions.scripts.OnClick(); assert(not P.db.detailsOpen)
+            ClickPaladinToggle(P.gridOptions); assert(P.db.detailsOpen and P.detailWindow:IsShown())
         ''')
 
     def test_screenshot_grid_free_assignment_and_salvation(self):

@@ -15,7 +15,7 @@ local function Component(...)
 FTAttune_Data.attunes = 	{
 	-- dungeon quests
 	{ID="163",NAME=FTAttuneLang["The Hall of Thanes"],SHORT="HoT",EXPAC=FTAttuneLang["World of Warcraft"], GROUP=FTAttuneLang['DUNGEONS'], FACTION="Alliance",ICON="Interface\\Icons\\inv_misc_statue_07", DESC=FTAttuneLang["DungeonQuest_Desc"], GROUPSIZE=5, LEVELS="13-15"},
-	{ID="166",NAME=FTAttuneLang["The Hall of Thanes"],SHORT="HoT",EXPAC=FTAttuneLang["World of Warcraft"], GROUP=FTAttuneLang['DUNGEONS'], FACTION="Horde",ICON="Interface\\Icons\\inv_misc_statue_07", DESC=FTAttuneLang["DungeonQuest_Desc"], GROUPSIZE=5, LEVELS="13-15"},
+	{ID="166",NAME=FTAttuneLang["The Hall of Thanes"],SHORT="HoT",EXPAC=FTAttuneLang["World of Warcraft"], GROUP=FTAttuneLang['DUNGEONS'], FACTION="Horde",ICON="Interface\\Icons\\inv_misc_statue_07", DESC=FTAttuneLang["DungeonQuest_Desc"], GROUPSIZE=5, LEVELS="13-15", DEFAULTSKIP=true},
 	{ID="160",NAME=FTAttuneLang["Ragefire Chasm"],SHORT="RFC",EXPAC=FTAttuneLang["World of Warcraft"], GROUP=FTAttuneLang['DUNGEONS'], FACTION="Horde",ICON="Interface\\Icons\\spell_fire_fire", DESC=FTAttuneLang["DungeonQuest_Desc"], GROUPSIZE=5, LEVELS="13-16"},
     {ID="183",NAME=FTAttuneLang["Ruins of Lordaeron"],SHORT="RoL",EXPAC=FTAttuneLang["World of Warcraft"], GROUP=FTAttuneLang['DUNGEONS'], FACTION="Alliance",ICON="Interface\\Icons\\inv_misc_bone_humanskull_01", DESC=FTAttuneLang["DungeonQuest_Desc"], GROUPSIZE=5, LEVELS="15-17"},
 	{ID="186",NAME=FTAttuneLang["Ruins of Lordaeron"],SHORT="RoL",EXPAC=FTAttuneLang["World of Warcraft"], GROUP=FTAttuneLang['DUNGEONS'], FACTION="Horde",ICON="Interface\\Icons\\inv_misc_bone_humanskull_01", DESC=FTAttuneLang["DungeonQuest_Desc"], GROUPSIZE=5, LEVELS="15-17"},
@@ -752,25 +752,24 @@ FTAttune_Data.steps = 	{
 	{ID_ATTUNE="190",ID="360",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_misc_book_09",FOLLOWS="350&250&150",STAGE="60"},
 
 --vForever dungeon attune 200
-	-- Columns L→R (higher ID = left): 1199 Twilight | 1275 Research | 971 Knowledge
-	-- SIDE (beside End): 1200 Blackfathom Villainy, 78916 Heart of the Void (from inside)
+	-- Columns L→R (higher ID = left): 1198→1200 Thaelrid | 1199 Twilight | 1275 Research | 971 Knowledge
 	{ID_ATTUNE="200",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 18",LOCATION="",ID_WOWHEAD="18",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
 	-- STAGE 20
+	{ID_ATTUNE="200",ID="420",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Darnassus"],ID_WOWHEAD="1198",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: In Search of Thaelrid (prequest)
 	{ID_ATTUNE="200",ID="320",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Darnassus"],ID_WOWHEAD="1199",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: Twilight Falls
 	{ID_ATTUNE="200",ID="220",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Darkshore"],ID_WOWHEAD="1275",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: Researching the Corruption
 	{ID_ATTUNE="200",ID="120",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Ironforge"],ID_WOWHEAD="971",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: Knowledge in the Deeps
 	-- STAGE 30
+	{ID_ATTUNE="200",ID="520",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Blackfathom Deeps"],ID_WOWHEAD="1200",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="420",STAGE="30"}, -- quest: Blackfathom Villainy (from Thaelrid)
 	{ID_ATTUNE="200",ID="330",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Blackfathom Deeps"],ID_WOWHEAD="5879",ICON="Interface\\Icons\\inv_jewelry_amulet_06",FOLLOWS="320",STAGE="30", COUNT=10}, -- item: Twilight Pendant
 	{ID_ATTUNE="200",ID="230",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Blackfathom Deeps"],ID_WOWHEAD="5952",ICON="Interface\\Icons\\inv_misc_organ_03",FOLLOWS="220",STAGE="30", COUNT=8}, -- item: Corrupted Brain Stem
 	{ID_ATTUNE="200",ID="130",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Blackfathom Deeps"],ID_WOWHEAD="5359",ICON="Interface\\Icons\\inv_misc_note_01",FOLLOWS="120",STAGE="30"}, -- item: Lorgalis Manuscript
 	-- STAGE 40
+	{ID_ATTUNE="200",ID="540",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="520",STAGE="40"},
 	{ID_ATTUNE="200",ID="340",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Darnassus"],ID_WOWHEAD="1199",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="330",STAGE="40"}, -- quest: Twilight Falls
 	{ID_ATTUNE="200",ID="240",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Darkshore"],ID_WOWHEAD="1275",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="230",STAGE="40"}, -- quest: Researching the Corruption
 	{ID_ATTUNE="200",ID="140",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Ironforge"],ID_WOWHEAD="971",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="130",STAGE="40"}, -- quest: Knowledge in the Deeps
-	-- SIDE reminders (inside dungeon) — left of End
-	{ID_ATTUNE="200",ID="520",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Blackfathom Deeps"],ID_WOWHEAD="1200",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="0",STAGE="40",SIDE=true}, -- quest: Blackfathom Villainy (from Thaelrid)
-	{ID_ATTUNE="200",ID="510",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Blackfathom Deeps"],ID_WOWHEAD="78916",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="0",STAGE="40",SIDE=true}, -- quest: The Heart of the Void
-	{ID_ATTUNE="200",ID="350",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_misc_book_09",FOLLOWS="340&240&140&520&510",STAGE="50"},
+	{ID_ATTUNE="200",ID="350",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_misc_book_09",FOLLOWS="540&340&240&140",STAGE="50"},
 
 --vForever dungeon attune 210
 	-- Columns L→R (higher ID = left): 6921 Amongst | 6564→6565 Allegiance | 6562→6563 Essence
@@ -799,31 +798,34 @@ FTAttune_Data.steps = 	{
 	-- SIDE reminders (inside dungeon) — left of End
 	{ID_ATTUNE="210",ID="520",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Blackfathom Deeps"],ID_WOWHEAD="6561",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="0",STAGE="60",SIDE=true}, -- quest: Blackfathom Villainy (from Thaelrid)
 	{ID_ATTUNE="210",ID="500",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Blackfathom Deeps"],ID_WOWHEAD="6922",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="0",STAGE="60",SIDE=true}, -- quest: Baron Aquanis (Strange Water Globe)
-	-- {ID_ATTUNE="210",ID="510",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Blackfathom Deeps"],ID_WOWHEAD="78917",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="0",STAGE="60",SIDE=true}, -- quest: The Heart of the Void
 	{ID_ATTUNE="210",ID="370",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_misc_book_09",FOLLOWS="360&260&160&520&500",STAGE="70"},
 
 --vForever dungeon attune 220
-	-- Columns L→R (higher ID = left): 388 Color | 387 Quell | 373→389→391 Unsent (center) | 377 Crime | 386 What Comes
+	-- Columns L→R (higher ID = left): 303→378 Dark Iron | 388 Color | 387 Quell | 373→389→391 Unsent (center) | 377 Crime | 386 What Comes
 	{ID_ATTUNE="220",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 16",LOCATION="",ID_WOWHEAD="16",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
 	-- STAGE 20
+	{ID_ATTUNE="220",ID="620",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Wetlands"],ID_WOWHEAD="303",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: The Dark Iron War
 	{ID_ATTUNE="220",ID="520",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Stormwind City"],ID_WOWHEAD="388",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: The Color of Blood
 	{ID_ATTUNE="220",ID="420",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Stormwind City"],ID_WOWHEAD="387",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: Quell The Uprising
 	{ID_ATTUNE="220",ID="320",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Stormwind City"],ID_WOWHEAD="373",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: The Unsent Letter
 	{ID_ATTUNE="220",ID="220",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Duskwood"],ID_WOWHEAD="377",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: Crime and Punishment
 	{ID_ATTUNE="220",ID="120",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Redridge Mountains"],ID_WOWHEAD="386",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- quest: What Comes Around...
 	-- STAGE 30
+	{ID_ATTUNE="220",ID="630",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Wetlands"],ID_WOWHEAD="378",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="620",STAGE="30"}, -- quest: The Fury Runs Deep
 	{ID_ATTUNE="220",ID="530",TYPE="Item",STEP="",LOCATION=FTAttuneLang["The Stockade"],ID_WOWHEAD="2909",ICON="Interface\\Icons\\inv_misc_bandana_03",FOLLOWS="520",STAGE="30", COUNT=10}, -- item: Red Wool Bandana
 	{ID_ATTUNE="220",ID="430",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="420",STAGE="30"},
 	{ID_ATTUNE="220",ID="330",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Stormwind City"],ID_WOWHEAD="389",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="320",STAGE="30"}, -- quest: Bazil Thredd
     {ID_ATTUNE="220",ID="230",TYPE="Item",STEP="",LOCATION=FTAttuneLang["The Stockade"],ID_WOWHEAD="3628",ICON="Interface\\Icons\\inv_gauntlets_09",FOLLOWS="220",STAGE="30"}, -- item: Hand of Dextren Ward
     {ID_ATTUNE="220",ID="130",TYPE="Item",STEP="",LOCATION=FTAttuneLang["The Stockade"],ID_WOWHEAD="3630",ICON="Interface\\Icons\\inv_misc_head_orc_01",FOLLOWS="120",STAGE="30"}, -- item: Head of Targorr
 	-- STAGE 40
+	{ID_ATTUNE="220",ID="640",TYPE="Item",STEP="",LOCATION=FTAttuneLang["The Stockade"],ID_WOWHEAD="3640",ICON="Interface\\Icons\\inv_misc_head_dwarf_01",FOLLOWS="630",STAGE="40"}, -- item: Head of Deepfury
 	{ID_ATTUNE="220",ID="540",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Stormwind City"],ID_WOWHEAD="388",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="530",STAGE="40"}, -- quest: The Color of Blood
 	{ID_ATTUNE="220",ID="440",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="430",STAGE="40"},
 	{ID_ATTUNE="220",ID="340",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Stormwind City"],ID_WOWHEAD="391",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="330",STAGE="40"}, -- quest: The Stockade Riots
     {ID_ATTUNE="220",ID="240",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Duskwood"],ID_WOWHEAD="377",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="230",STAGE="40"}, -- quest: Crime and Punishment
     {ID_ATTUNE="220",ID="140",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Redridge Mountains"],ID_WOWHEAD="386",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="130",STAGE="40"}, -- quest: What Comes Around...
 	-- STAGE 50
+	{ID_ATTUNE="220",ID="650",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Wetlands"],ID_WOWHEAD="378",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="640",STAGE="50"}, -- quest: The Fury Runs Deep
 	{ID_ATTUNE="220",ID="550",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="540",STAGE="50"},
 	{ID_ATTUNE="220",ID="450",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="440",STAGE="50"},
 	{ID_ATTUNE="220",ID="350",TYPE="Item",STEP="",LOCATION=FTAttuneLang["The Stockade"],ID_WOWHEAD="2926",ICON="Interface\\Icons\\inv_misc_head_human_01",FOLLOWS="340",STAGE="50"}, -- npc: Bazil Thredd
@@ -831,13 +833,14 @@ FTAttune_Data.steps = 	{
     {ID_ATTUNE="220",ID="150",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="140",STAGE="50"},
 	-- {ID_ATTUNE="220",ID="150",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Redridge Mountains"],ID_WOWHEAD="386",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="140",STAGE="50"}, -- quest: What Comes Around...
 	-- STAGE 60
+	{ID_ATTUNE="220",ID="660",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="650",STAGE="60"},
 	{ID_ATTUNE="220",ID="560",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="550",STAGE="60"},
 	{ID_ATTUNE="220",ID="460",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="450",STAGE="60"},
 	{ID_ATTUNE="220",ID="360",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Stormwind City"],ID_WOWHEAD="391",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="350",STAGE="60"}, -- quest: The Stockade Riots
 	{ID_ATTUNE="220",ID="260",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="250",STAGE="60"},
 	{ID_ATTUNE="220",ID="160",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="150",STAGE="60"},
 	-- STAGE 70
-	{ID_ATTUNE="220",ID="580",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_misc_book_09",FOLLOWS="560&460&360&260&160",STAGE="80"},
+	{ID_ATTUNE="220",ID="580",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_misc_book_09",FOLLOWS="660&560&460&360&260&160",STAGE="80"},
 
 
 --vForever dungeon attune 225 (Alliance City of Dalaran)
@@ -2627,9 +2630,10 @@ FTAttune_Data.steps = 	{
 	{ID_ATTUNE="95",ID="140",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_misc_bag_bigbagofenchantments",FOLLOWS="130",STAGE="140"},
 }
 
--- Character trials. Each requirement reads a statistic (GetStatistic):
+-- Character trials. Most requirements read a statistic (GetStatistic):
 -- 1198 creatures killed, 64222 times camped, 98 quests completed,
--- 588 total honorable kills, 932 five-player dungeons entered, and profession skill.
+-- 588 total honorable kills, and 932 five-player dungeons entered.
+-- Professions, including cooking (185), fishing (356), and first aid (129), read the profession rank.
 -- The chain is placed right to left, so a higher step id sits further left.
 -- Top row: level, kills, quests, honorable kills, dungeons, times camped.
 -- Bottom row: cooking, fishing, first aid, two professions.
@@ -2691,9 +2695,9 @@ do
 		steps[#steps + 1] = {ID_ATTUNE=id, ID="12", TYPE="Stat", STEP=FTAttuneLang["5-player dungeons"], LOCATION="", ID_WOWHEAD="932", COUNT=dungeons, ICON=icon.dungeons, FOLLOWS="0", STAGE="30"}
 		steps[#steps + 1] = {ID_ATTUNE=id, ID="10", TYPE="Stat", STEP=FTAttuneLang["Times camped"], LOCATION="", ID_WOWHEAD="64222", COUNT=camped, ICON=icon.camped, FOLLOWS="0", STAGE="30"}
 		steps[#steps + 1] = {ID_ATTUNE=id, ID="70", TYPE="Prof", STEP=profLabel, LOCATION="", ID_WOWHEAD="0", COUNT=skill, NEED=2, ICON=icon.prof, FOLLOWS="0", STAGE="40"}
-		steps[#steps + 1] = {ID_ATTUNE=id, ID="40", TYPE="Stat", STEP=FTAttuneLang["Cooking skill"], LOCATION="", ID_WOWHEAD="1524", COUNT=skill, ICON=icon.cooking, FOLLOWS="0", STAGE="40"}
-		steps[#steps + 1] = {ID_ATTUNE=id, ID="60", TYPE="Stat", STEP=FTAttuneLang["Fishing skill"], LOCATION="", ID_WOWHEAD="1519", COUNT=skill, ICON=icon.fishing, FOLLOWS="0", STAGE="50"}
-		steps[#steps + 1] = {ID_ATTUNE=id, ID="50", TYPE="Stat", STEP=FTAttuneLang["First Aid skill"], LOCATION="", ID_WOWHEAD="281", COUNT=skill, ICON=icon.aid, FOLLOWS="0", STAGE="50"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="40", TYPE="Stat", STEP=FTAttuneLang["Cooking skill"], LOCATION="", ID_WOWHEAD="0", SKILL_LINE=185, COUNT=skill, ICON=icon.cooking, FOLLOWS="0", STAGE="40"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="60", TYPE="Stat", STEP=FTAttuneLang["Fishing skill"], LOCATION="", ID_WOWHEAD="0", SKILL_LINE=356, COUNT=skill, ICON=icon.fishing, FOLLOWS="0", STAGE="50"}
+		steps[#steps + 1] = {ID_ATTUNE=id, ID="50", TYPE="Stat", STEP=FTAttuneLang["First Aid skill"], LOCATION="", ID_WOWHEAD="0", SKILL_LINE=129, COUNT=skill, ICON=icon.aid, FOLLOWS="0", STAGE="50"}
 		steps[#steps + 1] = {ID_ATTUNE=id, ID="80", TYPE="End", STEP="Attuned", LOCATION="", ID_WOWHEAD="0", ICON=icon.level, FOLLOWS="30&20&18&15&12&10&70&60&50&40", STAGE="60"}
 	end
 
@@ -2704,20 +2708,20 @@ do
 	addTier("520", 60, 7500, 60, 300, 600, 500, 50)
 end
 
--- Highest skill of each primary profession. Any two at the tier's skill count.
+-- Skill line id and name. Any two at the tier's skill count.
 -- Jewelcrafting and Inscription are included so they count where those professions exist.
 FTAttune_Data.primaryProfessions = {
-	{"1527", "Alchemy"},
-	{"1532", "Blacksmithing"},
-	{"1535", "Enchanting"},
-	{"1544", "Engineering"},
-	{"1538", "Herbalism"},
-	{"1539", "Inscription"},
-	{"1540", "Jewelcrafting"},
-	{"1536", "Leatherworking"},
-	{"1537", "Mining"},
-	{"1541", "Skinning"},
-	{"1542", "Tailoring"},
+	{171, "Alchemy"},
+	{164, "Blacksmithing"},
+	{333, "Enchanting"},
+	{202, "Engineering"},
+	{182, "Herbalism"},
+	{773, "Inscription"},
+	{755, "Jewelcrafting"},
+	{165, "Leatherworking"},
+	{186, "Mining"},
+	{393, "Skinning"},
+	{197, "Tailoring"},
 }
 
 -- [id] = title, minlevel, groupsize, desc
@@ -2762,7 +2766,7 @@ FTAttune_Data.quests = {
 	[92748]={16,1},			[92749]={16,1},			[92750]={17,1},			[92751]={17,1},			[92752]={17,1},
 	[92753]={18,5},			[92819]={18,5},
 	-- Forever dungeon quests
-	[17]={38,5},			[261]={34,1},			[377]={22,5},			[386]={22,5},			[387]={22,5},
+	[17]={38,5},			[261]={34,1},			[303]={22,5},			[377]={22,5},			[378]={22,5},			[386]={22,5},			[387]={22,5},
 	[388]={22,5},			[389]={16,1},			[391]={16,5},			[709]={30,5},			[720]={35,1},			[721]={35,5},
 	[722]={35,5},			[865]={13,1},			[870]={10,1},			[877]={13,1},			[880]={16,5},
 	[886]={10,1},			[914]={10,5},			[959]={14,1},			[962]={14,5},
@@ -2807,7 +2811,7 @@ FTAttune_Data.quests = {
 	[95195]={16,1},			[95204]={16,1},			[95216]={16,5},			[95250]={16,5},			[96393]={9,5},
 	[96394]={10,5},			[96395]={10,5},			[96403]={10,5},			[97288]={16,1},
 	[98423]={16,5},
-	[78916]={25,5},			[78917]={25,5},			[79987]={40,5},			[80140]={40,5},
+	[79987]={40,5},			[80140]={40,5},
 	[80324]={40,5},			[80325]={40,5},
 	[4701]={55,5},			[4724]={55,5},			[4729]={55,5},			[4734]={57,5},			[4735]={57,5},
 	[4742]={57,5},			[4743]={57,5},			[4764]={57,5},			[4766]={57,1},			[4768]={57,5},

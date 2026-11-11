@@ -1,4 +1,4 @@
-Attune Forever 16001-38, CixiDelmont / Antoine Desmarets.
+Attune Forever 16001-39, CixiDelmont / Antoine Desmarets.
 Copyright (c) 2019-2021 by Antoine Desmarets. All Rights Reserved.
 Source: original Attune Forever, adapted locally at the user request.
 https://www.curseforge.com/wow/addons/attune

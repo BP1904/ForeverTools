@@ -1,5 +1,11 @@
 # ForeverTools – ein Addon für alle unsere Funktionen
 
+**Neu in 1.16.12: Minimap-Button.** Das Schmiede-Symbol hängt direkt am linken Minimap-Rand und trägt einen runden Rahmen wie beim Dungeon Journal. Nach dem Update `/reload` eingeben.
+
+**Neu in 1.16.11: Attune aktualisiert.** Die integrierte Forever-Version steigt auf 16001-39: abschaltbare Sounds, ausblendbare Kategorien, VC/DM-Namenswahl und korrigierte Dungeon-Questketten. Suche und Navigation bleiben erhalten. Nach dem Update `/reload` eingeben.
+
+**Neu in 1.16.10: Paladinfenster im Kampf öffnen.** Das Zahnrad an der Paladinleiste schaltet die Zuweisungsansicht auch im Kampf um. „Optionen“ öffnet/schließt die Detailansicht; X und Escape schließen weiter. Die Fenster werden vorab vorbereitet, Buffziele und Zuweisungen bleiben im Kampf geschützt. Nach Installation außerhalb des Kampfes `/reload` eingeben.
+
 **Neu in 1.16.9: Weniger Hintergrundarbeit.** Alle 21 ForeverTools-Module auf weitere Verbesserungen geprüft. Questmarkierungen prüfen alle 0,5 Sekunden; neue Plaketten und Questereignisse reagieren sofort. Die schnellen Threat-Plates-Updates bleiben erhalten. Bankaufnahme, Material-Tooltips, Berufsscans, Auktionsscans und Karten vermeiden doppelte Arbeit. Nach dem Update `/reload` eingeben. Einzelheiten: [Verbesserungen-2026-11-09.md](Verbesserungen-2026-11-09.md).
 
 **Bank unterwegs:** Ein **Bank**-Button im kombinierten Blizzard-Rucksack öffnet den gespeicherten Bankinhalt mit Symbolen, Stapelmengen und Suche. Nach `/reload` einmal die Bank besuchen, danach ist die Ansicht auch unterwegs über den Button oder `/ftbank` verfügbar. Der letzte Stand wird pro Charakter gespeichert.

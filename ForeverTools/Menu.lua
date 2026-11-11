@@ -248,11 +248,25 @@ end
 function FT:CreateLauncher()
     if not Minimap or self.launcher then return end
     local button = CreateFrame("Button", "ForeverToolsLauncher", Minimap)
-    button:SetSize(30, 30)
-    -- Leave room for DungeonJournal's default button at the lower-left rim.
-    button:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", -44, -4)
+    button:SetSize(31, 31)
+    -- Attach to the left rim, above DungeonJournal's lower-left button.
+    button:SetPoint("CENTER", Minimap, "LEFT", 0, 0)
     button:SetFrameStrata("MEDIUM")
-    button:SetNormalTexture("Interface\\Icons\\Trade_Engineering")
+    -- Use the same classic round frame as DungeonJournal's LibDBIcon button.
+    local background = button:CreateTexture(nil, "BACKGROUND")
+    background:SetTexture("Interface\\Minimap\\UI-Minimap-Background")
+    background:SetSize(20, 20)
+    background:SetPoint("TOPLEFT", 7, -5)
+    local icon = button:CreateTexture(nil, "ARTWORK")
+    icon:SetTexture("Interface\\Icons\\Trade_Engineering")
+    icon:SetSize(17, 17)
+    icon:SetPoint("TOPLEFT", 7, -6)
+    icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+    button.icon = icon
+    local border = button:CreateTexture(nil, "OVERLAY")
+    border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
+    border:SetSize(53, 53)
+    border:SetPoint("TOPLEFT", 0, 0)
     button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
     button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     button:SetScript("OnClick", function(_, mouse)

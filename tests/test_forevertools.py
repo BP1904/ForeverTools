@@ -69,6 +69,7 @@ function CreateFrame(_, name)
         if c and self.scripts.OnShow then self.scripts.OnShow(self) end
     end
     function f:CreateFontString() return CreateFrame() end
+    function f:SetTexCoord(...) self.texCoord = {...} end
     function f:CreateTexture() return CreateFrame() end
     f.TitleText = {SetText = function() end}
     f.Text = {SetText = function() end, SetWidth = function() end, SetJustifyH = function() end,

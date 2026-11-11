@@ -5,7 +5,7 @@ local _, build = (GetBuildInfo or function() end)()
 local salvationAvailable = (tonumber(build) or 0) < 70753
 local M = {
     title = "Paladin: Segen & Gruppenbuffs",
-    description = "Kleine dauerhafte Buffleiste. Zuweisungen separat über /ftpp bearbeiten.",
+    description = "Kleine dauerhafte Buffleiste. Zahnrad öffnet/schließt die Zuweisungen auch im Kampf; /ftpp außerhalb des Kampfes.",
     defaults = {showSolo=true, duration=true, salvation=false, sync=true, freeassign=false},
     options = {
         {key="showSolo", title="Zuweisungsfenster auch ohne Gruppe anzeigen"},
@@ -629,10 +629,17 @@ function M:CreateBar()
         b:EnableMouseWheel(true)
         b:SetScript("OnMouseWheel",function(_,delta) self:CycleSelf(key,ids,delta<0) end)
     end
-    bar.settings=CreateFrame("Button",nil,frame)
+    bar.settings=CreateFrame("Button","ForeverToolsPaladinToggle",frame,"SecureHandlerClickTemplate")
     bar.settings:SetSize(16,16); bar.settings:SetPoint("TOPRIGHT",0,0)
     bar.settings:SetNormalTexture("Interface\\Buttons\\UI-OptionsButton")
-    bar.settings:SetScript("OnClick",function() self:ToggleWindow() end)
+    bar.settings:SetScript("OnEnter",function(button)
+        GameTooltip:SetOwner(button,"ANCHOR_RIGHT")
+        GameTooltip:AddLine("Paladin-Zuweisungen")
+        GameTooltip:AddLine("Öffnen/schließen – auch im Kampf.",1,1,1)
+        GameTooltip:Show()
+    end)
+    bar.settings:SetScript("OnLeave",function() GameTooltip:Hide() end)
+    if self.window then self:ConfigureWindowToggle(bar.settings,false) end
 end
 
 function M:RefreshBar()
@@ -782,10 +789,9 @@ function M:CreateAssignmentGrid()
         b:ClearAllPoints(); b:SetPoint("BOTTOMLEFT",x,7); b:SetSize(width,20)
         return b
     end
-    self.gridOptions=Footer("Optionen",526,86,function()
-        if Combat() then return end
-        self.db.detailsOpen=not self.db.detailsOpen; self:Refresh()
-    end)
+    self.gridOptions=CreateFrame("Button",nil,panel,"UIPanelButtonTemplate,SecureHandlerClickTemplate")
+    self.gridOptions:SetPoint("BOTTOMLEFT",526,7); self.gridOptions:SetSize(86,20)
+    self.gridOptions:SetText("Optionen")
     Footer("Auto-Zuweisung",618,94,function() self:AutoAssign() end)
     Footer("Löschen",718,86,function() self:ClearGridAssignments() end)
     Footer("Aktualisieren",810,94,function() self:Send("REQ"); self:Broadcast(); self:Refresh() end)
@@ -885,6 +891,34 @@ function M:RefreshAssignmentGrid()
     for i=#self.paladins+1,#self.gridRows do self.gridRows[i].frame:Hide() end
 end
 
+function M:ConfigureWindowToggle(button,detailsOnly)
+    -- Only a hardware click in the inherited secure handler changes combat visibility.
+    button:RegisterForClicks("AnyUp")
+    button:SetFrameRef("window",detailsOnly and self.detailWindow or self.window)
+    if not detailsOnly then button:SetFrameRef("other",self.detailWindow) end
+    if AntiFettFinger and AntiFettFinger.controller then button:SetFrameRef("keys",AntiFettFinger.controller) end
+    button:SetAttribute("_onclick",[[
+        if not self:GetAttribute("available") then return end
+        local window=self:GetFrameRef("window")
+        if window:IsShown() then
+            window:Hide()
+            local other=self:GetFrameRef("other")
+            if other then other:Hide() end
+        else
+            window:Show()
+        end
+        local keys=self:GetFrameRef("keys")
+        if keys and keys:GetAttribute("active") then keys:RunAttribute("apply") end
+        self:CallMethod("AfterToggle")
+    ]])
+    button.AfterToggle=function()
+        self.db.open=self.window:IsShown()
+        self.db.detailsOpen=self.detailWindow:IsShown()
+        self.dirty=true
+        if not Combat() then self:Refresh() end
+    end
+end
+
 function M:InstallCloseButtons()
     local function CloseButton(name,parent,window,other,detailsOnly)
         local button=CreateFrame("Button",name,parent,"UIPanelCloseButton,SecureHandlerClickTemplate")
@@ -928,7 +962,7 @@ function M:InstallCloseButtons()
 end
 
 function M:CreateWindow()
-    if Combat() then return end
+    if self.window or Combat() then return end
     local panel=CreateFrame("Frame","ForeverToolsPaladinDetails",UIParent,"BasicFrameTemplateWithInset")
     panel:SetSize(790,660); panel:SetPoint("CENTER"); panel:SetClampedToScreen(true)
     panel:SetMovable(true); panel:EnableMouse(true); panel:RegisterForDrag("LeftButton")
@@ -1006,6 +1040,8 @@ function M:CreateWindow()
     for _,row in ipairs(self.rows) do Track(row.buff); Track(row.salv) end
     self:CreateAssignmentGrid()
     self:InstallCloseButtons()
+    if self.bar then self:ConfigureWindowToggle(self.bar.settings,false) end
+    self:ConfigureWindowToggle(self.gridOptions,true)
 end
 
 function M:Refresh()
@@ -1015,11 +1051,17 @@ function M:Refresh()
         if panel.ftStopDragPending then panel:StopMovingOrSizing(); panel.ftStopDragPending=nil end
     end
     self:Roster()
-    if FT:IsEnabled("paladin") then self:CreateBar() end
+    if FT:IsEnabled("paladin") then
+        self:CreateBar()
+        -- Prepare protected frames and spell targets before the first combat click.
+        self:CreateWindow()
+    end
     self:RefreshBar()
     if not self.window then self:UpdateTimers(); return end
-    local visible=FT:IsEnabled("paladin") and self.db.open and
-        (self.settings.showSolo or Read(GetNumGroupMembers,0)>0)
+    local available=FT:IsEnabled("paladin") and (self.settings.showSolo or Read(GetNumGroupMembers,0)>0)
+    if self.bar then self.bar.settings:SetAttribute("available",available and true or false) end
+    self.gridOptions:SetAttribute("available",available and true or false)
+    local visible=available and self.db.open
     self.window:SetShown(visible and true or false)
     self.detailWindow:SetShown(visible and self.db.detailsOpen and true or false)
     self:RefreshAssignmentGrid()
@@ -1198,8 +1240,11 @@ function M:PaintTimers()
 end
 
 function M:ToggleWindow()
+    if Combat() then
+        FT:Print("Paladin-Fenster im Kampf über das Zahnrad an der Paladin-Leiste öffnen/schließen.")
+        return
+    end
     self.db.open=not self.db.open
-    if Combat() then self.dirty=true; FT:Print("Paladin-Fenster wird nach dem Kampf umgeschaltet."); return end
     if not self.window and self.db.open then self:CreateWindow() end
     self:Refresh()
 end
@@ -1215,7 +1260,7 @@ function M:Initialize()
     if self.frame then return end
     ForeverToolsPaladinDB=type(ForeverToolsPaladinDB)=="table" and ForeverToolsPaladinDB or {}
     self.db=ForeverToolsPaladinDB
-    -- The editor is opened on demand; only the compact bar returns after login/reload.
+    -- Prepare the hidden editor before combat; only the compact bar is shown at login.
     self.db.open=false
     self.db.detailsOpen=false
     self.db.paladins=type(self.db.paladins)=="table" and self.db.paladins or {}
