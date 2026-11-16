@@ -152,11 +152,11 @@ def build(source):
         (target / 'Manifest.xml').write_text(header + '  <Include file="Libraries.xml"/>\n  <Script file="Registry.lua"/>\n' + '\n'.join(manifest) + '\n</Ui>\n', encoding='utf-8')
         (target / 'NOTICE.txt').write_text(
             feature + ': local adaptation of user-installed sources for WoW Forever.\n'
-            + ('BigWigs v427.8. Authors: Funkeh, Nebula, Justwait, Delk.\n'
+            + ('BigWigs ' + packages[0]['meta']['Version'] + '. Authors: Funkeh, Nebula, Justwait, Delk.\n'
                'All Rights Reserved. Upstream: https://github.com/BigWigsMods/BigWigs\n'
                'Original TOC: You are free to fork and modify on GitHub; ask authors about other uses.\n'
                if feature == 'BigWigs' else
-               'Nova Instance Tracker 2.31. Author: Novaspark-Arugal OCE.\n'
+               'Nova Instance Tracker ' + packages[0]['meta']['Version'] + '. Author: Novaspark-Arugal OCE.\n'
                'Upstream: https://www.curseforge.com/wow/addons/nova-instance-tracker\n')
             + 'Original copyright and library licenses retained in the copied files.\n'
             'Changes: deferred internal package loading, private API environment, bundled asset paths,\n'

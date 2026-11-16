@@ -248,6 +248,7 @@ local classSteps = {
 
     -- HUNTER
 	{ID_ATTUNE="5115",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 10",LOCATION="",ID_WOWHEAD="10",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
+	-- Columns left to right (higher ID = left): Skyborne | Human | Night elf | Dwarf.
 	-- Dwarf: The Hunter's Path (any one) → Grif Wildheart in Kharanos
 	{ID_ATTUNE="5115",ID="20",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="6074",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Hunter's Path
 	{ID_ATTUNE="5115",ID="21",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="6075",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Hunter's Path
@@ -256,25 +257,45 @@ local classSteps = {
 	{ID_ATTUNE="5115",ID="23",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="6071",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Hunter's Path
 	{ID_ATTUNE="5115",ID="24",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="6072",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Hunter's Path
 	{ID_ATTUNE="5115",ID="25",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="6073",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Hunter's Path
-	{ID_ATTUNE="5115",ID="30",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="6064",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="25|24|23|22|21|20",STAGE="30"}, -- Taming the Beast (Large Crag Boar)
+	-- Human starts the tame with Josephine. Skyborne breadcrumb is Elayaa → Quel'ana.
+	{ID_ATTUNE="5115",ID="26",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Elwynn Forest"],ID_WOWHEAD="94792",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Taming the Beast (Rockhide Boar)
+	{ID_ATTUNE="5115",ID="27",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94007",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Taming the Beast (report to Quel'ana)
+	{ID_ATTUNE="5115",ID="29",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
+	{ID_ATTUNE="5115",ID="30",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="6064",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="22|21|20",STAGE="30"}, -- Taming the Beast (Large Crag Boar)
     {ID_ATTUNE="5115",ID="31",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
     {ID_ATTUNE="5115",ID="32",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
-	{ID_ATTUNE="5115",ID="33",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="6063",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="25|24|23|22|21|20",STAGE="30"}, -- Taming the Beast (Webwood Lurker)
-	{ID_ATTUNE="5115",ID="40",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="6084",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="33|30",STAGE="40"}, -- Taming the Beast (Snow Leopard)
+	{ID_ATTUNE="5115",ID="33",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="6063",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="25|24|23",STAGE="30"}, -- Taming the Beast (Webwood Lurker)
+	{ID_ATTUNE="5115",ID="34",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
+	{ID_ATTUNE="5115",ID="35",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Elwynn Forest"],ID_WOWHEAD="94863",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="26",STAGE="30"}, -- Taming the Beast (Gray Forest Wolf)
+	{ID_ATTUNE="5115",ID="36",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94978",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="27",STAGE="30"}, -- Taming the Beast (Windsong Crawler)
+	{ID_ATTUNE="5115",ID="39",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
+	{ID_ATTUNE="5115",ID="40",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="6084",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="30",STAGE="40"}, -- Taming the Beast (Snow Leopard)
     {ID_ATTUNE="5115",ID="41",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
     {ID_ATTUNE="5115",ID="42",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
-    {ID_ATTUNE="5115",ID="43",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="6101",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="33|30",STAGE="40"}, -- Taming the Beast (Nightsaber Stalker)
-	{ID_ATTUNE="5115",ID="50",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="6085",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="43|40",STAGE="50"}, -- Taming the Beast (Ice Claw Bear)
+    {ID_ATTUNE="5115",ID="43",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="6101",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="33",STAGE="40"}, -- Taming the Beast (Nightsaber Stalker)
+	{ID_ATTUNE="5115",ID="44",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
+	{ID_ATTUNE="5115",ID="45",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Elwynn Forest"],ID_WOWHEAD="94864",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="35",STAGE="40"}, -- Taming the Beast (Young Forest Bear)
+	{ID_ATTUNE="5115",ID="46",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94979",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="36",STAGE="40"}, -- Taming the Beast (Ornery Galestrider)
+	{ID_ATTUNE="5115",ID="49",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
+	{ID_ATTUNE="5115",ID="50",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="6085",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="40",STAGE="50"}, -- Taming the Beast (Ice Claw Bear)
     {ID_ATTUNE="5115",ID="51",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
     {ID_ATTUNE="5115",ID="52",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
-	{ID_ATTUNE="5115",ID="53",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="6102",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="43|40",STAGE="50"}, -- Taming the Beast (Strigid Screecher)
-	{ID_ATTUNE="5115",ID="60",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ironforge"],ID_WOWHEAD="6086",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="53|50",STAGE="60"}, -- Training the Beast (Belia Thundergranite)
+	{ID_ATTUNE="5115",ID="53",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="6102",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="43",STAGE="50"}, -- Taming the Beast (Strigid Screecher)
+	{ID_ATTUNE="5115",ID="54",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
+	{ID_ATTUNE="5115",ID="55",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Elwynn Forest"],ID_WOWHEAD="94793",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="45",STAGE="50"}, -- Training the Beast (Isaac Chan)
+	{ID_ATTUNE="5115",ID="56",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94013",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="46",STAGE="50"}, -- Taming the Beast (Vuldren Alpha)
+	{ID_ATTUNE="5115",ID="59",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
+	{ID_ATTUNE="5115",ID="60",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Ironforge"],ID_WOWHEAD="6086",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="50",STAGE="60"}, -- Training the Beast (Belia Thundergranite)
     {ID_ATTUNE="5115",ID="61",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
     {ID_ATTUNE="5115",ID="62",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
-	{ID_ATTUNE="5115",ID="63",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Darnassus"],ID_WOWHEAD="6103",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="53|50",STAGE="60"}, -- Training the Beast (Jocaste)
-	{ID_ATTUNE="5115",ID="70",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_weapon_bow_07",FOLLOWS="63|60",STAGE="70"},
+	{ID_ATTUNE="5115",ID="63",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Darnassus"],ID_WOWHEAD="6103",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="53",STAGE="60"}, -- Training the Beast (Jocaste)
+	{ID_ATTUNE="5115",ID="64",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
+	{ID_ATTUNE="5115",ID="65",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="55",STAGE="60"},
+	{ID_ATTUNE="5115",ID="66",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94050",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="56",STAGE="60"}, -- Training the Beast (Quel'dora Quickgale)
+	{ID_ATTUNE="5115",ID="70",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_weapon_bow_07",FOLLOWS="66|65|63|60",STAGE="70"},
 
 	{ID_ATTUNE="5117",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 10",LOCATION="",ID_WOWHEAD="10",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
+	-- Columns left to right (higher ID = left): Skyborne | Orc/troll | Tauren.
 	-- Tauren: The Hunter's Path (any one) → Yaw Sharpmane in Bloodhoof Village
 	{ID_ATTUNE="5117",ID="20",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Mulgore"],ID_WOWHEAD="6065",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Hunter's Path
 	{ID_ATTUNE="5117",ID="21",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Mulgore"],ID_WOWHEAD="6066",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Hunter's Path
@@ -283,23 +304,37 @@ local classSteps = {
 	{ID_ATTUNE="5117",ID="23",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="6068",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Hunter's Path
 	{ID_ATTUNE="5117",ID="24",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="6069",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Hunter's Path
 	{ID_ATTUNE="5117",ID="25",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="6070",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Hunter's Path
+	-- Skyborne breadcrumb is Elayaa → Quel'ana. Same quests as the Alliance tree.
+	{ID_ATTUNE="5117",ID="26",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94007",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Taming the Beast (report to Quel'ana)
+	{ID_ATTUNE="5117",ID="29",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
 	{ID_ATTUNE="5117",ID="30",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Mulgore"],ID_WOWHEAD="6061",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="22|21|20",STAGE="30"}, -- Taming the Beast (Adult Plainstrider)
     {ID_ATTUNE="5117",ID="31",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
     {ID_ATTUNE="5117",ID="32",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
 	{ID_ATTUNE="5117",ID="33",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="6062",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="25|24|23",STAGE="30"}, -- Taming the Beast (Dire Mottled Boar)
+	{ID_ATTUNE="5117",ID="34",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
+	{ID_ATTUNE="5117",ID="36",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94978",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="26",STAGE="30"}, -- Taming the Beast (Windsong Crawler)
+	{ID_ATTUNE="5117",ID="39",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
 	{ID_ATTUNE="5117",ID="40",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Mulgore"],ID_WOWHEAD="6087",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="30",STAGE="40"}, -- Taming the Beast (Prairie Stalker)
     {ID_ATTUNE="5117",ID="41",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
     {ID_ATTUNE="5117",ID="42",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
 	{ID_ATTUNE="5117",ID="43",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="6083",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="33",STAGE="40"}, -- Taming the Beast (Surf Crawler)
+	{ID_ATTUNE="5117",ID="44",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
+	{ID_ATTUNE="5117",ID="46",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94979",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="36",STAGE="40"}, -- Taming the Beast (Ornery Galestrider)
+	{ID_ATTUNE="5117",ID="49",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
 	{ID_ATTUNE="5117",ID="50",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Mulgore"],ID_WOWHEAD="6088",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="40",STAGE="50"}, -- Taming the Beast (Swoop)
     {ID_ATTUNE="5117",ID="51",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
     {ID_ATTUNE="5117",ID="52",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
 	{ID_ATTUNE="5117",ID="53",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="6082",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="43",STAGE="50"}, -- Taming the Beast (Armored Scorpid)
+	{ID_ATTUNE="5117",ID="54",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
+	{ID_ATTUNE="5117",ID="56",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94013",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="46",STAGE="50"}, -- Taming the Beast (Vuldren Alpha)
+	{ID_ATTUNE="5117",ID="59",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
 	{ID_ATTUNE="5117",ID="60",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Thunder Bluff"],ID_WOWHEAD="6089",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="50",STAGE="60"}, -- Training the Beast (Holt Thunderhorn)
     {ID_ATTUNE="5117",ID="61",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
     {ID_ATTUNE="5117",ID="62",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
 	{ID_ATTUNE="5117",ID="63",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Orgrimmar"],ID_WOWHEAD="6081",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="53",STAGE="60"}, -- Training the Beast (Ormak Grimshot)
-	{ID_ATTUNE="5117",ID="70",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_weapon_bow_07",FOLLOWS="63|60",STAGE="70"},
+	{ID_ATTUNE="5117",ID="64",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
+	{ID_ATTUNE="5117",ID="66",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94050",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="56",STAGE="60"}, -- Training the Beast (Quel'dora Quickgale)
+	{ID_ATTUNE="5117",ID="70",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_weapon_bow_07",FOLLOWS="66|63|60",STAGE="70"},
 
 	{ID_ATTUNE="5119",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 50",LOCATION="",ID_WOWHEAD="50",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
 	{ID_ATTUNE="5119",ID="20",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Azshara"],ID_WOWHEAD="8151",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- The Hunter's Charm
@@ -832,16 +867,34 @@ local classSteps = {
 	{ID_ATTUNE="5242",ID="60",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_elemental_primal_earth",FOLLOWS="50",STAGE="60"},
 
 	{ID_ATTUNE="5233",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 10",LOCATION="",ID_WOWHEAD="10",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
+	-- Columns left to right (higher ID = left): Skyborne | Horde. Spacers keep that column down to End.
+	{ID_ATTUNE="5233",ID="24",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="97243",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- Call of Fire
 	{ID_ATTUNE="5233",ID="20",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="1522",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Call of Fire
 	{ID_ATTUNE="5233",ID="21",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="1523",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Call of Fire
 	{ID_ATTUNE="5233",ID="22",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["The Barrens"],ID_WOWHEAD="2983",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Call of Fire
 	{ID_ATTUNE="5233",ID="23",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="2984",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Call of Fire
+	{ID_ATTUNE="5233",ID="34",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="97244",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="24",STAGE="30"}, -- Call of Fire
+	{ID_ATTUNE="5233",ID="33",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
+	{ID_ATTUNE="5233",ID="32",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
+	{ID_ATTUNE="5233",ID="31",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
 	{ID_ATTUNE="5233",ID="30",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="1524",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="21|20|22|23",STAGE="30"}, -- Call of Fire
+	{ID_ATTUNE="5233",ID="44",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="97245",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="34",STAGE="40"}, -- Call of Fire
+	{ID_ATTUNE="5233",ID="43",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
+	{ID_ATTUNE="5233",ID="42",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
+	{ID_ATTUNE="5233",ID="41",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
 	{ID_ATTUNE="5233",ID="40",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="1525",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="30",STAGE="40"}, -- Call of Fire
+	{ID_ATTUNE="5233",ID="54",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="97257",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="44",STAGE="50"}, -- Call of Fire
+	{ID_ATTUNE="5233",ID="53",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
+	{ID_ATTUNE="5233",ID="52",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
+	{ID_ATTUNE="5233",ID="51",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
 	{ID_ATTUNE="5233",ID="50",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="1526",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="40",STAGE="50"}, -- Call of Fire
 	-- {ID_ATTUNE="5233",ID="60",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="1464",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="50",STAGE="60"}, -- Fire Sapta
+	{ID_ATTUNE="5233",ID="65",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="54",STAGE="60"},
+	{ID_ATTUNE="5233",ID="64",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
+	{ID_ATTUNE="5233",ID="63",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
+	{ID_ATTUNE="5233",ID="62",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
 	{ID_ATTUNE="5233",ID="61",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["The Barrens"],ID_WOWHEAD="1527",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="50",STAGE="60"}, -- Call of Fire
-	{ID_ATTUNE="5233",ID="70",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_elemental_primal_fire",FOLLOWS="61",STAGE="70"},
+	{ID_ATTUNE="5233",ID="70",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\inv_elemental_primal_fire",FOLLOWS="61|65",STAGE="70"},
 
 	{ID_ATTUNE="5243",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 10",LOCATION="",ID_WOWHEAD="10",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
 	{ID_ATTUNE="5243",ID="20",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="94449",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- Call of Fire
@@ -1127,58 +1180,85 @@ local classSteps = {
 
 
     -- WARRIOR
-	-- Orc (right) or Undead (left). Either chain completes Forged Steel.
+	-- Columns left to right (higher ID = left): Skyborne | Undead | Orc. Any chain teaches Defensive Stance.
 	{ID_ATTUNE="5287",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 10",LOCATION="",ID_WOWHEAD="10",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
+	{ID_ATTUNE="5287",ID="19",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="20"},
 	{ID_ATTUNE="5287",ID="20",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="1505",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Veteran Uzzek
 	{ID_ATTUNE="5287",ID="21",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="20"},
 	{ID_ATTUNE="5287",ID="23",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="1818",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Speak with Dillinger
 	{ID_ATTUNE="5287",ID="24",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="20"},
+	{ID_ATTUNE="5287",ID="25",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94003",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Skybreaker Bulwark
+	{ID_ATTUNE="5287",ID="29",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
 	{ID_ATTUNE="5287",ID="30",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="1498",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="20",STAGE="30"}, -- Path of Defense
 	{ID_ATTUNE="5287",ID="31",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
 	{ID_ATTUNE="5287",ID="33",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="1819",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="23",STAGE="30"}, -- Ulag the Cleaver
 	{ID_ATTUNE="5287",ID="34",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
+	{ID_ATTUNE="5287",ID="35",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="263993",ICON="Interface\\Icons\\inv_shield_13",FOLLOWS="25",STAGE="30"}, -- item: Skybreaker Bulwark
+	{ID_ATTUNE="5287",ID="39",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
 	{ID_ATTUNE="5287",ID="40",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="1502",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="30",STAGE="40"}, -- Thun'grim Firegaze
 	{ID_ATTUNE="5287",ID="41",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
 	{ID_ATTUNE="5287",ID="43",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="1820",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="33",STAGE="40"}, -- Speak with Coleman
 	{ID_ATTUNE="5287",ID="44",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
+	{ID_ATTUNE="5287",ID="45",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94003",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="35",STAGE="40"}, -- The Skybreaker Bulwark
+	{ID_ATTUNE="5287",ID="49",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
 	{ID_ATTUNE="5287",ID="50",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Durotar"],ID_WOWHEAD="1503",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="40",STAGE="50"}, -- Forged Steel
 	{ID_ATTUNE="5287",ID="51",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
 	{ID_ATTUNE="5287",ID="53",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="1821",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="43",STAGE="50"}, -- Agamand Heirlooms
 	{ID_ATTUNE="5287",ID="54",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
+	{ID_ATTUNE="5287",ID="55",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="45",STAGE="50"},
 	{ID_ATTUNE="5287",ID="58",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
 	{ID_ATTUNE="5287",ID="61",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="7567",ICON="Interface\\Icons\\inv_axe_01",FOLLOWS="53",STAGE="60"}, -- Agamand Family Axe
 	{ID_ATTUNE="5287",ID="62",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="7566",ICON="Interface\\Icons\\inv_sword_04",FOLLOWS="53",STAGE="60"}, -- Agamand Family Sword
 	{ID_ATTUNE="5287",ID="63",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="7569",ICON="Interface\\Icons\\inv_mace_01",FOLLOWS="53",STAGE="60"}, -- Agamand Family Mace
 	{ID_ATTUNE="5287",ID="64",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="7568",ICON="Interface\\Icons\\inv_weapon_shortblade_05",FOLLOWS="53",STAGE="60"}, -- Agamand Family Dagger
+	{ID_ATTUNE="5287",ID="65",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="55",STAGE="60"},
+	{ID_ATTUNE="5287",ID="69",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="70"},
 	{ID_ATTUNE="5287",ID="70",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="50",STAGE="70"},
 	{ID_ATTUNE="5287",ID="71",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="70"},
 	{ID_ATTUNE="5287",ID="73",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Tirisfal Glades"],ID_WOWHEAD="1822",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="64&63&62&61",STAGE="70"}, -- Heirloom Weapon
 	{ID_ATTUNE="5287",ID="74",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="70"},
-	{ID_ATTUNE="5287",ID="80",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\ability_warrior_defensivestance",FOLLOWS="70|73",STAGE="80"},
+	{ID_ATTUNE="5287",ID="75",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="65",STAGE="70"},
+	{ID_ATTUNE="5287",ID="80",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\ability_warrior_defensivestance",FOLLOWS="70|73|75",STAGE="80"},
 
-	-- Human (right), Dwarf (middle), or Night Elf (left). Any chain completes Grey Iron Weapons.
+	-- Columns left to right (higher ID = left): Skyborne | Night elf | Dwarf | Human. Any chain teaches Defensive Stance.
 	{ID_ATTUNE="5288",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 10",LOCATION="",ID_WOWHEAD="10",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
+	{ID_ATTUNE="5288",ID="19",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="20"},
 	{ID_ATTUNE="5288",ID="20",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Elwynn Forest"],ID_WOWHEAD="1638",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- A Warrior's Training
 	{ID_ATTUNE="5288",ID="21",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="1679",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Muren Stormpike
 	{ID_ATTUNE="5288",ID="22",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="1684",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- Elanaria
+	{ID_ATTUNE="5288",ID="24",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="20"},
+	{ID_ATTUNE="5288",ID="25",TYPE="Pick Up",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94003",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20", OR=true}, -- The Skybreaker Bulwark
+	{ID_ATTUNE="5288",ID="29",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
 	{ID_ATTUNE="5288",ID="30",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Elwynn Forest"],ID_WOWHEAD="1639",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="20",STAGE="30"}, -- Bartleby the Drunk
 	{ID_ATTUNE="5288",ID="31",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="1678",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="21",STAGE="30"}, -- Vejrek
 	{ID_ATTUNE="5288",ID="32",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="1683",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="22",STAGE="30"}, -- Vorlus Vilehoof
+	{ID_ATTUNE="5288",ID="34",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="30"},
+	{ID_ATTUNE="5288",ID="35",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="263993",ICON="Interface\\Icons\\inv_shield_13",FOLLOWS="25",STAGE="30"}, -- item: Skybreaker Bulwark
+	{ID_ATTUNE="5288",ID="39",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
 	{ID_ATTUNE="5288",ID="40",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Stormwind City"],ID_WOWHEAD="1640",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="30",STAGE="40"}, -- Beat Bartleby
 	{ID_ATTUNE="5288",ID="41",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="1680",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="31",STAGE="40"}, -- Tormus Deepforge
 	{ID_ATTUNE="5288",ID="42",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="1686",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="32",STAGE="40"}, -- The Shade of Elura
+	{ID_ATTUNE="5288",ID="44",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="40"},
+	{ID_ATTUNE="5288",ID="45",TYPE="Turn In",STEP="",LOCATION=FTAttuneLang["Zephras Isle"],ID_WOWHEAD="94003",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="35",STAGE="40"}, -- The Skybreaker Bulwark
     {ID_ATTUNE="5288",ID="49",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="50"},
 	{ID_ATTUNE="5288",ID="50",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Elwynn Forest"],ID_WOWHEAD="1665",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="40",STAGE="50"}, -- Bartleby's Mug
 	{ID_ATTUNE="5288",ID="51",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="1681",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="41",STAGE="50"}, -- Ironband's Compound
 	{ID_ATTUNE="5288",ID="52",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Darkshore"],ID_WOWHEAD="6809",ICON="Interface\\Icons\\inv_jewelry_talisman_01",FOLLOWS="42",STAGE="50"}, -- Elura's Medallion
 	{ID_ATTUNE="5288",ID="53",TYPE="Item",STEP="",LOCATION=FTAttuneLang["Darkshore"],ID_WOWHEAD="6808",ICON="Interface\\Icons\\inv_ore_iron_01",FOLLOWS="42",STAGE="50", COUNT=8}, -- Elunite Ore
+	{ID_ATTUNE="5288",ID="54",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="45",STAGE="50"},
+	{ID_ATTUNE="5288",ID="59",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
 	{ID_ATTUNE="5288",ID="60",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Elwynn Forest"],ID_WOWHEAD="1666",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="50",STAGE="60"}, -- Marshal Haggard
 	{ID_ATTUNE="5288",ID="61",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Dun Morogh"],ID_WOWHEAD="1682",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="51",STAGE="60"}, -- Grey Iron Weapons
 	{ID_ATTUNE="5288",ID="62",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="1692",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="53&52",STAGE="60"}, -- Smith Mathiel
+	{ID_ATTUNE="5288",ID="64",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="60"},
+	{ID_ATTUNE="5288",ID="65",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="54",STAGE="60"},
+	{ID_ATTUNE="5288",ID="69",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="70"},
 	{ID_ATTUNE="5288",ID="70",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Elwynn Forest"],ID_WOWHEAD="1667",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="60",STAGE="70"}, -- Dead-tooth Jack
 	{ID_ATTUNE="5288",ID="71",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="61",STAGE="70"},
 	{ID_ATTUNE="5288",ID="72",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["Teldrassil"],ID_WOWHEAD="1693",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="62",STAGE="70"}, -- Weapons of Elunite
-	{ID_ATTUNE="5288",ID="80",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\ability_warrior_defensivestance",FOLLOWS="70|71|72",STAGE="80"},
+	{ID_ATTUNE="5288",ID="74",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="0",STAGE="70"},
+	{ID_ATTUNE="5288",ID="75",TYPE="Spacer",STEP="Spacer",LOCATION="",ID_WOWHEAD="",ICON="",FOLLOWS="65",STAGE="70"},
+	{ID_ATTUNE="5288",ID="80",TYPE="End",STEP="Attuned",LOCATION="",ID_WOWHEAD="0",ICON="Interface\\Icons\\ability_warrior_defensivestance",FOLLOWS="70|71|72|75",STAGE="80"},
 
 	{ID_ATTUNE="5291",ID="10",TYPE="Level",STEP=FTAttuneLang["Reach level"].." 20",LOCATION="",ID_WOWHEAD="20",ICON="Interface\\Icons\\spell_holy_innerfire",FOLLOWS="0",STAGE="10"},
 	{ID_ATTUNE="5291",ID="20",TYPE="Quest",STEP="",LOCATION=FTAttuneLang["The Barrens"],ID_WOWHEAD="1823",ICON="Interface\\Icons\\inv_scroll_03",FOLLOWS="10",STAGE="20"}, -- Speak with Ruga
@@ -1361,6 +1441,15 @@ local classQuestInfo = {
 	[6101]={10,1},
 	[6102]={10,1},
 	[6103]={10,1},
+	[94792]={10,1},
+	[94863]={10,1},
+	[94864]={10,1},
+	[94793]={10,1},
+	[94007]={10,1},
+	[94978]={10,1},
+	[94979]={10,1},
+	[94013]={10,1},
+	[94050]={10,1},
 	[6065]={10,1},
 	[6066]={10,1},
 	[6067]={10,1},
@@ -1690,6 +1779,10 @@ local classQuestInfo = {
 	[94466]={14,1},
 	[94467]={14,1},
 	[94468]={14,1},
+	[97243]={10,1},
+	[97244]={10,1},
+	[97245]={10,1},
+	[97257]={10,1},
 	[94495]={22,1},
 	[94497]={22,1},
 	[94499]={22,1},
@@ -1854,6 +1947,7 @@ local classQuestInfo = {
 	[1820]={10,1},
 	[1821]={10,1},
 	[1822]={10,1},
+	[94003]={10,1},
 	[1684]={10,1},
 	[1683]={10,1},
 	[1686]={10,1},
@@ -1967,6 +2061,15 @@ local classQuestGivers = {
 	[6101] = {1438, 56.7, 59.5, "Dazalar"}, -- Dazalar, Dolanaar
 	[6102] = {1438, 56.7, 59.5, "Dazalar"}, -- Dazalar, Dolanaar
 	[6103] = {1457, 40.4, 8.6, "Jocaste"}, -- Jocaste, Darnassus
+	[94792] = {1429, 41.2, 66.2, "Josephine Carson"}, -- Josephine Carson, Goldshire
+	[94863] = {1429, 41.2, 66.2, "Josephine Carson"}, -- Josephine Carson, Goldshire
+	[94864] = {1429, 41.2, 66.2, "Josephine Carson"}, -- Josephine Carson, Goldshire
+	[94793] = {1429, 41.8, 66.4, "Isaac Chan"}, -- Isaac Chan, Goldshire
+	[94007] = {2991, 45.3, 44.2, "Elayaa Easewind"}, -- Elayaa Easewind, Zephras Isle
+	[94978] = {2991, 59.6, 72.6, "Quel'ana Quickgale"}, -- Quel'ana Quickgale, Valanaar
+	[94979] = {2991, 59.6, 72.6, "Quel'ana Quickgale"}, -- Quel'ana Quickgale, Valanaar
+	[94013] = {2991, 59.6, 72.6, "Quel'ana Quickgale"}, -- Quel'ana Quickgale, Valanaar
+	[94050] = {2991, 59.9, 72.9, "Quel'dora Quickgale"}, -- Quel'dora Quickgale, Valanaar
 	[6065] = {1456, 58.5, 88.3, "Kary Thunderhorn"}, -- Kary Thunderhorn, Thunder Bluff
 	[6066] = {1412, 44.0, 76.3, "Lanka Farshot"}, -- Lanka Farshot, Mulgore
 	[6067] = {1411, 51.9, 43.5, "Thotar"}, -- Thotar, Razor Hill
@@ -2290,6 +2393,10 @@ local classQuestGivers = {
 	[94466] = {1432, 32, 66, "Braldir Ashmantle"}, -- Braldir Ashmantle, Loch Modan
 	[94467] = {1432, 32, 66, "Braldir Ashmantle"}, -- Braldir Ashmantle, Loch Modan
 	[94468] = {1432, 31.9, 64.5, "Brazier of the Dormant Flame"}, -- Brazier of the Dormant Flame, Loch Modan. Same object also stands in Durotar.
+	[97243] = {2991, 58.2, 78.4, "Sessaria Skystride"}, -- Sessaria Skystride, Valanaar. Also starts from Aarnor Galestrike, Shen'dar Village 43.4, 44.8. Swart in Durotar offers breadcrumb 98517, which turns in here and is not required.
+	[97244] = {2991, 51.2, 86.0, "Olariaan Swiftburn"}, -- Olariaan Swiftburn, Shrine of Flames, Gustberry Lowlands
+	[97245] = {2991, 51.2, 86.0, "Olariaan Swiftburn"}, -- Olariaan Swiftburn, Shrine of Flames, Gustberry Lowlands
+	[97257] = {2991, 51.2, 86.0, "Olariaan Swiftburn"}, -- Olariaan Swiftburn, Shrine of Flames. Turn in to Sessaria Skystride, Valanaar 58.2, 78.4.
 	[94495] = {1432, 41.8, 19, "Norric Lochthane"}, -- Norric Lochthane, Loch Modan
 	[94497] = {1437, 65.6, 76.4, "Hervdana Saegrund"}, -- Hervdana Saegrund, Wetlands
 	[94499] = {1437, 65.6, 76.4, "Hervdana Saegrund"}, -- Hervdana Saegrund, Wetlands
@@ -2433,6 +2540,7 @@ local classQuestGivers = {
 	[1820] = {1420, 58.2, 51.4, "Deathguard Dillinger"}, -- Deathguard Dillinger, Tirisfal Glades
 	[1821] = {1420, 61.8, 52.4, "Coleman Farthing"}, -- Coleman Farthing, Tirisfal Glades
 	[1822] = {1420, 61.8, 52.4, "Coleman Farthing"}, -- Coleman Farthing, Tirisfal Glades
+	[94003] = {2991, 59.8, 72.8, "Seena Skybreaker"}, -- Seena Skybreaker, Valanaar (Zephras Isle)
 	[1684] = {1438, 55.6, 58.4, "Moon Priestess Amara"}, -- Moon Priestess Amara, Teldrassil (also Kyra Windblade, Teldrassil 56.2, 59.2)
 	[1683] = {1457, 57.4, 34.8, "Elanaria"}, -- Elanaria, Darnassus
 	[1686] = {1457, 57.4, 34.8, "Elanaria"}, -- Elanaria, Darnassus

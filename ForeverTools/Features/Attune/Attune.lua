@@ -11,6 +11,22 @@ local function Component(...)
 --
 -------------------------------------------------------------------------
 
+-- 16001-41
+--   - Hearthing no longer reprints completed Character trial steps in chat.
+--   - Readjusted Dungeons level requirements to match Group Finder values
+--   - Guild completion messages wait out combat and guild-chat lockdown.
+--   - Updated the location of some quest givers.
+--   - Vorrel's Revenge (SM) has been changed to be an Inside quest.
+--   - Added The Drowned City dungeon quests.
+--
+-- 16001-40
+--   - Added the Call of Fire quest for Skyborne shamans.
+--   - Added the human and skyborne hunter taming chains.
+--   - Removed a SoD quest from gnomeragan, and fixed another.
+--   - The Compendium of the Fallen quest will no longer be listed for Undead
+--   - The Skyborne Defensive Stance quest has been added
+--   - Fixed a typo in a Deadmines quest
+--
 -- 16001-39
 --   - Added an option to turn off FTAttune sounds.
 --   - Added an option to show/hide full categories
@@ -525,7 +541,7 @@ local attunelocal_brokervalue = nil
 local attunelocal_brokerlabel = nil
 local attunelocal_settingsCategoryID = nil
 
-local attunelocal_version = "16001-39"
+local attunelocal_version = "16001-41"
 local attunelocal_prefix = "Attune_Channel"			-- used for addon chat communications
 local attunelocal_versionprefix = "Attune_Version"	-- used for addon version check
 local attunelocal_syncprefix = "Attune_Sync"		-- used for addon version check
@@ -655,6 +671,7 @@ local attunelocal_raidroster					-- scroller inside the raid SimpleGroup of the 
 local attunelocal_raidspotIcon = {}				-- Icon object of the raid spots
 ]=]
 local attunelocal_faction = ""
+local attunelocal_race = ""			-- UnitRace file: Scourge, Troll, Orc, Tauren, ...
 --[=[ Raid Planner locals disabled for now
 local attunelocal_raidname = ""					-- selected Raid name
 local attunelocal_raidsize = 0					-- selected Raid size
@@ -797,6 +814,24 @@ local attune_options = {
 					set = function(info, val) FTAttune_DB.playSounds = val end,
 					width = 2.5,
 					order = 8.6,
+				},
+				showStepReached = {
+					type = "toggle",
+					name = FTAttuneLang["ShowSetMessages_TEXT"],
+					desc = FTAttuneLang["ShowSetMessages_DESC"],
+					get = function(info) return FTAttune_DB.showStepReached end,
+					set = function(info, val) FTAttune_DB.showStepReached = val end,
+					width = 2.5,
+					order = 8.65,
+				},
+				announceAttuneCompleted = {
+					type = "toggle",
+					name = FTAttuneLang["AnnounceToGuild_TEXT"],
+					desc = FTAttuneLang["AnnounceToGuild_DESC"],
+					get = function(info) return FTAttune_DB.announceAttuneCompleted end,
+					set = function(info, val) FTAttune_DB.announceAttuneCompleted = val end,
+					width = 2.5,
+					order = 8.66,
 				},
 				deadminesAsDM = {
 					type = "toggle",
@@ -970,24 +1005,6 @@ local attune_options = {
 					width = 1.65,
 					order = 16,
 				},
-				showStepReached = {
-					type = "toggle",
-					name = FTAttuneLang["ShowSetMessages_TEXT"],
-					desc = FTAttuneLang["ShowSetMessages_DESC"],
-					get = function(info) return FTAttune_DB.showStepReached end,
-					set = function(info, val) FTAttune_DB.showStepReached = val end,
-					width = 1.65,
-					order = 17,
-				},
-				announceAttuneCompleted = {
-					type = "toggle",
-					name = FTAttuneLang["AnnounceToGuild_TEXT"],
-					desc = FTAttuneLang["AnnounceToGuild_DESC"],
-					get = function(info) return FTAttune_DB.announceAttuneCompleted end,
-					set = function(info, val) FTAttune_DB.announceAttuneCompleted = val end,
-					width = 1.65,
-					order = 18,
-				},
 				showOtherChat = {
 					type = "toggle",
 					name = FTAttuneLang["ShowOther_TEXT"],
@@ -1142,6 +1159,13 @@ function FTAttune:FTStart()
 	if FTAttune_DB == nil then FTAttune_DB = {} end
 	if FTAttune_DB.toons == nil then FTAttune_DB.toons = {} end
 	if FTAttune_DB.toons[attunelocal_charKey] == nil then FTAttune_DB.toons[attunelocal_charKey] = {} end
+	local _, raceFile = UnitRace("player")
+	if raceFile ~= nil and raceFile ~= "" then
+		attunelocal_race = raceFile
+		FTAttune_DB.toons[attunelocal_charKey].race = raceFile
+	elseif FTAttune_DB.toons[attunelocal_charKey].race ~= nil then
+		attunelocal_race = FTAttune_DB.toons[attunelocal_charKey].race
+	end
 
 	C_ChatInfo.RegisterAddonMessagePrefix(attunelocal_prefix)
 	C_ChatInfo.RegisterAddonMessagePrefix(attunelocal_versionprefix)
@@ -1167,6 +1191,8 @@ function FTAttune:FTStart()
 	pcall(self.RegisterEvent, self, "CHAT_MSG_MONEY")
 	pcall(self.RegisterEvent, self, "PLAYER_PVP_KILLS_CHANGED")
 	pcall(self.RegisterEvent, self, "PLAYER_ENTERING_WORLD")
+	pcall(self.RegisterEvent, self, "PLAYER_LEAVING_WORLD")
+	pcall(self.RegisterEvent, self, "PLAYER_GUILD_UPDATE")
 --	self:RegisterEvent("ACHIEVEMENT_EARNED")
 
 	--self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
@@ -1328,6 +1354,14 @@ function FTAttune:FTStart()
 	-- calculate how many steps this toon has done on the attune
 	local attuneDone = {}
 	local t = FTAttune_DB.toons[attunelocal_charKey]
+	-- Drop progress on steps this race cannot do (for example Compendium of the Fallen).
+	if attunelocal_race ~= "" and t.done ~= nil and FTAttune_Data.stepsByKey ~= nil then
+		for key, step in pairs(FTAttune_Data.stepsByKey) do
+			if t.done[key] and FTAttune_RaceBlocksStep(step, attunelocal_race) then
+				t.done[key] = nil
+			end
+		end
+	end
 	FTAttune_AutoCompleteSpacers(attunelocal_charKey)
 	local spacerDone = {}
 	for _, s in pairs(FTAttune_Data.steps) do
@@ -1344,9 +1378,12 @@ function FTAttune:FTStart()
 	end
 	for i, d in pairs(t.done) do
 		if not spacerDone[i] then
-			local Ids = FTAttune_split(i, "-")
-			if attuneDone[Ids[1]] == nil then attuneDone[Ids[1]] = 0 end
-			attuneDone[Ids[1]] = attuneDone[Ids[1]] +1
+			local step = FTAttune_Data.stepsByKey and FTAttune_Data.stepsByKey[i]
+			if not (step and FTAttune_RaceBlocksStep(step, attunelocal_race)) then
+				local Ids = FTAttune_split(i, "-")
+				if attuneDone[Ids[1]] == nil then attuneDone[Ids[1]] = 0 end
+				attuneDone[Ids[1]] = attuneDone[Ids[1]] +1
+			end
 		end
 	end
 	if t.attuned == nil then t.attuned = {} end
@@ -1838,9 +1875,10 @@ end
 
 -- Midnight blocks addon chat for the whole encounter, not just while
 -- InCombatLockdown() is true. A line sent in that window is discarded.
-local FTAttune_GuildAnnounceQueue = {}
-local FTAttune_GuildAnnounceFlushing = false
-local FTAttune_GuildSendFailures = 0
+-- The queue is global: this file is already at Lua's 200-local limit.
+FTAttune_GuildAnnounceQueue = FTAttune_GuildAnnounceQueue or {}
+FTAttune_GuildAnnounceFlushing = false
+FTAttune_GuildAnnounceDeadline = 0
 
 local function FTAttune_RememberGuild()
 	if not GetGuildInfo then return end
@@ -1867,10 +1905,14 @@ local function FTAttune_ChatLocked()
 	return false
 end
 
-local function FTAttune_TrySendGuild(msg)
+local function FTAttune_GuildSendOk(msg)
 	local info = C_ChatInfo
 	local send = (info and info.SendChatMessage) or SendChatMessage
-	return pcall(send, msg, "GUILD")
+	if type(send) ~= "function" then return false end
+	-- Classic returns nothing on success. false, or a Lua error, means it did not go out.
+	local ok, result = pcall(send, msg, "GUILD")
+	if not ok or result == false then return false end
+	return true
 end
 
 local FTAttune_FlushGuildAnnouncements
@@ -1881,9 +1923,36 @@ local function FTAttune_ScheduleGuildFlush(delay)
 	C_Timer.After(delay or 0, FTAttune_FlushGuildAnnouncements)
 end
 
+local function FTAttune_QueueGuild(msg)
+	for _, pending in ipairs(FTAttune_GuildAnnounceQueue) do
+		if pending == msg then return end
+	end
+	FTAttune_GuildAnnounceQueue[#FTAttune_GuildAnnounceQueue + 1] = msg
+	-- Boss lockdown and a late guild roster both outlast a few quick retries.
+	FTAttune_GuildAnnounceDeadline = GetTime() + 600
+	FTAttune_ScheduleGuildFlush(0.5)
+end
+
 FTAttune_FlushGuildAnnouncements = function()
 	FTAttune_GuildAnnounceFlushing = false
 	if #FTAttune_GuildAnnounceQueue == 0 then return end
+	if GetTime() > (FTAttune_GuildAnnounceDeadline or 0) then
+		FTAttune_GuildAnnounceQueue = {}
+		return
+	end
+	-- Guild name is often nil for a few seconds after login or a loading screen.
+	-- A player who is not in a guild will not grow into one during this wait.
+	if not FTAttune_InGuild() then
+		if IsInGuild then
+			local known, inGuild = pcall(IsInGuild)
+			if known and not inGuild then
+				FTAttune_GuildAnnounceQueue = {}
+				return
+			end
+		end
+		FTAttune_ScheduleGuildFlush(1)
+		return
+	end
 	if FTAttune_ChatLocked() then
 		FTAttune_ScheduleGuildFlush(1)
 		return
@@ -1892,45 +1961,38 @@ FTAttune_FlushGuildAnnouncements = function()
 	FTAttune_GuildAnnounceQueue = {}
 	local failed = false
 	for _, msg in ipairs(pending) do
-		if failed or FTAttune_ChatLocked() or not FTAttune_TrySendGuild(msg) then
+		if failed or FTAttune_ChatLocked() or not FTAttune_GuildSendOk(msg) then
 			FTAttune_GuildAnnounceQueue[#FTAttune_GuildAnnounceQueue + 1] = msg
 			failed = true
 		end
 	end
-	if not failed then
-		FTAttune_GuildSendFailures = 0
-		return
+	if failed then
+		FTAttune_ScheduleGuildFlush(1.5)
 	end
-	FTAttune_GuildSendFailures = FTAttune_GuildSendFailures + 1
-	if FTAttune_GuildSendFailures >= 5 then
-		FTAttune_GuildAnnounceQueue = {}
-		FTAttune_GuildSendFailures = 0
-		return
-	end
-	FTAttune_ScheduleGuildFlush(1)
 end
 
 local function FTAttune_AnnounceGuild(msg)
-	if FTAttune_ChatLocked() or not FTAttune_TrySendGuild(msg) then
-		for _, pending in ipairs(FTAttune_GuildAnnounceQueue) do
-			if pending == msg then return end
-		end
-		FTAttune_GuildAnnounceQueue[#FTAttune_GuildAnnounceQueue + 1] = msg
-		FTAttune_ScheduleGuildFlush(0.5)
-	end
+	-- Queue even when chat looks open. The completion also pushes addon data
+	-- in this same moment, and a direct send is the one that gets dropped.
+	FTAttune_QueueGuild(msg)
 end
 
 function FTAttune:PLAYER_REGEN_ENABLED()
 	if #FTAttune_GuildAnnounceQueue == 0 then return end
-	-- Combat lockdown is still on during this event. Retry once it lifts,
-	-- and keep retrying while chat-messaging lockdown is still up.
+	-- Combat lockdown is still on during this event. Send once it has lifted.
 	FTAttune_GuildAnnounceFlushing = false
-	FTAttune_ScheduleGuildFlush(0)
+	FTAttune_ScheduleGuildFlush(1.5)
+end
+
+function FTAttune:PLAYER_GUILD_UPDATE()
+	FTAttune_RememberGuild()
+	if #FTAttune_GuildAnnounceQueue == 0 then return end
+	FTAttune_GuildAnnounceFlushing = false
+	FTAttune_ScheduleGuildFlush(0.5)
 end
 
 local function FTAttune_AnnounceAttuneComplete(name)
 	if not (FTAttune_DB and FTAttune_DB.announceAttuneCompleted and name) then return end
-	if not FTAttune_InGuild() then return end
 	local template = FTAttuneLang["FTAttuneCompleteGuild"]
 	if not template then return end
 	FTAttune_AnnounceGuild("[FTAttune] "..template:gsub("##NAME##", name))
@@ -2067,10 +2129,32 @@ function FTAttune:PLAYER_PVP_KILLS_CHANGED()
 	FTAttune_QueueStatScan()
 end
 
+-- A loading screen (hearth, portal, login) drops profession ranks to 0 until the
+-- client finishes entering the world. Forget any "this number is real" mark so
+-- that 0 cannot wipe a step that was already complete.
+function FTAttune_NoteWorldLoad()
+	FTAttune_ProfessionsSeen = false
+	FTAttune_StatTrusted = {}
+	FTAttune_WorldEnteredAt = GetTime()
+end
+
+function FTAttune:PLAYER_LEAVING_WORLD()
+	FTAttune_NoteWorldLoad()
+end
+
 function FTAttune:PLAYER_ENTERING_WORLD()
+	FTAttune_NoteWorldLoad()
 	FTAttune_RememberGuild()
 	if C_Timer and C_Timer.After then
 		C_Timer.After(2, FTAttune_RememberGuild)
+		-- One more read after skill lines have settled. A new completion still
+		-- announces; a step that was already done does not.
+		FTAttune_WorldLoadGen = (FTAttune_WorldLoadGen or 0) + 1
+		local gen = FTAttune_WorldLoadGen
+		C_Timer.After(10, function()
+			if FTAttune_WorldLoadGen ~= gen then return end
+			FTAttune_ScanStatSteps(false)
+		end)
 	end
 	FTAttune_QueueStatScan()
 	FTAttune_NextFrameUpdate()
@@ -2117,7 +2201,7 @@ function FTAttune_ClearTurnInOnAccept(questID)
 					else
 						still = true
 						for _, flw in pairs(ids) do
-							if not toon.done[s.ID_ATTUNE .. "-" .. flw] then still = false break end
+							if not FTAttune_FollowSatisfied(s.ID_ATTUNE, flw, toon.done) then still = false break end
 						end
 					end
 				end
@@ -2418,33 +2502,59 @@ function FTAttune_StatGoal(step)
 	return tonumber(step.COUNT) or 0
 end
 
+-- Profession book slots. nil means the client has not loaded them yet
+-- (every slot is empty right after a loading screen). An empty list after
+-- a real read means this character has no professions.
+function FTAttune_ProfessionSlots()
+	if type(GetProfessions) ~= "function" or type(GetProfessionInfo) ~= "function" then
+		return nil
+	end
+	local slots = { GetProfessions() }
+	local any = false
+	for i = 1, #slots do
+		if type(slots[i]) == "number" and slots[i] > 0 then
+			any = true
+			break
+		end
+	end
+	if any then
+		FTAttune_ProfessionsSeen = true
+		return slots
+	end
+	if FTAttune_ProfessionsSeen then return slots end
+	return nil
+end
+
 -- Profession rank from the profession window, not the statistics tab.
 -- Forever's GetProfessions order differs from other clients, so match the skill line.
+-- Second return is false when the profession book is not loaded yet.
 function FTAttune_ProfessionRank(skillLine)
 	skillLine = tonumber(skillLine)
-	if skillLine == nil or type(GetProfessions) ~= "function" or type(GetProfessionInfo) ~= "function" then
-		return 0
+	local slots = FTAttune_ProfessionSlots()
+	if skillLine == nil or slots == nil then
+		return 0, false
 	end
-	local s1, s2, s3, s4, s5, s6 = GetProfessions()
-	local slots = { s1, s2, s3, s4, s5, s6 }
-	for i = 1, 6 do
+	for i = 1, #slots do
 		local index = slots[i]
-		if type(index) == "number" then
+		if type(index) == "number" and index > 0 then
 			local ok, _, _, rank, _, _, _, line = pcall(GetProfessionInfo, index)
 			if ok and line == skillLine then
-				return tonumber(rank) or 0
+				return tonumber(rank) or 0, true
 			end
 		end
 	end
-	return 0
+	return 0, true
 end
 
+-- Second return is false when this number is not loaded yet. Callers that only
+-- need a count keep the first return (0 until the client answers).
 function FTAttune_StatValue(step)
-	if step == nil then return 0 end
+	if step == nil then return 0, false end
 	if step.SKILL_LINE then
 		return FTAttune_ProfessionRank(step.SKILL_LINE)
 	end
 	if step.TYPE == "Prof" then
+		if FTAttune_ProfessionSlots() == nil then return 0, false end
 		local skill = tonumber(step.COUNT) or 0
 		local have = 0
 		local profs = FTAttune_Data.primaryProfessions
@@ -2455,9 +2565,22 @@ function FTAttune_StatValue(step)
 				end
 			end
 		end
-		return have
+		return have, true
 	end
-	return FTAttune_ReadStatistic(step.ID_WOWHEAD)
+	if FTAttune_ReadStatisticRaw(step.ID_WOWHEAD) == nil then
+		return 0, false
+	end
+	return FTAttune_ReadStatistic(step.ID_WOWHEAD), true
+end
+
+-- Saved count while the live read is still the loading-screen 0.
+function FTAttune_StatDisplayValue(step)
+	local value, known = FTAttune_StatValue(step)
+	if known or step == nil then return value end
+	local toon = FTAttune_DB and attunelocal_charKey and FTAttune_DB.toons and FTAttune_DB.toons[attunelocal_charKey]
+	local saved = toon and toon.stats and toon.stats[step.ID_ATTUNE .. "-" .. step.ID]
+	if type(saved) == "number" then return saved end
+	return value
 end
 
 function FTAttune_CurrentAttuneId()
@@ -2491,11 +2614,11 @@ function FTAttune_RefreshOpenStatLabels()
 	local chain = FTAttune_Data.stepsByAttune and FTAttune_Data.stepsByAttune[sel]
 	if chain == nil then return end
 	for _, s in pairs(chain) do
-		if s.TYPE == "Stat" or s.TYPE == "Prof" then
+			if s.TYPE == "Stat" or s.TYPE == "Prof" then
 			local title = _G["FTAttune_Title_" .. s.ID]
 			if title then
 				local goal = FTAttune_StatGoal(s)
-				local value = FTAttune_StatValue(s)
+				local value = FTAttune_StatDisplayValue(s)
 				if goal > 0 and value > goal then value = goal end
 				title:SetText(value .. "/" .. goal)
 			end
@@ -2552,21 +2675,23 @@ function FTAttune_SyncCharacterEnds(toon, silent)
 				end
 			end
 			local key = e.ID_ATTUNE .. "-" .. e.ID
-			local wasComplete = (toon.attuned[e.ID_ATTUNE] or 0) >= 100 or toon.done[key] ~= nil
+			local hadEnd = toon.done[key] ~= nil
+			local showedComplete = hadEnd or (toon.attuned[e.ID_ATTUNE] or 0) >= 100
 			if allDone then
 				toon.done[key] = 1
 				toon.attuned[e.ID_ATTUNE] = 100
-				if not wasComplete then
+				if not hadEnd then
 					changed = true
-					-- Login records the finish quietly. A live close still announces with the window shut.
-					if not silent then
+					-- Login records the finish quietly. A later close still announces,
+					-- including a redraw that is the first scan to see the goal met.
+					if not (silent and attunelocal_initial) then
 						FTAttune_CelebrateAttuneComplete(a.NAME)
 					end
 				end
 			else
 				if toon.done[key] then toon.done[key] = nil end
 				FTAttune_RecountAttune(e.ID_ATTUNE)
-				if wasComplete then changed = true end
+				if showedComplete then changed = true end
 			end
 		end
 	end
@@ -2575,7 +2700,7 @@ end
 
 function FTAttune_ShowStatTooltip(step, fnode)
 	local goal = FTAttune_StatGoal(step)
-	local value = FTAttune_StatValue(step)
+	local value = FTAttune_StatDisplayValue(step)
 	local shown = value
 	if goal > 0 and shown > goal then shown = goal end
 	if attunelocal_frame then
@@ -2585,7 +2710,7 @@ function FTAttune_ShowStatTooltip(step, fnode)
 	GameTooltip:SetPoint("TOPLEFT", fnode, "TOPRIGHT", 10, 0)
 	GameTooltip:SetText(step.STEP or "")
 	GameTooltip:AddLine((FTAttuneLang["Current progress"] or "Current progress") .. ": " .. value .. "/" .. goal, 0.5, 0.5, 0.5, 1)
-	if step.TYPE == "Prof" then
+	if step.TYPE == "Prof" and FTAttune_ProfessionSlots() ~= nil then
 		local skillGoal = tonumber(step.COUNT) or 0
 		local any = false
 		local profs = FTAttune_Data.primaryProfessions
@@ -2629,24 +2754,39 @@ function FTAttune_ScanStatSteps(silent)
 		for _, s in pairs(list) do
 			if showPatchStep(s) and (s.TYPE == "Stat" or s.TYPE == "Prof") and FTAttune_CharacterStepAllowed(toon, s.ID_ATTUNE) then
 				local key = s.ID_ATTUNE .. "-" .. s.ID
-				local value = FTAttune_StatValue(s)
+				local value, known = FTAttune_StatValue(s)
 				local goal = FTAttune_StatGoal(s)
-				if toon.stats[key] ~= value then
-					toon.stats[key] = value
-					progressChanged = true
+				-- A hearth loads the world before cooking, fishing, and the
+				-- other skills. Those reads come back as 0, which used to
+				-- clear the step and then announce it again once the real
+				-- rank returned. Ignore a drop until this stay has seen the
+				-- goal met, and ignore every drop in the first seconds after
+				-- the load even if a good read already slipped through.
+				local loading = FTAttune_WorldEnteredAt and (GetTime() - FTAttune_WorldEnteredAt) < 10
+				if known and goal > 0 and value >= goal then
+					if not FTAttune_StatTrusted then FTAttune_StatTrusted = {} end
+					FTAttune_StatTrusted[key] = true
+				elseif known and toon.done[key] and value < goal and (loading or not (FTAttune_StatTrusted and FTAttune_StatTrusted[key])) then
+					known = false
 				end
-				if goal > 0 and value >= goal then
-					if toon.done[key] == nil then
-						if silent then
-							toon.done[key] = 1
-							structural = true
-						elseif FTAttune_MarkStepDone(s, s.STEP or "", value .. "/" .. goal, true) then
-							structural = true
-						end
+				if known then
+					if toon.stats[key] ~= value then
+						toon.stats[key] = value
+						progressChanged = true
 					end
-				elseif toon.done[key] then
-					toon.done[key] = nil
-					structural = true
+					if goal > 0 and value >= goal then
+						if toon.done[key] == nil then
+							if silent then
+								toon.done[key] = 1
+								structural = true
+							elseif FTAttune_MarkStepDone(s, s.STEP or "", value .. "/" .. goal, true) then
+								structural = true
+							end
+						end
+					elseif toon.done[key] then
+						toon.done[key] = nil
+						structural = true
+					end
 				end
 			end
 		end
@@ -2896,19 +3036,19 @@ function FTAttune_CheckComplete(newComplete, quiet)
 	FTAttune_AutoCompleteSpacers(attunelocal_charKey)
 
 	-- WoW
-	if att.done["20-45"] and att.attuned["20"] ~= 100 	then att.done["20-50"] = 1; 	FTAttune_SendPushInfo("20-50"); 	att.attuned["20"] = 100; noteFinished("20"); FTAttune_UpdateTreeGroup("20"); newComplete = true;  end	-- MC
-	if att.done["30-268"] and att.attuned["30"] ~= 100	then att.done["30-270"] = 1; FTAttune_SendPushInfo("30-270"); 	att.attuned["30"] = 100; noteFinished("30"); FTAttune_UpdateTreeGroup("30"); newComplete = true;  end	-- Ony Horde
-	if att.done["40-265"] and att.attuned["40"] ~= 100	then att.done["40-270"] = 1; FTAttune_SendPushInfo("40-270"); 	att.attuned["40"] = 100; noteFinished("40"); FTAttune_UpdateTreeGroup("40"); newComplete = true;  end	-- Ony Alliance
-	if att.done["50-65"] and att.attuned["50"] ~= 100 	then att.done["50-70"] = 1; 	FTAttune_SendPushInfo("50-70"); 	att.attuned["50"] = 100; noteFinished("50"); FTAttune_UpdateTreeGroup("50"); newComplete = true;  end	-- BWL
-	if att.done["60-40"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; noteFinished("60"); FTAttune_UpdateTreeGroup("60"); newComplete = true;  end	-- Naxx
-	if att.done["60-50"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; noteFinished("60"); FTAttune_UpdateTreeGroup("60"); newComplete = true;  end	-- Naxx
-	if att.done["60-60"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; noteFinished("60"); FTAttune_UpdateTreeGroup("60"); newComplete = true;  end	-- Naxx
-	if att.done["80-200"] and att.attuned["80"] ~= 100 	then att.done["80-210"] = 1; FTAttune_SendPushInfo("80-210"); 	att.attuned["80"] = 100; noteFinished("80"); FTAttune_UpdateTreeGroup("80"); newComplete = true;  end	-- MC Quintessence
-	if att.done["100-960"] and att.attuned["100"] ~= 100 	then att.done["100-970"] = 1;FTAttune_SendPushInfo("100-970"); 	att.attuned["100"] = 100; noteFinished("100"); FTAttune_UpdateTreeGroup("100"); newComplete = true;  end	-- scarab
+	if att.done["20-45"] and att.attuned["20"] ~= 100 	then att.done["20-50"] = 1; 	FTAttune_SendPushInfo("20-50"); 	att.attuned["20"] = 100; noteFinished("20"); newComplete = true;  end	-- MC
+	if att.done["30-268"] and att.attuned["30"] ~= 100	then att.done["30-270"] = 1; FTAttune_SendPushInfo("30-270"); 	att.attuned["30"] = 100; noteFinished("30"); newComplete = true;  end	-- Ony Horde
+	if att.done["40-265"] and att.attuned["40"] ~= 100	then att.done["40-270"] = 1; FTAttune_SendPushInfo("40-270"); 	att.attuned["40"] = 100; noteFinished("40"); newComplete = true;  end	-- Ony Alliance
+	if att.done["50-65"] and att.attuned["50"] ~= 100 	then att.done["50-70"] = 1; 	FTAttune_SendPushInfo("50-70"); 	att.attuned["50"] = 100; noteFinished("50"); newComplete = true;  end	-- BWL
+	if att.done["60-40"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; noteFinished("60"); newComplete = true;  end	-- Naxx
+	if att.done["60-50"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; noteFinished("60"); newComplete = true;  end	-- Naxx
+	if att.done["60-60"] and att.attuned["60"] ~= 100 	then att.done["60-90"] = 1; 	FTAttune_SendPushInfo("60-90"); 	att.attuned["60"] = 100; noteFinished("60"); newComplete = true;  end	-- Naxx
+	if att.done["80-200"] and att.attuned["80"] ~= 100 	then att.done["80-210"] = 1; FTAttune_SendPushInfo("80-210"); 	att.attuned["80"] = 100; noteFinished("80"); newComplete = true;  end	-- MC Quintessence
+	if att.done["100-960"] and att.attuned["100"] ~= 100 	then att.done["100-970"] = 1;FTAttune_SendPushInfo("100-970"); 	att.attuned["100"] = 100; noteFinished("100"); newComplete = true;  end	-- scarab
 
-	if att.done["120-65"] and att.attuned["120"] ~= 100 	then att.done["120-70"] = 1; FTAttune_SendPushInfo("120-70"); 	att.attuned["120"] = 100; noteFinished("120"); FTAttune_UpdateTreeGroup("120"); newComplete = true;  end	-- brd key
-	if att.done["140-130"] and att.attuned["140"] ~= 100 	then att.done["140-140"] = 1; FTAttune_SendPushInfo("140-140"); 	att.attuned["140"] = 100; noteFinished("140"); FTAttune_UpdateTreeGroup("140"); newComplete = true;  end	-- scholo Horde
-	if att.done["150-130"] and att.attuned["150"] ~= 100 	then att.done["150-140"] = 1; FTAttune_SendPushInfo("150-140"); 	att.attuned["150"] = 100; noteFinished("150"); FTAttune_UpdateTreeGroup("150"); newComplete = true;  end	-- scholo Alliance
+	if att.done["120-65"] and att.attuned["120"] ~= 100 	then att.done["120-70"] = 1; FTAttune_SendPushInfo("120-70"); 	att.attuned["120"] = 100; noteFinished("120"); newComplete = true;  end	-- brd key
+	if att.done["140-130"] and att.attuned["140"] ~= 100 	then att.done["140-140"] = 1; FTAttune_SendPushInfo("140-140"); 	att.attuned["140"] = 100; noteFinished("140"); newComplete = true;  end	-- scholo Horde
+	if att.done["150-130"] and att.attuned["150"] ~= 100 	then att.done["150-140"] = 1; FTAttune_SendPushInfo("150-140"); 	att.attuned["150"] = 100; noteFinished("150"); newComplete = true;  end	-- scholo Alliance
 
 
 	-- Generic: mark End done when all its FOLLOWS are complete
@@ -2921,7 +3061,7 @@ function FTAttune_CheckComplete(newComplete, quiet)
 			else
 				local fIDs = FTAttune_split(s.FOLLOWS, "&")
 				for _, flw in pairs(fIDs) do
-					if not att.done[s.ID_ATTUNE .. "-" .. flw] then allDone = false; break end
+					if not FTAttune_FollowSatisfied(s.ID_ATTUNE, flw, att.done) then allDone = false; break end
 				end
 			end
 			if s.FOLLOWS ~= nil and string.find(s.FOLLOWS, "|", 1, true) then
@@ -2936,7 +3076,6 @@ function FTAttune_CheckComplete(newComplete, quiet)
 				FTAttune_SendPushInfo(s.ID_ATTUNE .. "-" .. s.ID)
 				att.attuned[s.ID_ATTUNE] = 100
 				noteFinished(s.ID_ATTUNE)
-				FTAttune_UpdateTreeGroup(s.ID_ATTUNE)
 				newComplete = true
 			end
 		end
@@ -2947,6 +3086,11 @@ function FTAttune_CheckComplete(newComplete, quiet)
 			local a = FTAttune_Data.attuneById and FTAttune_Data.attuneById[id]
 			if a then FTAttune_CelebrateAttuneComplete(a.NAME) end
 		end
+	end
+	-- Rebuild after the message. A tree error used to abort this function
+	-- before the completion line was sent.
+	for _, id in ipairs(finished) do
+		pcall(FTAttune_UpdateTreeGroup, id)
 	end
 
 	if newComplete then 
@@ -2988,7 +3132,7 @@ function FTAttune_CheckIsNext(who)
 
 	for i, step in pairs(FTAttune_Data.steps) do
 		-- Inside reminders are optional and always available, so they are not "the current step".
-		if showPatchStep(step) and not step.SIDE and FTAttune_MayRecordAttuneProgress(att, step.ID_ATTUNE) then
+		if FTAttune_StepShownForRace(step, att.race) and not step.SIDE and FTAttune_MayRecordAttuneProgress(att, step.ID_ATTUNE) then
 
 			if (step.ID_ATTUNE == "190" and step.ID == "120") then debug = true else debug=false end
 
@@ -3080,9 +3224,17 @@ end
 -- Recurse through previous steps (following the FOLLOWS path)
 -------------------------------------------------------------------------
 
-function FTAttune_recursePreviousSteps(who, aID, follows)
+function FTAttune_recursePreviousSteps(who, aID, follows, race)
 
-    
+	if race == nil or race == "" then
+		local t = FTAttune_DB.toons[who]
+		if t ~= nil and t.race ~= nil and t.race ~= "" then
+			race = t.race
+		else
+			race = attunelocal_race
+		end
+	end
+
 	if (FTAttune_DB.toons[who] ~= nil) then
 		if (FTAttune_DB.toons[who].done ~= nil) then
 
@@ -3093,7 +3245,7 @@ function FTAttune_recursePreviousSteps(who, aID, follows)
 
 			for fi, f in pairs(fIDs) do
 				local s = FTAttune_Data.stepsByKey and FTAttune_Data.stepsByKey[aID .. "-" .. f]
-				if s and showPatchStep(s) and FTAttune_MayRecordAttuneProgress(FTAttune_DB.toons[who], aID) then
+				if s and FTAttune_StepShownForRace(s, race) and FTAttune_MayRecordAttuneProgress(FTAttune_DB.toons[who], aID) then
 					if string.find(follows, "|") == nil then -- don't recurse OR, as we don't know which parent was actually done
 						if FTAttune_DB.toons[who].done[s.ID_ATTUNE .. "-" .. s.ID] ~= 1 then
 							-- print(s.ID_ATTUNE .. "-" .. s.ID)
@@ -3101,7 +3253,7 @@ function FTAttune_recursePreviousSteps(who, aID, follows)
 							if (who == attunelocal_charKey) then FTAttune_SendPushInfo(s.ID_ATTUNE .. "-" .. s.ID) end
 						end
 						if follows ~= 0 then -- no need to recurse first level
-							FTAttune_recursePreviousSteps(who, s.ID_ATTUNE, s.FOLLOWS)
+							FTAttune_recursePreviousSteps(who, s.ID_ATTUNE, s.FOLLOWS, race)
 						end
 					end
 				end
@@ -5612,15 +5764,32 @@ end
 
 -------------------------------------------------------------------------
 
-function showPatchStep(s)
-	local showStep = false
-	if (s.VALIDFROM == nil and s.VALIDTO == nil) then 
-		showStep = true
-	else
-		if (s.VALIDFROM ~= nil and patch >= s.VALIDFROM) then showStep = true end
-		if (s.VALIDTO ~= nil and patch < s.VALIDTO) then showStep = true end
+-- NORACE lists UnitRace file names ("Scourge") that cannot see this step.
+function FTAttune_RaceBlocksStep(s, race)
+	if s == nil or s.NORACE == nil or s.NORACE == "" then return false end
+	if race == nil or race == "" then return false end
+	if s.NORACE == race then return true end
+	if string.find(s.NORACE, "|", 1, true) == nil then return false end
+	for _, name in pairs(FTAttune_split(s.NORACE, "|")) do
+		if name == race then return true end
 	end
-	return showStep
+	return false
+end
+
+local function FTAttune_PatchShowsStep(s)
+	if (s.VALIDFROM == nil and s.VALIDTO == nil) then return true end
+	if (s.VALIDFROM ~= nil and patch >= s.VALIDFROM) then return true end
+	if (s.VALIDTO ~= nil and patch < s.VALIDTO) then return true end
+	return false
+end
+
+function FTAttune_StepShownForRace(s, race)
+	if s == nil or not FTAttune_PatchShowsStep(s) then return false end
+	return not FTAttune_RaceBlocksStep(s, race)
+end
+
+function showPatchStep(s)
+	return FTAttune_StepShownForRace(s, attunelocal_race)
 end
 
 -------------------------------------------------------------------------
@@ -5639,6 +5808,14 @@ function FTAttune_FindStep(attuneId, stepId)
 		end
 	end
 	return nil
+end
+
+-- A race-blocked predecessor is not required, so the rest of the chain can finish.
+function FTAttune_FollowSatisfied(attuneId, followId, done)
+	local s = FTAttune_FindStep(attuneId, followId)
+	if s and FTAttune_RaceBlocksStep(s, attunelocal_race) then return true end
+	if done == nil then return false end
+	return done[attuneId .. "-" .. followId] and true or false
 end
 
 function FTAttune_IsSideStep(attuneId, stepId)
@@ -6662,7 +6839,7 @@ function FTAttune_CreateNode(step, parent, posX, posY)
 				ftitle:SetText(FTAttuneLang["Q1_"..step.ID_WOWHEAD])
 			elseif step.TYPE == "Stat" or step.TYPE == "Prof" then
 				local goal = FTAttune_StatGoal(step)
-				local value = FTAttune_StatValue(step)
+				local value = FTAttune_StatDisplayValue(step)
 				if goal > 0 and value > goal then value = goal end
 				ftitle:SetText(value .. "/" .. goal)
 			else
@@ -6813,8 +6990,16 @@ function FTAttune_CreateNode(step, parent, posX, posY)
 			local exist = false
 			for _, f in ipairs(attunelocal_frames) do if f == "FTAttune_Line1_"..step.ID.."_"..flw then exist = true end end
 
+			local prevNode = _G["FTAttune_Node_"..flw]
+			if not prevNode or not prevNode:IsShown() then
+				for _, suffix in ipairs({ "Line1", "Line2", "Line3" }) do
+					local ln = _G["FTAttune_"..suffix.."_"..step.ID.."_"..flw]
+					if ln then ln:Hide() end
+				end
+			else
+
 			local cur, _, _, curX, curY  = _G["FTAttune_Node_"..step.ID]:GetPoint()
-			local prev, _, _, prevX, prevY = _G["FTAttune_Node_"..flw]:GetPoint()
+			local prev, _, _, prevX, prevY = prevNode:GetPoint()
 			local offset = (attunelocal_Line_Thickness/2)
 
 			local line
@@ -6862,6 +7047,8 @@ function FTAttune_CreateNode(step, parent, posX, posY)
 			line:SetStartPoint("TOP", offset, prevY - curY - (attunelocal_Node_Height + (attunelocal_Node_VGap/2)))
 			line:SetEndPoint("TOP", prevX - curX + offset, prevY - curY - (attunelocal_Node_Height + (attunelocal_Node_VGap/2)))
 			line:Show()
+
+			end -- prev node is on this graph
 
 			end -- not SIDE→End
 
@@ -8086,15 +8273,20 @@ function FTAttune_ShowResultList(title)
 
 	local count = 0 -- number of rows displayed in table
 
-	-- number of steps per attune - this is to calculate % completion
-	local attuneSteps = {}
-	for i, s in pairs(FTAttune_Data.steps) do
-		if showPatchStep(s) then
-			if s.TYPE ~= "Spacer" then
-				if attuneSteps[s.ID_ATTUNE] == nil then attuneSteps[s.ID_ATTUNE] = 0 end
-				attuneSteps[s.ID_ATTUNE] = attuneSteps[s.ID_ATTUNE] +1
+	-- Step totals differ by race: a NORACE step is left out of that character's percent.
+	local stepCountsByRace = {}
+	local function stepsForRace(race)
+		local key = race or ""
+		local counts = stepCountsByRace[key]
+		if counts then return counts end
+		counts = {}
+		for _, s in pairs(FTAttune_Data.steps) do
+			if s.TYPE ~= "Spacer" and FTAttune_StepShownForRace(s, race) then
+				counts[s.ID_ATTUNE] = (counts[s.ID_ATTUNE] or 0) + 1
 			end
 		end
+		stepCountsByRace[key] = counts
+		return counts
 	end
 
 	-- adjust the title according to the selection
@@ -8152,11 +8344,15 @@ function FTAttune_ShowResultList(title)
 		local attuneDone = {}
 		if t.done ~= nil then 
 			FTAttune_AutoCompleteSpacers(kt)
+			local attuneSteps = stepsForRace(t.race)
 			for i, d in pairs(t.done) do
 				if not spacerDone[i] then
-					local Ids = FTAttune_split(i, "-")
-					if attuneDone[Ids[1]] == nil then attuneDone[Ids[1]] = 0 end
-					attuneDone[Ids[1]] = attuneDone[Ids[1]] +1
+					local step = FTAttune_Data.stepsByKey and FTAttune_Data.stepsByKey[i]
+					if not (step and FTAttune_RaceBlocksStep(step, t.race)) then
+						local Ids = FTAttune_split(i, "-")
+						if attuneDone[Ids[1]] == nil then attuneDone[Ids[1]] = 0 end
+						attuneDone[Ids[1]] = attuneDone[Ids[1]] +1
+					end
 				end
 			end
 
@@ -8922,9 +9118,10 @@ function FTAttune_HandleRequestResults(response)
 		if tag == 'SILENTDONE' then 
 			--print("Received ".. data[3] .. " from " .. player.name)
 			local s = FTAttune_Data.stepsByKey and FTAttune_Data.stepsByKey[data[3]]
-			if s and showPatchStep(s) then
+			if s and FTAttune_StepShownForRace(s, player.race) then
 				-- recurse into earlier steps to mark them as done too
-				C_Timer.After(0.01, function() FTAttune_recursePreviousSteps(name, s.ID_ATTUNE, s.FOLLOWS) end)
+				local senderRace = player.race
+				C_Timer.After(0.01, function() FTAttune_recursePreviousSteps(name, s.ID_ATTUNE, s.FOLLOWS, senderRace) end)
 			end
 		end
 
@@ -11872,7 +12069,7 @@ function FTAttune_NextStepLabel(step)
 		label = FTAttuneLang["Q1_" .. step.ID_WOWHEAD]
 	elseif step.TYPE == "Stat" or step.TYPE == "Prof" then
 		local goal = FTAttune_StatGoal(step)
-		local value = FTAttune_StatValue(step)
+		local value = FTAttune_StatDisplayValue(step)
 		if goal > 0 and value > goal then value = goal end
 		label = (step.STEP or "") .. " " .. value .. "/" .. goal
 	else
@@ -12035,9 +12232,9 @@ function FTAttune_NextFrameCollect()
 	if #missed > 0 then
 		local msg
 		if #missed == 1 then
-			msg = FTAttuneLang["NextSteps_MISSED_ONE"] or "Missed 1 attune"
+			msg = FTAttuneLang["NextSteps_MISSED_ONE"] or "Outlevelled 1 attune"
 		else
-			msg = (FTAttuneLang["NextSteps_MISSED"] or "Missed ##COUNT## attunes"):gsub("##COUNT##", tostring(#missed))
+			msg = (FTAttuneLang["NextSteps_MISSED"] or "Outlevelled ##COUNT## attunes"):gsub("##COUNT##", tostring(#missed))
 		end
 		table.insert(shown, 1, {
 			text = "|cffaaaaaa" .. msg .. "|r",

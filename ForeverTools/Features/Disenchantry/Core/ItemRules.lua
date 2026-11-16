@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -38,6 +38,7 @@ function Rules.Tooltip(item)
     return text
 end
 function Rules.Refuses(item)
+    if ns.DisenchantResults.IsExcluded(item) then return true end
     local exact = {}
     for _, global in ipairs({"ERR_CANT_BE_DISENCHANTED", "ITEM_DISENCHANT_NOT_DISENCHANTABLE"}) do
         local value = _G[global]
@@ -52,9 +53,9 @@ function Rules.Refuses(item)
 end
 function Rules.Binding(kind, bound)
     local account = {[App.BIND_ACCOUNT]=true, [App.BIND_BNET]=true, [App.BIND_BNET_UNTIL_EQUIP]=true}
-    if account[kind] then return "|cff00ccffWB|r" end
-    if kind == App.BIND_ON_EQUIP and not bound then return "|cff1eff00BoE|r" end
-    if bound or kind == App.BIND_ON_ACQUIRE then return "|cff9d9d9dBoP|r" end
+    if account[kind] then return "|cff00ccff" .. App.L.BIND_ACCOUNT_SHORT .. "|r" end
+    if kind == App.BIND_ON_EQUIP and not bound then return "|cff1eff00" .. App.L.BIND_EQUIP_SHORT .. "|r" end
+    if bound or kind == App.BIND_ON_ACQUIRE then return "|cff9d9d9d" .. App.L.BIND_PICKUP_SHORT .. "|r" end
 end
 function Rules.EquipmentFloor()
     local candidate
@@ -71,6 +72,7 @@ function Rules.Quality(quality)
     return type(filter) ~= "table" or filter[quality] ~= false
 end
 function Rules.Disenchantable(link, quality)
+    if ns.DisenchantResults.IsExcluded(link) then return false end
     if not link or type(quality) ~= "number" or quality < 2 or quality > 4 then return false end
     local api = C_Item and C_Item.IsEquippableItem
     local result = api and api(link)
@@ -88,11 +90,17 @@ function Rules.ValueProtected(item)
     local limit = applies and tonumber(settings.priceThresholdGold)
     return limit ~= nil and limit ~= false and (item.priceCopper == nil or item.priceCopper >= limit * 10000)
 end
+function Rules.ProfitProtected(item)
+    if not App.db.profitProtection or not App.activeMode or App.activeMode.key~="disenchant" then return false end
+    local value,profit,base=ns.ForecastPolicy.Profit(item)
+    return not profit or profit<=0 or profit<base*(App.db.minDEProfitPercent or 0)/100
+end
 function Rules.SetProtected(item) return item.isSet == true end
 local safeguards = {
     {key="set", check=Rules.SetProtected},
     {key="level", check=Rules.LevelProtected},
     {key="value", check=Rules.ValueProtected},
+    {key="profit", check=Rules.ProfitProtected},
 }
 function Rules.Assess(item)
     local assessment = {reasons={}}

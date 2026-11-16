@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)

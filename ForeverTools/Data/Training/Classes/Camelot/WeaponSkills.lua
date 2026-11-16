@@ -1,4 +1,4 @@
--- Adapted from What's Training? 11.0.0-beta25 (MIT); see LICENSE.txt and NOTICE.md.
+-- Adapted from What's Training? 11.4.8 (MIT); see LICENSE.txt and NOTICE.md.
 local _, FT = ...
 local tinsert = table.insert
 local function LoadData(...)

@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -15,6 +15,34 @@ end
 local function auction()
     return Auctionator and Auctionator.API and Auctionator.API.v1
 end
+function Market.GetAuctionatorSource()
+    local db = ns.App and ns.App.db
+    return db and db.auctionatorSource == "average" and "average" or "last"
+end
+function Market.GetAuctionatorAverageDays()
+    local config = Auctionator and Auctionator.Config
+    if config and type(config.Get) == "function" and config.Options and config.Options.AUCTION_MEAN_DAYS_LIMIT then
+        local ok, days = pcall(config.Get, config.Options.AUCTION_MEAN_DAYS_LIMIT)
+        if ok and type(days) == "number" and days >= 1 and days < math.huge then return math.floor(days) end
+    end
+    return 21
+end
+local function averagePrice(reference)
+    local db = Auctionator and Auctionator.Database
+    if not db or type(db.GetMeanPrice) ~= "function" then return end
+    local days = Market.GetAuctionatorAverageDays()
+    if type(reference) == "number" then return db:GetMeanPrice(tostring(reference), days) end
+    local utilities = Auctionator.Utilities
+    if not utilities or type(utilities.DBKeyFromLink) ~= "function" then return end
+    local keys
+    utilities.DBKeyFromLink(reference, function(result) keys = result end)
+    -- Item information may still be loading. Retry on the next query in that case.
+    if type(keys) ~= "table" then return end
+    for _, key in ipairs(keys) do
+        local value = positive(db:GetMeanPrice(key, days))
+        if value then return value end
+    end
+end
 adapters.tsm = {
     label="TSM",
     present=function()
@@ -28,10 +56,14 @@ adapters.tsm = {
 adapters.auctionator = {
     label="Auctionator",
     present=function()
+        if Market.GetAuctionatorSource() == "average" then
+            return Auctionator and Auctionator.Database and type(Auctionator.Database.GetMeanPrice) == "function"
+        end
         local api = auction()
         return api and type(api.GetAuctionPriceByItemLink) == "function"
     end,
     quote=function(reference)
+        if Market.GetAuctionatorSource() == "average" then return averagePrice(reference) end
         local api = auction()
         if type(reference) == "number" then
             if type(api.GetAuctionPriceByItemID) == "function" then
@@ -51,8 +83,10 @@ function Market.Query(reference, channel)
     if issecretvalue and issecretvalue(reference) then return end
     if type(reference) ~= "string" and type(reference) ~= "number" then return end
     channel = channel or "preferred"
-    local book = books[channel]
-    if not book then book = {}; books[channel] = book end
+    local cacheKey = channel .. ":" .. Market.GetAuctionatorSource()
+    if Market.GetAuctionatorSource() == "average" then cacheKey = cacheKey .. ":" .. Market.GetAuctionatorAverageDays() end
+    local book = books[cacheKey]
+    if not book then book = {}; books[cacheKey] = book end
     local now = GetTime()
     local quote = book[reference]
     if quote and quote.expires > now then return quote.value, quote.source, quote.label end
@@ -98,7 +132,7 @@ local function goldNumber(copper, separators)
 end
 function Prices.FormatGold(copper)
     if type(copper) ~= "number" then return "" end
-    return goldNumber(copper, true) .. " g"
+    return goldNumber(copper, true) .. " " .. (ns.L and ns.L.PRICE_GOLD or "g")
 end
 function Prices.FormatGoldIcon(copper)
     if type(copper) ~= "number" then return "" end

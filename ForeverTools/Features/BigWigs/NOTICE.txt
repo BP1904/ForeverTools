@@ -1,5 +1,5 @@
 BigWigs: local adaptation of user-installed sources for WoW Forever.
-BigWigs v427.8. Authors: Funkeh, Nebula, Justwait, Delk.
+BigWigs v427.9. Authors: Funkeh, Nebula, Justwait, Delk.
 All Rights Reserved. Upstream: https://github.com/BigWigsMods/BigWigs
 Original TOC: You are free to fork and modify on GitHub; ask authors about other uses.
 Original copyright and library licenses retained in the copied files.

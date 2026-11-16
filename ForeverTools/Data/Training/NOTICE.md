@@ -1,6 +1,6 @@
 # What's Training? data
 
-Source: locally installed What's Training? 11.0.0-beta25, author Sveng.
+Source: What's Training? 11.4.8, author Fusionpit / Sveng.
 Project: https://www.curseforge.com/wow/addons/whats-training
 
 MIT license and original copyright notice are preserved in LICENSE.txt.

@@ -341,6 +341,15 @@ FTAttune_Data.questRewards = {
 	[6101] = {},
 	[6102] = { spells = {1515} },
 	[6103] = { spells = {5149} },
+	[94792] = {},
+	[94863] = {},
+	[94864] = { spells = {23356} },
+	[94793] = { spells = {23357} },
+	[94007] = {},
+	[94978] = {},
+	[94979] = {},
+	[94013] = { spells = {1515} },
+	[94050] = { spells = {5149} },
 	[6121] = {},
 	[6122] = {},
 	[6123] = {},
@@ -667,6 +676,8 @@ FTAttune_Data.questRewards = {
 	[1463] = { fixed = {{6635, 1}} },
 	[1464] = { fixed = {{6636, 1}} },
 	[1498] = { spells = {71} },
+	-- The Skybreaker Bulwark. Teaches Defensive Stance and rewards the shield.
+	[94003] = { fixed = {{275290, 1}}, spells = {71} },
 	[1502] = {},
 	[1503] = { choice = {{7326, 1}, {7328, 1}, {7327, 1}, {7329, 1}} },
 	[1505] = {},
@@ -732,6 +743,10 @@ FTAttune_Data.questRewards = {
 	[94466] = { fixed = {{6636, 1}} },
 	[94467] = { fixed = {{6654, 1}} },
 	[94468] = { fixed = {{5176, 1}, {263412, 1}}, spells = {3599} },
+	[97243] = {},
+	[97244] = {},
+	[97245] = {},
+	[97257] = { fixed = {{5176, 1}, {263412, 1}}, spells = {3599} },
 	[94495] = {},
 	[94497] = {},
 	[94499] = {},
@@ -874,6 +889,28 @@ FTAttune_Data.questRewards = {
 	[447] = { fixed = {{3448, 20}} },
 	[450] = {},
 	[451] = { choice = {{3451, 1}, {3582, 1}, {276723, 1}}, fixed = {{2458, 1}, {2459, 1}} },
+	[95737] = {}, -- Seeking Caitlin (Llana); experience only
+	-- The Drowned City
+	[203] = {}, -- The Second Rebellion; experience only
+	[204] = { choice = {{4140, 1}, {4126, 1}} }, -- Bad Medicine
+	[205] = {}, -- Troll Witchery; experience only
+	[207] = {}, -- Kurzen's Mystery; experience only
+	[629] = {}, -- The Vile Reef; experience only
+	[95748] = {}, -- The Gurubashi Legends of Old; 50 silver
+	[95770] = {}, -- Locating the Lost City; 50 silver
+	[95773] = {}, -- Enemies in the Water; 40 silver
+	[95775] = {}, -- The Drowned City; experience only
+	[95776] = { choice = {{279888, 1}, {279889, 1}} }, -- The Only Good Brinescale...
+	[95786] = {}, -- An Acquaintance in Southshore; 50 silver
+	[95787] = {}, -- Take Two With Water; 1 gold 50 silver
+	[95788] = {}, -- Magics of the Drowned City; experience only
+	[95789] = { choice = {{279882, 1}, {279930, 1}} }, -- Shady Saltseers
+	[95791] = { choice = {{279883, 1}, {279884, 1}} }, -- The Saltseer Captain
+	[95798] = { choice = {{279879, 1}, {279878, 1}} }, -- The Web of Magic
+	[95799] = { choice = {{279880, 1}, {279881, 1}}, fixed = {{272124, 1}} }, -- Findings for the Explorer's League
+	[96078] = { choice = {{279885, 1}, {279886, 1}, {279887, 1}}, fixed = {{270312, 1}, {270313, 1}} }, -- A Tale Spun Around the Fire
+	[96774] = {}, -- Ancient Gurubashi Idol; 1 gold
+	[97130] = {}, -- Ancient Gurubashi Secrets; 50 silver
 }
 
 -- name, icon file, quality. Used when the client has not cached the item.
@@ -1250,6 +1287,34 @@ FTAttune_Data.rewardItems = {
 	[247840] = {"Mining for Dummies", "inv_10_specialization_professionbook_mining_orig", 1},
 	[247841] = {"Wild Harvest", "inv_10_specialization_professionbook_herbalism_color1", 1},
 	[247846] = {"Pelt Collecting for Beginners", "inv_10_specialization_professionbook_skinning_color1", 1},
+	[263993] = {"Skybreaker Bulwark", "inv_shield_13", 1},
+	[275290] = {"Stormforged Protector", "inv_shield_1h_skybornec60_b_01", 2},
+	-- The Drowned City
+	[4126] = {"Guerrilla Cleaver", "inv_axe_21", 2},
+	[4140] = {"Palm Frond Mantle", "inv_shoulder_06", 2},
+	[270308] = {"The First Tablet of I'lalai", "inv_scroll_16", 1},
+	[270309] = {"The Second Tablet of I'lalai", "inv_scroll_12", 1},
+	[270310] = {"The Third Tablet of I'lalai", "inv_scroll_13", 1},
+	[270311] = {"The Fourth Tablet of I'lalai", "inv_scroll_14", 1},
+	[270312] = {"Translated Tale of I'lalai", "inv_scroll_15", 1},
+	[270313] = {"Tale of I'lalai in Zandali", "inv_scroll_12", 1},
+	[270333] = {"Voodoo-Infused Artifact", "trade_archaeology_troll_tablet", 1},
+	[270343] = {"I'lalai Fetish", "archaeology_5_0_carvedbronzemirror", 1},
+	[272124] = {"Translated Tale of I'lalai", "inv_scroll_15", 1},
+	[276894] = {"Ancient Gurubashi Idol", "inv_misc_archaeology_trollgolem", 1},
+	[279878] = {"Apprentice Sorcerer's Slacks", "inv_pants_10", 3},
+	[279879] = {"Rune-Etched Epaulets", "inv_shoulder_25", 3},
+	[279880] = {"Ancient Voodoo Pouch", "inv_misc_bag_10_green", 3},
+	[279881] = {"Intrepid Explorer's Chainmail", "inv_chest_chain", 3},
+	[279882] = {"Rusted Troll War Belt", "inv_belt_09", 2},
+	[279883] = {"Mutinous Cuffs", "inv_bracer_07", 2},
+	[279884] = {"South Seas Shroud", "inv_misc_cape_02", 2},
+	[279885] = {"Ceremonial Mallet", "inv_hammer_06", 3},
+	[279886] = {"Sacrificial Sword", "inv_sword_40", 3},
+	[279887] = {"I'lalai Flayer", "inv_axe_06", 3},
+	[279888] = {"Tidesoaked Leggings", "inv_pants_13", 2},
+	[279889] = {"Naga Priestess's Mantle", "inv_shoulder_18", 2},
+	[279930] = {"Saltseer's Helm", "inv_helmet_15", 2},
 }
 
 -- name, icon file. Used when the client has not cached the spell.
@@ -1281,6 +1346,8 @@ FTAttune_Data.rewardSpells = {
 	[2651] = {"Elune's Grace", "spell_holy_elunesgrace"},
 	[13896] = {"Feedback", "spell_shadow_ritualofsacrifice"},
 	[5149] = {"Beast Training", "ability_hunter_beastcall02"},
+	[23356] = {"Taming Lesson", "ability_hunter_beasttaming"},
+	[23357] = {"Training Lesson", "ability_hunter_beastcall02"},
 	[1515] = {"Tame Beast", "ability_hunter_beasttaming"},
 	[18540] = {"Ritual of Doom", "spell_shadow_antimagicshell"},
 	[1122] = {"Inferno", "spell_shadow_summoninfernal"},

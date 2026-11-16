@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -130,6 +130,8 @@ local function readSlot(bag, slot, info)
         itemLevel = ns.Client.ItemLevel(link),
         baseItemLevel = level,
         classID = class,
+        bindType = bind,
+        isBound = info.isBound == true,
         expansionID = expansion,
         isSet = (set ~= nil and set ~= 0) or nil,
     }

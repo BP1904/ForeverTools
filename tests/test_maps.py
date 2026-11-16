@@ -205,7 +205,7 @@ class MapsTest(unittest.TestCase):
                     assert(row[2]>=0 and row[2]<=100 and row[3]>=0 and row[3]<=100)
                 end
             end
-            assert(arts==44 and pois==214 and namespace.mapLevels[2482][1]==60)
+            assert(arts==44 and pois==218 and namespace.mapLevels[2482][1]==60)
         ''')
 
     def test_training_marker_uses_existing_pin_provider(self):

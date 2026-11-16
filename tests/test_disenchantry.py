@@ -120,6 +120,24 @@ end
 
 
 class DisenchantryTest(unittest.TestCase):
+    def test_updated_forever_wands_and_forecasts(self):
+        lua=self.runtime(); self.start(lua)
+        lua.execute('''
+            for _,id in ipairs({11287,11288,11289,11290,247789,249144,249234,249232,249237,249385}) do
+                assert(ns.DisenchantResults.IsExcluded(id))
+                assert(not ns.DisenchantResults.Get({itemID=id,quality=2,baseItemLevel=20,classID=2}))
+            end
+            local result=ns.DisenchantResults.Get({itemID=250620,quality=3,baseItemLevel=15,classID=4})
+            assert(result.foreverCraftEstimate and result[1].itemID==10940)
+            ns.AuctionScan.running=true; ns.AuctionPurchase.active=true
+            A.forecastPreferences=CreateFrame('Frame'); A.forecastPreferences:Show()
+            ForeverTools:SetEnabled('disenchantry',false)
+            assert(not ns.AuctionScan.running and not ns.AuctionPurchase.active)
+            assert(not A.forecastPreferences:IsShown())
+            ns.AuctionScan.Start(); ns.AuctionPurchase.Prepare({}); ns.AuctionPurchase.Confirm()
+            assert(not ns.AuctionScan.running and not ns.AuctionPurchase.active)
+        ''')
+
     def test_drag_stops_and_ui_rebuild_are_deferred_in_combat(self):
         lua=self.runtime(); self.start(lua)
         lua.execute('''
@@ -171,7 +189,8 @@ class DisenchantryTest(unittest.TestCase):
 
     def test_license_isolation_safe_defaults_and_lazy_start(self):
         self.runtime().execute('''
-            assert(A.db==ForeverToolsDisenchantryDB and DisenchantryDB==nil)
+            assert(A.db~=nil and DisenchantryDB==nil and DisenchantryCharacterDB==nil)
+            A.db.priceWarnEnabled=true; assert(ForeverToolsDisenchantryDB.priceWarnEnabled)
             assert(not M.started and not A.mainFrame)
             assert(not A.db.compactMode and A.db.qualityFilter[3]==false and A.db.qualityFilter[4]==false)
             assert(A.IS_NON_RETAIL_CLIENT)
@@ -180,6 +199,24 @@ class DisenchantryTest(unittest.TestCase):
         ''')
         self.assertIn('Rakuga',(VENDOR/'LICENSE.txt').read_text())
         self.assertIn('x_Raven_x',(VENDOR/'LICENSE.txt').read_text())
+
+    def test_material_visibility_persists_per_character_and_migrates_without_aliasing(self):
+        lua=self.runtime('DisenchantryCharacterDB={hideDisenchantMaterials=true}')
+        lua.execute('''
+            assert(A.db.hideDisenchantMaterials)
+            A.db.hideDisenchantMaterials=false
+            assert(ForeverToolsDisenchantryCharacterDB.hideDisenchantMaterials==false)
+            assert(DisenchantryCharacterDB.hideDisenchantMaterials==true)
+            App=nil; A.OpenPreferences(); assert(not A.db.hideDisenchantMaterials)
+            ForeverToolsDisenchantryCharacterDB={hideDisenchantMaterials=true}
+            A.OpenPreferences(); assert(A.db.hideDisenchantMaterials)
+        ''')
+        self.runtime('ForeverToolsDisenchantryDB={hideDisenchantMaterials=true}').execute('''
+            assert(A.db.hideDisenchantMaterials and ForeverToolsDisenchantryCharacterDB.hideDisenchantMaterials)
+        ''')
+        for toc in ('ForeverTools.toc','ForeverTools_Camelot.toc'):
+            text=(ROOT/'ForeverTools'/toc).read_text(encoding='utf-8')
+            self.assertRegex(text, r'## SavedVariablesPerCharacter:[^\n]*ForeverToolsDisenchantryCharacterDB')
 
     def test_full_ui_starts_without_external_libraries(self):
         lua=self.runtime(); self.start(lua)

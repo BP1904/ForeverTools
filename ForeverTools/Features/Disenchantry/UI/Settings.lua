@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -59,27 +59,11 @@ local function threshold(parent, spec)
 end
 local function languageControls(window)
     UI.Text(window, App.L.LANGUAGE, "GameFontNormal", {{"TOPLEFT", 18, -438}})
-    local pending, options = App.db.language or "auto", {}
-    local function render()
-        for _, control in ipairs(options) do control:SetEnabled(control.language ~= pending) end
-    end
-    for index, entry in ipairs({{"auto", App.L.LANGUAGE_AUTO}, {"ruRU", "Русский"}, {"enUS", "English"}, {"deDE", "Deutsch"}}) do
-        local key, caption = entry[1], entry[2]
-        local control = UI.Button(window, {text=caption, width=104, height=24,
-            points={{"TOPLEFT", 18 + (index - 1) * 110, -460}}, click=function() pending=key; render() end})
-        control.language = key
-        options[index] = control
-    end
-    render()
+    UI.Text(window, App.L.LANGUAGE_AUTO .. " (" .. GetLocale() .. ")", nil, {{"TOPLEFT", 18, -464}})
     paragraph(window, "LANGUAGE_HINT", 18, 490)
-    UI.Button(window, {key="LANGUAGE_APPLY", width=230, height=24, points={{"TOPRIGHT", -18, -526}}, click=function()
-        if InCombatLockdown() then App.Print(App.L.NOT_IN_COMBAT); return end
-        App.db.language = pending
-        ReloadUI()
-    end})
 end
 function App.CreateSettingsFrame()
-    local window = App.CreateStyledWindow("ForeverToolsDisenchantry_SettingsFrame", 470, 800)
+    local window = App.CreateStyledWindow("ForeverToolsDisenchantry_SettingsFrame", 470, 910)
     App.settingsFrame = window
     UI.Anchor(window, {{"CENTER", UIParent, "CENTER", -300, 0}})
     window:Hide()
@@ -127,9 +111,34 @@ function App.CreateSettingsFrame()
                 App.RefreshUI()
             end)
     end
+    divider(window, 790)
+    UI.Text(window, App.L.AUCTIONATOR_SOURCE, "GameFontNormal", {{"TOPLEFT", 18, -802}})
+    controls.auctionator = {}
+    local function syncAuctionator()
+        for key, button in pairs(controls.auctionator) do
+            button:SetEnabled(key ~= ns.Prices.GetAuctionatorSource())
+            if key == "average" then button:SetText(string.format(App.L.AUCTIONATOR_AVERAGE, ns.Prices.GetAuctionatorAverageDays())) end
+        end
+    end
+    for index, entry in ipairs({{"last", "AUCTIONATOR_LAST"}, {"average", "AUCTIONATOR_AVERAGE"}}) do
+        local key = entry[1]
+        controls.auctionator[key] = UI.Button(window, {key=entry[2], width=210, height=24,
+            points={{"TOPLEFT", 18 + (index - 1) * 220, -824}}, click=function()
+                if InCombatLockdown() then App.Print(App.L.NOT_IN_COMBAT); return end
+                App.db.auctionatorSource = key
+                ns.Prices.ClearCache()
+                syncAuctionator()
+                GameTooltip:Hide()
+                App.RefreshWorkspace()
+            end})
+    end
+    paragraph(window, "AUCTIONATOR_SOURCE_HINT", 18, 856)
+    UI.Button(window,{text=GetLocale()=="ruRU" and "Оценка и отображение…" or "Forecast and display…",width=245,height=22,
+        points={{"BOTTOMLEFT",18,12}},click=function() App.ToggleForecastPreferences() end})
     for _, key in ipairs({"ForeverToolsDisenchantry_SettingsFrame", "ForeverToolsDisenchantry_BlacklistFrame"}) do table.insert(UISpecialFrames, key) end
     window:SetScript("OnShow", function()
         App.UpdateModeSurface()
+        syncAuctionator()
         for _, field in pairs(controls.limits) do field.sync() end
         for quality, check in pairs(controls.qualities) do check:SetChecked(App.db.qualityFilter[quality] ~= false) end
         for key, check in pairs(controls.disenchantDisplay) do check:SetChecked(not App.db[key]) end

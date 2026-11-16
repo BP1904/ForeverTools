@@ -136,8 +136,9 @@ function M:DisableCleanup()
     self.pendingDisable=nil
     App.DisarmAction(); App.ClearPendingDisenchant()
     ns.Statistics.CancelProcessing()
+    if ns.StopAuction then ns.StopAuction() end
     wipe(App.selected); wipe(App.queue); ns.Queue.EndSession()
-    for _,name in ipairs({"mainFrame","compactFrame","settingsFrame","blacklistFrame","checkCopyFrame"}) do
+    for _,name in ipairs({"mainFrame","compactFrame","settingsFrame","blacklistFrame","checkCopyFrame","forecastPreferences"}) do
         if App[name] then App[name]:Hide() end
     end
     local stats=_G.ForeverToolsDisenchantry_StatisticsFrame
@@ -161,6 +162,13 @@ function M:OnEvent(event,...)
     end
     if event=="PLAYER_REGEN_ENABLED" and self.pendingDisable then self:DisableCleanup() end
     if not ns.IsEnabled() then return end
+    if event=="UNIT_AURA" and ...=="player" and App.db and ns.ForecastPolicy then
+        local active=ns.ForecastPolicy.SalvagerActive()
+        if self.lastSalvager~=active then
+            self.lastSalvager=active
+            if self.started then App.ForecastPreferencesChanged() end
+        end
+    end
     if event=="AUCTION_HOUSE_CLOSED" then ns.Prices.ClearCache() end
     if not self.started then return end
     ns.Statistics.OnEvent(event,...)
@@ -200,6 +208,11 @@ function M:Initialize()
             ForeverToolsDisenchantryDB={compactMode=false,qualityFilter={[2]=true,[3]=false,[4]=false}}
         end
     end
+    if type(ForeverToolsDisenchantryCharacterDB)~="table" then
+        ForeverToolsDisenchantryCharacterDB=type(DisenchantryCharacterDB)=="table" and Clone(DisenchantryCharacterDB) or {
+            hideDisenchantMaterials=ForeverToolsDisenchantryDB.hideDisenchantMaterials==true,
+        }
+    end
     App.OpenPreferences(); App.ActivateProfession(App.db.activeMode)
     self:InstallPrices(); self:InstallGuards()
     if LegacyLoaded() then self.legacyBlocked=true; FT:RetireLegacyAddon("Disenchantry") end
@@ -208,7 +221,7 @@ function M:Initialize()
     self.frame:SetScript("OnEvent",function(_,event,...) self:OnEvent(event,...) end)
     for _,event in ipairs({"PLAYER_LOGIN","BAG_UPDATE_DELAYED","GET_ITEM_INFO_RECEIVED","CHAT_MSG_LOOT",
         "UI_ERROR_MESSAGE","UI_INFO_MESSAGE","CHAT_MSG_SYSTEM","PLAYER_REGEN_ENABLED","PLAYER_REGEN_DISABLED",
-        "AUCTION_HOUSE_CLOSED","UNIT_SPELLCAST_SENT","UNIT_SPELLCAST_SUCCEEDED","UNIT_SPELLCAST_FAILED",
+        "AUCTION_HOUSE_CLOSED","UNIT_AURA","UNIT_SPELLCAST_SENT","UNIT_SPELLCAST_SUCCEEDED","UNIT_SPELLCAST_FAILED",
         "UNIT_SPELLCAST_INTERRUPTED","LOOT_READY","LOOT_OPENED","LOOT_CLOSED"}) do self.frame:RegisterEvent(event) end
     SLASH_FOREVERTOOLSDISENCHANTRY1="/ftde"
     SLASH_FOREVERTOOLSDISENCHANTRY2="/ftentzaubern"

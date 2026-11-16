@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -37,54 +37,62 @@ function App.ShowInspection(report)
 end
 function Diagnostics.Collect()
     local results = {}
+    local L = App.L
+    local function state(value)
+        if value == nil then return L.UNKNOWN end
+        if type(value) == "boolean" then return value and L.DIAG_ENABLED or L.DIAG_DISABLED end
+        return tostring(value)
+    end
     local function add(name, passes, detail)
         results[#results + 1] = {name=name, ok=not not passes, detail=detail}
     end
     local game, build, _, interface = GetBuildInfo()
-    add("Client", true, tostring(game) .. "; build=" .. tostring(build) .. "; interface=" .. tostring(interface))
-    add("Locale", App.L and App.L.DISENCHANT, GetLocale())
-    add("Library registry", LibStub ~= nil)
-    add("Launcher broker", LibStub and LibStub:GetLibrary("LibDataBroker-1.1", true) ~= nil)
-    add("Minimap library", App.libDBIcon ~= nil)
-    add("Bag API", C_Container and C_Container.GetContainerItemInfo ~= nil)
-    add("Equipment API", C_Item and C_Item.IsEquippableItem or IsEquippableItem)
-    add("Item identity", true, C_Item and C_Item.GetItemGUID and "instance GUID" or "bag/slot fallback")
-    add("Bag coverage", true, #App.BAGS_TO_SCAN .. " containers; reagent=" .. tostring(App.REAGENT_BAG))
-    add("ForeverToolsDisenchantryDB", App.db == ForeverToolsDisenchantryDB and type(App.db) == "table")
+    add(L.DIAG_CLIENT, true, tostring(game) .. " / " .. tostring(build) .. " / " .. tostring(interface))
+    add(L.DIAG_LOCALE, L.DISENCHANT, GetLocale())
+    add(L.DIAG_LIBRARIES, LibStub ~= nil)
+    add(L.DIAG_BROKER, LibStub and LibStub:GetLibrary("LibDataBroker-1.1", true) ~= nil)
+    add(L.DIAG_MINIMAP, App.libDBIcon ~= nil)
+    add(L.DIAG_BAGS, C_Container and C_Container.GetContainerItemInfo ~= nil)
+    add(L.DIAG_EQUIPMENT, C_Item and C_Item.IsEquippableItem or IsEquippableItem)
+    add(L.DIAG_IDENTITY, true, C_Item and C_Item.GetItemGUID and "GUID" or L.DIAG_SLOT_FALLBACK)
+    add(L.DIAG_COVERAGE, true, string.format(L.DIAG_BAG_DETAIL, #App.BAGS_TO_SCAN, state(App.REAGENT_BAG)))
+    add("ForeverToolsDisenchantryDB", type(ForeverToolsDisenchantryDB) == "table" and type(App.db) == "table")
     if App.db then
         local blocked = 0
         for _ in pairs(App.ExclusionBook()) do blocked = blocked + 1 end
-        add("Protection settings", true, "ilvl=" .. tostring(App.db.ilvlCapEnabled) .. "/" .. tostring(App.db.ilvlCap)
-            .. "; exclusions=" .. blocked .. "; compact=" .. tostring(App.db.compactMode))
+        add(L.DIAG_PROTECTION, true, string.format(L.DIAG_PROTECTION_DETAIL,
+            state(App.db.ilvlCapEnabled), state(App.db.ilvlCap), blocked, state(App.db.compactMode)))
     end
-    for _, key in ipairs({"mainFrame", "compactFrame", "settingsFrame", "blacklistFrame"}) do add(key, App[key] ~= nil) end
+    for _, entry in ipairs({{"mainFrame", "FULL_BUTTON"}, {"compactFrame", "COMPACT_BUTTON"},
+        {"settingsFrame", "SETTINGS_TITLE"}, {"blacklistFrame", "BLACKLIST_TITLE"}}) do add(L[entry[2]], App[entry[1]] ~= nil) end
     local providers = {}
     for _, source in ipairs(ns.Prices.GetProviderStatus()) do if source.available then table.insert(providers, source.label) end end
-    add("Market data", not App.db or not App.db.priceWarnEnabled or #providers > 0,
-        (#providers > 0 and table.concat(providers, ", ") or "no source") .. "; threshold=" .. tostring(App.db and App.db.priceThresholdGold))
+    add(L.DIAG_MARKET, not App.db or not App.db.priceWarnEnabled or #providers > 0,
+        (#providers > 0 and table.concat(providers, ", ") or L.DIAG_NO_SOURCE) .. "; "
+        .. string.format(L.DIAG_THRESHOLD, state(App.db and App.db.priceThresholdGold)))
     local modes = App.AvailableProfessions()
-    add("Profession support", #modes > 0)
-    for _, mode in ipairs(modes) do add("Spell: " .. mode.key, mode.spellName() ~= nil) end
-    add("Learned profession", App.activeMode and App.activeMode.isKnown(), App.activeMode and App.activeMode.key)
+    add(L.DIAG_PROFESSIONS, #modes > 0)
+    for _, mode in ipairs(modes) do add(string.format(L.DIAG_SPELL, App.GetModeName(mode)), mode.spellName() ~= nil) end
+    add(L.DIAG_LEARNED, App.activeMode and App.activeMode.isKnown(), App.activeMode and App.GetModeName(App.activeMode))
     local expected = GetCVarBool and GetCVarBool("ActionButtonUseKeyDown") and "AnyDown" or "AnyUp"
-    add("Click registration", App.queueButton and App.queueButton.clickEdge == expected, expected)
-    if InCombatLockdown() then add("Inventory refresh", false, "deferred during combat")
+    add(L.DIAG_CLICKS, App.queueButton and App.queueButton.clickEdge == expected, expected)
+    if InCombatLockdown() then add(L.DIAG_REFRESH, false, L.DIAG_DEFERRED)
     else
         App.DiscoverCandidates(); App.SyncActionTarget()
-        add("Inventory refresh", true, #App.items .. " candidates; " .. #App.queue .. " queued")
+        add(L.DIAG_REFRESH, true, string.format(L.DIAG_CANDIDATES, #App.items, #App.queue))
         local item, action = App.queue[1], App.queueButton
         local armed = not item or action and action:GetAttribute("type") == "spell"
             and action:GetAttribute("target-bag") == item.bag and action:GetAttribute("target-slot") == item.slot
-        add("Action target", armed, item and item.name or "empty queue")
+        add(L.DIAG_TARGET, armed, item and item.name or L.QUEUE_EMPTY)
     end
     return results
 end
 function App.InspectWorkspace(copy)
     local metadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
     local version = metadata and metadata(addonName, "Version") or "?"
-    local text, failed = {"Disenchantry diagnostics " .. version}, false
+    local text, failed = {App.L.DIAG_HEADER .. " " .. version}, false
     for _, result in ipairs(Diagnostics.Collect()) do
-        local row = (result.ok and "[OK] " or "[FAIL] ") .. result.name
+        local row = "[" .. (result.ok and App.L.DIAG_OK or App.L.DIAG_FAIL) .. "] " .. result.name
         if result.detail then row = row .. ": " .. tostring(result.detail) end
         text[#text + 1] = row
         App.Print(row)

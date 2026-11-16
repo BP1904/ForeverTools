@@ -1,5 +1,5 @@
--- Map geometry, Blizzard file IDs and location facts from Leatrix Maps 1.60.24 (Forever).
--- Source: https://www.curseforge.com/wow/addons/leatrix-maps/files/9262568
+-- Map geometry, Blizzard file IDs and location facts from Leatrix Maps 1.60.31 (Forever).
+-- Source: https://www.curseforge.com/wow/addons/leatrix-maps/files/9571295
 -- Original author: Leatrix. No original runtime code or artwork included.
 local _, FT = ...
 FT.mapReveal = {
@@ -884,6 +884,7 @@ FT.mapPOI = {
         {"Spirit", 73, 44.8, "Spirit Healer", 0, 0},
     },
     [1445] = {
+        {"Dungeon", 75.3, 14.1, "Alcaz Prison", 48, 53},
         {"Raid", 52.6, 76.8, "Onyxia's Lair", 60, 60},
         {"FlightA", 67.5, 51.2, "Theramore, Dustwallow Marsh", 0, 0},
         {"FlightH", 35.6, 31.8, "Brackenwall Village, Dustwallow Marsh", 0, 0},
@@ -899,6 +900,7 @@ FT.mapPOI = {
         {"TravelH", 68.6, 23, "Boat to Riverglades", 0, 0},
     },
     [1447] = {
+        {"Dungeon", 38.6, 33.2, "Blackmaw Hold", 55, 60},
         {"FlightA", 11.9, 77.5, "Talrendis Point, Azshara", 0, 0},
         {"FlightH", 22, 49.7, "Valormok, Azshara", 0, 0},
         {"Spirit", 14.5, 78.5, "Spirit Healer", 0, 0},
@@ -913,6 +915,7 @@ FT.mapPOI = {
     },
     [1449] = {
         {"FlightN", 45.3, 6, "Marshal's Refuge, Un'Goro Crater", 0, 0},
+        {"Dungeon", 48.1, 6.1, "Shaper's Terrace", 58, 60},
         {"Spirit", 80, 49.8, "Spirit Healer", 0, 0},
     },
     [1450] = {
@@ -970,6 +973,7 @@ FT.mapPOI = {
         {"TravelH", 57.7, 81, "Zeppelin to Thunder Bluff, Mulgore", 0, 0},
     },
     [2548] = {
+        {"Dungeon", 37.5, 37.3, "Krol'dok Stronghold", 40, 45},
         {"FlightA", 60.6, 81.6, "Farholde Keep, Riverglades", 0, 0},
         {"FlightH", 59.6, 45.1, "Rog'mar, Riverglades", 0, 0},
         {"TravelH", 80.6, 54.6, "Boat to Tanaris", 0, 0},

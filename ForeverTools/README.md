@@ -1,8 +1,12 @@
-# ForeverTools 1.16.12
+# ForeverTools 1.16.15
+
+**Addonpflege in 1.16.15:** Lerndaten aus What's Training? 11.4.8 mit korrigierten Talentvoraussetzungen für Aufschlitzen übernommen. Alle weiteren integrierten Addons auf Updates geprüft; eigene Funktionen und Anpassungen erhalten. Nach Installation `/reload` eingeben.
+
+**Addonpflege in 1.16.14:** Attune 16001-41, Disenchantry 1.2.5 und Lerndaten 11.4.7 integriert. Die Materialanzeige beim Entzaubern wird jetzt pro Charakter gespeichert; bisherige Einstellungen werden übernommen. Alle weiteren integrierten Addons auf Updates geprüft. Eigene Menüs, kompakte Entzauberleiste und Kampfbedienung bleiben erhalten. Nach Installation `/reload` eingeben.
 
 **Minimap-Button:** Das Schmiede-Symbol sitzt direkt am linken Minimap-Rand und hat einen runden Rahmen wie der Dungeon-Journal-Button. Linksklick öffnet die Schnellzugriffe, Rechtsklick die Modulverwaltung. Nach Installation `/reload` eingeben.
 
-**Attune 16001-39:** Sounds lassen sich abschalten, ganze Kategorien ausblenden und die Todesminen als VC oder DM anzeigen. Dungeon-Questketten wurden korrigiert und Portugiesisch ergänzt. Die angepasste Suche und Navigation bleiben erhalten. Nach Installation `/reload` eingeben.
+**Attune 16001-40:** Sounds lassen sich abschalten, ganze Kategorien ausblenden und die Todesminen als VC oder DM anzeigen. Dungeon-Questketten wurden korrigiert und Portugiesisch ergänzt. Die angepasste Suche und Navigation bleiben erhalten. Nach Installation `/reload` eingeben.
 
 **Paladinfenster im Kampf:** Das Zahnrad oben rechts an der kleinen Paladinleiste öffnet und schließt die Zuweisungen auch während eines Kampfes. „Optionen“ schaltet die Detailansicht ebenfalls im Kampf um; X und Escape schließen weiter. Die Fenster werden vor Kampfbeginn unsichtbar vorbereitet. Zuweisungen, Verschieben und geschützte Buffziele werden im Kampf nicht neu eingerichtet. `/ftpp` funktioniert außerhalb des Kampfes; im Kampf verweist es auf das Zahnrad und merkt keine spätere Umschaltung vor. Nach Installation einmal außerhalb des Kampfes `/reload` eingeben.
 

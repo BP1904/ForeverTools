@@ -1,5 +1,11 @@
 # ForeverTools – ein Addon für alle unsere Funktionen
 
+**Neu in 1.16.15: Addonpflege.** Lerndaten 11.4.8 integriert und QuestieTrace auf 1.12.0 aktualisiert. Alle installierten und integrierten Addons erneut geprüft; lokale Anpassungen erhalten. Nach dem Update `/reload` eingeben. Details: [Addon-Pruefung-2026-11-16.md](Addon-Pruefung-2026-11-16.md).
+
+**Neu in 1.16.14: Addonpflege.** Attune 16001-41, Disenchantry 1.2.5 und Lerndaten 11.4.7 integriert. Materialanzeige beim Entzaubern pro Charakter gespeichert, bestehende Einstellungen übernommen. Alle installierten Einzeladdons und integrierten Komponenten geprüft. Nach dem Update `/reload` eingeben. Details: [Addon-Pruefung-2026-11-14.md](Addon-Pruefung-2026-11-14.md).
+
+**Neu in 1.16.13: Addonpflege.** Attune 16001-40, BigWigs v427.9, Nova 2.32, Disenchantry 1.2.4, Lerndaten 11.4.3 und Kartendaten 1.60.31 integriert. Unsere Fenster-, Kampf- und Menüanpassungen bleiben erhalten. Nach dem Update `/reload` eingeben. Details: [Addon-Pruefung-2026-11-12.md](Addon-Pruefung-2026-11-12.md).
+
 **Neu in 1.16.12: Minimap-Button.** Das Schmiede-Symbol hängt direkt am linken Minimap-Rand und trägt einen runden Rahmen wie beim Dungeon Journal. Nach dem Update `/reload` eingeben.
 
 **Neu in 1.16.11: Attune aktualisiert.** Die integrierte Forever-Version steigt auf 16001-39: abschaltbare Sounds, ausblendbare Kategorien, VC/DM-Namenswahl und korrigierte Dungeon-Questketten. Suche und Navigation bleiben erhalten. Nach dem Update `/reload` eingeben.

@@ -19,7 +19,7 @@
         },
         {
           "path": "Data/Maps.lua",
-          "sha256": "0e20c742cbed075b61e2a17697caf36febccf1aee8bc10c43ec46eda77da2c9c"
+          "sha256": "82a320e5cc9db8ed6c039a8f01d9627ac2f2c1eec58e2a4e23770eb5f08dbe5e"
         },
         {
           "path": "Data/MaterialUses.lua",
@@ -39,111 +39,111 @@
         },
         {
           "path": "Data/Training/Classes/Camelot/Druid.lua",
-          "sha256": "c1784e679bdbad93e0cbd8f02ebd9fbf18540d8a7fe62c5135936cee61a04a2d"
+          "sha256": "7deb96ac467f7a5ce3502185b9635068e8906141f3e9af24a948ba8db16c7305"
         },
         {
           "path": "Data/Training/Classes/Camelot/Hunter.lua",
-          "sha256": "5d14ba357ad3e2fbd19556a3f4103661cc0947fb02635e62fb2b82bbd206d6a1"
+          "sha256": "c441d531d78aee5fdc541315c335be4838bbaa06a3433388701175569cca70e4"
         },
         {
           "path": "Data/Training/Classes/Camelot/HunterPets.lua",
-          "sha256": "f3f2abb43a782946fad5cafae78127c695231e07fad4024cdd79d81fd229213c"
+          "sha256": "d658b5c15183c1c72b959d14695ae6feb6dffa5d6b7f12555fb59aeda4d900b3"
         },
         {
           "path": "Data/Training/Classes/Camelot/Mage.lua",
-          "sha256": "16866620045af10305b326b4e6207ba5ea0c8bca0e85a2aaaffb6ba603aa1bbb"
+          "sha256": "2a08d7c5ccbfb8714778355a376dd29702904ac54f13303ccb9ad775a330d483"
         },
         {
           "path": "Data/Training/Classes/Camelot/Paladin.lua",
-          "sha256": "6248bb695e38ba1e99bba3620c93f33074ab0bf921212ade05c623678bc3159e"
+          "sha256": "e40af2fb4c59acd45e4dcce3d794f382d28f7f2c5b4cf11dbca39a3f8084f652"
         },
         {
           "path": "Data/Training/Classes/Camelot/Priest.lua",
-          "sha256": "10e894891e97fad57a13648c5bf6983e545bdff1b811e41ad48b66d603b0b991"
+          "sha256": "d5bc58ee9569fbd65faf91e008499254a2c624db4d7541ea08b60e0b4b15e5be"
         },
         {
           "path": "Data/Training/Classes/Camelot/QuestSpells.lua",
-          "sha256": "f749e83589d7765bda55092919372c8fef348922d39ce34414951159c8e610db"
+          "sha256": "29c8ec61699719a05b33b754209b6e9e683c732e0c459b6330a43aa4d31a0718"
         },
         {
           "path": "Data/Training/Classes/Camelot/Rogue.lua",
-          "sha256": "38c48adf6b28c3f1a199d4d0ddf3f7cae97630b462b67a3333be6ec766d1ff23"
+          "sha256": "3811d70d0e5e27c2538714f6340bcdcc037568ffa04a3cbc0b2300e1e158eafc"
         },
         {
           "path": "Data/Training/Classes/Camelot/Shaman.lua",
-          "sha256": "8114eb2c1bbfb843dd1f714c44db48aef5e317e36dfb8c272eeb52e501df8fd6"
+          "sha256": "3b765ed6bc13d0c3acacc5af9026c4dc80068ed98a7231881acd6f1e8c30331a"
         },
         {
           "path": "Data/Training/Classes/Camelot/TrainerFactions.lua",
-          "sha256": "823249808ed55847571d8ecfd5233417e7e9d6c1fc77e47fd0c28c2671a95a10"
+          "sha256": "ccdf0282dcb8f9e62cae839a17447cf813decb052aae08a9ec96486638f186f0"
         },
         {
           "path": "Data/Training/Classes/Camelot/Warlock.lua",
-          "sha256": "aee2c7e4fc2914585fe7e0568c9a22bf49fd74ba6db740df9447c68f9dd65a4e"
+          "sha256": "99a17efa59ecc0946c84618f053183e3c6f74e5680a9348fa7b5dc9c6e2aa123"
         },
         {
           "path": "Data/Training/Classes/Camelot/WarlockTomes.lua",
-          "sha256": "0554367fb935e576531fa73b64576498200efb5e297707f39c06a2bc6481e81c"
+          "sha256": "3d5a1af0bd87d8535cced399a640f2fd4b7158c6dcd460eac10c8e78e00be58e"
         },
         {
           "path": "Data/Training/Classes/Camelot/Warrior.lua",
-          "sha256": "f9f48829085f5ca81659b30da066bb5f0bb902600301491a3021401820db8d24"
+          "sha256": "91796022ee481006dd2605859f3f91eb1054d50a1a58f5ff36fa1e7eec66230b"
         },
         {
           "path": "Data/Training/Classes/Camelot/WeaponSkills.lua",
-          "sha256": "999e4bd0b85883f3820efcdf87e5d7931429e8da832055c7a76e467eedd34be6"
+          "sha256": "4e71dd00d21bc98aa192e1effc8f332d00e900968c8daa2ee47362c27e977259"
         },
         {
           "path": "Data/Training/Classes/WeaponSkills.lua",
-          "sha256": "965b25eaac2e43cf7629a41f7133564e2a2e8b127a116834001cfa42e42ea76a"
+          "sha256": "81abf371942e1e24abd60d3855132816eed2d401a981c86828101c5222226fa8"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Alchemy.lua",
-          "sha256": "324d04b26925dea0a1d26661830595da25893b28bff27345bfde32775b9fc710"
+          "sha256": "63443b75055a50559efbd64f7f4f472b9ed021b4ead0a86bf84fc73e2e827862"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Blacksmithing.lua",
-          "sha256": "a7c6a0dfb698f83679c59d7134b8a3890749dff5df6d4d7237226ee279555d3a"
+          "sha256": "eed7fb7f729ba61df829fc53435c7ca58c5e59fcc47eda2196ee10c271217d11"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Cooking.lua",
-          "sha256": "d4eb749a3a8eb3a6f236f2daf07d447198a14e8e9bbc59dce3c7c5d5b68b23b7"
+          "sha256": "198f5ce5d8a02268c63710bd921344e32b07e93c5f6d9eb39881c37a84c17514"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Enchanting.lua",
-          "sha256": "7eb9595957cf319290c854043472fec5ca8c58e7fc72de9821962d851520b6c3"
+          "sha256": "607ee73e7085daed285febf96b9a601be5dd0270e59a41e7c75c1c9038fac08a"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Engineering.lua",
-          "sha256": "60321d9dcd365c5374450475622c6baa4484f0a8246dc8d35c92fbd848a400da"
+          "sha256": "cccb8a10edc941dc5c20368b4535b1a9d455f142e38531d414ffbf1447b3c59d"
         },
         {
           "path": "Data/Training/Crafting/Recipes/FirstAid.lua",
-          "sha256": "daaf2c0cb4115f1acf88d4a6220657a2518900b87ee4706485436a8321e69933"
+          "sha256": "73abfd87e6e7533644e10ff74514c90f20372d492fc04402875a7edc0b5aceb6"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Fishing.lua",
-          "sha256": "3773248ecd495795f3e434f89e953fa95d9c554bbe6e42b49480a58d6b9696d3"
+          "sha256": "1e5761238413a14473a6cec84be32d0d24ca5b2321b7d08d2a52b6f1b0f45c58"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Herbalism.lua",
-          "sha256": "47bf45244ef7ecf7a4495d88dc2b134d15765f86fe3c57b92947dfe6f9fc914c"
+          "sha256": "9b44eb76a2f7962e756d3c6ef460e6aea650911cceeebb344ef749a148be9381"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Leatherworking.lua",
-          "sha256": "fac76e87814e9db00042f42bb0852bee28dbdc0efb7556c18c47061195585f45"
+          "sha256": "c8188b2cdc26401f24c9d610c0a5571ea43578f5b762425b7cdd72b8b9d4f795"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Mining.lua",
-          "sha256": "8980f819a105b296fdef533ab1dcfb084585c55f1a0d35e8ec9165f4c5af9714"
+          "sha256": "6fd9b437eb668f4cc98b4b055e6d0d90537b2d78fb24f8df420f48603dc1e0b9"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Skinning.lua",
-          "sha256": "b235ef817e057f9a039703f1594366a48a8f30d9249afad4da8051d57ef509ee"
+          "sha256": "271dd7342ff76afe22bb7625b61b85ac4c3d2935a3ef8971badbda2b6a136573"
         },
         {
           "path": "Data/Training/Crafting/Recipes/Tailoring.lua",
-          "sha256": "6acdaf4bcbcb602b0d4f66e5c7bdd8b3db4931a56c03291fd18de1a645bea9a0"
+          "sha256": "deb09438c6f6cad992218ee5daaa23e4c0c9b255d0c3112c0812f8a75c6d8ec4"
         },
         {
           "path": "Data/Training/LICENSE.txt",
@@ -155,7 +155,7 @@
         },
         {
           "path": "Data/Training/NOTICE.md",
-          "sha256": "2d741ccc00805662b820be22da013f518c3b87a514e64b69a50bf3ade18df93a"
+          "sha256": "dbccbf30b3ad75c8f828c27b24f01daa93ceee95de67bd2693173b9884ccd190"
         },
         {
           "path": "Diagnostics.lua",
@@ -171,23 +171,23 @@
         },
         {
           "path": "Features/Attune/Attune.lua",
-          "sha256": "116ca9c41655127e0014c5075147bef97588ad367a0a56eea37c9c359d89e0ee"
+          "sha256": "6a4c54866ef26c1d6c3f4f1615bf7a720c815cb78e8baf7dac78d8a92cb5d8f0"
         },
         {
           "path": "Features/Attune/AttuneClassQuests.lua",
-          "sha256": "3babf767a2b3b0c432b5876e0736b5087256fbfeb0e9c4eb12634b26c5e137fa"
+          "sha256": "097314d7828191b59d8921a6e986353aa03581b4fbf4a52c144e56e10894bb4e"
         },
         {
           "path": "Features/Attune/AttuneData.lua",
-          "sha256": "0fd5d22219984a5e3926584c022a6ccd0894ef659f33320a56b31e461509f2c9"
+          "sha256": "c5cc69d88233c5478ab1e5305ac7fbd8dccfc1d99e52a1084f761aeb11ea74ec"
         },
         {
           "path": "Features/Attune/AttuneQuestGivers.lua",
-          "sha256": "461521690eea4c880cfaad24222548de620664570179a098bf57dc723c6d1fc3"
+          "sha256": "f196cd2b8950fa2c621f6666491444e45010dfcbbee12160888e2ca9843adf27"
         },
         {
           "path": "Features/Attune/AttuneQuestRewards.lua",
-          "sha256": "b4f355780feb67014bf5d2413202c3116e95e8b6d3cc23090429d07043addd21"
+          "sha256": "5dc8021061d0b8b5576ded27876e538e3163b6cc16c728c2917319211ad00d86"
         },
         {
           "path": "Features/Attune/Bootstrap.lua",
@@ -647,39 +647,39 @@
         },
         {
           "path": "Features/Attune/Locales/deDE.lua",
-          "sha256": "74c3f9cbf328755fe9de2254491d0597d129b1a3c02067c3f762a9f633f88aab"
+          "sha256": "acd2280c490b6f36c7fa074ed4733431ea3e7104f99a3d6df0e1f8ca5f1f0e85"
         },
         {
           "path": "Features/Attune/Locales/enUS.lua",
-          "sha256": "9ec14534eec79de854544a0bea351b08b413dc994484d783995d708e46af2eb2"
+          "sha256": "b4433cbf6b70539185aaba32f5e0ae1b596b172308e1d8c188638eb677a4882c"
         },
         {
           "path": "Features/Attune/Locales/esES.lua",
-          "sha256": "b4e2609485128abcff4c57b9af66824dfff47afbb26f950352de9fa078caa174"
+          "sha256": "cebe5f0e2a4764b50eecd26964a1aa299a60f7a21dde52cbf2cff4d96ed0e5db"
         },
         {
           "path": "Features/Attune/Locales/frFR.lua",
-          "sha256": "9950845f9703685522b3b1d7cdab4f19abbab50418f5f96f2861863960f9e600"
+          "sha256": "5b04564b1cea8e3ef13e5362cf6220e844c99c9a874af6d32b5206ec4f246973"
         },
         {
           "path": "Features/Attune/Locales/koKR.lua",
-          "sha256": "f759a5a9d9094c0e484636e0bccf6b92e80d895021a070120f1a81e471facec0"
+          "sha256": "09ec5a579e760e39ee861b1d9e34e20a91b6e5f7f2864f39b4f38192fc742084"
         },
         {
           "path": "Features/Attune/Locales/ptBR.lua",
-          "sha256": "cbd7abb61903bb73fdf551e489d699a0de383c381b0c4ce3247ffc3a4885b61f"
+          "sha256": "bc1ac896f4b8fc282910368dbfd02e1b50df52a8f693d1c35b13c445494639d3"
         },
         {
           "path": "Features/Attune/Locales/ruRU.lua",
-          "sha256": "ea38ad92cfb4343882da0846cac38065dffb206429ce356a41c4930a565257a2"
+          "sha256": "937c214d48de419b675e3097d8331ee219f8d26f4b64d41941578e092f2a860b"
         },
         {
           "path": "Features/Attune/Locales/zhCN.lua",
-          "sha256": "1a8d4e2360dc1ae4cbe6a53034246286a84e68f37bd2510e273240ce6cfb77b7"
+          "sha256": "62fa7c437a2b5825fb3e06a780a3b4ed17f16bb5129abbcef09cb90629775b1f"
         },
         {
           "path": "Features/Attune/Locales/zhTW.lua",
-          "sha256": "cbeb2b8908a2a3b2036bf6f8d63bd7b658708361002f5d42c0e4217ca451d79d"
+          "sha256": "2ccb88e2a474843cd3bee9e1e3e10bf56adfc6a27c3592ca5b02ee477f2ec4ce"
         },
         {
           "path": "Features/Attune/Manifest.xml",
@@ -687,7 +687,7 @@
         },
         {
           "path": "Features/Attune/NOTICE.txt",
-          "sha256": "8b6073d322ce0afaf307bb321d5c51402a41bc37772c7958010e4ddc3d7ab51f"
+          "sha256": "fd9fcef26a04c8606f4cb93958567bd45b6c0512a6948a8c000e42171abdedee"
         },
         {
           "path": "Features/AutoRank.lua",
@@ -695,11 +695,11 @@
         },
         {
           "path": "Features/BigWigs/BigWigs/API.lua",
-          "sha256": "ca6009a47ced6c187ac42d83f7efc4e285e87017b72e49f84ba1ab20a13e57eb"
+          "sha256": "1561db284ad1919eea0574a510fb8cde95efb211ddc4f0abc7322101f85748f6"
         },
         {
           "path": "Features/BigWigs/BigWigs/BigWigs.toc",
-          "sha256": "44148aed6895ee8d38dc60907d2f8d8941dbe23e8dfde7e7b514e6ecf1d03c0e"
+          "sha256": "977549ab32333faafa71f077f1a8358dfca7317bdcb73a67188acf8946b42ff6"
         },
         {
           "path": "Features/BigWigs/BigWigs/CHANGELOG.md",
@@ -739,7 +739,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs/Libs/AceDB-3.0/AceDB-3.0.lua",
-          "sha256": "2194c1691af08bab150dc2ff7791c0c358c0e00a5b8c6c42f5d994ce71886c41"
+          "sha256": "9e755ea356454445dcbd3870768a0759e598fe89c220b05fde04d3b3ecded172"
         },
         {
           "path": "Features/BigWigs/BigWigs/Libs/CallbackHandler-1.0/CallbackHandler-1.0.lua",
@@ -775,7 +775,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs/Libs/LibSpecialization/LibSpecialization.lua",
-          "sha256": "743f6170f87f8d252b079e28a100c41891c174fd28d6290da1aeaa86b56c66db"
+          "sha256": "59b59775ee914892aab41cd22c83c70dcb0e2f1ff4441fd10210078d4a04ddaa"
         },
         {
           "path": "Features/BigWigs/BigWigs/Libs/LibStub/LibStub.lua",
@@ -783,7 +783,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs/Loader.lua",
-          "sha256": "a8201c6c60ffae7a336122b2c3b728dd9437c6e168c883acb5c3a5e0a21adb22"
+          "sha256": "82d0e36e04310e1f341a360512a5692044df749d90010eb440930af01f67fcb7"
         },
         {
           "path": "Features/BigWigs/BigWigs/Locales/deDE.lua",
@@ -1919,7 +1919,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs/Tools/Keystones.lua",
-          "sha256": "5f0341c5e109325189e1d76cc33ff5b3d35b2bbf7dbc80d695e34751a4cec790"
+          "sha256": "eb5f2a6b90f87317afe55c59b7a0a62a9f9e40285b2e98697b39a4369ed3bcba"
         },
         {
           "path": "Features/BigWigs/BigWigs/Tools/LFGTimer.lua",
@@ -1927,15 +1927,15 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_Core/BigWigs_Core.toc",
-          "sha256": "fa8a08ae4587d02e295c0db9c83d71bf54e0455c8afa4b30db24c0ffd9ac320a"
+          "sha256": "2d1afb840e18e13bbf9c93626fdb8795d9101da005651ced75b347cba5af0a3d"
         },
         {
           "path": "Features/BigWigs/BigWigs_Core/BossPrototype.lua",
-          "sha256": "115e540985f10948db11d278472d6bef475f94328c88dc888dc8e6ec152135f4"
+          "sha256": "371ec7707b8d32be04febdcd5904b079670e809539d34b619922cce0293a543b"
         },
         {
           "path": "Features/BigWigs/BigWigs_Core/BossPrototype_Classic.lua",
-          "sha256": "2578abac85bbfe542a0ebc9ad0a4c2094e38672e4757612996cf495670fe0195"
+          "sha256": "fec78ff06610fd5037233a90a6b30b940fc9efb4d7c9143459774289d4f8424b"
         },
         {
           "path": "Features/BigWigs/BigWigs_Core/Constants.lua",
@@ -1943,11 +1943,11 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_Core/Core.lua",
-          "sha256": "44ce117a665af1e827368f26fdce119e52ea8cea07893acd5f9eab39cfaec585"
+          "sha256": "bfcfe3a46e62b82e8f54602208e1adac085ef270afe04fb57785bd37abf667d0"
         },
         {
           "path": "Features/BigWigs/BigWigs_Core/PluginPrototype.lua",
-          "sha256": "33f110f13d33aad0d262ba0ad0c757da207fa1581a90c20df8778bd37f87ed8b"
+          "sha256": "96a45a441ea08654efaccca0713170d3a45c7f22fde52fbf2f27f09db9ec81e4"
         },
         {
           "path": "Features/BigWigs/BigWigs_MarchOnQuelDanas/!Options.lua",
@@ -1959,7 +1959,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_MarchOnQuelDanas/BigWigs_MarchOnQuelDanas.toc",
-          "sha256": "df952634eff9db56a96bf3f44b08214641ecab314e47bbbc5513dafa8e1de1d6"
+          "sha256": "c02ed5c5a2f0052423cb6c9fd710867df7f275b3b9b9c30b335f461f56424d96"
         },
         {
           "path": "Features/BigWigs/BigWigs_MarchOnQuelDanas/MidnightFalls.lua",
@@ -1971,7 +1971,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_MidnightLairs/BigWigs_MidnightLairs.toc",
-          "sha256": "1624e61db3e4b6810388868cd8230d403060803b967bee22a07521eedbd472f3"
+          "sha256": "39c00086650ca558cef8a2d2b8b490779bdd495a9cd4345782f3a8c4e5262da6"
         },
         {
           "path": "Features/BigWigs/BigWigs_MidnightLairs/Nymrissa.lua",
@@ -1983,7 +1983,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_MidnightWorld/BigWigs_MidnightWorld.toc",
-          "sha256": "edf964290c75177fd05a0a5f065c284351fa0d40af3a078ce675f604eec96ec5"
+          "sha256": "b25838ce505ff210a3aa9ee8bc3671c89766e6155714077906c603d984c63dba"
         },
         {
           "path": "Features/BigWigs/BigWigs_MidnightWorld/Cragpine.lua",
@@ -1999,7 +1999,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_Options/BigWigs_Options.toc",
-          "sha256": "870c29151355e433e23636a444751f0fdf930d37924d0037aeae47c5650b246d"
+          "sha256": "e13b6b43b871cfcca1c1747f23d34b1f6151d7c6329bbb92249dfc8f3012c2a5"
         },
         {
           "path": "Features/BigWigs/BigWigs_Options/InstanceSharing.lua",
@@ -2143,7 +2143,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_Plugins/Bars.lua",
-          "sha256": "cb6006314f7904a29c0c963493666e205800b6514be4dbfcab43a1fb1b7e33f4"
+          "sha256": "e4443af5fdf5847f02d074e0830705eaa8c4e1846eef5de0d4c1d2e252f94457"
         },
         {
           "path": "Features/BigWigs/BigWigs_Plugins/BarStyles.lua",
@@ -2155,7 +2155,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_Plugins/BigWigs_Plugins.toc",
-          "sha256": "f20c6883a90c9baf9ad95e2ada5975361400f433f046a244bf0bd166ca8ff4ae"
+          "sha256": "b9d35d3351b8bbb1d678e0259dbca5b59b896f8ee5ea9d4c4d2816ddbf2664cd"
         },
         {
           "path": "Features/BigWigs/BigWigs_Plugins/BossBlock.lua",
@@ -2239,7 +2239,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_Sporefall/BigWigs_Sporefall.toc",
-          "sha256": "34ebc44a5eabb6b298d371ec879e06ed2ee7e30e8a815d87d4c8a16499e9b42d"
+          "sha256": "d17cc67ac8d14854f21913b19f9eee17b184b70ad8515838cb398a2f0b6d34ce"
         },
         {
           "path": "Features/BigWigs/BigWigs_Sporefall/Rotmire.lua",
@@ -2251,7 +2251,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_TheDreamrift/BigWigs_TheDreamrift.toc",
-          "sha256": "3c0f90cc6d861a788886476ec55b1bdc710f4f718b0720e439d3d78ebeeb0993"
+          "sha256": "9fba8c6a818cdf306a709cbcd7966cdbbc12f19b2e9c63329abdfb9478fefa11"
         },
         {
           "path": "Features/BigWigs/BigWigs_TheDreamrift/Chimaerus.lua",
@@ -2263,7 +2263,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_TheUnbindingOfKithix/BigWigs_TheUnbindingOfKithix.toc",
-          "sha256": "8af4d0a78adf19fed27ba0fa828d0a7661988c576f95e938fdddc93ada57a667"
+          "sha256": "efb8061161da6976c3a3d0dc8e38b7ee873ca9f8d93d28e403a09a4e0687a315"
         },
         {
           "path": "Features/BigWigs/BigWigs_TheUnbindingOfKithix/Kithix.lua",
@@ -2275,11 +2275,11 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/BigWigs_TheVenomousAbyss.toc",
-          "sha256": "d6b716fde0b327689e6678c27e11da069c3baf644e5d3ae7bc7d41ac09092555"
+          "sha256": "561d20a30e848894f66e59c6aa4434a2e350cf1f0f75bf21db9e9885728665a8"
         },
         {
           "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/CoiledAltar.lua",
-          "sha256": "63eae631b0a499dd31031a6d12b050375a1c41a7b34c3dfe7601ddf56cd1755a"
+          "sha256": "c96f2147155bfc858455d77633d8817f1f9749e95f5511c53ae534e62b686595"
         },
         {
           "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/Explorers.lua",
@@ -2295,7 +2295,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/Sszorak.lua",
-          "sha256": "cc035243e6b604fe812bbe860bbdc5834e1b42a0d3d06dbb28f6460cdb5ffe2d"
+          "sha256": "b0c8dbcc5be8f014d9cc7a8bc0f24a1b1770961226c771e840b82554e463fc70"
         },
         {
           "path": "Features/BigWigs/BigWigs_TheVenomousAbyss/TwinFangs.lua",
@@ -2319,7 +2319,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_TheVoidspire/BigWigs_TheVoidspire.toc",
-          "sha256": "9e8052f363b7a6aa5cf23a561383b1101165e63620f4471a3dce9ab5398cb9e2"
+          "sha256": "ee97a5b565435a6159eae72255a1e63207c8291a1617633c2743b7f4a85406e6"
         },
         {
           "path": "Features/BigWigs/BigWigs_TheVoidspire/Crown.lua",
@@ -2351,71 +2351,87 @@
         },
         {
           "path": "Features/BigWigs/NOTICE.txt",
-          "sha256": "82b1981a99584b7185debcbaff423573471df3540d6d6730c196383fb09f5cb0"
+          "sha256": "47fec1f590519ac84c83a12ff375f74cab798a125316ae45a02666b5ede08727"
         },
         {
           "path": "Features/BigWigs/Registry.lua",
-          "sha256": "435cc84d9743d0f899a0762a7f002295f9ff3e1b4a831801bf1a64509bcdadc7"
+          "sha256": "97ec3f36e2a345119018dc5549d63f14082bbbaeb2c241dfafb632f98524af34"
         },
         {
           "path": "Features/Disenchantry/Bootstrap.lua",
           "sha256": "b3aa3621586f39dbade004da41271806f4b39314101716937ded5dbc7e6b5d6a"
         },
         {
+          "path": "Features/Disenchantry/Core/AuctionPurchase.lua",
+          "sha256": "87d304e67111671014ce40cef98489f2d3b27dab98fa7f7283628c6b8a6f11ec"
+        },
+        {
+          "path": "Features/Disenchantry/Core/AuctionScan.lua",
+          "sha256": "c9cfe2cad3e200f0d240bbc924e2cf366aa8f3390f82c8a0825872b6e4466a85"
+        },
+        {
           "path": "Features/Disenchantry/Core/Client.lua",
-          "sha256": "fedd7f183d24f1729e2c39c06899c7902013160c2b62b44f4d169c435496ba7c"
+          "sha256": "1a020b2dc1280b2a7dd8ddf23130c17ec3ef42886f92217085687b4af33193c2"
         },
         {
           "path": "Features/Disenchantry/Core/Inventory.lua",
-          "sha256": "b79b2a816309f98e0dd6ef466a7d46f2ca2d347e999aabbc8cfc9a049996ead5"
+          "sha256": "912e1519ce2b4ead9cd266b26fb0bc6897cd7135510af0df6b92553a32cb3e96"
         },
         {
           "path": "Features/Disenchantry/Core/ItemRules.lua",
-          "sha256": "ed7e4ec4331a03fa0b0828fc80a5389eddf0c2039981f98e61e25466e314ef3e"
+          "sha256": "7d7bd9c80a4ba01cd3927de15846f69a84a131a3b0d706203900158a456086c0"
         },
         {
           "path": "Features/Disenchantry/Core/Processing.lua",
-          "sha256": "a929fdd3c8b07f3c87c6da461237aa797e1591a8b2e5b447703be3faad2cfcc1"
+          "sha256": "5809d473791f0fd8e79c91c6254df1508fff3f14613f83b6df51a073f2c1bd2b"
         },
         {
           "path": "Features/Disenchantry/Core/Professions.lua",
-          "sha256": "dd4e405e3657407ff71bb599d149780110bd1527508c056e29d1381f8666b20d"
+          "sha256": "70043a7790e1630ecfb9a24f784bfd6cd46cab70ddb5c407f1477b15f5f3371b"
         },
         {
           "path": "Features/Disenchantry/Core/Queue.lua",
-          "sha256": "4f74dacdf90e9b0b01f074ff5fc8d0b327110bb83558edf04b4f84f13bb383ca"
+          "sha256": "84851d69c757e4098a3d410c2718f0dfa12263a2dde8ea6485c68b59049b7b84"
         },
         {
           "path": "Features/Disenchantry/Core/Runtime.lua",
-          "sha256": "00d7d2c4d8feaf8d5dc9a2f5ed3d417dc3aeb60970063d859df5a2098faa166f"
+          "sha256": "5c20e216787c1404833bbfecad50c16205bb669d730a2307307fb7d59a23b346"
         },
         {
           "path": "Features/Disenchantry/Core/Storage.lua",
-          "sha256": "113eb3cd88bb7904473e53dc566c82ca0daa773f1b6320fdba749af535b28d83"
+          "sha256": "1ce3793ee5b81d514a2c6c6058245314767eba43beed3c13970bc0647fead6c8"
         },
         {
           "path": "Features/Disenchantry/DisenchantResults.lua",
-          "sha256": "9aabdb212f384d3ed830dcc36bd31d56bcdd637a437e342ac96f328147048d7a"
+          "sha256": "cfd0b78a18cd12a4e32b91d9a021b43749d5977b50bca389029e571ebf24da58"
+        },
+        {
+          "path": "Features/Disenchantry/ForecastPolicy.lua",
+          "sha256": "8ebdd5eb0ee22cbd44f9e22ee2ace3ccf91cdec69fe2c5f90391aae87e56a97a"
         },
         {
           "path": "Features/Disenchantry/Hotkeys.lua",
-          "sha256": "bf4abf90db280d73ef953543cc0afece08bb25ee5f9b83035ec1f68ac94082e7"
+          "sha256": "f35645962a333170610aa72096ff0927fee573cf840a2ad6319d4c9c8ec31080"
         },
         {
           "path": "Features/Disenchantry/Integration.md",
-          "sha256": "777d58043701551ac50d921eed41cbaa7d8bd99db55b817440aefd3d4507ee44"
+          "sha256": "14405141b2a3686fbfb9af57e7b59bee876c7da2f7dcf10b2ad5561de6f3325a"
         },
         {
           "path": "Features/Disenchantry/LICENSE.txt",
           "sha256": "5c9751abd88410f14fe20f844b3d1ac663bbf99f4315e045f4c713b9067f8279"
         },
         {
+          "path": "Features/Disenchantry/Locales/Additional.lua",
+          "sha256": "8d75c2f8568bec0a6fa460d4fbc1895aaf4d1fc6ade71c128ef6b1e22c5f139a"
+        },
+        {
           "path": "Features/Disenchantry/Locales.lua",
-          "sha256": "7cbf46869c64d3e02ce40c0a105924b1cbf344253b022ab8e893e1c146577909"
+          "sha256": "b33103ab986ec47542aa3ecb6e189f5e00a9af1d0c1a4bd9bec1c878750cf143"
         },
         {
           "path": "Features/Disenchantry/Manifest.xml",
-          "sha256": "c35955e0ba51874586b4ba17c8201e9ee933f9ce7095f496054da3b32f3e4e52"
+          "sha256": "75fc6f3126b84c0d6ce1bc9a90414f4ceafc5d4ad76665b2e658449c42becb94"
         },
         {
           "path": "Features/Disenchantry/NOTICE.txt",
@@ -2423,19 +2439,27 @@
         },
         {
           "path": "Features/Disenchantry/PriceProviders.lua",
-          "sha256": "ee0be6e669e6d7786956f61e14816e75000e9f4b037566e25a78c3b48815f1ff"
+          "sha256": "19f58b2ce07a55b760b1ee82b9ab7b8af6b209ef90e354c8d4ee92ec7c3cc827"
+        },
+        {
+          "path": "Features/Disenchantry/RetailDisenchant.lua",
+          "sha256": "61cb58ee85b347d7946ce443af3d67eb72db273bc2c9b407da7218fb080fd000"
         },
         {
           "path": "Features/Disenchantry/Statistics.lua",
-          "sha256": "865ea5323a2e567424e56b119180d07fbc56c3798561c531d3135be1bc4029bc"
+          "sha256": "ba5f25652245101f88d377de137ed5c36bc17ecac8dcf52b48b059f27f0ec56a"
         },
         {
           "path": "Features/Disenchantry/UI/ActionButton.lua",
-          "sha256": "e2453fd670cdca82d25c40d0d1f43faacbcd7072491a4d23abefb5f3713b7d29"
+          "sha256": "eee63f19d2e456b4eb3ef06081b2f109da2827f54a190be362b5f8998c535204"
+        },
+        {
+          "path": "Features/Disenchantry/UI/Auction.lua",
+          "sha256": "a6fe8eb4cbcfda3ce2196732be7e1620f0205472ffecce7ba8c1df334678416f"
         },
         {
           "path": "Features/Disenchantry/UI/Blacklist.lua",
-          "sha256": "fa1820e32e837bae6225033589666c7acce3d10bb083aa4a7b69bad1e60e104f"
+          "sha256": "0442135b86e90073367bd1c302aee1de48e4b9a48cb76be10d51c9840f222f27"
         },
         {
           "path": "Features/Disenchantry/UI/Compact.lua",
@@ -2443,15 +2467,19 @@
         },
         {
           "path": "Features/Disenchantry/UI/Diagnostics.lua",
-          "sha256": "869df3b1fbeea8e8df1b4e6c5e0692f67075ea8e29c1f4a763aa9b366a5cba36"
+          "sha256": "3477a26f7b8455c118663c6f336789e16dfb1a466cb297ce47bee6e4240686b5"
+        },
+        {
+          "path": "Features/Disenchantry/UI/ForecastPreferences.lua",
+          "sha256": "0b415296b8e2f588679b6fec81f7e7a1a80a470c646d264ce411b7fd6c9b4343"
         },
         {
           "path": "Features/Disenchantry/UI/ItemList.lua",
-          "sha256": "c73634abafcc26062cd2770fad06c84b580734076fc0b6ded80b7c0cdfac242b"
+          "sha256": "16f052b5deeb3153f3a998745bb7f9150ed0a1fbbc8f909d518bf0e7cb456d23"
         },
         {
           "path": "Features/Disenchantry/UI/MainWindow.lua",
-          "sha256": "391f04e6876d00421e45988613ef6342ba890008e9ca5fad522c0fe1075ab491"
+          "sha256": "bc06248bb5420ec7d5720c772ed20c28eb05382464dcb7a847e9ae0ce21b8274"
         },
         {
           "path": "Features/Disenchantry/UI/Modes.lua",
@@ -2459,7 +2487,7 @@
         },
         {
           "path": "Features/Disenchantry/UI/Settings.lua",
-          "sha256": "79594f4d6478d83d7a36b7f3285f8847fdf0a8de58e6add848b7e85fa7ab13e0"
+          "sha256": "bcf389eef8443e1edcf0283689de0c929188dd392a701515904bd6a84a162640"
         },
         {
           "path": "Features/Disenchantry/UI/Widgets.lua",
@@ -2483,7 +2511,7 @@
         },
         {
           "path": "Features/NovaInstanceTracker/NOTICE.txt",
-          "sha256": "a1f0e8199e5a72bc357bb31045376b8abcb8440d57737124dfc46072b3b98292"
+          "sha256": "9ab75802039fae826dea9fb20e9f800eccf40fc0cb78fdeb4b4ffc42ed2b6c92"
         },
         {
           "path": "Features/NovaInstanceTracker/NovaInstanceTracker/embeds.xml",
@@ -2551,7 +2579,7 @@
         },
         {
           "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceDB-3.0/AceDB-3.0.lua",
-          "sha256": "16d5f1859ce491ef5905336fb83cef0f05a0629da4a00f4aad7997a0dc3cca48"
+          "sha256": "9e755ea356454445dcbd3870768a0759e598fe89c220b05fde04d3b3ecded172"
         },
         {
           "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceDB-3.0/AceDB-3.0.xml",
@@ -2619,7 +2647,7 @@
         },
         {
           "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-ColorPicker.lua",
-          "sha256": "d69b7e600acf2e6f9d0e222d40952f4f25115eb6a48c039bfa71d2807668e5ef"
+          "sha256": "beae8057a0e8939b1dbb335332071e1e3bd5f338f92060565d9ada9e69f710b6"
         },
         {
           "path": "Features/NovaInstanceTracker/NovaInstanceTracker/Lib/AceGUI-3.0/widgets/AceGUIWidget-DropDown-Items.lua",
@@ -3271,11 +3299,11 @@
         },
         {
           "path": "Features/NovaInstanceTracker/NovaInstanceTracker/NovaInstanceTracker.lua",
-          "sha256": "7683df7172fdb002c929066e63ee0a2a1ac4c4b15bfbaa1ac2f5a156f93b93d1"
+          "sha256": "07ec537df2ddaac19020389e2af827e0a498d9f9ce4ebeaa07bff766a7c05ed9"
         },
         {
           "path": "Features/NovaInstanceTracker/NovaInstanceTracker/NovaInstanceTracker.toc",
-          "sha256": "2a3f635903e590c8eb94c6ddf9192836ba71f7f664637074ce302851f5da6680"
+          "sha256": "b1be02f97493a872f22c8ffceac467dac6cd68675631a302a52a57b3f51f3f71"
         },
         {
           "path": "Features/NovaInstanceTracker/NovaInstanceTracker/readme.txt",
@@ -3283,15 +3311,15 @@
         },
         {
           "path": "Features/NovaInstanceTracker/Registry.lua",
-          "sha256": "312c33361c28664690ab9ba3c7b61cfbb0c25e7ab43de7c9e3f2dcdb7383b505"
+          "sha256": "c5d0b08c7398efaa6f399bdc0f1c02d0f64d2da47b0c795a58572a2974d3cc07"
         },
         {
           "path": "ForeverTools.toc",
-          "sha256": "e3d9655304a5cbd907b229d9c54476df538bbc35ea7a3e5b5b7ba63ef9b653d7"
+          "sha256": "6f0764c83302eb5d7536919493d4fb8a2428e1c736d5a888ca10928694e92faa"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "e3d9655304a5cbd907b229d9c54476df538bbc35ea7a3e5b5b7ba63ef9b653d7"
+          "sha256": "6f0764c83302eb5d7536919493d4fb8a2428e1c736d5a888ca10928694e92faa"
         },
         {
           "path": "Menu.lua",
@@ -3335,7 +3363,7 @@
         },
         {
           "path": "Modules/Disenchantry.lua",
-          "sha256": "6f83e5b3298b989a86628082c33d5b5544e6bee4c531f7b5a8d6e683d1abe5eb"
+          "sha256": "f253d1ab723bbf0b59d04fa8bce045528cbde163cbfc62a5c3f61ed2a53d3317"
         },
         {
           "path": "Modules/DisenchantryMinimap.lua",
@@ -3395,7 +3423,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "68c644f941f3db1b5453979a62293adffe5ecc33fb79a21743baa34a0a7125a5"
+          "sha256": "4b5aecbdb1ab44ce0850b6f9e59ef4c922a6ca5fbc2a3eb604b6cc886fe853cd"
         },
         {
           "path": "RefreshmentMacro.lua",

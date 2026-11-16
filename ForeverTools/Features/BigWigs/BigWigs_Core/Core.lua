@@ -33,8 +33,6 @@ local UnitIsDeadOrGhost = loader.UnitIsDeadOrGhost
 -- Upvalues
 local next, type, error, setmetatable = next, type, error, setmetatable
 
-local pName = loader.UnitName("player")
-
 -------------------------------------------------------------------------------
 -- Event handling
 --
@@ -205,7 +203,7 @@ end
 local function bossComm(_, msg, extra, sender)
 	if msg == "Enable" and extra then
 		local m = bosses[extra]
-		if m and not m:IsEnabled() and sender ~= pName then
+		if m and not m:IsEnabled() then
 			m:Enable()
 		end
 	end

@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -15,7 +15,7 @@ local App = {
     pendingValidationToken=0, pendingLootUntil=0, pendingDisenchantUntil=0,
     nextAllowedQueueClickAt=0, valuableSkippedCount=0, needsRefreshAfterCombat=false,
     itemLoadRefreshQueued=false, itemLoadRetries={}, MAX_ITEM_LOAD_RETRIES=10,
-    ROW_HEIGHT=36, ROW_SPACING=4,
+    ROW_HEIGHT=52, ROW_SPACING=4,
     SPELL_ID_DISENCHANT=13262, SPELL_ID_MILLING=51005, SPELL_ID_PROSPECTING=31252,
     BAGS_TO_SCAN={}, PROSPECTABLE_ORE_IDS={},
 }

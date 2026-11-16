@@ -1,6 +1,6 @@
 # Disenchantry in ForeverTools
 
-Embedded source: Disenchantry 1.1.2, x_Raven_x, with original Rakuga attribution. MIT.
+Embedded source: Disenchantry 1.2.5, x_Raven_x, with original Rakuga attribution. MIT.
 The original LICENSE and NOTICE are preserved alongside this file.
 
 Changes: private namespace, saved-variable/frame/tooltip names; common ForeverTools menu;

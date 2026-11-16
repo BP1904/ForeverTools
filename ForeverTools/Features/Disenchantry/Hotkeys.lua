@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -26,11 +26,11 @@ end
 function H.CreateControls(parent, createButton)
     local L = ns.L
     local header = parent:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    header:SetPoint("TOPLEFT", 18, -566)
+    header:SetPoint("TOPLEFT", 18, -526)
     header:SetText(L.HOTKEY_TITLE)
     local capture = createButton(parent)
     capture:SetSize(280, 26)
-    capture:SetPoint("TOPLEFT", 18, -590)
+    capture:SetPoint("TOPLEFT", 18, -550)
     local listening = false
     local function stop()
         listening = false
@@ -78,7 +78,7 @@ function H.CreateControls(parent, createButton)
         H.Update()
     end)
     local hint = parent:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-    hint:SetPoint("TOPLEFT", 18, -624)
+    hint:SetPoint("TOPLEFT", 18, -584)
     hint:SetPoint("RIGHT", parent, "RIGHT", -18, 0)
     hint:SetJustifyH("LEFT")
     hint:SetWordWrap(true)

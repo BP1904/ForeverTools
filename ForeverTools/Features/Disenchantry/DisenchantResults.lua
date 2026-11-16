@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -45,6 +45,22 @@ local function find(rows, level)
 end
 
 ns.DisenchantResults = {}
+-- Enchanter-crafted wands are exceptions to the quality/item-level tables.
+-- Sources and scope: Docs/DisenchantExclusions.md. Use IDs, never localized names.
+local noDisenchant = {
+    [11287]=true, -- Lesser Magic Wand
+    [11288]=true, -- Greater Magic Wand
+    [11289]=true, -- Lesser Mystic Wand
+    [11290]=true, -- Greater Mystic Wand
+}
+local foreverNoDisenchant = {
+    [247789]=true, -- Novice's Practice Wand
+    [249144]=true, -- Twisted Nether Wand
+    [249234]=true, -- Dreambough Wand
+    [249232]=true, -- Lesser Eternal Wand
+    [249237]=true, -- Greater Eternal Wand
+    [249385]=true, -- Brilliant Wand
+}
 local pending = {}
 function ns.DisenchantResults.ItemLoaded(id)
     local requested = pending[id]
@@ -55,12 +71,31 @@ local function IsForever()
     local version = GetBuildInfo and GetBuildInfo()
     return type(version) == "string" and version:match("^1%.60%.") ~= nil
 end
--- Tables cover pre-squish item levels only: no data on the mainline client.
+function ns.DisenchantResults.IsExcluded(reference)
+    if type(reference) == "table" then reference = reference.itemID or reference.link end
+    local id = type(reference) == "number" and reference
+        or type(reference) == "string" and tonumber(reference:match("item:(%d+)") or reference)
+    return id ~= nil and (noDisenchant[id] == true or IsForever() and foreverNoDisenchant[id] == true) or false
+end
+function ns.DisenchantResults.IsRetail()
+    return WOW_PROJECT_MAINLINE ~= nil and WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and not IsForever()
+end
 function ns.DisenchantResults.IsSupported()
-    return IsForever() or (WOW_PROJECT_ID ~= nil and WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE)
+    return IsForever() or WOW_PROJECT_ID ~= nil
 end
 function ns.DisenchantResults.Get(item)
     if not item or not ns.DisenchantResults.IsSupported() then return nil end
+    if ns.DisenchantResults.IsExcluded(item) then return nil end
+    if ns.ForecastPolicy then
+        local observed=ns.ForecastPolicy.Observed(item)
+        if observed then return observed end
+        local override=ns.ForecastPolicy.overrides[ns.ForecastPolicy.ItemID(item)]
+        if ns.ForecastPolicy.IsForever() and override then return override end
+        local estimate=ns.ForecastPolicy.Estimate(item)
+        if estimate then return estimate end
+        if ns.ForecastPolicy.IsUnverified(item) then return nil end
+    end
+    if ns.DisenchantResults.IsRetail() then return ns.RetailDisenchant.Get(item) end
     local forever = IsForever()
     local level, quality, expansion = item.baseItemLevel, item.quality, item.expansionID
     if not level or level <= 0 then return nil end
@@ -103,15 +138,25 @@ function ns.DisenchantResults.Get(item)
     end
 end
 
+local function materialPrice(id)
+    local prices = ns.Prices
+    if not prices then return nil end
+    if ns.DisenchantResults.IsRetail() then
+        return prices.GetValue and prices.GetValue(id)
+    end
+    return prices.GetAuctionatorValue and prices.GetAuctionatorValue(id)
+end
+
 local function materialInfo(id)
     local getInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
-    local name, _, _, _, _, _, _, _, _, texture = getInfo(id)
+    local name, _, quality, _, _, _, _, _, _, texture = getInfo(id)
     if not name then pending[id] = true end
     if not texture then
         local getIcon = C_Item and C_Item.GetItemIconByID or GetItemIcon
         texture = getIcon and getIcon(id)
     end
-    return name or ("#" .. id), texture or 134400
+    local color = ITEM_QUALITY_COLORS and ITEM_QUALITY_COLORS[quality]
+    return (color and color.hex or "|cffffffff") .. (name or ("#" .. id)) .. "|r", texture or 134400
 end
 
 local function chanceText(result)
@@ -120,9 +165,10 @@ local function chanceText(result)
         quantity = quantity .. "-" .. result.maxQuantity
     end
     local text = quantity .. "x"
+    if result.reagentRank then text = "R" .. result.reagentRank .. " " .. text end
     if not ns.App.db.hideDisenchantChances then text = text .. " " .. result.chance .. "%" end
     local prices = ns.Prices
-    local copper = prices and prices.GetAuctionatorValue and prices.GetAuctionatorValue(result.itemID)
+    local copper = materialPrice(result.itemID)
     if copper then
         text = text .. " |cffffd100" .. prices.FormatMoney(copper) .. "|r"
     end
@@ -145,41 +191,66 @@ end
 function ns.DisenchantResults.ExpectedValue(item)
     local results = ns.DisenchantResults.Get(item)
     local prices = ns.Prices
-    if not results or not prices or not prices.GetAuctionatorValue then return nil end
+    if not results or not prices then return nil end
     local total = 0
     for _, result in ipairs(results) do
         if result.chance > 0 then
-            local copper = prices.GetAuctionatorValue(result.itemID)
+            local copper = materialPrice(result.itemID)
             if not copper then return nil end
-            local quantity = (result.minQuantity + result.maxQuantity) / 2
+            local quantity = result.meanQuantity or (result.minQuantity + result.maxQuantity) / 2
             total = total + result.chance / 100 * quantity * copper
         end
     end
-    return total
+    return total * (1 + (not results.empirical and ns.ForecastPolicy and ns.ForecastPolicy.BonusPercent() or 0)/100)
 end
 
 function ns.DisenchantResults.AddTooltip(item, tooltip)
     if not ns.IsEnabled() then return end
     tooltip = tooltip or GameTooltip
+    if ns.App.db.hideDisenchantMaterials and ns.App.db.hideDisenchantValue then return end
     local results = ns.DisenchantResults.Get(item)
-    if not results or tooltip.foreverToolsDisenchantryResults then return end
+    if tooltip.foreverToolsDisenchantryResults then return end
+    if not results then
+        if ns.ForecastPolicy and ns.ForecastPolicy.IsUnverified(item) then
+            tooltip.foreverToolsDisenchantryResults=true
+            tooltip:AddLine(GetLocale()=="ruRU" and "Распыление: данные нового синего предмета Forever не подтверждены." or "Disenchant: this new Forever rare has no verified yield data.",1,0.65,0.2,true)
+            return true
+        end
+        return
+    end
     local db = ns.App.db
     if db.hideDisenchantMaterials and db.hideDisenchantValue then return end
     tooltip.foreverToolsDisenchantryResults = true
     if not db.hideDisenchantMaterials then
         tooltip:AddLine(" ")
-        tooltip:AddLine(db.hideDisenchantChances and L.DE_MATERIALS or L.DE_RESULTS, 0.6, 0.85, 1)
         for _, result in ipairs(results) do
             local name, texture = materialInfo(result.itemID)
-            tooltip:AddDoubleLine(string.format("|T%s:16|t %s", texture, name), chanceText(result), 1, 1, 1, 0.7, 0.9, 1)
+            tooltip:AddDoubleLine(string.format("|T%s:0|t %s", texture, name), chanceText(result), 1, 1, 1, 0.7, 0.9, 1)
         end
     end
     if not db.hideDisenchantValue then
         local expected = ns.DisenchantResults.ExpectedValue(item)
         local value = expected and ns.Prices.FormatMoney(expected) or L.DE_UNKNOWN
         tooltip:AddLine(" ")
-        tooltip:AddDoubleLine(L.DE_EXPECTED_VALUE or "Expected disenchant value", value, 0.6, 0.85, 1, 1, 0.82, 0)
+        tooltip:AddDoubleLine(results.approximate and not results.foreverCraftEstimate and L.DE_BASELINE_VALUE or L.DE_EXPECTED_VALUE or "Expected disenchant value", value, 0.6, 0.85, 1, 1, 0.82, 0)
+        if ns.ForecastPolicy and item.link then
+            local _,profit,_,source=ns.ForecastPolicy.Profit(item)
+            local ru=GetLocale()=="ruRU"
+            local r,g,b=0.75,0.75,0.75
+            if profit and profit>0 then r,g,b=0.25,1,0.25
+            elseif profit and profit<0 then r,g,b=1,0.38,0.38 end
+            local label=(ru and "Прибыль" or "Profit").." ("..(source=="vendor" and (ru and "торговец" or "Vendor") or "AH")..")"
+            local amount=profit and ((profit>0 and "+" or profit<0 and "-" or "")..ns.Prices.FormatMoney(math.abs(profit))) or "?"
+            tooltip:AddDoubleLine(label,amount,r,g,b,r,g,b)
+        end
+        if results.empirical then
+            tooltip:AddLine((GetLocale()=="ruRU" and "По вашим распылениям: " or "Based on your disenchants: ") .. results.samples .. (GetLocale()=="ruRU" and ". Наблюдаемые частоты, не гарантии." or ". Observed frequencies, not guarantees."),1,0.75,0.2,true)
+        elseif ns.ForecastPolicy and ns.ForecastPolicy.SalvagerActive() then
+            local bonus=ns.ForecastPolicy.BonusPercent()
+            tooltip:AddLine((GetLocale()=="ruRU" and "Arcane Salvager: оценка с пользовательским бонусом +" or "Arcane Salvager: user-estimated bonus +") .. bonus .. "%",1,0.75,0.2,true)
+        end
     end
+    if results.approximate and not results.empirical and not results.foreverCraftEstimate then tooltip:AddLine(L.DE_RETAIL_ESTIMATE, 0.7, 0.7, 0.7, true) end
     return true
 end
 
@@ -201,7 +272,16 @@ function ns.DisenchantResults.InstallTooltipHooks()
         local getInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
         local _, _, quality, level, _, _, _, _, _, _, _, classID, _, _, expansion = getInfo(ref)
         if issecretvalue and (issecretvalue(quality) or issecretvalue(level) or issecretvalue(classID) or issecretvalue(expansion)) then return end
-        local added = ns.DisenchantResults.AddTooltip({quality=quality, baseItemLevel=level, classID=classID, expansionID=expansion}, tooltip)
+        local bound=false
+        local name=tooltip.GetName and tooltip:GetName()
+        if name and tooltip.NumLines and ITEM_SOULBOUND then
+            for index=1,tooltip:NumLines() do
+                local line=_G[name.."TextLeft"..index]
+                local text=line and line:GetText()
+                if not (issecretvalue and issecretvalue(text)) and text==ITEM_SOULBOUND then bound=true; break end
+            end
+        end
+        local added = ns.DisenchantResults.AddTooltip({link=ref, quality=quality, baseItemLevel=level, classID=classID, expansionID=expansion,isBound=bound}, tooltip)
         -- Setter hooks run after the base tooltip has already laid out its lines.
         if added and tooltip.IsShown and tooltip:IsShown() then tooltip:Show() end
     end
@@ -246,9 +326,10 @@ function ns.DisenchantResults.InstallTooltipHooks()
 end
 
 -- Real mouse targets, not inline texture escapes in a FontString.
-function ns.DisenchantResults.CreateStrip(parent)
+function ns.DisenchantResults.CreateStrip(parent, compact)
     local strip = CreateFrame("Frame", nil, parent)
     strip:SetSize(186, 22)
+    strip.compact = compact
     strip.buttons = {}
     strip.empty = strip:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     strip.empty:SetAllPoints()
@@ -256,11 +337,11 @@ function ns.DisenchantResults.CreateStrip(parent)
     strip.empty:SetTextColor(0.7, 0.9, 1)
     for index = 1, 3 do
         local button = CreateFrame("Button", nil, strip)
-        button:SetSize(22, 22)
+        button:SetSize(compact and 26 or 22, compact and 26 or 22)
         button:SetPoint("LEFT", strip, "LEFT", (index - 1) * 62, 0)
         button.icon = button:CreateTexture(nil, "ARTWORK")
         button.icon:SetAllPoints()
-        button.chance = button:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+        button.chance = button:CreateFontString(nil, "OVERLAY", compact and "GameFontHighlight" or "GameFontNormalSmall")
         button.chance:SetPoint("LEFT", button, "RIGHT", 3, 0)
         button.chance:SetTextColor(0.7, 0.9, 1)
         ns.UI.BindTooltip(button, function(self)
@@ -290,7 +371,7 @@ function ns.DisenchantResults.UpdateStrip(strip, item)
             button.chance:SetText(chanceText(result))
             button:ClearAllPoints()
             button:SetPoint("LEFT", strip, "LEFT", width, 0)
-            width = width + math.max(62, 22 + 3 + (button.chance:GetStringWidth() or 30) + 10)
+            width = width + (strip.compact and (31 + button.chance:GetStringWidth() + 16) or math.max(62, 22 + 3 + (button.chance:GetStringWidth() or 30) + 10))
             button:Show()
         else
             button.itemID = nil
@@ -298,7 +379,7 @@ function ns.DisenchantResults.UpdateStrip(strip, item)
             button:Hide()
         end
     end
-    strip.contentWidth = math.max(186, width)
+    strip.contentWidth = strip.compact and math.max(1, width - 16) or math.max(186, width)
     strip:SetWidth(item and strip.contentWidth or 1)
 end
 

@@ -38,15 +38,15 @@ class TrainingExtrasTest(unittest.TestCase):
             local function blink()
                 for _,row in ipairs(M:BuildClass()) do if row.id==1953 then return row end end
             end
-            local row=blink(); assert(row.cost==1800 and row.baseCost==2000 and row.priceKind=='estimate')
-            reps[72].reaction=8; assert(blink().cost==1800)
-            M.db.priceFaction='base'; assert(blink().cost==2000)
+            local row=blink(); assert(row.cost==1890 and row.baseCost==2100 and row.priceKind=='estimate')
+            reps[72].reaction=8; assert(blink().cost==1890)
+            M.db.priceFaction='base'; assert(blink().cost==2100)
             M.db.priceFaction='auto'; trainerIDs={1953}
             function GetTrainerServiceCost() return 1700 end
             Fire('TRAINER_SHOW'); row=blink(); assert(row.cost==1700 and row.priceKind=='trainer')
             assert(M:Details(row):find('Aktueller Lehrerpreis'))
-            Fire('TRAINER_CLOSED'); assert(blink().cost==1800)
-            M.settings.reputationPrices=false; assert(blink().cost==2000)
+            Fire('TRAINER_CLOSED'); assert(blink().cost==1890)
+            M.settings.reputationPrices=false; assert(blink().cost==2100)
         ''')
 
     def test_discounts_do_not_apply_to_unrelated_teachers_or_grimoires(self):

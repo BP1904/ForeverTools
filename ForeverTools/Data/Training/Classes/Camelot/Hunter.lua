@@ -1,4 +1,4 @@
--- Adapted from What's Training? 11.0.0-beta25 (MIT); see LICENSE.txt and NOTICE.md.
+-- Adapted from What's Training? 11.4.8 (MIT); see LICENSE.txt and NOTICE.md.
 local _, FT = ...
 local tinsert = table.insert
 local function LoadData(...)
@@ -198,7 +198,7 @@ class.spellsByLevel = {
 	[60] = {
 		{id = 20904, cost = 42000, requiredIds = {20903}},
 		{id = 14287, cost = 42000, requiredIds = {14286}},
-		{id = 1299447, cost = 39000, requiredIds = {1299446}},
+		{id = 1299447, cost = 42000, requiredIds = {1299446}},
 		{id = 15632, cost = 42000, requiredIds = {15631}},
 		{id = 14311, cost = 42000, requiredIds = {14310}},
 		{id = 13544, cost = 42000, requiredIds = {13543}},

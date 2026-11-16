@@ -112,7 +112,7 @@ class EncounterAddonsTest(unittest.TestCase):
             assert(r:Load('NovaInstanceTracker'))
             local app=r.env.NIT
             assert(app.isForever and app.hourlyLimit==10)
-            assert(app.version==2.31 and app.name=='FTNovaInstanceTracker')
+            assert(app.version==2.32 and app.name=='FTNovaInstanceTracker')
             assert(type(app.FTInitialize)=='function' and type(app.enteredInstance)=='function')
             assert(type(app.getInstanceLockoutInfo)=='function')
             assert(type(app.openInstanceLogFrame)=='function')

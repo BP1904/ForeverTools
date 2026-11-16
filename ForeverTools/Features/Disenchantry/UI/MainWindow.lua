@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -84,6 +84,12 @@ function App.CreateMainFrame()
     App.statusText:SetWidth(240)
     App.statusText:SetJustifyH("RIGHT")
     App.statusText:SetWordWrap(false)
+
+    App.professionWarning = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalHuge")
+    App.professionWarning:SetPoint("LEFT", window, "LEFT", 32, 0)
+    App.professionWarning:SetPoint("RIGHT", window, "RIGHT", -32, 0)
+    App.professionWarning:SetJustifyH("CENTER")
+    App.professionWarning:Hide()
 
     local headerButtons = {
         {field="blacklistOpenButton", label="OPEN_BLACKLIST", width=128, click=App.ToggleBlacklistFrame},

@@ -16,8 +16,8 @@ FTAttune_Data.questGivers = {
 	[142] = {1436, 56.2, 47.6, "Gryan Stoutmantle"}, -- Gryan Stoutmantle (Westfall)
 	[155] = {1436, 55.6, 47.4, "The Defias Traitor"}, -- The Defias Traitor (Westfall)
 	[166] = {1436, 56.2, 47.6, "Gryan Stoutmantle"}, -- Gryan Stoutmantle (Westfall)
-	[167] = {1453, 65.2, 21.2, "Wilder Thistlenettle"}, -- Wilder Thistlenettle (Stormwind City)
-	[168] = {1453, 65.2, 21.2, "Wilder Thistlenettle"}, -- Wilder Thistlenettle (Stormwind City)
+	[167] = {1453, 70.2, 40.8, "Wilder Thistlenettle"}, -- Wilder Thistlenettle (Stormwind City)
+	[168] = {1453, 70.2, 40.8, "Wilder Thistlenettle"}, -- Wilder Thistlenettle (Stormwind City)
 	[214] = {1436, 56.6, 47.4, "Scout Riell"}, -- Scout Riell (Westfall)
 	[261] = {1443, 66.4, 7.8, "Brother Anton"}, -- Brother Anton (Desolace)
 	[356] = {1420, 65.4, 60.2, "Deathguard Linnea"}, -- Deathguard Linnea (Tirisfal Glades)
@@ -356,8 +356,6 @@ FTAttune_Data.questGivers = {
 	[8733] = {1435, 77.3, 35.9, "Malfurion Stormrage"}, -- Malfurion Stormrage (entrance)
 	[79987] = {1426, 17.7, 39.1, "Engraved Ring"}, -- Engraved Ring (entrance)
 	[80140] = {1426, 17.7, 39.1, "Engraved Ring"}, -- Engraved Ring (entrance)
-	[80324] = {1426, 17.7, 39.1, "Mekgineer Thermaplugg"}, -- Mekgineer Thermaplugg (entrance)
-	[80325] = {1426, 17.7, 39.1, "Mekgineer Thermaplugg"}, -- Mekgineer Thermaplugg (entrance)
 	[3801] = {1427, 27.1, 72.5, "Franclorn Forgewright"}, -- Franclorn Forgewright (entrance)
 	[3802] = {1427, 27.1, 72.5, "Franclorn Forgewright"}, -- Franclorn Forgewright (entrance)
 	[7761] = {1428, 33.0, 25.2, "Blackhand's Command"}, -- Blackhand's Command (entrance)
@@ -401,7 +399,7 @@ FTAttune_Data.questGivers = {
 	[469] = {1437, 49.9, 39.4, "Einar Stonegrip"}, -- Einar Stonegrip (Wetlands)
 	[95646] = {1437, 56.2, 40.6, "Rethiel the Greenwarden"}, -- Rethiel the Greenwarden (Wetlands)
 	[95647] = {1437, 11.9, 58.8, "Caitlin Grassman"}, -- Caitlin Grassman (Wetlands)
-	[95737] = {1453, 54.6, 14.0, "Shylamiir"}, -- Shylamiir (Stormwind City)
+	[95737] = {1440, 35.0, 48.4, "Llana"}, -- Llana (Ashenvale). Also pinned at 35.0, 48.6.
 	[95772] = {1433, 25.6, 46.6, "Dorin Songblade"}, -- Dorin Songblade (Redridge Mountains)
 	[95795] = {1437, 47.8, 56.3, "Daewyn Songblade"}, -- Daewyn Songblade (entrance)
 	[95809] = {1437, 47.8, 56.3, "Ardin Grassman"}, -- Ardin Grassman (entrance)
@@ -430,6 +428,29 @@ FTAttune_Data.questGivers = {
 	[92432] = {1424, 48.3, 60.1, "Emissary Jacques"}, -- Emissary Jacques (Hillsbrad Foothills); turn in to Image of Archmage Modera
 	[92458] = {1421, 68.6, 45.2, "Image of Archmage Modera"}, -- Image of Archmage Modera (Silverpine Forest)
 	[92459] = {1421, 68.6, 45.2, "Image of Archmage Modera"}, -- Image of Archmage Modera (Silverpine Forest); turn in to Archmage Celindra (City of Dalaran, Alterac Mountains 14.2, 60)
+	-- The Drowned City (Alliance). Rebel Camp chain starts at Sergeant Yohwa.
+	[203] = {1434, 38.0, 3.4, "Sergeant Yohwa"}, -- Sergeant Yohwa (Rebel Camp); also 38.0, 3.6
+	[204] = {1434, 38.0, 3.4, "Sergeant Yohwa"}, -- Sergeant Yohwa (Rebel Camp); also 38.0, 3.6
+	[207] = {1434, 37.8, 3.6, "Brother Nimetz"}, -- Brother Nimetz (Rebel Camp); also 37.8, 3.4
+	[205] = {1434, 37.8, 3.6, "Brother Nimetz"}, -- Brother Nimetz (Rebel Camp); also 37.8, 3.4
+	[95786] = {1434, 37.8, 3.6, "Brother Nimetz"}, -- Brother Nimetz (Rebel Camp); turn in to Loremaster Dibbs (Southshore)
+	[95788] = {1424, 50.4, 57.0, "Loremaster Dibbs"}, -- Loremaster Dibbs (Southshore); also 50.6, 57
+	[95787] = {1424, 50.4, 57.0, "Loremaster Dibbs"}, -- Loremaster Dibbs (Southshore)
+	[95798] = {1424, 50.4, 57.0, "Loremaster Dibbs"}, -- Loremaster Dibbs (Southshore); turn in to Abra Cadabra (Dalaran, Alterac Mountains 12.0, 70.2)
+	[95799] = {1424, 50.4, 57.0, "Loremaster Dibbs"}, -- Loremaster Dibbs (Southshore); turn in to Historian Karnik (Ironforge 77.2, 11.8)
+	[97130] = {1416, 15.4, 73.8, "Archmage Timear"}, -- Archmage Timear (Dalaran, outside the Violet Hold); also 15.6, 73.6
+	-- The Drowned City (Horde). Chain starts at Kin'weelay.
+	[629] = {1434, 32.2, 27.8, "Kin'weelay"}, -- Kin'weelay (Grom'gol)
+	[95748] = {1434, 32.2, 27.8, "Kin'weelay"}, -- Kin'weelay (Grom'gol)
+	[95770] = {1434, 32.2, 27.8, "Kin'weelay"}, -- Kin'weelay (Grom'gol)
+	[95773] = {1434, 32.2, 28.8, "Commander Aggro'gosh"}, -- Commander Aggro'gosh (Grom'gol)
+	[95775] = {1434, 32.2, 27.8, "Kin'weelay"}, -- Kin'weelay (Grom'gol)
+	[95776] = {1434, 32.2, 28.8, "Commander Aggro'gosh"}, -- Commander Aggro'gosh (Grom'gol)
+	[96078] = {1434, 32.2, 27.8, "Kin'weelay"}, -- Kin'weelay (Grom'gol); turn in to Master Gadrin (Sen'jin Village 56.0, 74.6)
+	[96774] = {1412, 32.6, 20.6, "Mazu'kon"}, -- Mazu'kon (northwest Mulgore); also 32.4, 20.6
+	-- The Drowned City (both). Krazek, top floor of the Booty Bay inn.
+	[95791] = {1434, 27.0, 77.2, "Krazek"}, -- Krazek (Booty Bay)
+	[95789] = {1434, 27.0, 77.2, "Krazek"}, -- Krazek (Booty Bay)
 }
 
 end

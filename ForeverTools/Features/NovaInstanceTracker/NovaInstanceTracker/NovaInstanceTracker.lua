@@ -15,6 +15,8 @@ if (tocVersion > 16000 and tocVersion < 20000) then
 	NIT.isSecrets = true;
 	if (C_GameRules.IsGameRuleActive(Enum.GameRule.HardcoreRuleset)) then
 		NIT.realm = "Hardcore";
+	elseif (C_GameRules.IsGameRuleActive(Enum.GameRule.RPRuleset) and C_GameRules.IsGameRuleActive(Enum.GameRule.PvPRuleset)) then
+		NIT.realm = "RPPvP";
 	elseif (C_GameRules.IsGameRuleActive(Enum.GameRule.RPRuleset)) then
 		NIT.realm = "RP";
 	elseif (C_GameRules.IsGameRuleActive(Enum.GameRule.PvPRuleset)) then
@@ -1063,7 +1065,7 @@ function NIT:createBroker()
 			GameTooltip:Show();
 		end,
 		OnLeave = function(self, button)
-			GameTooltip:Hide()
+			GameTooltip:Hide();
 			if (GameTooltip.NITSeparator) then
 				GameTooltip.NITSeparator:Hide();
 			end
@@ -1088,7 +1090,7 @@ if (AddonCompartmentFrame) then
 		notCheckable = true,
 		func = function(button, menuInputData, menu)
 	     	local button = menuInputData.buttonName;
-	         if (button == "LeftButton" and IsShiftKeyDown()) then
+	        if (button == "LeftButton" and IsShiftKeyDown()) then
 				NIT:openTradeLogFrame();
 			elseif (button == "LeftButton" and IsControlKeyDown()) then
 				local char = NIT.UnitName("player");
@@ -1117,7 +1119,7 @@ if (AddonCompartmentFrame) then
 			GameTooltip:Show();
 		end,
 		funcOnLeave = function(buttonFrame, menu)
-	        GameTooltip:Hide()
+	        GameTooltip:Hide();
 			if (GameTooltip.NITSeparator) then
 				GameTooltip.NITSeparator:Hide();
 			end

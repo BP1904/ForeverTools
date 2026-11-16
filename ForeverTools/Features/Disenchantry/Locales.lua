@@ -1,11 +1,15 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
--- Message catalog: each key stores English, German and Russian variants.
+-- Base translations; other client locales are loaded from Locales/Additional.lua.
 local _, ns = ...
 local columns = {enUS=1, deDE=2, ruRU=3}
 local catalog = {
+    ["AUCTIONATOR_SOURCE"] = {"Auctionator price source", "Auctionator-Preisquelle", "Источник цены Auctionator"},
+    ["AUCTIONATOR_LAST"] = {"Last seen price", "Zuletzt erfasster Preis", "Последняя цена"},
+    ["AUCTIONATOR_AVERAGE"] = {"Average (%d days)", "Durchschnitt (%d Tage)", "Средняя за %d дн."},
+    ["AUCTIONATOR_SOURCE_HINT"] = {"Average uses Auctionator's configured period. Missing history means an unknown price. TSM keeps priority.", "Der Durchschnitt nutzt den Zeitraum aus Auctionator. Ohne Verlauf ist der Preis unbekannt. TSM hat Vorrang.", "Период средней цены берётся из Auctionator. Без истории цена неизвестна. TSM остаётся приоритетным."},
     ["SHOW_DE_MATERIALS"] = {"Show possible materials", "Mögliche Materialien anzeigen", "Показывать возможные материалы"},
     ["SHOW_DE_CHANCES"] = {"Show drop chances (%)", "Dropchancen (%) anzeigen", "Показывать шансы выпадения (%)"},
     ["SHOW_DE_VALUE"] = {"Show expected disenchant value", "Erwarteten Entzauberungswert anzeigen", "Показывать ожидаемую стоимость распыления"},
@@ -43,6 +47,8 @@ local catalog = {
     ["DE_EXPECTED_VALUE"] = {"Expected disenchant value", "Erwarteter Entzauberungswert", "Ожидаемая стоимость распыления"},
     ["DE_RESULTS"] = {"Possible materials (approximate chances)", "Mögliche Materialien (ungefähre Chancen)", "Возможные материалы (примерные шансы)"},
     ["DE_UNKNOWN"] = {"No data", "Keine Daten", "Нет данных"},
+    ["DE_BASELINE_VALUE"] = {"Approximate disenchant value", "Ungefährer Entzauberungswert", "Примерная стоимость распыления"},
+    ["DE_RETAIL_ESTIMATE"] = {"Baseline estimate; skill and specialization are not included. R = reagent rank.", "Basis-Schätzung ohne Fertigkeit und Spezialisierung. R = Reagenzrang.", "Базовая оценка без учёта навыка и специализации. R — ранг реагента."},
     ["DISENCHANT"] = {"Disenchant", "Entzaubern", "Распылить"},
     ["DISENCHANT_COUNT"] = {"Disenchant (%d)", "Entzaubern (%d)", "Распылить (%d)"},
     ["FOUND_COUNT"] = {"Found: %d", "Gefunden: %d", "Найдено: %d"},
@@ -69,7 +75,7 @@ local catalog = {
     ["LANGUAGE"] = {"Addon language", "Addon-Sprache", "Язык аддона"},
     ["LANGUAGE_APPLY"] = {"Apply and reload", "Anwenden und neu laden", "Применить и перезагрузить"},
     ["LANGUAGE_AUTO"] = {"Automatic", "Automatisch", "Автоматически"},
-    ["LANGUAGE_HINT"] = {"Reloads the UI. Item names and tooltips use the game language.", "Lädt die UI neu. Gegenstandsnamen und Tooltips bleiben in der Spielsprache.", "Перезагрузит интерфейс. Названия и подсказки предметов — на языке игры."},
+    ["LANGUAGE_HINT"] = {"The addon automatically uses the current game client language.", "Das Addon verwendet automatisch die aktuelle Sprache des Spielclients.", "Аддон автоматически использует текущий язык клиента игры."},
     ["LIST_REFRESHED"] = {"List refreshed.", "Liste aktualisiert.", "Список обновлён."},
     ["MILL"] = {"Mill", "Mahlen", "Измельчить"},
     ["MILL_COUNT"] = {"Mill (%d)", "Mahlen (%d)", "Измельчить (%d)"},
@@ -145,12 +151,17 @@ local catalog = {
 }
 ns.L = ns.L or {}
 
-function ns.ApplyLocale(preference)
-    local language = columns[preference] and preference or GetLocale()
-    local column = columns[language] or 1
+function ns.ApplyLocale()
+    local language = GetLocale()
+    local aliases = {enGB="enUS", esMX="esES", ptPT="ptBR"}
+    local resolved = aliases[language] or language
+    local column = columns[resolved] or 1
+    local translated = ns.LocaleCatalog and ns.LocaleCatalog[resolved] or {}
     ns.locale = language
     for key in pairs(ns.L) do ns.L[key] = nil end
-    for key, variants in pairs(catalog) do ns.L[key] = variants[column] or variants[1] end
+    for key, value in pairs(ns.LocaleCatalog and ns.LocaleCatalog.enUS or {}) do ns.L[key] = value end
+    for key, variants in pairs(catalog) do ns.L[key] = translated[key] or variants[column] or variants[1] end
+    for key, value in pairs(translated) do ns.L[key] = value end
 end
 ns.ApplyLocale()
 

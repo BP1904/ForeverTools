@@ -1,6 +1,9 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
+  <Script file="Locales/Additional.lua"/>
   <Script file="Locales.lua"/>
   <Script file="PriceProviders.lua"/>
+  <Script file="RetailDisenchant.lua"/>
+  <Script file="ForecastPolicy.lua"/>
   <Script file="DisenchantResults.lua"/>
   <Script file="Statistics.lua"/>
   <Script file="Hotkeys.lua"/>
@@ -12,6 +15,8 @@
   <Script file="Core/Queue.lua"/>
   <Script file="Core/Professions.lua"/>
   <Script file="Core/Processing.lua"/>
+  <Script file="Core/AuctionScan.lua"/>
+  <Script file="Core/AuctionPurchase.lua"/>
   <Script file="UI/Widgets.lua"/>
   <Script file="UI/ItemList.lua"/>
   <Script file="UI/ActionButton.lua"/>
@@ -21,5 +26,7 @@
   <Script file="UI/MainWindow.lua"/>
   <Script file="UI/Compact.lua"/>
   <Script file="UI/Settings.lua"/>
+  <Script file="UI/ForecastPreferences.lua"/>
   <Script file="UI/Diagnostics.lua"/>
+  <Script file="UI/Auction.lua"/>
 </Ui>

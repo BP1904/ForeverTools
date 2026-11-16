@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.1.2 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -22,6 +22,10 @@ function Stats.Prepare(item)
     local id = item and tonumber(item.link:match("item:(%d+)"))
     local ah = id and ns.Prices.GetAuctionatorValue(id)
     target = item and {vendor = vendor, ah = ah, link = item.link, quality = quality, expires = GetTime() + 10} or nil
+    if target and ns.ForecastPolicy then
+        local _,_,q,level,_,_,_,_,_,_,_,class=getInfo(item.link)
+        target.forecastItem={link=item.link,quality=q,baseItemLevel=level,classID=class}
+    end
 end
 
 local function money(value)
@@ -35,10 +39,10 @@ function Stats.Refresh()
     local rows, value, missing = {}, 0, false
     local getInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
     for id, count in pairs(data.materials) do
-        local name, link = getInfo(id)
+        local name, link, quality = getInfo(id)
         local price = ns.Prices.GetAuctionatorValue(id)
         if price then value = value + price * count else missing = true end
-        rows[#rows + 1] = {id = id, name = name or ("#" .. id), link = link or ("item:" .. id), count = count, price = price}
+        rows[#rows + 1] = {id = id, name = name or ("#" .. id), link = link or ("item:" .. id), quality = quality, count = count, price = price}
     end
     table.sort(rows, function(a, b) return a.name < b.name end)
     local itemValue = data.ahValue or 0
@@ -98,7 +102,8 @@ function Stats.Refresh()
         row.link = entry.link
         local getIcon = C_Item and C_Item.GetItemIconByID or GetItemIcon
         row.icon:SetTexture(getIcon and getIcon(entry.id) or 134400)
-        row.text:SetText(entry.name)
+        local color = ITEM_QUALITY_COLORS and ITEM_QUALITY_COLORS[entry.quality]
+        row.text:SetText((color and color.hex or "|cffffffff") .. entry.name .. "|r")
         row.count:SetText(entry.count)
         row.unit:SetText(entry.price and money(entry.price) or "—")
         row.total:SetText(entry.price and money(entry.price * entry.count) or "—")
@@ -216,12 +221,19 @@ function Stats.OnEvent(event, ...)
         local unit, _, castGUID, spell = ...
         if unit == "player" and spell == 13262 and target and not target.castGUID and target.expires >= GetTime() then
             target.castGUID = castGUID
+            target.boosted = ns.ForecastPolicy and ns.ForecastPolicy.HasSalvagerBuff() or false
         end
     elseif event == "UNIT_SPELLCAST_SUCCEEDED" then
         local unit, castGUID, spell = ...
         if unit ~= "player" or spell ~= 13262 then return end
         pending = {expires = GetTime() + 8, candidates = {}}
         local item = target and target.expires >= GetTime() and target.castGUID == castGUID and target
+        -- If the aura changes during the cast, its server-side application time
+        -- is unknown. Do not teach either profile from that ambiguous cast.
+        if item and ns.ForecastPolicy and item.boosted == ns.ForecastPolicy.HasSalvagerBuff() then
+            pending.forecastItem=item.forecastItem
+            pending.boosted=item.boosted
+        end
         local vendor = item and item.vendor
         for _, data in ipairs({session, db.total}) do
             data.count = data.count + 1
@@ -248,12 +260,20 @@ function Stats.OnEvent(event, ...)
         if pending.open then return end
         local slots = GetNumLootItems()
         if slots == 0 then return end
-        pending.open = true
+        local candidates = {}
         for slot = 1, slots do
             local link = GetLootSlotLink(slot)
             local id = link and tonumber(link:match("item:(%d+)"))
             local quantity = select(3, GetLootSlotInfo(slot))
-            if id and quantity and quantity > 0 then pending.candidates[id] = (pending.candidates[id] or 0) + quantity end
+            -- A partial loot snapshot must never become an observed distribution.
+            -- Leave it retryable when LOOT_OPENED follows LOOT_READY.
+            if not id or not quantity or quantity <= 0 then return end
+            candidates[id] = (candidates[id] or 0) + quantity
+        end
+        pending.open = true
+        pending.candidates = candidates
+        if pending.forecastItem and ns.ForecastPolicy then
+            ns.ForecastPolicy.Record(pending.forecastItem,pending.candidates,pending.boosted)
         end
     elseif event == "LOOT_CLOSED" then
         if pending then pending.closed = true; pending.expires = GetTime() + 2 end
