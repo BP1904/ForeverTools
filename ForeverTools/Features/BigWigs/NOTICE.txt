@@ -5,4 +5,5 @@ Original TOC: You are free to fork and modify on GitHub; ask authors about other
 Original copyright and library licenses retained in the copied files.
 Changes: deferred internal package loading, private API environment, bundled asset paths,
 separate saved variables, migration, ForeverTools module controls and commands.
+Nameplates: ignore secret unit GUIDs before comparisons and table access (Forever combat fix).
 This local integration grants no additional redistribution rights.

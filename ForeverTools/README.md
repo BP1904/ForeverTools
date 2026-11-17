@@ -1,4 +1,6 @@
-# ForeverTools 1.16.15
+# ForeverTools 1.16.16
+
+**Kampffehler in 1.16.16 behoben:** BigWigs verarbeitet bei Namensplaketten und Zielwechseln keine geschützten Gegnerkennungen mehr. Damit sind die drei im Protokoll vom 16.11.2026 gefundenen Lua-Fehlerpfade abgesichert. Disenchantry auf 1.2.6 aktualisiert; eigene Fensteranpassungen bleiben erhalten. Außerhalb des Kampfes `/reload` eingeben.
 
 **Addonpflege in 1.16.15:** Lerndaten aus What's Training? 11.4.8 mit korrigierten Talentvoraussetzungen für Aufschlitzen übernommen. Alle weiteren integrierten Addons auf Updates geprüft; eigene Funktionen und Anpassungen erhalten. Nach Installation `/reload` eingeben.
 

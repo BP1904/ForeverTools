@@ -2199,7 +2199,7 @@
         },
         {
           "path": "Features/BigWigs/BigWigs_Plugins/Nameplates.lua",
-          "sha256": "2379fe0f358feda85bb5828b5d85add79f4978b0e218ed24838cbee01f7a4350"
+          "sha256": "919dd8967ca9e83aa9a855cff6bfa4d314479ef439e9c31dc4d1fbcb2fd3aa7e"
         },
         {
           "path": "Features/BigWigs/BigWigs_Plugins/Proximity.lua",
@@ -2351,7 +2351,7 @@
         },
         {
           "path": "Features/BigWigs/NOTICE.txt",
-          "sha256": "47fec1f590519ac84c83a12ff375f74cab798a125316ae45a02666b5ede08727"
+          "sha256": "122a4aa49c56dcd34c7b8557b555463b6e011e27c80ef9bd28e25b5f6f8a8d57"
         },
         {
           "path": "Features/BigWigs/Registry.lua",
@@ -2363,59 +2363,59 @@
         },
         {
           "path": "Features/Disenchantry/Core/AuctionPurchase.lua",
-          "sha256": "87d304e67111671014ce40cef98489f2d3b27dab98fa7f7283628c6b8a6f11ec"
+          "sha256": "2e7699d24d2b6faf6d55a0237e8e060214cff9230d52767f57187f675b6d91c4"
         },
         {
           "path": "Features/Disenchantry/Core/AuctionScan.lua",
-          "sha256": "c9cfe2cad3e200f0d240bbc924e2cf366aa8f3390f82c8a0825872b6e4466a85"
+          "sha256": "988758f2c464058937a8e93d47f3de4c1d55b4c945c037909a05b5c6ba34d079"
         },
         {
           "path": "Features/Disenchantry/Core/Client.lua",
-          "sha256": "1a020b2dc1280b2a7dd8ddf23130c17ec3ef42886f92217085687b4af33193c2"
+          "sha256": "b03f7050e2d58f574cafdf8d7f7b263b8dd945475ec49c9ee9508204a416180d"
         },
         {
           "path": "Features/Disenchantry/Core/Inventory.lua",
-          "sha256": "912e1519ce2b4ead9cd266b26fb0bc6897cd7135510af0df6b92553a32cb3e96"
+          "sha256": "4430bd4e0fd4e3bb092239583b22c1fbd2070acd86f8f763fc21a7b628662ce3"
         },
         {
           "path": "Features/Disenchantry/Core/ItemRules.lua",
-          "sha256": "7d7bd9c80a4ba01cd3927de15846f69a84a131a3b0d706203900158a456086c0"
+          "sha256": "0108d1a6567ed5fdfa679cccd15a766ae2d6c53984b4dc2543f6e4ab936ce803"
         },
         {
           "path": "Features/Disenchantry/Core/Processing.lua",
-          "sha256": "5809d473791f0fd8e79c91c6254df1508fff3f14613f83b6df51a073f2c1bd2b"
+          "sha256": "b518f16125619c3818251fd6b5bb3bbe6315136f386622597b5d01483c002349"
         },
         {
           "path": "Features/Disenchantry/Core/Professions.lua",
-          "sha256": "70043a7790e1630ecfb9a24f784bfd6cd46cab70ddb5c407f1477b15f5f3371b"
+          "sha256": "bbf958ba515f676aea13fe3ef1008238c45c5a91735ee32a624556f187b17b9d"
         },
         {
           "path": "Features/Disenchantry/Core/Queue.lua",
-          "sha256": "84851d69c757e4098a3d410c2718f0dfa12263a2dde8ea6485c68b59049b7b84"
+          "sha256": "34c4449629f78c9bb2198875e7bbc517a463b1cf205a82654870f1f966fe46db"
         },
         {
           "path": "Features/Disenchantry/Core/Runtime.lua",
-          "sha256": "5c20e216787c1404833bbfecad50c16205bb669d730a2307307fb7d59a23b346"
+          "sha256": "38d75d6d8edb4e01120293dbef9150e24308335443d762458f5136fca396cebb"
         },
         {
           "path": "Features/Disenchantry/Core/Storage.lua",
-          "sha256": "1ce3793ee5b81d514a2c6c6058245314767eba43beed3c13970bc0647fead6c8"
+          "sha256": "02b51cbdb958c904cfeba360e17c7706c06cb95c074d1222b6ff736d4fc8ff2e"
         },
         {
           "path": "Features/Disenchantry/DisenchantResults.lua",
-          "sha256": "cfd0b78a18cd12a4e32b91d9a021b43749d5977b50bca389029e571ebf24da58"
+          "sha256": "019638d985cffc6a307b8db07b0704a6f84f8f32b464310c559fafab3f7a0dc9"
         },
         {
           "path": "Features/Disenchantry/ForecastPolicy.lua",
-          "sha256": "8ebdd5eb0ee22cbd44f9e22ee2ace3ccf91cdec69fe2c5f90391aae87e56a97a"
+          "sha256": "fe618049480a570f2d332a865c51081e3897ade99eb60608562391ee116f8e26"
         },
         {
           "path": "Features/Disenchantry/Hotkeys.lua",
-          "sha256": "f35645962a333170610aa72096ff0927fee573cf840a2ad6319d4c9c8ec31080"
+          "sha256": "e9c69844fbd7171dd0f9a1f5ae0a3d2d8197961a8b265dc063b89b95779305ca"
         },
         {
           "path": "Features/Disenchantry/Integration.md",
-          "sha256": "14405141b2a3686fbfb9af57e7b59bee876c7da2f7dcf10b2ad5561de6f3325a"
+          "sha256": "03c8ef56ef95d5969463aaf08aaed534f3f2da83c3619f29166955add46e3c6f"
         },
         {
           "path": "Features/Disenchantry/LICENSE.txt",
@@ -2423,11 +2423,11 @@
         },
         {
           "path": "Features/Disenchantry/Locales/Additional.lua",
-          "sha256": "8d75c2f8568bec0a6fa460d4fbc1895aaf4d1fc6ade71c128ef6b1e22c5f139a"
+          "sha256": "3b70bdc3ae67df6cc36efc5304c54b183b5af2121b91f873773926aa2341488c"
         },
         {
           "path": "Features/Disenchantry/Locales.lua",
-          "sha256": "b33103ab986ec47542aa3ecb6e189f5e00a9af1d0c1a4bd9bec1c878750cf143"
+          "sha256": "5ea8c918a56c7fa151a27cc4c12d61e3e2041e514559e5f0bae19f0f6ee7758c"
         },
         {
           "path": "Features/Disenchantry/Manifest.xml",
@@ -2439,27 +2439,27 @@
         },
         {
           "path": "Features/Disenchantry/PriceProviders.lua",
-          "sha256": "19f58b2ce07a55b760b1ee82b9ab7b8af6b209ef90e354c8d4ee92ec7c3cc827"
+          "sha256": "cfde9ce595d78b1d310afce20e49bfb6c28df1313aa5013a215436c017e06ba0"
         },
         {
           "path": "Features/Disenchantry/RetailDisenchant.lua",
-          "sha256": "61cb58ee85b347d7946ce443af3d67eb72db273bc2c9b407da7218fb080fd000"
+          "sha256": "a62699c32516c87f8fa152ca5a43be22213a8f7dcc2c6f338447c75614cb11ae"
         },
         {
           "path": "Features/Disenchantry/Statistics.lua",
-          "sha256": "ba5f25652245101f88d377de137ed5c36bc17ecac8dcf52b48b059f27f0ec56a"
+          "sha256": "2a35c18a7baf176921d29472558af6a751f93279a090c73ead6d2d50ebebe9bb"
         },
         {
           "path": "Features/Disenchantry/UI/ActionButton.lua",
-          "sha256": "eee63f19d2e456b4eb3ef06081b2f109da2827f54a190be362b5f8998c535204"
+          "sha256": "64857cfeffceac6cc7faf40a05bcf29c34a7e6abf412ce2cf578112e8b35276f"
         },
         {
           "path": "Features/Disenchantry/UI/Auction.lua",
-          "sha256": "a6fe8eb4cbcfda3ce2196732be7e1620f0205472ffecce7ba8c1df334678416f"
+          "sha256": "a250da55c50121bbffab5bc5d55766f61409f9b07198aaa05749629f0bb2c01a"
         },
         {
           "path": "Features/Disenchantry/UI/Blacklist.lua",
-          "sha256": "0442135b86e90073367bd1c302aee1de48e4b9a48cb76be10d51c9840f222f27"
+          "sha256": "467e2a4b13f912b17afb5193e562c136372b55ed26f9aab447bcf56c5b629d63"
         },
         {
           "path": "Features/Disenchantry/UI/Compact.lua",
@@ -2467,19 +2467,19 @@
         },
         {
           "path": "Features/Disenchantry/UI/Diagnostics.lua",
-          "sha256": "3477a26f7b8455c118663c6f336789e16dfb1a466cb297ce47bee6e4240686b5"
+          "sha256": "831b70012dbe152510d94555c0bd0ecf314523378607971e6fe616df6ba60b6f"
         },
         {
           "path": "Features/Disenchantry/UI/ForecastPreferences.lua",
-          "sha256": "0b415296b8e2f588679b6fec81f7e7a1a80a470c646d264ce411b7fd6c9b4343"
+          "sha256": "b26f979b9e7fadb1c75d3a5d299da8e3ba2b09bcfe08ef677377192f343389db"
         },
         {
           "path": "Features/Disenchantry/UI/ItemList.lua",
-          "sha256": "16f052b5deeb3153f3a998745bb7f9150ed0a1fbbc8f909d518bf0e7cb456d23"
+          "sha256": "494924464a1241e128cf827815619de15b360c1ecf0ce1a3293f73d8c146b72f"
         },
         {
           "path": "Features/Disenchantry/UI/MainWindow.lua",
-          "sha256": "bc06248bb5420ec7d5720c772ed20c28eb05382464dcb7a847e9ae0ce21b8274"
+          "sha256": "612c56f4c6644102703edbac50dd5cdd7990f55a0cf77b4d501c982f716c49ec"
         },
         {
           "path": "Features/Disenchantry/UI/Modes.lua",
@@ -2487,11 +2487,11 @@
         },
         {
           "path": "Features/Disenchantry/UI/Settings.lua",
-          "sha256": "bcf389eef8443e1edcf0283689de0c929188dd392a701515904bd6a84a162640"
+          "sha256": "9515205a14ef6cbd34de99c1d8639ef71fd6f221a59666be6f1920819df5064e"
         },
         {
           "path": "Features/Disenchantry/UI/Widgets.lua",
-          "sha256": "4c3286cc233c1c58c7ff53c5633a82f0e80949c1a0c4907688c3d3e34d8d093d"
+          "sha256": "6ac09bdf2599ece519980122af1c4f2c0c64326649f26de4b1bf33097905f76c"
         },
         {
           "path": "Features/Disenchantry/UI/Windows.lua",
@@ -3315,11 +3315,11 @@
         },
         {
           "path": "ForeverTools.toc",
-          "sha256": "6f0764c83302eb5d7536919493d4fb8a2428e1c736d5a888ca10928694e92faa"
+          "sha256": "83f32a950410ba622cd22586fac011ab435192e562193374bf40e28d7be1b5c5"
         },
         {
           "path": "ForeverTools_Camelot.toc",
-          "sha256": "6f0764c83302eb5d7536919493d4fb8a2428e1c736d5a888ca10928694e92faa"
+          "sha256": "83f32a950410ba622cd22586fac011ab435192e562193374bf40e28d7be1b5c5"
         },
         {
           "path": "Menu.lua",
@@ -3423,7 +3423,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "4b5aecbdb1ab44ce0850b6f9e59ef4c922a6ca5fbc2a3eb604b6cc886fe853cd"
+          "sha256": "803ce75c09a6fba92edd824879b0f5da6de71163da01986b06e80ca3cb433a1e"
         },
         {
           "path": "RefreshmentMacro.lua",

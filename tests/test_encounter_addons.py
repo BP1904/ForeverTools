@@ -102,6 +102,66 @@ class EncounterAddonsTest(unittest.TestCase):
             assert(SLASH_FTEMBED_BigWigsBigWigs1=='/bw')
         ''')
 
+    def test_bigwigs_nameplates_ignore_secret_guids_and_keep_target_cleanup(self):
+        lua = self.runtime()
+        lua.execute((ROOT/'tests/encounter_mock.lua').read_text())
+        lua.execute('''
+            secretGUID={}; currentGUID=nil
+            function issecretvalue(value) return rawequal(value,secretGUID) end
+            function UnitGUID() return currentGUID end
+            function UnitTokenFromGUID() return nil end
+        ''')
+        self.register_applications(lua, 'BigWigs')
+        lua.execute('''
+            local r=namespace.embedded.BigWigs; r.running=true
+            assert(r:Load('BigWigs')); assert(r:Load('BigWigs_Core'))
+            assert(r:Load('BigWigs_Plugins'))
+            local function upvalue(fn,key)
+                for i=1,100 do
+                    local name,value=debug.getupvalue(fn,i)
+                    if not name then break end
+                    if name==key then return value,i end
+                end
+                error('Missing upvalue '..key)
+            end
+            local plugin=upvalue(r.env.BigWigs.GetPlugin,'plugins')['Nameplates']
+            -- Lua 5.1 has no secret values: reject a sentinel at table access.
+            local icons=upvalue(plugin.NAME_PLATE_UNIT_REMOVED,'nameplateIcons')
+            local texts=upvalue(plugin.NAME_PLATE_UNIT_REMOVED,'nameplateTexts')
+            local reject={__index=function(_,key)
+                assert(not issecretvalue(key),'secret table key')
+            end}
+            setmetatable(icons,reject); setmetatable(texts,reject)
+            for _,value in ipairs({secretGUID,false,'Creature-test'}) do
+                currentGUID=value or nil
+                plugin:NAME_PLATE_UNIT_ADDED(nil,'nameplate1')
+                plugin:NAME_PLATE_UNIT_REMOVED(nil,'nameplate1')
+                plugin:PLAYER_TARGET_CHANGED()
+                assert(not issecretvalue(upvalue(plugin.PLAYER_TARGET_CHANGED,'prevTarget')))
+            end
+            currentGUID=secretGUID
+            plugin:StartNameplate(nil,{},secretGUID,123,10)
+            plugin:StopNameplate(nil,{},secretGUID,123)
+            plugin:StopUnitNameplate(nil,nil,secretGUID)
+            assert(next(icons)==nil and next(texts)==nil)
+
+            -- A hidden new target must still reset the previous public target.
+            local _,index=upvalue(plugin.PLAYER_TARGET_CHANGED,'db')
+            debug.setupvalue(plugin.PLAYER_TARGET_CHANGED,index,{iconWidthOthers=20,iconHeightOthers=15})
+            local resized,level,hidden
+            local frame={SetSize=function(_,w,h) resized={w,h} end,
+                SetFrameLevel=function(_,v) level=v end,
+                HideFrame=function() hidden=true end}
+            icons['Creature-old']={{nameplateFrame=frame}}
+            local _,prevIndex=upvalue(plugin.PLAYER_TARGET_CHANGED,'prevTarget')
+            debug.setupvalue(plugin.PLAYER_TARGET_CHANGED,prevIndex,'Creature-old')
+            plugin:PLAYER_TARGET_CHANGED()
+            assert(resized[1]==20 and resized[2]==15 and level==6000)
+            currentGUID='Creature-old'
+            plugin:NAME_PLATE_UNIT_REMOVED(nil,'nameplate1')
+            assert(hidden and icons['Creature-old'][1].nameplateFrame==nil)
+        ''')
+
     def test_actual_nova_sources_start_with_forever_detection_and_separate_identity(self):
         lua = self.runtime()
         lua.execute((ROOT/'tests/encounter_mock.lua').read_text())

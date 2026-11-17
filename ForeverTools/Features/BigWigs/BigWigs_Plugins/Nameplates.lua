@@ -86,6 +86,13 @@ local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local UnitCanAttack = BigWigsLoader.UnitCanAttack
 local UnitTokenFromGUID = BigWigsLoader.UnitTokenFromGUID
 
+-- Forever can return secret GUIDs during combat. Never compare or cache them.
+function plugin:UnitGUID(unit)
+	local guid = BigWigsLoader.UnitGUID(unit)
+	if self:IsSecret(guid) then return end
+	return guid
+end
+
 local LibCustomGlow = LibStub("LibCustomGlow-1.0")
 local glowFunctions = {
 	pixel = LibCustomGlow.PixelGlow_Start,
@@ -1878,6 +1885,7 @@ function removeFrame(frameInfo)
 end
 
 function plugin:StopNameplate(_, module, guid, key, text)
+	if self:IsSecret(guid) then return end
 	local frameInfo
 	if text then
 		frameInfo = nameplateTexts[guid] and nameplateTexts[guid][key]
@@ -1890,6 +1898,7 @@ function plugin:StopNameplate(_, module, guid, key, text)
 end
 
 function plugin:StopUnitNameplate(_, _, guid)
+	if self:IsSecret(guid) then return end
 	local icons = nameplateIcons[guid] or {}
 	local texts = nameplateTexts[guid] or {}
 	for _, frameInfo in next, icons do
@@ -1935,7 +1944,7 @@ end
 
 local function createNameplateIcon(module, guid, key, length, icon)
 	local iconFrame = getIconFrame()
-	local target = module:UnitGUID("target")
+	local target = plugin:UnitGUID("target")
 	iconFrame:SetFrameStrata(db.iconFrameStrata)
 	if guid == target then
 		iconFrame:SetSize(db.iconWidthTarget, db.iconHeightTarget)
@@ -2038,6 +2047,7 @@ function showNameplateText(module, guid, key, length, text)
 end
 
 function plugin:StartNameplate(_, module, guid, key, length, customIconOrText)
+	if self:IsSecret(guid) or not guid then return end
 	if not module:CheckOption(key, "NAMEPLATE") then return end
 	if not customIconOrText or type(customIconOrText) == "number" then
 		local icon = customIconOrText or module:SpellTexture(key)

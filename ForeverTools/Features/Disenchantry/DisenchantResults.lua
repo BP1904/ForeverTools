@@ -1,4 +1,4 @@
--- Embedded from Disenchantry 1.2.5 (MIT); see LICENSE.txt and NOTICE.txt.
+-- Embedded from Disenchantry 1.2.6 (MIT); see LICENSE.txt and NOTICE.txt.
 local _, FT = ...
 local GetLocale = GetLocale or function() return "deDE" end
 local function LoadComponent(...)
@@ -231,18 +231,21 @@ function ns.DisenchantResults.AddTooltip(item, tooltip)
     if not db.hideDisenchantValue then
         local expected = ns.DisenchantResults.ExpectedValue(item)
         local value = expected and ns.Prices.FormatMoney(expected) or L.DE_UNKNOWN
-        tooltip:AddLine(" ")
-        tooltip:AddDoubleLine(results.approximate and not results.foreverCraftEstimate and L.DE_BASELINE_VALUE or L.DE_EXPECTED_VALUE or "Expected disenchant value", value, 0.6, 0.85, 1, 1, 0.82, 0)
-        if ns.ForecastPolicy and item.link then
-            local _,profit,_,source=ns.ForecastPolicy.Profit(item)
-            local ru=GetLocale()=="ruRU"
-            local r,g,b=0.75,0.75,0.75
-            if profit and profit>0 then r,g,b=0.25,1,0.25
-            elseif profit and profit<0 then r,g,b=1,0.38,0.38 end
-            local label=(ru and "Прибыль" or "Profit").." ("..(source=="vendor" and (ru and "торговец" or "Vendor") or "AH")..")"
-            local amount=profit and ((profit>0 and "+" or profit<0 and "-" or "")..ns.Prices.FormatMoney(math.abs(profit))) or "?"
-            tooltip:AddDoubleLine(label,amount,r,g,b,r,g,b)
+        local r,g,b=0.75,0.75,0.75
+        if expected and item.link then
+            local getInfo=ns.App.GetItemInfoSafe or (C_Item and C_Item.GetItemInfo) or GetItemInfo
+            local bind=item.bindType or (getInfo and select(14,getInfo(item.link)))
+            local base
+            if bind==1 or bind==4 or item.isBound then
+                base=getInfo and select(11,getInfo(item.link))
+            else
+                base=ns.Prices.GetValue(item.link)
+            end
+            if base and expected>base then r,g,b=0.25,1,0.25
+            elseif base and expected<base then r,g,b=1,0.38,0.38 end
         end
+        tooltip:AddLine(" ")
+        tooltip:AddDoubleLine(results.approximate and not results.foreverCraftEstimate and L.DE_BASELINE_VALUE or L.DE_EXPECTED_VALUE or "Expected disenchant value", value, r,g,b, r,g,b)
         if results.empirical then
             tooltip:AddLine((GetLocale()=="ruRU" and "По вашим распылениям: " or "Based on your disenchants: ") .. results.samples .. (GetLocale()=="ruRU" and ". Наблюдаемые частоты, не гарантии." or ". Observed frequencies, not guarantees."),1,0.75,0.2,true)
         elseif ns.ForecastPolicy and ns.ForecastPolicy.SalvagerActive() then

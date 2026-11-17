@@ -1,5 +1,7 @@
 # ForeverTools – ein Addon für alle unsere Funktionen
 
+**Neu in 1.16.16: Lua-Kampffehler behoben.** BigWigs greift bei Namensplaketten und Zielwechseln nicht mehr mit geschützten Gegnerkennungen auf seine Tabellen zu. Der Fehler ist im Spielprotokoll vom 16.11.2026 belegt. Disenchantry 1.2.6 integriert, eigene Anpassungen erhalten. Nach Installation außerhalb des Kampfes `/reload` eingeben.
+
 **Neu in 1.16.15: Addonpflege.** Lerndaten 11.4.8 integriert und QuestieTrace auf 1.12.0 aktualisiert. Alle installierten und integrierten Addons erneut geprüft; lokale Anpassungen erhalten. Nach dem Update `/reload` eingeben. Details: [Addon-Pruefung-2026-11-16.md](Addon-Pruefung-2026-11-16.md).
 
 **Neu in 1.16.14: Addonpflege.** Attune 16001-41, Disenchantry 1.2.5 und Lerndaten 11.4.7 integriert. Materialanzeige beim Entzaubern pro Charakter gespeichert, bestehende Einstellungen übernommen. Alle installierten Einzeladdons und integrierten Komponenten geprüft. Nach dem Update `/reload` eingeben. Details: [Addon-Pruefung-2026-11-14.md](Addon-Pruefung-2026-11-14.md).

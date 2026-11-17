@@ -143,7 +143,7 @@ end
 function UI.Toggle(window, points, update)
     if not window then return end
     if window:IsShown() then window:Hide(); return end
-    UI.Anchor(window, points)
+    if points then UI.Anchor(window, points) end
     window:Show()
     window:Raise()
     if update then update() end
